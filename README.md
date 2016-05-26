@@ -64,10 +64,10 @@ data_to_transform = '''{
 
 r = requests.post('http://127.0.0.1:5000/023/0203.pck', data=data_to_transform)
 
-r.data
+r.data = 
 
-`FBFV03000012/03/16
+'''FBFV03000012/03/16
 FV          
-RSI7B:12345678901A:0216`
+RSI7B:12345678901A:0216'''
 
 ```
