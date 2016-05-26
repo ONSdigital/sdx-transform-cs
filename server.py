@@ -33,7 +33,8 @@ def pck(survey_id, form_id):
 
         answers = derive_answers(survey, response['data'].items())
 
-        return template.render(response=response, submission_date=submission_date_str, batch_number=30000, form_id=cs_form_id, answers=answers)
+        return template.render(response=response, submission_date=submission_date_str,
+            batch_number=30000, form_id=cs_form_id, answers=answers, write_batch_header=settings.WRITE_BATCH_HEADER)
 
 
 @app.route('/<survey_id>/<form_id>.idbr', methods=['POST'])
