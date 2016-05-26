@@ -1,6 +1,6 @@
 # sdx-transform-cs
 
-The sde-transform-cs app is used within the Office National of Statistics (ONS) for transforming Survey Data Exchange (SDX) Surveys.
+The sde-transform-cs app is used within the Office National of Statistics (ONS) for transforming Survey Data Exchange (SDX) Surveys to formats in use in Common Software.
 
 ## Installation
 
@@ -8,7 +8,7 @@ Using virtualenv and pip, create a new environment and install within using:
 
     $ pip install -r requirements.txt
 
-It's also possible to install within a container using docker. From the sdx-validate directory:
+It's also possible to install within a container using docker. From the sdx-transform-cs directory:
 
     $ docker build -t sdx-transform-cs .
 
@@ -22,7 +22,7 @@ sdx-transform-cs exposes a three endpoints for transforming to idbr, pck and htm
 
 ### Example
 
-The example below uses the Python library [requests](https://github.com/kennethreitz/requests) to confirm some data is valid using sdx-validate.
+The example below uses the Python library [requests](https://github.com/kennethreitz/requests) to confirm some data is valid using sdx-transform-cs.
 
 ```python
 import requests
