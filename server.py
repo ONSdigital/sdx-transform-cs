@@ -25,6 +25,9 @@ def pck(survey_id, form_id):
 
     cs_form_id = form_ids[instrument_id]
 
+    if len(response['data']) > 0:
+        response['data']['1'] = ''
+
     with open("./surveys/%s.%s.json" % (survey_id, form_id)) as json_file:
         survey = json.load(json_file)
 
