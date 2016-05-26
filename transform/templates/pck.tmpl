@@ -1,7 +1,7 @@
 {% if write_batch_header %}
 FBFV{{'%06d' %batch_number}}{{submission_date-}}
 {% endif %}
-FV
+FV          
 {{form_id}}:{{response.metadata.ru_ref}}:{{response.collection.period-}}
 {% for question_id, answer in answers %}
 {{'%04d' %question_id}} {{answer}}
