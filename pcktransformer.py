@@ -9,6 +9,10 @@ form_ids = {
 
 
 def get_form_questions(survey):
+    '''
+    Return the questions (list) and question types (dict
+    lookup to question type)
+    '''
     questions = []
     question_types = {}
 
@@ -23,6 +27,11 @@ def get_form_questions(survey):
 
 
 def get_derived_value(form_question_types, question_id, value):
+    '''
+    Returns a derived value to be used in pck response based on the
+    question id. Takes a lookup of question types parsed in
+    get_form_questions
+    '''
     if question_id in form_question_types:
         form_question_type = form_question_types[question_id]
         if form_question_type == 'contains':
@@ -36,6 +45,10 @@ def get_derived_value(form_question_types, question_id, value):
 
 
 def derive_answers(survey, answers):
+    '''
+    Takes a loaded dict structure of survey data and answers sent
+    in a request and derives values to use in response
+    '''
     derived = []
 
     form_questions, form_question_types = get_form_questions(survey)
