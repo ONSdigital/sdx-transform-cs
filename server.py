@@ -18,19 +18,19 @@ def pck(survey_id, form_id):
     response = request.get_json(silent=True)
     template = env.get_template('pck.tmpl')
 
+    instrument_id = response['collection']['instrument_id']
+
+    submission_date = dateutil.parser.parse(response['submitted_at'])
+    submission_date_str = submission_date.strftime("%d/%m/%y")
+
+    cs_form_id = form_ids[instrument_id]
+
     with open("./surveys/%s.%s.json" % (survey_id, form_id)) as json_file:
         survey = json.load(json_file)
 
-        instrument_id = response['collection']['instrument_id']
-
-        submission_date = dateutil.parser.parse(response['submitted_at'])
-        submission_date_str = submission_date.strftime("%d/%m/%y")
-
-        form_id = form_ids[instrument_id]
-
         answers = derive_answers(survey, response['data'].items())
 
-        return template.render(response=response, submission_date=submission_date_str, batch_number=30000, form_id=form_id, answers=answers)
+        return template.render(response=response, submission_date=submission_date_str, batch_number=30000, form_id=cs_form_id, answers=answers)
 
 
 @app.route('/<survey_id>/<form_id>.idbr', methods=['POST'])
