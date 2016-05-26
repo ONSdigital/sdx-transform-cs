@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+    <title>{{ survey.title }}</title>
+<body>
+<h1>{{ survey.title }}</h1>
+{% for answer_group in survey.answer_groups %}
+    <table>
+        {% if answer_group.title %}
+        <thead>
+            <tr>
+                <th>{{answer_group.title}}</th>
+            </tr>
+        </thead>
+        {% endif %}
+        <tbody>
+            {% for answer in answer_group.answers %}
+                <tr>
+                    <td>{{answer.content}}</td>
+                    <td>{{response.data[answer.question_id]}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endfor %}
+</body>
+</html>

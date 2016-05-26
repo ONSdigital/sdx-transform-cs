@@ -1,0 +1,60 @@
+{
+  "title": "Monthly Business Survey - Retail Sales Index",
+  "survey_id": "023",
+  "form_type": "0203",
+  "comments": "true",
+  "answer_groups": [
+    {
+      "title": "Period",
+      "answers": [
+        {
+          "content": "From",
+          "question_id": "11",
+          "type": "date"
+        },
+        {
+          "content": "To",
+          "question_id": "12",
+          "type": "date"
+        }
+      ]
+    },
+    {
+      "title": "Commodoties - Retail Turnover",
+      "answers": [
+        {
+          "content": "Food",
+          "question_id": "22"
+        },
+        {
+          "content": "Alcohol, Confectionary and Tobacco",
+          "question_id": "23"
+        },
+        {
+          "content": "Clothing and Footwear",
+          "question_id": "24"
+        },
+        {
+          "content": "Household goods",
+          "question_id": "25"
+        },
+        {
+          "content": "Other Goods",
+          "question_id": "26"
+        }
+      ]
+    },
+    {
+      "answers": [{
+          "content": "Of these figures, how much were from internet sales?",
+          "question_id": "21"
+      }]
+    },
+    {
+      "answers": [{
+        "question_id": "1",
+        "type": "contains"
+      }]
+    }
+  ]
+}
