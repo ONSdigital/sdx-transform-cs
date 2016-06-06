@@ -2,20 +2,20 @@
     <title>{{ survey.title }}</title>
 <body>
 <h1>{{ survey.title }}</h1>
-{% for answer_group in survey.answer_groups %}
+{% for question_group in survey.question_groups %}
     <table>
-        {% if answer_group.title %}
+        {% if question_group.title %}
         <thead>
             <tr>
-                <th>{{answer_group.title}}</th>
+                <th>{{question_group.title}}</th>
             </tr>
         </thead>
         {% endif %}
         <tbody>
-            {% for answer in answer_group.answers %}
+            {% for question in question_group.questions %}
                 <tr>
-                    <td>{{answer.content}}</td>
-                    <td>{{response.data[answer.question_id]}}</td>
+                    <td>{{question.text}}</td>
+                    <td>{{response.data[question.question_id]}}</td>
                 </tr>
             {% endfor %}
         </tbody>

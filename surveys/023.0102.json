@@ -2,17 +2,17 @@
   "title": "Monthly Business Survey - Retail Sales Index",
   "survey_id": "023",
   "form_type": "0102",
-  "answer_groups": [
+  "question_groups": [
     {
       "title": "Period",
-      "answers": [
+      "questions": [
         {
-          "content": "From",
+          "text": "From",
           "question_id": "11",
           "type": "date"
         },
         {
-          "content": "To",
+          "text": "To",
           "question_id": "12",
           "type": "date"
         }
@@ -20,21 +20,21 @@
     },
     {
       "title": "Retail Turnover",
-      "answers": [
+      "questions": [
         {
-          "content": "Total Retail Sales",
+          "text": "Total Retail Sales",
           "question_id": "20"
         }
       ]
     },
     {
-      "answers": [{
-          "content": "Of your total retail turnover, what was the value of internet sales?",
+      "questions": [{
+          "text": "Of your total retail turnover, what was the value of internet sales?",
           "question_id": "21"
       }]
     },
     {
-      "answers": [{
+      "questions": [{
         "question_id": "1",
         "type": "contains"
       }]

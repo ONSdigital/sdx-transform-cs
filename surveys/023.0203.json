@@ -3,17 +3,17 @@
   "survey_id": "023",
   "form_type": "0203",
   "comments": "true",
-  "answer_groups": [
+  "question_groups": [
     {
       "title": "Period",
-      "answers": [
+      "questions": [
         {
-          "content": "From",
+          "text": "From",
           "question_id": "11",
           "type": "date"
         },
         {
-          "content": "To",
+          "text": "To",
           "question_id": "12",
           "type": "date"
         }
@@ -21,37 +21,37 @@
     },
     {
       "title": "Commodoties - Retail Turnover",
-      "answers": [
+      "questions": [
         {
-          "content": "Food",
+          "text": "Food",
           "question_id": "22"
         },
         {
-          "content": "Alcohol, Confectionary and Tobacco",
+          "text": "Alcohol, Confectionary and Tobacco",
           "question_id": "23"
         },
         {
-          "content": "Clothing and Footwear",
+          "text": "Clothing and Footwear",
           "question_id": "24"
         },
         {
-          "content": "Household goods",
+          "text": "Household goods",
           "question_id": "25"
         },
         {
-          "content": "Other Goods",
+          "text": "Other Goods",
           "question_id": "26"
         }
       ]
     },
     {
-      "answers": [{
-          "content": "Of these figures, how much were from internet sales?",
+      "questions": [{
+          "text": "Of these figures, how much were from internet sales?",
           "question_id": "21"
       }]
     },
     {
-      "answers": [{
+      "questions": [{
         "question_id": "1",
         "type": "contains"
       }]
