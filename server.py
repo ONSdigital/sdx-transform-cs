@@ -13,12 +13,14 @@ env = Environment(loader=PackageLoader('transform', 'templates'))
 app = Flask(__name__)
 
 
-@app.route('/<survey_id>/<form_id>.pck', methods=['POST'])
-def pck(survey_id, form_id):
+@app.route('/pck', methods=['POST'])
+def pck():
     response = request.get_json(silent=True)
     template = env.get_template('pck.tmpl')
 
-    with open("./surveys/%s.%s.json" % (survey_id, form_id)) as json_file:
+    form_id = response['collection']['instrument_id']
+
+    with open("./surveys/%s.%s.json" % (response['survey_id'], form_id)) as json_file:
         survey = json.load(json_file)
 
         instrument_id = response['collection']['instrument_id']
@@ -33,20 +35,22 @@ def pck(survey_id, form_id):
         return template.render(response=response, submission_date=submission_date_str, batch_number=30000, form_id=form_id, answers=answers)
 
 
-@app.route('/<survey_id>/<form_id>.idbr', methods=['POST'])
-def idbr(survey_id, form_id):
+@app.route('/idbr', methods=['POST'])
+def idbr():
     response = request.get_json(silent=True)
     template = env.get_template('idbr.tmpl')
 
     return template.render(response=response)
 
 
-@app.route('/<survey_id>/<form_id>.html', methods=['POST'])
-def html(survey_id, form_id):
+@app.route('/html', methods=['POST'])
+def html():
     response = request.get_json(silent=True)
     template = env.get_template('html.tmpl')
 
-    with open("./surveys/%s.%s.json" % (survey_id, form_id)) as json_file:
+    form_id = response['collection']['instrument_id']
+
+    with open("./surveys/%s.%s.json" % (response['survey_id'], form_id)) as json_file:
         survey = json.load(json_file)
         return template.render(response=response, survey=survey)
 
