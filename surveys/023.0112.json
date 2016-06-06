@@ -1,0 +1,62 @@
+{
+  "title": "Monthly Business Survey - Retail Sales Index",
+  "survey_id": "023",
+  "form_type": "0112",
+  "question_groups": [
+    {
+      "title": "Period",
+      "questions": [
+        {
+          "text": "From",
+          "question_id": "11",
+          "type": "date"
+        },
+        {
+          "text": "To",
+          "question_id": "12",
+          "type": "date"
+        }
+      ]
+    },
+    {
+      "title": "Retail Turnover",
+      "questions": [
+        {
+          "text": "Total Retail Sales",
+          "question_id": "20"
+        }
+      ]
+    },
+    {
+      "questions": [{
+          "text": "Of your total retail turnover, what was the value of internet sales?",
+          "question_id": "21"
+      }]
+    },
+    {
+      "questions": [
+        {
+          "text": "Male employees working more than 30 hours per week?",
+          "question_id": "51"
+        }, {
+          "text": "Male employees working less than 30 hours per week?",
+          "question_id": "52"
+        }, {
+          "text": "Female employees working more than 30 hours per week?",
+          "question_id": "53"
+        }, {
+          "text": "Female employees working less than 30 hours per week?",
+          "question_id": "54"
+        }, {
+          "text": "Total employees",
+          "question_id": "50"
+      }]
+    },
+    {
+      "questions": [{
+        "question_id": "1",
+        "type": "contains"
+      }]
+    }
+  ]
+}

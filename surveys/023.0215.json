@@ -1,0 +1,95 @@
+{
+  "title": "Monthly Business Survey - Retail Sales Index",
+  "survey_id": "023",
+  "form_type": "0215",
+  "comments": "true",
+  "question_groups": [
+    {
+        "title": "Comments",
+        "questions": [{
+            "text": "Please explain any movements in your data e.g. sale held, branches opened or sold, extreme weather, or temporary closure of shop",
+            "question_id": "146",
+            "type": "contains"
+        }]
+    },
+    {
+      "questions": [
+        {
+          "text": "Male employees working more than 30 hours per week?",
+          "question_id": "51"
+        }, {
+          "text": "Male employees working less than 30 hours per week?",
+          "question_id": "52"
+        }, {
+          "text": "Female employees working more than 30 hours per week?",
+          "question_id": "53"
+        }, {
+          "text": "Female employees working less than 30 hours per week?",
+          "question_id": "54"
+        }, {
+          "text": "Total employees",
+          "question_id": "50"
+      }]
+    },
+    {
+      "questions": [
+        {
+          "text": "From",
+          "question_id": "11",
+          "type": "date"
+        },
+        {
+          "text": "To",
+          "question_id": "12",
+          "type": "date"
+        }
+      ]
+    },
+    {
+      "questions": [
+        {
+          "text": "Food",
+          "question_id": "22"
+        },
+        {
+          "text": "Alcohol, Confectionary and Tobacco",
+          "question_id": "23"
+        },
+        {
+          "text": "Clothing and Footwear",
+          "question_id": "24"
+        },
+        {
+          "text": "Household goods",
+          "question_id": "25"
+        },
+        {
+          "text": "Other Goods",
+          "question_id": "26"
+        },
+        {
+          "text": "Total Retail Sales",
+          "question_id": "20"
+        }
+      ]
+    },
+    {
+      "questions": [{
+          "text": "Of these figures, how much were from internet sales?",
+          "question_id": "21"
+      }]
+    },
+    {
+      "questions": [{
+          "text": "Automotive Fuel",
+          "question_id": "27"
+      }]
+    },
+    {
+      "questions": [{
+        "question_id": "1",
+        "type": "contains"
+      }]
+    }
+  ]
+}

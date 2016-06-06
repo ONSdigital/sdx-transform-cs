@@ -15,7 +15,7 @@ app = Flask(__name__)
 
 @app.route('/pck', methods=['POST'])
 def pck():
-    response = request.get_json(silent=True)
+    response = request.get_json(force=True)
     template = env.get_template('pck.tmpl')
 
     form_id = response['collection']['instrument_id']
@@ -37,7 +37,7 @@ def pck():
 
 @app.route('/idbr', methods=['POST'])
 def idbr():
-    response = request.get_json(silent=True)
+    response = request.get_json(force=True)
     template = env.get_template('idbr.tmpl')
 
     return template.render(response=response)
@@ -45,7 +45,7 @@ def idbr():
 
 @app.route('/html', methods=['POST'])
 def html():
-    response = request.get_json(silent=True)
+    response = request.get_json(force=True)
     template = env.get_template('html.tmpl')
 
     form_id = response['collection']['instrument_id']
