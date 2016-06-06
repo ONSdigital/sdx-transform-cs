@@ -12,8 +12,8 @@ def get_form_questions(survey):
     questions = []
     question_types = []
 
-    for answer_group in survey['question_groups']:
-        for answer in answer_group['questions']:
+    for question_group in survey['question_groups']:
+        for answer in question_group['questions']:
             questions.append(int(answer['question_id']))
             if answer['type']:
                 question_types.append(answer['type'])
