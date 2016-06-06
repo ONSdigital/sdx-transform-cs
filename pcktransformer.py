@@ -9,22 +9,31 @@ form_ids = {
 
 
 def get_form_questions(survey):
+    '''
+    Return the questions (list) and question types (dict
+    lookup to question type)
+    '''
     questions = []
-    question_types = []
+    question_types = {}
 
     for question_group in survey['question_groups']:
         for answer in question_group['questions']:
+            question_id = answer['question_id']
             questions.append(int(answer['question_id']))
-            if answer['type']:
-                question_types.append(answer['type'])
+            if 'type' in answer:
+                question_types[question_id] = answer['type']
 
-        return questions, question_types
+    return questions, question_types
 
 
 def get_derived_value(form_question_types, question_id, value):
+    '''
+    Returns a derived value to be used in pck response based on the
+    question id. Takes a lookup of question types parsed in
+    get_form_questions
+    '''
     if question_id in form_question_types:
         form_question_type = form_question_types[question_id]
-
         if form_question_type == 'contains':
             value = "1" if value else "2"
         elif form_question_type == 'date':
@@ -36,12 +45,16 @@ def get_derived_value(form_question_types, question_id, value):
 
 
 def derive_answers(survey, answers):
-    answers = []
+    '''
+    Takes a loaded dict structure of survey data and answers sent
+    in a request and derives values to use in response
+    '''
+    derived = []
 
     form_questions, form_question_types = get_form_questions(survey)
 
     for k, v in answers:
         if int(k) in form_questions:
-            answers.append((int(k), get_derived_value(form_question_types, k, v)))
+            derived.append((int(k), get_derived_value(form_question_types, k, v)))
 
-    return sorted(answers)
+    return sorted(derived)

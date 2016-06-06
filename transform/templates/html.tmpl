@@ -2,6 +2,11 @@
     <title>{{ survey.title }}</title>
 <body>
 <h1>{{ survey.title }}</h1>
+<ul>
+    <li>Form Type: {{ response.collection.instrument_id }}</li>
+    <li>Respondent: {{ response.metadata.ru_ref }}</li>
+    <li>Submitted At: {{ response.submitted_at }}</li>
+</ul>
 {% for question_group in survey.question_groups %}
     <table>
         {% if question_group.title %}
