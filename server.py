@@ -33,10 +33,10 @@ def pck():
     with open("./surveys/%s.%s.json" % (response['survey_id'], form_id)) as json_file:
         survey = json.load(json_file)
 
-        answers = derive_answers(survey, response['data'].items())
+        answers = derive_answers(survey, response['data'])
 
         return template.render(response=response, submission_date=submission_date_str,
-            batch_number=30000, form_id=cs_form_id, answers=answers, write_batch_header=settings.WRITE_BATCH_HEADER)
+            batch_number=30001, form_id=cs_form_id, answers=answers, write_batch_header=settings.WRITE_BATCH_HEADER)
 
 
 @app.route('/idbr', methods=['POST'])
