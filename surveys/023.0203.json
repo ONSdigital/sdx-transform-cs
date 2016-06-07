@@ -48,6 +48,10 @@
         {
           "text": "Other Goods",
           "question_id": "26"
+        },
+        {
+          "text": "Total Retail Sales",
+          "question_id": "20"
         }
       ]
     },
