@@ -27,13 +27,15 @@ def pck():
 
     cs_form_id = form_ids[instrument_id]
 
-    if len(response['data']) > 0:
+    data = response['data'] if 'data' in response else {}
+
+    if len(data) > 0:
         response['data']['1'] = ''
 
     with open("./surveys/%s.%s.json" % (response['survey_id'], form_id)) as json_file:
         survey = json.load(json_file)
 
-        answers = derive_answers(survey, response['data'])
+        answers = derive_answers(survey, data)
 
         return template.render(response=response, submission_date=submission_date_str,
             batch_number=30001, form_id=cs_form_id, answers=answers, write_batch_header=settings.WRITE_BATCH_HEADER)

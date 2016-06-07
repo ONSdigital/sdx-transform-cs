@@ -60,7 +60,7 @@ def get_required_answers(answers, required_answers):
     return required
 
 
-def derive_answers(survey, answers):
+def derive_answers(survey, answers={}):
     '''
     Takes a loaded dict structure of survey data and answers sent
     in a request and derives values to use in response
