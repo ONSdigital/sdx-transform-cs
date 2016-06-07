@@ -31,6 +31,7 @@ def get_expected_output(filename, output_type):
 class TestTransformService(unittest.TestCase):
 
     transform_idbr_endpoint = "/idbr"
+    transform_pck_endpoint = "/pck"
 
     def setUp(self):
 
@@ -53,6 +54,24 @@ class TestTransformService(unittest.TestCase):
             expected_response = get_expected_output(scenario_filename, 'idbr')
 
             r = self.app.post(self.transform_idbr_endpoint, data=payload)
+
+            actual_response = r.data.decode('UTF8')
+
+            self.assertEqual(actual_response, expected_response)
+
+    def test_transforms_pck(self):
+
+        test_scenarios = get_test_scenarios('pck')
+
+        print("Found %d pck scenarios" % len(test_scenarios))
+
+        for scenario_filename in test_scenarios:
+
+            print("Loading scenario %s " % scenario_filename)
+            payload = get_file_as_string(scenario_filename)
+            expected_response = get_expected_output(scenario_filename, 'pck')
+
+            r = self.app.post(self.transform_pck_endpoint, data=payload)
 
             actual_response = r.data.decode('UTF8')
 
