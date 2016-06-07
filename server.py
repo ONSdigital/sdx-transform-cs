@@ -12,6 +12,8 @@ env = Environment(loader=PackageLoader('transform', 'templates'))
 
 app = Flask(__name__)
 
+app.config['WRITE_BATCH_HEADER'] = settings.WRITE_BATCH_HEADER
+
 
 @app.route('/pck', methods=['POST'])
 def pck():
@@ -38,7 +40,7 @@ def pck():
         answers = derive_answers(survey, data)
 
         return template.render(response=response, submission_date=submission_date_str,
-            batch_number=30001, form_id=cs_form_id, answers=answers, write_batch_header=settings.WRITE_BATCH_HEADER)
+            batch_number=30001, form_id=cs_form_id, answers=answers, write_batch_header=app.config['WRITE_BATCH_HEADER'])
 
 
 @app.route('/idbr', methods=['POST'])
