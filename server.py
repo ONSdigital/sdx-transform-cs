@@ -16,7 +16,9 @@ app.config['WRITE_BATCH_HEADER'] = settings.WRITE_BATCH_HEADER
 
 
 @app.route('/pck', methods=['POST'])
-def pck():
+@app.route('/pck/<batch_number>', methods=['POST'])
+def pck(batch_number=30001):
+    batch_number = int(batch_number)
     response = request.get_json(force=True)
     template = env.get_template('pck.tmpl')
 
@@ -40,7 +42,7 @@ def pck():
         answers = derive_answers(survey, data)
 
         return template.render(response=response, submission_date=submission_date_str,
-            batch_number=30001, form_id=cs_form_id, answers=answers, write_batch_header=app.config['WRITE_BATCH_HEADER'])
+            batch_number=batch_number, form_id=cs_form_id, answers=answers, write_batch_header=app.config['WRITE_BATCH_HEADER'])
 
 
 @app.route('/idbr', methods=['POST'])
@@ -53,6 +55,9 @@ def idbr():
 
 @app.route('/html', methods=['POST'])
 def html():
+    '''
+    HTML endpoint used in pdf generation
+    '''
     response = request.get_json(force=True)
     template = env.get_template('html.tmpl')
 
@@ -61,6 +66,14 @@ def html():
     with open("./surveys/%s.%s.json" % (response['survey_id'], form_id)) as json_file:
         survey = json.load(json_file)
         return template.render(response=response, survey=survey)
+
+
+@app.route('/pdf', methods=['POST'])
+def pdf():
+    '''
+    PDF endpoint used in pdf generation
+    '''
+    response = request.get_json(force=True)
 
 
 if __name__ == '__main__':
