@@ -68,14 +68,6 @@ def html():
         return template.render(response=response, survey=survey)
 
 
-@app.route('/pdf', methods=['POST'])
-def pdf():
-    '''
-    PDF endpoint used in pdf generation
-    '''
-    response = request.get_json(force=True)
-
-
 if __name__ == '__main__':
     # Startup
     logging.basicConfig(level=settings.LOGGING_LEVEL, format=settings.LOGGING_FORMAT)
