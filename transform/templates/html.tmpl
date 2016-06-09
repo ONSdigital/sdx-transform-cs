@@ -1,30 +1,40 @@
 <!DOCTYPE html>
+    <head>
+        <link rel="stylesheet" href="static/css/style.css" />
+    </head>
     <title>{{ survey.title }}</title>
-<body>
-<h1>{{ survey.title }}</h1>
-<ul>
-    <li>Form Type: {{ response.collection.instrument_id }}</li>
-    <li>Respondent: {{ response.metadata.ru_ref }}</li>
-    <li>Submitted At: {{ response.submitted_at }}</li>
-</ul>
-{% for question_group in survey.question_groups %}
-    <table>
-        {% if question_group.title %}
+    <body>
+    
+    <table class="header">
         <thead>
-            <tr>
-                <th>{{question_group.title}}</th>
-            </tr>
+            <tr><td colspan="2">{{ survey.title }}</td></tr>
         </thead>
-        {% endif %}
         <tbody>
-            {% for question in question_group.questions %}
-                <tr>
-                    <td>{{question.text}}</td>
-                    <td>{{response.data[question.question_id]}}</td>
-                </tr>
-            {% endfor %}
+            <tr><td>Form Type</td><td>{{ response.collection.instrument_id }}</td></tr>
+            <tr><td>Respondent</td> <td>{{ response.metadata.ru_ref }}</td></tr>
+            <tr><td>Submitted At</td> <td>{{ response.submitted_at }}</td></tr>
         </tbody>
     </table>
-{% endfor %}
-</body>
+
+    {% for question_group in survey.question_groups %}
+        <table>
+            {% if question_group.title %}
+            <thead>
+                <tr>
+                    <th>{{question_group.title}}</th>
+                    <th>{{question_group.meta}}</th>
+                </tr>
+            </thead>
+            {% endif %}
+            <tbody>
+                {% for question in question_group.questions %}
+                    <tr>
+                        <td>{{question.text}}</td>
+                        <td>{{response.data[question.question_id]}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endfor %}
+    </body>
 </html>
