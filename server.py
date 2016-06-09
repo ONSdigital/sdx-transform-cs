@@ -33,9 +33,6 @@ def pck(batch_number=30001):
 
     data = response['data'] if 'data' in response else {}
 
-    if len(data) > 0:
-        response['data']['1'] = ''
-
     with open("./surveys/%s.%s.json" % (response['survey_id'], form_id)) as json_file:
         survey = json.load(json_file)
 
