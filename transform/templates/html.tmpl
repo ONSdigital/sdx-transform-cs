@@ -28,10 +28,12 @@
             {% endif %}
             <tbody>
                 {% for question in question_group.questions %}
-                    <tr>
-                        <td>{{question.text}}</td>
-                        <td>{{response.data[question.question_id]}}</td>
-                    </tr>
+                    {% if question.text %}
+                        <tr>
+                            <td>{{question.text}}</td>
+                            <td>{{response.data[question.question_id]}}</td>
+                        </tr>
+                    {% endif %}
                 {% endfor %}
             </tbody>
         </table>
