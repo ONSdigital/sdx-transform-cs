@@ -5,6 +5,13 @@
   "comments": "true",
   "question_groups": [
     {
+      "title": "Comments",
+      "questions": [{
+        "question_id": "146",
+        "type": "contains"
+      }]
+    },
+    {
       "title": "Period",
       "questions": [
         {
@@ -21,6 +28,7 @@
     },
     {
       "title": "Commodoties - Retail Turnover",
+      "meta": "(£)",
       "questions": [
         {
           "text": "Food",
@@ -63,10 +71,6 @@
     {
       "questions": [{
         "question_id": "1",
-        "type": "contains"
-      },
-      {
-        "question_id": "146",
         "type": "contains"
       }]
     }

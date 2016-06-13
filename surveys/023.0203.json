@@ -5,8 +5,9 @@
   "comments": "true",
   "question_groups": [
     {
+      "title": "Comments",
       "questions": [{
-        "content": "Please explain any movements in your data e.g. sale held, branches opened or sold, extreme weather, or temporary closure of shop",
+        "text": "Please explain any movements in your data e.g. sale held, branches opened or sold, extreme weather, or temporary closure of shop",
         "question_id": "146",
         "type": "contains"
       }]
@@ -28,6 +29,7 @@
     },
     {
       "title": "Commodoties - Retail Turnover",
+      "meta": "(£)",
       "questions": [
         {
           "text": "Food",

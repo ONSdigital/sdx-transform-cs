@@ -48,6 +48,7 @@
     },
     {
       "title": "Commodoties - Retail Turnover",
+      "meta": "(£)",
       "questions": [
         {
           "text": "Food",
