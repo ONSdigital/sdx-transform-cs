@@ -8,6 +8,7 @@ body {
 
 table {
     width: 100%;
+    margin-bottom: 20px;
 }
 
 thead td{
