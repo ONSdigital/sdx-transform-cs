@@ -54,7 +54,7 @@ test_message = '''{
 
 @app.route('/pck', methods=['POST'])
 @app.route('/pck/<batch_number>', methods=['POST'])
-def pck(batch_number=30001):
+def render_pck(batch_number=30001):
     batch_number = int(batch_number)
     response = request.get_json(force=True)
     template = env.get_template('pck.tmpl')
@@ -80,7 +80,7 @@ def pck(batch_number=30001):
 
 
 @app.route('/idbr', methods=['POST'])
-def idbr():
+def render_idbr():
     response = request.get_json(force=True)
     template = env.get_template('idbr.tmpl')
 
@@ -88,7 +88,7 @@ def idbr():
 
 
 @app.route('/html', methods=['POST'])
-def html():
+def render_html():
     response = request.get_json(force=True)
     template = env.get_template('html.tmpl')
 
@@ -100,7 +100,7 @@ def html():
 
 
 @app.route('/pdf', methods=['POST'])
-def pdf():
+def render_pdf():
     response = request.get_json(force=True)
     template = env.get_template('html.tmpl')
 
