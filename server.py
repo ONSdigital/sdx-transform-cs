@@ -2,10 +2,11 @@ import settings
 import json
 import logging
 import logging.handlers
+from io import BytesIO
 from jinja2 import Environment, PackageLoader
-from flask import Flask, request
+from flask import Flask, request, make_response
 from pcktransformer import derive_answers, form_ids
-from PDFGen import PDFGen
+from PDFTransformer import PDFTransformer
 
 import dateutil.parser
 
@@ -76,7 +77,8 @@ def render_pck(batch_number=30001):
         answers = derive_answers(survey, data)
 
         return template.render(response=response, submission_date=submission_date_str,
-            batch_number=batch_number, form_id=cs_form_id, answers=answers, write_batch_header=app.config['WRITE_BATCH_HEADER'])
+                               batch_number=batch_number, form_id=cs_form_id,
+                               answers=answers, write_batch_header=app.config['WRITE_BATCH_HEADER'])
 
 
 @app.route('/idbr', methods=['POST'])
@@ -101,29 +103,45 @@ def render_html():
 
 @app.route('/pdf', methods=['POST'])
 def render_pdf():
-    response = request.get_json(force=True)
-    template = env.get_template('html.tmpl')
+    survey_response = request.get_json(force=True)
 
-    form_id = response['collection']['instrument_id']
+    form_id = survey_response['collection']['instrument_id']
 
-    with open("./surveys/%s.%s.json" % (response['survey_id'], form_id)) as json_file:
+    with open("./surveys/%s.%s.json" % (survey_response['survey_id'], form_id)) as json_file:
         survey = json.load(json_file)
-        pdf = PDFGen(survey, response)
-        pdf.render()
-        return template.render(response=response, survey=survey)
+        buffer = BytesIO()
+        pdf = PDFTransformer(buffer, survey, survey_response)
+        rendered_pdf = pdf.render()
+
+        response = make_response(rendered_pdf)
+        # response.headers['Content-Disposition'] = "attachment; filename='response.pdf"
+        response.mimetype = 'application/pdf'
+
+        return response
+
+
+@app.route('/images', methods=['POST'])
+def render_images():
+    pass
 
 
 @app.route('/pdf-test', methods=['GET'])
 def pdf_test():
-    response = json.loads(test_message)
-    template = env.get_template('html.tmpl')
-    form_id = response['collection']['instrument_id']
+    survey_response = json.loads(test_message)
+    form_id = survey_response['collection']['instrument_id']
 
-    with open("./surveys/%s.%s.json" % (response['survey_id'], form_id)) as json_file:
+    with open("./surveys/%s.%s.json" % (survey_response['survey_id'], form_id)) as json_file:
         survey = json.load(json_file)
-        pdf = PDFGen(survey, response)
-        pdf.render()
-        return template.render(response=response, survey=survey)
+        buffer = BytesIO()
+        pdf = PDFTransformer(buffer, survey, survey_response)
+        rendered_pdf = pdf.render()
+
+        response = make_response(rendered_pdf)
+        # response.headers['Content-Disposition'] = "attachment; filename='response.pdf"
+        response.mimetype = 'application/pdf'
+
+        return response
+
 
 @app.route('/html-test', methods=['GET'])
 def html_test():

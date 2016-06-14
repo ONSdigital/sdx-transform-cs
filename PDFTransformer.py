@@ -5,7 +5,6 @@ from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
 from reportlab.lib.enums import TA_LEFT, TA_CENTER
 import uuid
 
-
 styles = getSampleStyleSheet()
 styleN = styles["BodyText"]
 styleN.alignment = TA_LEFT
@@ -14,14 +13,33 @@ styleH = styles['Heading1']
 styleH.alignment = TA_CENTER
 
 
-class PDFGen(object):
+class PDFTransformer(object):
+    '''
+    Sets up variables needed to write out a pdf
+    '''
     def __init__(self, survey, response_data):
-        self.renderName = uuid.uuid4()
-        self.doc = SimpleDocTemplate("%s.pdf" % self.renderName, pagesize=A4)
         self.survey = survey
         self.response = response_data
 
-    def render(self):
+    def render(self, buffer):
+
+        doc = SimpleDocTemplate(buffer, pagesize=A4)
+        doc.build(self.get_elements())
+
+        pdf = buffer.getvalue()
+        buffer.close()
+
+        return pdf
+
+    def render_to_file(self):
+        tmpName = "%s.pdf" % uuid.uuid4()
+        doc = SimpleDocTemplate(tmpName, pagesize=A4)
+        doc.build(self.get_elements())
+
+        return tmpName
+
+    def get_elements(self):
+
         elements = []
         table_style_data = [('TEXTCOLOR', (0, 0), (-1, -1), colors.black),
                             ('VALIGN', (0, 0), (-1, -1), 'TOP'),
@@ -55,7 +73,7 @@ class PDFGen(object):
 
                 elements.append(table)
 
-        self.doc.build(elements)
+        return elements
 
     def get_table_data(self, question_group):
         table_data = []
