@@ -14,10 +14,10 @@ styleH.alignment = TA_CENTER
 
 
 class PDFTransformer(object):
-    '''
-    Sets up variables needed to write out a pdf
-    '''
     def __init__(self, survey, response_data):
+        '''
+        Sets up variables needed to write out a pdf
+        '''
         self.survey = survey
         self.response = response_data
 
