@@ -3,3 +3,7 @@ tests/__pycache__/
 __pycache__
 logs/
 *.pyc
+*.pdf
+*.zip
+*.jpg
+*.csv
