@@ -4,6 +4,7 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
 from reportlab.lib.enums import TA_LEFT, TA_CENTER
 import uuid
+import os
 
 styles = getSampleStyleSheet()
 styleN = styles["BodyText"]
@@ -36,7 +37,7 @@ class PDFTransformer(object):
         doc = SimpleDocTemplate(tmpName, pagesize=A4)
         doc.build(self.get_elements())
 
-        return tmpName
+        return os.path.realpath(tmpName)
 
     def get_elements(self):
 
