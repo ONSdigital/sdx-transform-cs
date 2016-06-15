@@ -10,3 +10,5 @@ LOGGING_LEVEL = logging.DEBUG
 # Default to true, cast to boolean
 WRITE_BATCH_HEADER = os.getenv("WRITE_BATCH_HEADER", "true")
 WRITE_BATCH_HEADER = (WRITE_BATCH_HEADER.lower() == "true")
+
+IMAGE_PATH = "\\\\NP3RVWAPXX370\SDX_preprod\EDC_QImages\Images"
