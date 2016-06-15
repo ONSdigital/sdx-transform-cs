@@ -4,9 +4,10 @@ import logging
 import logging.handlers
 from io import BytesIO
 from jinja2 import Environment, PackageLoader
-from flask import Flask, request, make_response
+from flask import Flask, request, make_response, send_file
 from pcktransformer import derive_answers, form_ids
 from PDFTransformer import PDFTransformer
+from ImageTransformer import ImageTransformer
 
 import dateutil.parser
 
@@ -125,6 +126,21 @@ def render_images():
     pass
 
 
+@app.route('/image-test', methods=['GET'])
+def image_test():
+    survey_response = json.loads(test_message)
+    form_id = survey_response['collection']['instrument_id']
+
+    with open("./surveys/%s.%s.json" % (survey_response['survey_id'], form_id)) as json_file:
+        survey = json.load(json_file)
+        image_transformer = ImageTransformer(survey, survey_response)
+        
+        zipname = image_transformer.create_image_zip()
+
+        image_transformer.cleanup()
+
+        return send_file(zipname, mimetype='application/zip')
+
 @app.route('/pdf-test', methods=['GET'])
 def pdf_test():
     survey_response = json.loads(test_message)
@@ -133,8 +149,8 @@ def pdf_test():
     with open("./surveys/%s.%s.json" % (survey_response['survey_id'], form_id)) as json_file:
         survey = json.load(json_file)
         buffer = BytesIO()
-        pdf = PDFTransformer(buffer, survey, survey_response)
-        rendered_pdf = pdf.render()
+        pdf = PDFTransformer(survey, survey_response)
+        rendered_pdf = pdf.render(buffer)
 
         response = make_response(rendered_pdf)
         # response.headers['Content-Disposition'] = "attachment; filename='response.pdf"
