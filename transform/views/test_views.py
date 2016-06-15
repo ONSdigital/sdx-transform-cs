@@ -1,8 +1,6 @@
 from transform import app
 
-from pcktransformer import derive_answers, form_ids
-from PDFTransformer import PDFTransformer
-from ImageTransformer import ImageTransformer
+from transformers import derive_answers, form_ids, PDFTransformer, ImageTransformer
 from jinja2 import Environment, PackageLoader
 
 from flask import request, make_response, send_file

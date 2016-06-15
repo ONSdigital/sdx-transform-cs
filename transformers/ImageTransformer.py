@@ -6,7 +6,7 @@ import datetime
 import dateutil.parser
 import re
 import settings
-from PDFTransformer import PDFTransformer
+from .PDFTransformer import PDFTransformer
 from image_filters import get_env, format_date
 
 class ImageTransformer(object):
@@ -73,7 +73,6 @@ class ImageTransformer(object):
         '''
         Create a zip from a renumbered sequence
         '''
-        print("PATH: %s" % self.path)
         zipname = '%s/%s.zip' % (self.path , self.rootname)
         zipf = zipfile.ZipFile(zipname, 'w', zipfile.ZIP_DEFLATED)
 
