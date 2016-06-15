@@ -35,10 +35,10 @@ def format_period(value):
     if not value:
         return ''
 
-    if len(value) < 6:
-        return value.zfill(6)
-    elif len(value) == 4:
+    if len(value) == 4:
         return "20%s" % value
+    elif len(value) < 6:
+        return value.zfill(6)
     elif len(value) > 6:
         return value[0:6]
 
