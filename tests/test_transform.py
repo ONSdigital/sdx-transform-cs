@@ -31,6 +31,7 @@ def get_expected_output(filename, output_type):
 class TestTransformService(unittest.TestCase):
 
     transform_idbr_endpoint = "/idbr"
+    # Provide a default batch no as url param
     transform_pck_endpoint = "/pck/30001"
 
     def setUp(self):

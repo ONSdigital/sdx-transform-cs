@@ -83,7 +83,7 @@ class ImageTransformer(object):
 
         zipf.close()
 
-        return '%s.zip' % self.rootname
+        return os.path.join(self.path, '%s.zip' % self.rootname)
 
     def cleanup(self):
         '''

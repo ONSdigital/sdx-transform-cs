@@ -5,13 +5,14 @@ import logging
 import logging.handlers
 from io import BytesIO
 from jinja2 import Environment, PackageLoader
-from flask import Flask, request, make_response, send_file
-from transformers import derive_answers, form_ids, PDFTransformer, ImageTransformer
+from flask import request, make_response, send_file
+from transformers import derive_answers, form_ids, PDFTransformer, ImageTransformer, CSTransformer
 
 import os
 import dateutil.parser
 
 env = Environment(loader=PackageLoader('transform', 'templates'))
+
 
 @app.route('/pck', methods=['POST'])
 @app.route('/pck/<batch_number>', methods=['POST'])
@@ -77,7 +78,6 @@ def render_pdf():
         rendered_pdf = pdf.render()
 
         response = make_response(rendered_pdf)
-        # response.headers['Content-Disposition'] = "attachment; filename='response.pdf"
         response.mimetype = 'application/pdf'
 
         return response
@@ -99,6 +99,32 @@ def render_images():
         zipname = itransformer.create_zip()
         zippath = os.path.join(itransformer.path, zipname)
         itransformer.cleanup()
+
+        return send_file(zippath, mimetype='application/zip')
+
+
+@app.route('/common-software', methods=['POST'])
+@app.route('/common-software/<sequence_no>', methods=['POST'])
+@app.route('/common-software/<sequence_no>/<batch_number>', methods=['POST'])
+def common_software(batch_number=False, sequence_no=1000):
+    survey_response = request.get_json(force=True)
+    form_id = survey_response['collection']['instrument_id']
+
+    if batch_number:
+        batch_number = int(batch_number)
+
+    if sequence_no:
+        sequence_no = int(sequence_no)
+
+    with open("./surveys/%s.%s.json" % (survey_response['survey_id'], form_id)) as json_file:
+        survey = json.load(json_file)
+
+        ctransformer = CSTransformer(survey, survey_response, batch_number, sequence_no)
+
+        ctransformer.create_formats()
+        ctransformer.prepare_archive()
+        zippath = ctransformer.create_zip()
+        ctransformer.cleanup()
 
         return send_file(zippath, mimetype='application/zip')
 

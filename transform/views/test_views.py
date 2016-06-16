@@ -1,9 +1,10 @@
 from transform import app
 
-from transformers import derive_answers, form_ids, PDFTransformer, ImageTransformer
+from transformers import PDFTransformer, ImageTransformer, CSTransformer
 from jinja2 import Environment, PackageLoader
 
-from flask import request, make_response, send_file
+from io import BytesIO
+from flask import make_response, send_file
 
 import json
 import os
@@ -59,11 +60,9 @@ def images_test():
         itransformer.create_pdf()
         itransformer.create_image_sequence()
         itransformer.create_image_index()
-        zipname = itransformer.create_zip()
+        zippath = itransformer.create_zip()
 
         itransformer.cleanup()
-
-        zippath = os.path.join(itransformer.path, zipname)
 
         return send_file(zippath, mimetype='application/zip')
 
@@ -95,3 +94,21 @@ def html_test():
     with open("./surveys/%s.%s.json" % (response['survey_id'], form_id)) as json_file:
         survey = json.load(json_file)
         return template.render(response=response, survey=survey)
+
+
+@app.route('/cs-test', methods=['GET'])
+def cs_test():
+    survey_response = json.loads(test_message)
+    form_id = survey_response['collection']['instrument_id']
+
+    with open("./surveys/%s.%s.json" % (survey_response['survey_id'], form_id)) as json_file:
+        survey = json.load(json_file)
+
+        ctransformer = CSTransformer(survey, survey_response)
+
+        ctransformer.create_formats()
+        ctransformer.prepare_archive()
+        zippath = ctransformer.create_zip()
+        ctransformer.cleanup()
+
+        return send_file(zippath, mimetype='application/zip')
