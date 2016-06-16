@@ -8,6 +8,7 @@ from jinja2 import Environment, PackageLoader
 from flask import Flask, request, make_response, send_file
 from transformers import derive_answers, form_ids, PDFTransformer, ImageTransformer
 
+import os
 import dateutil.parser
 
 env = Environment(loader=PackageLoader('transform', 'templates'))
@@ -93,13 +94,12 @@ def render_images():
         itransformer.create_image_sequence()
         itransformer.create_image_index()
         zipname = itransformer.create_zip()
-
+        zippath = os.path.join(itransformer.path, zipname)
         itransformer.cleanup()
 
-        return send_file(os.path.join(itransformer.path, zipname), mimetype='application/zip')
+        return send_file(zippath, mimetype='application/zip')
 
 if __name__ == '__main__':
     # Startup
     logging.basicConfig(level=settings.LOGGING_LEVEL, format=settings.LOGGING_FORMAT)
     app.run(debug=True, host='0.0.0.0')
-
