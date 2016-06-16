@@ -1,8 +1,13 @@
-FROM onsdigital/flask-crypto
+FROM python:3.5
+
+ADD requirements.txt /app/requirements.txt
 
 ADD server.py /app/server.py
 ADD settings.py /app/settings.py
-ADD requirements.txt /app/requirements.txt
+ADD transform /app/transform
+ADD transformers /app/transformers
+ADD surveys /app/surveys
+ADD image_filters.py /app/image_filters.py
 
 RUN mkdir -p /app/logs
 
