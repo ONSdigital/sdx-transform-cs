@@ -45,6 +45,7 @@ test_message = '''{
    }
 }'''
 
+
 @app.route('/images-test', methods=['GET'])
 def images_test():
     survey_response = json.loads(test_message)
@@ -62,7 +63,10 @@ def images_test():
 
         itransformer.cleanup()
 
-        return send_file(os.path.join(itransformer.path, zipname), mimetype='application/zip')
+        zippath = os.path.join(itransformer.path, zipname)
+
+        return send_file(zippath, mimetype='application/zip')
+
 
 @app.route('/pdf-test', methods=['GET'])
 def pdf_test():
