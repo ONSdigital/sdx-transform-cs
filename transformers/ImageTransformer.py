@@ -4,10 +4,10 @@ import subprocess
 import zipfile
 import datetime
 import dateutil.parser
-import re
 import settings
 from .PDFTransformer import PDFTransformer
 from image_filters import get_env, format_date
+
 
 class ImageTransformer(object):
     def __init__(self, survey, response_data):
@@ -29,7 +29,7 @@ class ImageTransformer(object):
         Extract all pdf pages as jpegs
         '''
         subprocess.run(["pdftoppm", "-jpeg", self.pdf_file, self.rootname])
-        
+
         self.images = glob.glob("%s-*.jpg" % self.rootname)
 
         return self.images
@@ -73,8 +73,8 @@ class ImageTransformer(object):
         '''
         Create a zip from a renumbered sequence
         '''
-        zipname = '%s/%s.zip' % (self.path , self.rootname)
-        zipf = zipfile.ZipFile(zipname, 'w', zipfile.ZIP_DEFLATED)
+        zippath = os.path.join(self.path, '%s.zip' % self.rootname)
+        zipf = zipfile.ZipFile(zippath, 'w', zipfile.ZIP_DEFLATED)
 
         for file in self.images:
             zipf.write(file)
