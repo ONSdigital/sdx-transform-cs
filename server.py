@@ -15,9 +15,12 @@ env = Environment(loader=PackageLoader('transform', 'templates'))
 
 @app.route('/pck', methods=['POST'])
 @app.route('/pck/<batch_number>', methods=['POST'])
-def render_pck(batch_number=30001):
-    batch_number = int(batch_number)
+def render_pck(batch_number=False):
     response = request.get_json(force=True)
+
+    if batch_number:
+        batch_number = int(batch_number)
+
     template = env.get_template('pck.tmpl')
 
     form_id = response['collection']['instrument_id']
@@ -38,7 +41,7 @@ def render_pck(batch_number=30001):
 
         return template.render(response=response, submission_date=submission_date_str,
                                batch_number=batch_number, form_id=cs_form_id,
-                               answers=answers, write_batch_header=app.config['WRITE_BATCH_HEADER'])
+                               answers=answers)
 
 
 @app.route('/idbr', methods=['POST'])

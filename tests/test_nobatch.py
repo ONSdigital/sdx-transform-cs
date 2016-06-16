@@ -9,17 +9,11 @@ class TestNoBatchTransformService(unittest.TestCase):
 
     def setUp(self):
 
-        app.config['WRITE_BATCH_HEADER'] = False
-
         # creates a test client
         self.app = app.test_client()
 
         # propagate the exceptions to the test client
         self.app.testing = True
-
-    def tearDown(self):
-
-        app.config['WRITE_BATCH_HEADER'] = True
 
     def test_transforms_no_batch(self):
 

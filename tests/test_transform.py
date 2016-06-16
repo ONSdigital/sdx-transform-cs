@@ -31,7 +31,7 @@ def get_expected_output(filename, output_type):
 class TestTransformService(unittest.TestCase):
 
     transform_idbr_endpoint = "/idbr"
-    transform_pck_endpoint = "/pck"
+    transform_pck_endpoint = "/pck/30001"
 
     def setUp(self):
 
