@@ -7,3 +7,4 @@ logs/
 *.zip
 *.jpg
 *.csv
+tmp/*

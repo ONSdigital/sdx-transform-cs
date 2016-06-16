@@ -28,9 +28,8 @@ class ImageTransformer(object):
         '''
         Extract all pdf pages as jpegs
         '''
-        subprocess.run(["pdftoppm", "-jpeg", self.pdf_file, self.rootname])
-
-        self.images = glob.glob("%s-*.jpg" % self.rootname)
+        subprocess.run(["pdftoppm", "-jpeg", self.base_name, self.rootname], cwd=self.path)
+        self.images = glob.glob("%s/%s-*.jpg" % (self.path, self.rootname))
 
         return self.images
 
@@ -44,7 +43,7 @@ class ImageTransformer(object):
         for file in self.extract_pdf_images():
             new_name = "S%s.jpg" % str(index).zfill(9)
             new_images.append(new_name)
-            os.rename(file, new_name)
+            os.rename(os.path.join(self.path, file), os.path.join(self.path, new_name))
             index += 1
 
         self.images = new_images
@@ -64,9 +63,9 @@ class ImageTransformer(object):
 
         template_output = template.render(IMAGE_PATH=settings.IMAGE_PATH, images=self.images, response=self.response, creation_time=current_time)
 
-        self.index_file = "EDC_%s_%s_%04d.csv" %(self.survey['survey_id'], submission_date_str, sequence_no)
+        self.index_file = "EDC_%s_%s_%04d.csv" % (self.survey['survey_id'], submission_date_str, sequence_no)
 
-        with open(self.index_file, "w") as fh:
+        with open(os.path.join(self.path, self.index_file), "w") as fh:
             fh.write(template_output)
 
     def create_zip(self):
@@ -77,10 +76,10 @@ class ImageTransformer(object):
         zipf = zipfile.ZipFile(zippath, 'w', zipfile.ZIP_DEFLATED)
 
         for file in self.images:
-            zipf.write(file)
+            zipf.write(os.path.join(self.path, file), arcname=file)
 
         if self.index_file:
-            zipf.write(self.index_file)
+            zipf.write(os.path.join(self.path, self.index_file), arcname=self.index_file)
 
         zipf.close()
 

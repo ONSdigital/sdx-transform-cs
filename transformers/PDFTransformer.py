@@ -33,7 +33,11 @@ class PDFTransformer(object):
         return pdf
 
     def render_to_file(self):
-        tmpName = "%s.pdf" % uuid.uuid4()
+        randomName = uuid.uuid4()
+
+        os.mkdir("./tmp/%s" % randomName)
+
+        tmpName = "./tmp/%s/%s.pdf" % (randomName, randomName)
         doc = SimpleDocTemplate(tmpName, pagesize=A4)
         doc.build(self.get_elements())
 
