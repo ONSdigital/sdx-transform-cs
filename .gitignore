@@ -8,3 +8,9 @@ logs/
 *.jpg
 *.csv
 tmp/*
+.Python
+bin/
+include/
+lib/
+pip-selfcheck.json
+
