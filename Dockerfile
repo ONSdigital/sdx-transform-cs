@@ -1,5 +1,7 @@
 FROM python:3.5
 
+RUN apt-get update && apt-get install -y poppler-utils
+
 ADD requirements.txt /app/requirements.txt
 
 ADD server.py /app/server.py
@@ -10,6 +12,7 @@ ADD surveys /app/surveys
 ADD image_filters.py /app/image_filters.py
 
 RUN mkdir -p /app/logs
+RUN mkdir -p /app/tmp
 
 # set working directory to /app/
 WORKDIR /app/
