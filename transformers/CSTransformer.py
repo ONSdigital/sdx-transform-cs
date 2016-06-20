@@ -19,11 +19,11 @@ class CSTransformer(object):
         self.sequence_no = sequence_no
 
     def create_formats(self):
-        itransformer = ImageTransformer(self.survey, self.response)
+        itransformer = ImageTransformer(self.survey, self.response, self.sequence_no)
 
         itransformer.create_pdf()
         itransformer.create_image_sequence()
-        itransformer.create_image_index(self.sequence_no)
+        itransformer.create_image_index()
 
         self.path = itransformer.path
         self.rootname = itransformer.rootname

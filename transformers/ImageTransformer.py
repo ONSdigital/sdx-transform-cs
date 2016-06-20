@@ -10,9 +10,10 @@ from image_filters import get_env, format_date
 
 
 class ImageTransformer(object):
-    def __init__(self, survey, response_data):
+    def __init__(self, survey, response_data, sequence_no=1000):
         self.survey = survey
         self.response = response_data
+        self.sequence_no = sequence_no
 
     def create_pdf(self):
         '''
@@ -41,7 +42,7 @@ class ImageTransformer(object):
         index = start
 
         for file in self.extract_pdf_images():
-            new_name = "S%s.jpg" % str(index).zfill(9)
+            new_name = "S%s%s.jpg" % (str(self.sequence_no).zfill(5), str(index).zfill(4))
             new_images.append(new_name)
             os.rename(os.path.join(self.path, file), os.path.join(self.path, new_name))
             index += 1
@@ -50,7 +51,7 @@ class ImageTransformer(object):
 
         return self.images
 
-    def create_image_index(self, sequence_no=1000):
+    def create_image_index(self):
         '''
         Takes a list of images and creates a index csv from them
         '''
@@ -63,7 +64,7 @@ class ImageTransformer(object):
 
         template_output = template.render(IMAGE_PATH=settings.IMAGE_PATH, images=self.images, response=self.response, creation_time=current_time)
 
-        self.index_file = "EDC_%s_%s_%04d.csv" % (self.survey['survey_id'], submission_date_str, sequence_no)
+        self.index_file = "EDC_%s_%s_%04d.csv" % (self.survey['survey_id'], submission_date_str, self.sequence_no)
 
         with open(os.path.join(self.path, self.index_file), "w") as fh:
             fh.write(template_output)
