@@ -23,7 +23,7 @@ class CSTransformer(object):
 
         itransformer.create_pdf()
         itransformer.create_image_sequence()
-        itransformer.create_image_index()
+        itransformer.create_image_index(self.sequence_no)
 
         self.path = itransformer.path
         self.rootname = itransformer.rootname
@@ -33,6 +33,9 @@ class CSTransformer(object):
         self.create_idbr()
 
     def prepare_archive(self):
+        '''
+        Prepare a list of files to save
+        '''
         self.files_to_archive.append(("EDC_QData", self.pck_file))
         self.files_to_archive.append(("EDC_QReceipts", self.idbr_file))
 
