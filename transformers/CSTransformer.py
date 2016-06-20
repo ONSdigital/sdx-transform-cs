@@ -75,7 +75,7 @@ class CSTransformer(object):
 
         # Format is RECddMM_batchId.DAT
         # e.g. REC1001_30000.DAT for 10th January, batch 30000
-        self.idbr_file = "REC%s_%d.DAT" % (submission_date_str, self.sequence_no)
+        self.idbr_file = "REC%s_%04d.DAT" % (submission_date_str, self.sequence_no)
 
         with open(os.path.join(self.path, self.idbr_file), "w") as fh:
             fh.write(template_output)

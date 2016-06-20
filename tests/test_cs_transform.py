@@ -55,3 +55,15 @@ class TestCSTransformService(unittest.TestCase):
         ]
 
         self.assertEqual(expected, ziplist)
+
+        ziplist = self.get_zip_list(self.transform_cs_endpoint + "/999")
+
+        # Check that all expected contents are listed in the zip
+        expected = [
+            'EDC_QData/023_0999',
+            'EDC_QReceipts/REC1203_0999.DAT',
+            'EDC_QImages/Images/S009990001.jpg',
+            'EDC_QImages/Index/EDC_023_20160312_0999.csv'
+        ]
+
+        self.assertEqual(expected, ziplist)
