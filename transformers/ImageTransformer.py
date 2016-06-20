@@ -42,7 +42,7 @@ class ImageTransformer(object):
         index = start
 
         for file in self.extract_pdf_images():
-            new_name = "S%s%s.jpg" % (str(self.sequence_no).zfill(5), str(index).zfill(4))
+            new_name = "S%05d%04d.jpg" % (self.sequence_no, index)
             new_images.append(new_name)
             os.rename(os.path.join(self.path, file), os.path.join(self.path, new_name))
             index += 1
