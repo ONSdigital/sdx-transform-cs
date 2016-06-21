@@ -7,7 +7,6 @@ from io import BytesIO
 from flask import make_response, send_file
 
 import json
-import os
 
 env = Environment(loader=PackageLoader('transform', 'templates'))
 

@@ -6,7 +6,8 @@ import logging.handlers
 from io import BytesIO
 from jinja2 import Environment, PackageLoader
 from flask import request, make_response, send_file
-from transformers import derive_answers, form_ids, PDFTransformer, ImageTransformer, CSTransformer
+from transformers import derive_answers, form_ids, PDFTransformer, \
+    ImageTransformer, CSTransformer
 
 import os
 import dateutil.parser
