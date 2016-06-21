@@ -1,5 +1,7 @@
 # sdx-transform-cs
 
+[![Build Status](https://travis-ci.org/ONSdigital/sdx-transform-cs.svg?branch=master)](https://travis-ci.org/ONSdigital/sdx-transform-cs)
+
 The sde-transform-cs app is used within the Office National of Statistics (ONS) for transforming Survey Data Exchange (SDX) Surveys to formats in use in Common Software.
 
 ## Installation
