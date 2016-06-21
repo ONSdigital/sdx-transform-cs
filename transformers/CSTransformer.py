@@ -19,7 +19,7 @@ class CSTransformer(object):
         self.sequence_no = sequence_no
 
     def create_formats(self):
-        itransformer = ImageTransformer(self.survey, self.response)
+        itransformer = ImageTransformer(self.survey, self.response, self.sequence_no)
 
         itransformer.create_pdf()
         itransformer.create_image_sequence()
@@ -33,6 +33,9 @@ class CSTransformer(object):
         self.create_idbr()
 
     def prepare_archive(self):
+        '''
+        Prepare a list of files to save
+        '''
         self.files_to_archive.append(("EDC_QData", self.pck_file))
         self.files_to_archive.append(("EDC_QReceipts", self.idbr_file))
 
@@ -72,7 +75,7 @@ class CSTransformer(object):
 
         # Format is RECddMM_batchId.DAT
         # e.g. REC1001_30000.DAT for 10th January, batch 30000
-        self.idbr_file = "REC%s_%d.DAT" % (submission_date_str, self.sequence_no)
+        self.idbr_file = "REC%s_%04d.DAT" % (submission_date_str, self.sequence_no)
 
         with open(os.path.join(self.path, self.idbr_file), "w") as fh:
             fh.write(template_output)
