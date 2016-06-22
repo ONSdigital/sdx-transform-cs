@@ -3,7 +3,6 @@ from transform import app
 from transformers import PDFTransformer, ImageTransformer, CSTransformer
 from jinja2 import Environment, PackageLoader
 
-from io import BytesIO
 from flask import make_response, send_file
 
 import json
@@ -73,7 +72,7 @@ def pdf_test():
 
     with open("./surveys/%s.%s.json" % (survey_response['survey_id'], form_id)) as json_file:
         survey = json.load(json_file)
-        
+
         pdf = PDFTransformer(survey, survey_response)
         rendered_pdf = pdf.render()
 
