@@ -73,9 +73,9 @@ def pdf_test():
 
     with open("./surveys/%s.%s.json" % (survey_response['survey_id'], form_id)) as json_file:
         survey = json.load(json_file)
-        buffer = BytesIO()
+        
         pdf = PDFTransformer(survey, survey_response)
-        rendered_pdf = pdf.render(buffer)
+        rendered_pdf = pdf.render()
 
         response = make_response(rendered_pdf)
         response.mimetype = 'application/pdf'
