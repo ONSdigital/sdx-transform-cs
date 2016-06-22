@@ -3,6 +3,7 @@ from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
 from reportlab.lib.enums import TA_LEFT, TA_CENTER
+from io import BytesIO
 import uuid
 import os
 
@@ -22,8 +23,8 @@ class PDFTransformer(object):
         self.survey = survey
         self.response = response_data
 
-    def render(self, buffer):
-
+    def render(self):
+        buffer = BytesIO()
         doc = SimpleDocTemplate(buffer, pagesize=A4)
         doc.build(self.get_elements())
 

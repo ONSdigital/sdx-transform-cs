@@ -3,7 +3,6 @@ from transform import app
 from transformers import PDFTransformer, ImageTransformer, CSTransformer
 from jinja2 import Environment, PackageLoader
 
-from io import BytesIO
 from flask import make_response, send_file
 
 import json
@@ -59,11 +58,11 @@ def images_test():
         itransformer.create_pdf()
         itransformer.create_image_sequence()
         itransformer.create_image_index()
-        zippath = itransformer.create_zip()
+        zipfile = itransformer.create_zip()
 
         itransformer.cleanup()
 
-        return send_file(zippath, mimetype='application/zip')
+        return send_file(zipfile, mimetype='application/zip')
 
 
 @app.route('/pdf-test', methods=['GET'])
@@ -73,9 +72,9 @@ def pdf_test():
 
     with open("./surveys/%s.%s.json" % (survey_response['survey_id'], form_id)) as json_file:
         survey = json.load(json_file)
-        buffer = BytesIO()
+
         pdf = PDFTransformer(survey, survey_response)
-        rendered_pdf = pdf.render(buffer)
+        rendered_pdf = pdf.render()
 
         response = make_response(rendered_pdf)
         response.mimetype = 'application/pdf'
@@ -107,7 +106,7 @@ def cs_test():
 
         ctransformer.create_formats()
         ctransformer.prepare_archive()
-        zippath = ctransformer.create_zip()
+        zipfile = ctransformer.create_zip()
         ctransformer.cleanup()
 
-        return send_file(zippath, mimetype='application/zip')
+        return send_file(zipfile, mimetype='application/zip')

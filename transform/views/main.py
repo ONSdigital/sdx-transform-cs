@@ -3,7 +3,6 @@ from transform import app
 from flask import request, make_response, send_file
 from transformers import derive_answers, form_ids, PDFTransformer, ImageTransformer, CSTransformer
 from jinja2 import Environment, PackageLoader
-from io import BytesIO
 
 import os
 import dateutil.parser
@@ -71,8 +70,8 @@ def render_pdf():
 
     with open("./surveys/%s.%s.json" % (survey_response['survey_id'], form_id)) as json_file:
         survey = json.load(json_file)
-        buffer = BytesIO()
-        pdf = PDFTransformer(buffer, survey, survey_response)
+
+        pdf = PDFTransformer(survey, survey_response)
         rendered_pdf = pdf.render()
 
         response = make_response(rendered_pdf)
@@ -95,10 +94,10 @@ def render_images():
         itransformer.create_image_sequence()
         itransformer.create_image_index()
         zipname = itransformer.create_zip()
-        zippath = os.path.join(itransformer.path, zipname)
+        zipfile = os.path.join(itransformer.path, zipname)
         itransformer.cleanup()
 
-        return send_file(zippath, mimetype='application/zip')
+        return send_file(zipfile, mimetype='application/zip')
 
 
 @app.route('/common-software', methods=['POST'])
@@ -121,7 +120,7 @@ def common_software(sequence_no=1000, batch_number=False):
 
         ctransformer.create_formats()
         ctransformer.prepare_archive()
-        zippath = ctransformer.create_zip()
+        zipfile = ctransformer.create_zip()
         ctransformer.cleanup()
 
-        return send_file(zippath, mimetype='application/zip')
+        return send_file(zipfile, mimetype='application/zip')
