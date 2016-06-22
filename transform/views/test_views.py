@@ -59,11 +59,11 @@ def images_test():
         itransformer.create_pdf()
         itransformer.create_image_sequence()
         itransformer.create_image_index()
-        zippath = itransformer.create_zip()
+        zipfile = itransformer.create_zip()
 
         itransformer.cleanup()
 
-        return send_file(zippath, mimetype='application/zip')
+        return send_file(zipfile, mimetype='application/zip')
 
 
 @app.route('/pdf-test', methods=['GET'])
@@ -107,7 +107,7 @@ def cs_test():
 
         ctransformer.create_formats()
         ctransformer.prepare_archive()
-        zippath = ctransformer.create_zip()
+        zipfile = ctransformer.create_zip()
         ctransformer.cleanup()
 
-        return send_file(zippath, mimetype='application/zip')
+        return send_file(zipfile, mimetype='application/zip')

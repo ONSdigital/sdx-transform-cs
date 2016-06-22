@@ -5,6 +5,8 @@ import zipfile
 import datetime
 import dateutil.parser
 import settings
+import shutil
+from io import BytesIO
 from .PDFTransformer import PDFTransformer
 from image_filters import get_env, format_date
 
@@ -73,27 +75,22 @@ class ImageTransformer(object):
         '''
         Create a zip from a renumbered sequence
         '''
-        zippath = os.path.join(self.path, '%s.zip' % self.rootname)
-        zipf = zipfile.ZipFile(zippath, 'w', zipfile.ZIP_DEFLATED)
+        in_memory_zip = BytesIO()
 
-        for file in self.images:
-            zipf.write(os.path.join(self.path, file), arcname=file)
+        with zipfile.ZipFile(in_memory_zip, 'w', zipfile.ZIP_DEFLATED) as zipf:
+            for file in self.images:
+                zipf.write(os.path.join(self.path, file), arcname=file)
 
-        if self.index_file:
-            zipf.write(os.path.join(self.path, self.index_file), arcname=self.index_file)
+            if self.index_file:
+                zipf.write(os.path.join(self.path, self.index_file), arcname=self.index_file)
 
-        zipf.close()
+        # Return to beginning of file
+        in_memory_zip.seek(0)
 
-        return os.path.join(self.path, '%s.zip' % self.rootname)
+        return in_memory_zip
 
     def cleanup(self):
         '''
-        Remove all temporary files
+        Remove all temporary files, by removing top level dir
         '''
-        os.remove(os.path.join(self.path, self.pdf_file))
-
-        for image in self.images:
-            os.remove(os.path.join(self.path, image))
-
-        if self.index_file:
-            os.remove(os.path.join(self.path, self.index_file))
+        shutil.rmtree(os.path.join(self.path))

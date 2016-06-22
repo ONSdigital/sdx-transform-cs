@@ -1,9 +1,11 @@
 import zipfile
 import os
+from io import BytesIO
 from .ImageTransformer import ImageTransformer
 from jinja2 import Environment, PackageLoader
 from .pcktransformer import form_ids, derive_answers
 import dateutil.parser
+import shutil
 
 env = Environment(loader=PackageLoader('transform', 'templates'))
 
@@ -82,20 +84,18 @@ class CSTransformer(object):
 
     def create_zip(self):
         '''
-        Create a zip from a renumbered sequence
+        Create a in memory zip from a renumbered sequence
         '''
-        zippath = os.path.join(self.path, '%s.zip' % self.rootname)
-        zipf = zipfile.ZipFile(zippath, 'w', zipfile.ZIP_DEFLATED)
+        in_memory_zip = BytesIO()
 
-        for dest, file in self.files_to_archive:
-            zipf.write(os.path.join(self.path, file), arcname="%s/%s" % (dest, file))
+        with zipfile.ZipFile(in_memory_zip, 'w', zipfile.ZIP_DEFLATED) as zipf:
+            for dest, file in self.files_to_archive:
+                zipf.write(os.path.join(self.path, file), arcname="%s/%s" % (dest, file))
 
-        zipf.close()
+        # Return to beginning of file
+        in_memory_zip.seek(0)
 
-        return os.path.join(self.path, '%s.zip' % self.rootname)
+        return in_memory_zip
 
     def cleanup(self):
-        self.itransformer.cleanup()
-
-        os.remove(os.path.join(self.path, self.pck_file))
-        os.remove(os.path.join(self.path, self.idbr_file))
+        shutil.rmtree(os.path.join(self.path))

@@ -95,10 +95,10 @@ def render_images():
         itransformer.create_image_sequence()
         itransformer.create_image_index()
         zipname = itransformer.create_zip()
-        zippath = os.path.join(itransformer.path, zipname)
+        zipfile = os.path.join(itransformer.path, zipname)
         itransformer.cleanup()
 
-        return send_file(zippath, mimetype='application/zip')
+        return send_file(zipfile, mimetype='application/zip')
 
 
 @app.route('/common-software', methods=['POST'])
@@ -121,7 +121,7 @@ def common_software(sequence_no=1000, batch_number=False):
 
         ctransformer.create_formats()
         ctransformer.prepare_archive()
-        zippath = ctransformer.create_zip()
+        zipfile = ctransformer.create_zip()
         ctransformer.cleanup()
 
-        return send_file(zippath, mimetype='application/zip')
+        return send_file(zipfile, mimetype='application/zip')
