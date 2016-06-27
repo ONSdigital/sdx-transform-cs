@@ -37,6 +37,34 @@ def get_expected_output(filename, output_type):
     return get_file_as_string(output_filename)
 
 
+def get_expected_csv_content(scenario_filename):
+    expected_filename = get_expected_file(scenario_filename, 'csv')
+
+    with open(expected_filename) as open_file:
+        expected_csv_file = csv.reader(open_file)
+
+        # We need to modify the creation time of expected output
+        creation_time = datetime.datetime.now()
+
+        modified_rows = []
+
+        for row in expected_csv_file:
+            row[0] = format_date(creation_time)
+            row[2] = format_date(creation_time, 'short')
+
+            modified_rows.append(row)
+
+        # Write modified csv to string buffer
+        buffer = io.StringIO()
+        writer = csv.writer(buffer)
+        writer.writerows(modified_rows)
+
+        buffer.seek(0)
+
+        # Strip the final newline that csv writer creates
+        return buffer.read().rstrip('\r\n')
+
+
 class TestTransformService(unittest.TestCase):
 
     transform_idbr_endpoint = "/idbr"
@@ -95,45 +123,22 @@ class TestTransformService(unittest.TestCase):
 
         for scenario_filename in test_scenarios:
 
-            expected_filename = get_expected_file(scenario_filename, 'csv')
+            print("Loading scenario %s " % scenario_filename)
 
-            with open(expected_filename) as open_file:
-                expected_csv_file = csv.reader(open_file)
+            payload = get_file_as_string(scenario_filename)
 
-                print("Loading scenario %s " % scenario_filename)
+            r = self.app.post(self.transform_images_endpoint, data=payload)
 
-                payload = get_file_as_string(scenario_filename)
+            zip_contents = io.BytesIO(r.data)
 
-                r = self.app.post(self.transform_images_endpoint, data=payload)
+            z = zipfile.ZipFile(zip_contents)
 
-                zip_contents = io.BytesIO(r.data)
+            filename = 'EDC_023_20160312_1000.csv'
 
-                z = zipfile.ZipFile(zip_contents)
+            if filename in z.namelist():
+                edc_file = z.open(filename)
 
-                filename = 'EDC_023_20160312_1000.csv'
+                actual_content = edc_file.read().decode('utf-8')
+                expected_content = get_expected_csv_content(scenario_filename)
 
-                if filename in z.namelist():
-                    edc_file = z.open(filename)
-
-                    # We need to modify the creation time of expected output
-                    creation_time = datetime.datetime.now()
-
-                    actual_content = edc_file.read().decode('utf-8')
-                    modified_rows = []
-
-                    for row in expected_csv_file:
-                        row[0] = format_date(creation_time)
-                        row[2] = format_date(creation_time, 'short')
-
-                        modified_rows.append(row)
-
-                    # Write modified csv to string buffer
-                    buffer = io.StringIO()
-                    writer = csv.writer(buffer)
-                    writer.writerows(modified_rows)
-
-                    buffer.seek(0)
-
-                    # Strip the final newline that csv writer creates
-                    expected_content = buffer.read().rstrip('\r\n')
-                    self.assertEqual(actual_content, expected_content)
+                self.assertEqual(actual_content, expected_content)
