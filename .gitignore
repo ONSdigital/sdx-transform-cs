@@ -6,7 +6,6 @@ logs/
 *.pdf
 *.zip
 *.jpg
-*.csv
 tmp/*
 .Python
 bin/
