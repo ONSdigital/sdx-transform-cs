@@ -5,7 +5,7 @@ import glob
 import os
 import io
 import zipfile
-import datetime
+from datetime import datetime
 import csv
 from image_filters import format_date
 
@@ -37,32 +37,26 @@ def get_expected_output(filename, output_type):
     return get_file_as_string(output_filename)
 
 
-def get_expected_csv_content(scenario_filename):
-    expected_filename = get_expected_file(scenario_filename, 'csv')
+def modify_csv_time(csv_content, creation_time):
+    expected_csv_file = csv.reader(io.StringIO(csv_content))
 
-    with open(expected_filename) as open_file:
-        expected_csv_file = csv.reader(open_file)
+    modified_rows = []
 
-        # We need to modify the creation time of expected output
-        creation_time = datetime.datetime.now()
+    for row in expected_csv_file:
+        row[0] = format_date(creation_time)
+        row[2] = format_date(creation_time, 'short')
 
-        modified_rows = []
+        modified_rows.append(row)
 
-        for row in expected_csv_file:
-            row[0] = format_date(creation_time)
-            row[2] = format_date(creation_time, 'short')
+    # Write modified csv to string buffer
+    buffer = io.StringIO()
+    writer = csv.writer(buffer)
+    writer.writerows(modified_rows)
 
-            modified_rows.append(row)
+    buffer.seek(0)
 
-        # Write modified csv to string buffer
-        buffer = io.StringIO()
-        writer = csv.writer(buffer)
-        writer.writerows(modified_rows)
-
-        buffer.seek(0)
-
-        # Strip the final newline that csv writer creates
-        return buffer.read().rstrip('\r\n')
+    # Strip the final newline that csv writer creates
+    return buffer.read().rstrip('\r\n')
 
 
 class TestTransformService(unittest.TestCase):
@@ -138,7 +132,11 @@ class TestTransformService(unittest.TestCase):
             if filename in z.namelist():
                 edc_file = z.open(filename)
 
+                expected_content = get_expected_output(scenario_filename, 'csv')
                 actual_content = edc_file.read().decode('utf-8')
-                expected_content = get_expected_csv_content(scenario_filename)
 
-                self.assertEqual(actual_content, expected_content)
+                expected_csv = list(csv.reader(io.StringIO(expected_content)))
+                date_object = datetime.strptime(expected_csv[0][0], '%d/%m/%Y %H:%M:%S')
+                modified_content = modify_csv_time(actual_content, date_object)
+
+                self.assertEqual(modified_content, expected_content)
