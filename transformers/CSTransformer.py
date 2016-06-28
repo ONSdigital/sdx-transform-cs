@@ -55,8 +55,8 @@ class CSTransformer(object):
         sub_date_str = pck_transformer.get_subdate_str()
 
         template_output = template.render(response=self.response, submission_date=sub_date_str,
-                           batch_number=self.batch_number, form_id=cs_form_id,
-                           answers=answers)
+                                          batch_number=self.batch_number, form_id=cs_form_id,
+                                          answers=answers)
 
         self.pck_file = "%s_%04d" % (self.survey['survey_id'], self.sequence_no)
 

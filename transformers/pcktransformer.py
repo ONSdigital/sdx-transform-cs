@@ -12,7 +12,6 @@ class PCKTransformer(object):
         "0215": "RSI10B"
     }
 
-
     def __init__(self, survey, response_data):
         self.survey = survey
         self.response = response_data
@@ -35,7 +34,6 @@ class PCKTransformer(object):
                     question_types[question_id] = answer['type']
 
         return questions, question_types
-
 
     def get_cs_form_id(self):
         instrument_id = self.response['collection']['instrument_id']
@@ -64,7 +62,6 @@ class PCKTransformer(object):
 
         return value.zfill(11)
 
-
     def get_required_answers(self, required_answers):
         '''
         Determines if default answers need to be added where
@@ -77,7 +74,6 @@ class PCKTransformer(object):
                 required.append((answer, ''))
 
         return required
-
 
     def derive_answers(self):
         '''

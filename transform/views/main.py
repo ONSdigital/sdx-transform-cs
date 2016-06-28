@@ -5,10 +5,10 @@ from transformers import PCKTransformer, PDFTransformer, ImageTransformer, CSTra
 from jinja2 import Environment, PackageLoader
 
 import os
-import dateutil.parser
 import json
 
 env = Environment(loader=PackageLoader('transform', 'templates'))
+
 
 def get_survey(survey_response):
     form_id = survey_response['collection']['instrument_id']
@@ -58,8 +58,6 @@ def render_html():
 @app.route('/pdf', methods=['POST'])
 def render_pdf():
     survey_response = request.get_json(force=True)
-
-    form_id = survey_response['collection']['instrument_id']
 
     survey = get_survey(survey_response)
 
