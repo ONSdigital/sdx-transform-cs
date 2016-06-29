@@ -3,7 +3,7 @@ import os
 from io import BytesIO
 from .ImageTransformer import ImageTransformer
 from jinja2 import Environment, PackageLoader
-from .pcktransformer import form_ids, derive_answers
+from .PCKTransformer import PCKTransformer
 import dateutil.parser
 import shutil
 
@@ -49,18 +49,12 @@ class CSTransformer(object):
     def create_pck(self):
         template = env.get_template('pck.tmpl')
 
-        instrument_id = self.response['collection']['instrument_id']
+        pck_transformer = PCKTransformer(self.survey, self.response)
+        answers = pck_transformer.derive_answers()
+        cs_form_id = pck_transformer.get_cs_form_id()
+        sub_date_str = pck_transformer.get_subdate_str()
 
-        submission_date = dateutil.parser.parse(self.response['submitted_at'])
-        submission_date_str = submission_date.strftime("%d/%m/%y")
-
-        cs_form_id = form_ids[instrument_id]
-
-        data = self.response['data'] if 'data' in self.response else {}
-
-        answers = derive_answers(self.survey, data)
-
-        template_output = template.render(response=self.response, submission_date=submission_date_str,
+        template_output = template.render(response=self.response, submission_date=sub_date_str,
                                           batch_number=self.batch_number, form_id=cs_form_id,
                                           answers=answers)
 
