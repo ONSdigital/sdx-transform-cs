@@ -6,7 +6,9 @@ import os
 import io
 import zipfile
 from datetime import datetime
+import dateutil
 import csv
+import json
 from image_filters import format_date
 
 
@@ -120,6 +122,7 @@ class TestTransformService(unittest.TestCase):
             print("Loading scenario %s " % scenario_filename)
 
             payload = get_file_as_string(scenario_filename)
+            payload_object = json.loads(payload)
 
             r = self.app.post(self.transform_images_endpoint, data=payload)
 
@@ -127,16 +130,21 @@ class TestTransformService(unittest.TestCase):
 
             z = zipfile.ZipFile(zip_contents)
 
-            filename = 'EDC_023_20160312_1000.csv'
+            expected_content = get_expected_output(scenario_filename, 'csv')
+            expected_csv = list(csv.reader(io.StringIO(expected_content)))
+            date_object = datetime.strptime(expected_csv[0][0], '%d/%m/%Y %H:%M:%S')
 
-            if filename in z.namelist():
-                edc_file = z.open(filename)
+            sub_date = dateutil.parser.parse(payload_object['submitted_at'])
+            sub_date_str = sub_date.strftime("%Y%m%d")
 
-                expected_content = get_expected_output(scenario_filename, 'csv')
-                actual_content = edc_file.read().decode('utf-8')
+            filename = 'EDC_{}_{}_1000.csv'.format(payload_object['survey_id'], sub_date_str)
 
-                expected_csv = list(csv.reader(io.StringIO(expected_content)))
-                date_object = datetime.strptime(expected_csv[0][0], '%d/%m/%Y %H:%M:%S')
-                modified_content = modify_csv_time(actual_content, date_object)
+            self.assertTrue(filename in z.namelist())
 
-                self.assertEqual(modified_content, expected_content)
+            edc_file = z.open(filename)
+
+            actual_content = edc_file.read().decode('utf-8')
+
+            modified_content = modify_csv_time(actual_content, date_object)
+
+            self.assertEqual(modified_content, expected_content)
