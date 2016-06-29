@@ -4,8 +4,6 @@ from flask import request, make_response, send_file
 from transformers import PCKTransformer, PDFTransformer, ImageTransformer, CSTransformer
 from jinja2 import Environment, PackageLoader
 
-import os
-import dateutil.parser
 import json
 
 env = Environment(loader=PackageLoader('transform', 'templates'))
