@@ -11,7 +11,7 @@ env = Environment(loader=PackageLoader('transform', 'templates'))
 
 @app.errorhandler(400)
 def known_error(error=None):
-    app.logger.error("sdx-transform-cs:TRANSFORM:FAILURE:%s", repr(error))
+    app.logger.error("sdx-transform-cs:FAILURE:%s", repr(error))
     message = {
         'status': 400,
         'message': repr(error),
@@ -25,7 +25,6 @@ def known_error(error=None):
 
 @app.errorhandler(500)
 def unknown_error(error=None):
-    app.logger.error("sdx-transform-cs:TRANSFORM:FAILURE:%s", repr(error))
     message = {
         'status': 500,
         'message': "Internal server error: " + repr(error),
@@ -54,7 +53,7 @@ def render_pck(batch_number=False):
     survey = get_survey(response)
 
     if not survey:
-        return known_error("Unsupported survey/instrument id")
+        return known_error("PCK:Unsupported survey/instrument id")
 
     if batch_number:
         batch_number = int(batch_number)
@@ -85,7 +84,9 @@ def render_html():
     survey = get_survey(response)
 
     if not survey:
-        return known_error("Unsupported survey/instrument id")
+        return known_error("HTML:Unsupported survey/instrument id")
+
+    app.logger.info("sdx-transform-cs:HTML:SUCCESS")
 
     return template.render(response=response, survey=survey)
 
@@ -97,17 +98,19 @@ def render_pdf():
     survey = get_survey(survey_response)
 
     if not survey:
-        return known_error("Unsupported survey/instrument id")
+        return known_error("PDF:Unsupported survey/instrument id")
 
     try:
         pdf = PDFTransformer(survey, survey_response)
         rendered_pdf = pdf.render()
 
     except IOError as e:
-        return known_error("Could not render pdf buffer: %s" % repr(e))
+        return known_error("PDF:Could not render pdf buffer: %s" % repr(e))
 
     response = make_response(rendered_pdf)
     response.mimetype = 'application/pdf'
+
+    app.logger.info("sdx-transform-cs:PDF:SUCCESS")
 
     return response
 
@@ -119,7 +122,7 @@ def render_images():
     survey = get_survey(survey_response)
 
     if not survey:
-        return known_error("Unsupported survey/instrument id")
+        return known_error("IMAGES:Unsupported survey/instrument id")
 
     itransformer = ImageTransformer(survey, survey_response)
 
@@ -130,7 +133,9 @@ def render_images():
         zipfile = itransformer.create_zip()
         itransformer.cleanup()
     except IOError as e:
-        return known_error("Could not create zip buffer: %s" % repr(e))
+        return known_error("IMAGES:Could not create zip buffer: %s" % repr(e))
+
+    app.logger.info("sdx-transform-cs:IMAGES:SUCCESS")
 
     return send_file(zipfile, mimetype='application/zip')
 
@@ -150,13 +155,18 @@ def common_software(sequence_no=1000, batch_number=False):
     survey = get_survey(survey_response)
 
     if not survey:
-        return known_error("Unsupported survey/instrument id")
+        return known_error("CS:Unsupported survey/instrument id")
 
     ctransformer = CSTransformer(survey, survey_response, batch_number, sequence_no)
 
-    ctransformer.create_formats()
-    ctransformer.prepare_archive()
-    zipfile = ctransformer.create_zip()
-    ctransformer.cleanup()
+    try:
+        ctransformer.create_formats()
+        ctransformer.prepare_archive()
+        zipfile = ctransformer.create_zip()
+        ctransformer.cleanup()
+    except IOError as e:
+        return known_error("CS:Could not create zip buffer: %s" % repr(e))
+
+    app.logger.info("sdx-transform-cs:CS:SUCCESS")
 
     return send_file(zipfile, mimetype='application/zip')
