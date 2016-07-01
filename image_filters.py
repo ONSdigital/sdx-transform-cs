@@ -13,6 +13,8 @@ def statistical_unit_id_filter(value):
     if len(value) == 12:
         return value[0:-1]
 
+    return value
+
 
 def scan_id_filter(value):
     scanfile, _ = os.path.splitext(value)
@@ -37,6 +39,12 @@ def format_period(value):
     elif len(value) > 6:
         return value[0:6]
 
+    return value
+
+
+def trim_final_newline(value):
+    return value.rstrip('\r\n')
+
 
 def get_env():
     env = Environment(loader=PackageLoader('transform', 'templates'))
@@ -46,5 +54,6 @@ def get_env():
     env.filters['scan_id'] = scan_id_filter
     env.filters['format_page'] = page_filter
     env.filters['format_period'] = format_period
+    env.filters['trim_final_newline'] = trim_final_newline
 
     return env

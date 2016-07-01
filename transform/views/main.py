@@ -4,7 +4,6 @@ from flask import request, make_response, send_file
 from transformers import PCKTransformer, PDFTransformer, ImageTransformer, CSTransformer
 from jinja2 import Environment, PackageLoader
 
-import os
 import json
 
 env = Environment(loader=PackageLoader('transform', 'templates'))
@@ -81,8 +80,7 @@ def render_images():
     itransformer.create_pdf()
     itransformer.create_image_sequence()
     itransformer.create_image_index()
-    zipname = itransformer.create_zip()
-    zipfile = os.path.join(itransformer.path, zipname)
+    zipfile = itransformer.create_zip()
     itransformer.cleanup()
 
     return send_file(zipfile, mimetype='application/zip')
