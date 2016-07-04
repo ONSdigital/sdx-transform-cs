@@ -11,7 +11,7 @@ env = Environment(loader=PackageLoader('transform', 'templates'))
 
 @app.errorhandler(400)
 def known_error(error=None):
-    app.logger.error("sdx-transform-cs:FAILURE:%s", repr(error))
+    app.logger.error("FAILURE:%s", repr(error))
     message = {
         'status': 400,
         'message': repr(error),
@@ -86,7 +86,7 @@ def render_html():
     if not survey:
         return known_error("HTML:Unsupported survey/instrument id")
 
-    app.logger.info("sdx-transform-cs:HTML:SUCCESS")
+    app.logger.info("HTML:SUCCESS")
 
     return template.render(response=response, survey=survey)
 
@@ -110,7 +110,7 @@ def render_pdf():
     response = make_response(rendered_pdf)
     response.mimetype = 'application/pdf'
 
-    app.logger.info("sdx-transform-cs:PDF:SUCCESS")
+    app.logger.info("PDF:SUCCESS")
 
     return response
 
@@ -135,7 +135,7 @@ def render_images():
     except IOError as e:
         return known_error("IMAGES:Could not create zip buffer: %s" % repr(e))
 
-    app.logger.info("sdx-transform-cs:IMAGES:SUCCESS")
+    app.logger.info("IMAGES:SUCCESS")
 
     return send_file(zipfile, mimetype='application/zip')
 
@@ -167,6 +167,6 @@ def common_software(sequence_no=1000, batch_number=False):
     except IOError as e:
         return known_error("CS:Could not create zip buffer: %s" % repr(e))
 
-    app.logger.info("sdx-transform-cs:CS:SUCCESS")
+    app.logger.info("CS:SUCCESS")
 
     return send_file(zipfile, mimetype='application/zip')
