@@ -36,7 +36,7 @@ class TestCSTransformService(unittest.TestCase):
         expected = [
             'EDC_QData/023_1000',
             'EDC_QReceipts/REC1203_1000.DAT',
-            'EDC_QImages/Images/S010000001.jpg',
+            'EDC_QImages/Images/S010000001.JPG',
             'EDC_QImages/Index/EDC_023_20160312_1000.csv'
         ]
 
@@ -50,7 +50,7 @@ class TestCSTransformService(unittest.TestCase):
         expected = [
             'EDC_QData/023_2345',
             'EDC_QReceipts/REC1203_2345.DAT',
-            'EDC_QImages/Images/S023450001.jpg',
+            'EDC_QImages/Images/S023450001.JPG',
             'EDC_QImages/Index/EDC_023_20160312_2345.csv'
         ]
 
@@ -62,7 +62,7 @@ class TestCSTransformService(unittest.TestCase):
         expected = [
             'EDC_QData/023_0999',
             'EDC_QReceipts/REC1203_0999.DAT',
-            'EDC_QImages/Images/S009990001.jpg',
+            'EDC_QImages/Images/S009990001.JPG',
             'EDC_QImages/Index/EDC_023_20160312_0999.csv'
         ]
 
