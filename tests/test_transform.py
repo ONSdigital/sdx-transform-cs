@@ -167,3 +167,14 @@ class TestTransformService(unittest.TestCase):
         r = self.app.post(self.transform_pdf_endpoint, data="rubbish")
 
         self.assertEqual(r.status_code, 400)
+
+    def test_invalid_survey_id(self):
+        # Create an invlid survey id payload
+        payload_str = get_file_as_string('./tests/pck/023.0203.json')
+        payload_object = json.loads(payload_str)
+        payload_object['survey_id'] = '666'
+        payload = json.dumps(payload_object)
+
+        r = self.app.post(self.transform_pck_endpoint, data=payload)
+
+        self.assertEqual(r.status_code, 400)
