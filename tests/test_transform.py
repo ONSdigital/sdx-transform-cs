@@ -33,6 +33,8 @@ class TestTransformService(unittest.TestCase):
     transform_idbr_endpoint = "/idbr"
     # Provide a default batch no as url param
     transform_pck_endpoint = "/pck/30001"
+    transform_images_endpoint = "/images"
+    transform_pdf_endpoint = "/pdf"
 
     def setUp(self):
 
@@ -77,3 +79,20 @@ class TestTransformService(unittest.TestCase):
             actual_response = r.data.decode('UTF8')
 
             self.assertEqual(actual_response, expected_response)
+
+    def test_invalid_input(self):
+        r = self.app.post(self.transform_pck_endpoint, data="rubbish")
+
+        self.assertEqual(r.status_code, 400)
+
+        r = self.app.post(self.transform_idbr_endpoint, data="rubbish")
+
+        self.assertEqual(r.status_code, 400)
+
+        r = self.app.post(self.transform_images_endpoint, data="rubbish")
+
+        self.assertEqual(r.status_code, 400)
+
+        r = self.app.post(self.transform_pdf_endpoint, data="rubbish")
+
+        self.assertEqual(r.status_code, 400)
