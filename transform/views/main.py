@@ -137,7 +137,7 @@ def render_images():
 
     app.logger.info("IMAGES:SUCCESS")
 
-    return send_file(zipfile, mimetype='application/zip')
+    return send_file(zipfile, mimetype='application/zip', add_etags=False)
 
 
 @app.route('/common-software', methods=['POST'])
@@ -169,4 +169,4 @@ def common_software(sequence_no=1000, batch_number=False):
 
     app.logger.info("CS:SUCCESS")
 
-    return send_file(zipfile, mimetype='application/zip')
+    return send_file(zipfile, mimetype='application/zip', add_etags=False)
