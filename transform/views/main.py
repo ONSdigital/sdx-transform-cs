@@ -63,6 +63,8 @@ def render_pck(batch_number=False):
     cs_form_id = pck_transformer.get_cs_form_id()
     sub_date_str = pck_transformer.get_subdate_str()
 
+    app.logger.info("PCK:SUCCESS")
+
     return template.render(response=response, submission_date=sub_date_str,
                            batch_number=batch_number, form_id=cs_form_id,
                            answers=answers)
@@ -72,6 +74,8 @@ def render_pck(batch_number=False):
 def render_idbr():
     response = request.get_json(force=True)
     template = env.get_template('idbr.tmpl')
+
+    app.logger.info("IDBR:SUCCESS")
 
     return template.render(response=response)
 
