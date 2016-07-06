@@ -67,3 +67,8 @@ class TestCSTransformService(unittest.TestCase):
         ]
 
         self.assertEqual(expected, ziplist)
+
+    def test_invalid_data(self):
+        r = self.app.post(self.transform_cs_endpoint, data="rubbish")
+
+        self.assertEqual(r.status_code, 400)

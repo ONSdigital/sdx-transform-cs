@@ -67,6 +67,8 @@ class TestTransformService(unittest.TestCase):
     transform_images_endpoint = "/images"
     # Provide a default batch no as url param
     transform_pck_endpoint = "/pck/30001"
+    transform_images_endpoint = "/images"
+    transform_pdf_endpoint = "/pdf"
 
     def setUp(self):
 
@@ -148,3 +150,31 @@ class TestTransformService(unittest.TestCase):
             modified_content = modify_csv_time(actual_content, date_object)
 
             self.assertEqual(modified_content, expected_content)
+
+    def test_invalid_input(self):
+        r = self.app.post(self.transform_pck_endpoint, data="rubbish")
+
+        self.assertEqual(r.status_code, 400)
+
+        r = self.app.post(self.transform_idbr_endpoint, data="rubbish")
+
+        self.assertEqual(r.status_code, 400)
+
+        r = self.app.post(self.transform_images_endpoint, data="rubbish")
+
+        self.assertEqual(r.status_code, 400)
+
+        r = self.app.post(self.transform_pdf_endpoint, data="rubbish")
+
+        self.assertEqual(r.status_code, 400)
+
+    def test_invalid_survey_id(self):
+        # Create an invlid survey id payload
+        payload_str = get_file_as_string('./tests/pck/023.0203.json')
+        payload_object = json.loads(payload_str)
+        payload_object['survey_id'] = '666'
+        payload = json.dumps(payload_object)
+
+        r = self.app.post(self.transform_pck_endpoint, data=payload)
+
+        self.assertEqual(r.status_code, 400)

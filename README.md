@@ -10,17 +10,25 @@ Using virtualenv and pip, create a new environment and install within using:
 
     $ pip install -r requirements.txt
 
-It's also possible to install within a container using docker. From the sdx-transform-cs directory:
+The service has a dependency on the pdf2ppm commandline tool bundled in the poppler package. You can install this on a mac using:
+
+    $ brew install poppler
+
+It's also possible to build sdx-transform-cs within a container using docker. From the sdx-transform-cs directory:
 
     $ docker build -t sdx-transform-cs .
 
 ## Usage
 
-Start sdx-transform-cs service using the following command:
+To start sdx-transform-cs service locally, use the following command:
 
     python server.py
 
-sdx-transform-cs exposes a three endpoints for transforming to idbr, pck and html formats and by default binds to port 5000 on localhost. It returns a response formatted in the typerequested. Post requests are made aginst the uri scheme /<survey_id>/<form_id>.<format>
+If you've built the image under docker, you can start using the following:
+
+    docker run -p 5000:5000 sdx-transform-cs
+
+sdx-transform-cs exposes several endpoints for transforming to idbr, pck and html formats and by default binds to port 5000 on localhost. It returns a response formatted in the type requested. Post requests are made aginst the uri endpoints /pck, /idbr, /html, /pdf, /images or /common-software. Responses are delivered in the format requested, except the /images and /common-software endpoints which return archived zips of requested data.
 
 ### Example
 
@@ -64,7 +72,7 @@ data_to_transform = '''{
    }
 }'''
 
-r = requests.post('http://127.0.0.1:5000/023/0203.pck', data=data_to_transform)
+r = requests.post('http://127.0.0.1:5000/pck', data=data_to_transform)
 
 r.data = 
 
