@@ -53,7 +53,7 @@ def render_pck(batch_number=False):
     survey = get_survey(response)
 
     if not survey:
-        return known_error("PCK:Unsupported survey/instrument id")
+        return known_error(ValueError("PCK:Unsupported survey/instrument id"))
 
     if batch_number:
         batch_number = int(batch_number)
@@ -88,7 +88,7 @@ def render_html():
     survey = get_survey(response)
 
     if not survey:
-        return known_error("HTML:Unsupported survey/instrument id")
+        return known_error(ValueError("HTML:Unsupported survey/instrument id"))
 
     app.logger.info("HTML:SUCCESS")
 
@@ -109,7 +109,7 @@ def render_pdf():
         rendered_pdf = pdf.render()
 
     except IOError as e:
-        return known_error("PDF:Could not render pdf buffer: %s" % repr(e))
+        return known_error(ValueError("PDF:Could not render pdf buffer: %s" % repr(e)))
 
     response = make_response(rendered_pdf)
     response.mimetype = 'application/pdf'
@@ -126,7 +126,7 @@ def render_images():
     survey = get_survey(survey_response)
 
     if not survey:
-        return known_error("IMAGES:Unsupported survey/instrument id")
+        return known_error(ValueError("IMAGES:Unsupported survey/instrument id"))
 
     itransformer = ImageTransformer(survey, survey_response)
 
@@ -137,7 +137,7 @@ def render_images():
         zipfile = itransformer.create_zip()
         itransformer.cleanup()
     except IOError as e:
-        return known_error("IMAGES:Could not create zip buffer: %s" % repr(e))
+        return known_error(ValueError("IMAGES:Could not create zip buffer: %s" % repr(e)))
 
     app.logger.info("IMAGES:SUCCESS")
 
@@ -159,7 +159,7 @@ def common_software(sequence_no=1000, batch_number=False):
     survey = get_survey(survey_response)
 
     if not survey:
-        return known_error("CS:Unsupported survey/instrument id")
+        return known_error(ValueError("CS:Unsupported survey/instrument id"))
 
     ctransformer = CSTransformer(survey, survey_response, batch_number, sequence_no)
 
@@ -169,7 +169,7 @@ def common_software(sequence_no=1000, batch_number=False):
         zipfile = ctransformer.create_zip()
         ctransformer.cleanup()
     except IOError as e:
-        return known_error("CS:Could not create zip buffer: %s" % repr(e))
+        return known_error(ValueError("CS:Could not create zip buffer: %s" % repr(e)))
 
     app.logger.info("CS:SUCCESS")
 
