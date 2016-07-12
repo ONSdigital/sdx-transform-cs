@@ -22,4 +22,4 @@ EXPOSE 5000
 
 RUN pip3 install --no-cache-dir -U -I -r /app/requirements.txt
 
-ENTRYPOINT startup.sh
+ENTRYPOINT ./startup.sh
