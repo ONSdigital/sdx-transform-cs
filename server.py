@@ -2,6 +2,7 @@ import settings
 from transform import app
 import logging
 import logging.handlers
+import os
 
 
 if __name__ == '__main__':
@@ -10,4 +11,5 @@ if __name__ == '__main__':
     handler = logging.handlers.RotatingFileHandler(settings.LOGGING_LOCATION, maxBytes=20000, backupCount=5)
     handler.setFormatter(logging.Formatter(settings.LOGGING_FORMAT))
     app.logger.addHandler(handler)
-    app.run(debug=True, host='0.0.0.0')
+    port = int(os.getenv("PORT"))
+    app.run(debug=True, host='0.0.0.0', port=port)
