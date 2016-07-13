@@ -10,6 +10,7 @@ ADD transform /app/transform
 ADD transformers /app/transformers
 ADD surveys /app/surveys
 ADD image_filters.py /app/image_filters.py
+ADD startup.sh /app/startup.sh
 
 RUN mkdir -p /app/logs
 RUN mkdir -p /app/tmp
@@ -21,4 +22,4 @@ EXPOSE 5000
 
 RUN pip3 install --no-cache-dir -U -I -r /app/requirements.txt
 
-ENTRYPOINT python3 server.py
+ENTRYPOINT ./startup.sh
