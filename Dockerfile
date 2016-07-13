@@ -12,7 +12,6 @@ ADD surveys /app/surveys
 ADD image_filters.py /app/image_filters.py
 ADD startup.sh /app/startup.sh
 
-RUN mkdir -p /app/logs
 RUN mkdir -p /app/tmp
 
 # set working directory to /app/
