@@ -13,6 +13,7 @@
         }]
     },
     {
+      "title": "1. Employees",
       "questions": [
         {
           "text": "Male employees working more than 30 hours per week?",
@@ -32,7 +33,7 @@
       }]
     },
     {
-      "title": "Period",
+      "title": "2. Period",
       "questions": [
         {
           "text": "From",
@@ -47,7 +48,7 @@
       ]
     },
     {
-      "title": "Commodoties - Retail Turnover",
+      "title": "3. Commodoties - Retail Turnover",
       "meta": "(£)",
       "questions": [
         {
@@ -77,6 +78,7 @@
       ]
     },
     {
+      "title": "4.",
       "questions": [{
           "text": "Of these figures, how much were from internet sales?",
           "question_id": "21"

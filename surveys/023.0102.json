@@ -4,7 +4,7 @@
   "form_type": "0102",
   "question_groups": [
     {
-      "title": "Period",
+      "title": "3. Period",
       "questions": [
         {
           "text": "From",
@@ -19,7 +19,7 @@
       ]
     },
     {
-      "title": "Retail Turnover",
+      "title": "4. Retail Turnover",
       "meta": "(£)",
       "questions": [
         {
@@ -29,6 +29,7 @@
       ]
     },
     {
+      "title": "5.",
       "questions": [{
           "text": "Of your total retail turnover, what was the value of internet sales?",
           "question_id": "21"
