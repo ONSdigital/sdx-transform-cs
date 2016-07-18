@@ -1,7 +1,6 @@
 import settings
 from transform import app
 import logging
-import logging.handlers
 import os
 
 
