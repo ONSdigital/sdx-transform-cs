@@ -6,6 +6,8 @@ from reportlab.lib.enums import TA_LEFT, TA_CENTER
 from io import BytesIO
 import uuid
 import os
+import dateutil.parser
+import arrow
 
 styles = getSampleStyleSheet()
 styleN = styles["BodyText"]
@@ -62,10 +64,13 @@ class PDFTransformer(object):
         heading_style.add('SPAN', (0, 0), (1, 0))
         heading_style.add('ALIGN', (0, 0), (1, 0), 'CENTER')
 
+        submission_date = dateutil.parser.parse(self.response['submitted_at'])
+        submission_date_str = arrow.get(submission_date, 'Europe/London').format("ddd DD MMM HH:mm:ssa YYYY")
+
         heading_data = [[Paragraph(self.survey['title'], styleH)]]
         heading_data.append(['Form Type', self.response['collection']['instrument_id']])
         heading_data.append(['Respondent', self.response['metadata']['ru_ref']])
-        heading_data.append(['Submitted At', self.response['submitted_at']])
+        heading_data.append(['Submitted At', submission_date_str])
 
         heading = Table(heading_data, style=heading_style, colWidths='*')
 
