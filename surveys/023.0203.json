@@ -13,7 +13,7 @@
       }]
     },
     {
-      "title": "Period",
+      "title": "1. Period",
       "questions": [
         {
           "text": "From",
@@ -28,7 +28,7 @@
       ]
     },
     {
-      "title": "Commodoties - Retail Turnover",
+      "title": "2. Commodoties - Retail Turnover",
       "meta": "(£)",
       "questions": [
         {
@@ -58,6 +58,7 @@
       ]
     },
     {
+      "title": "3.",
       "questions": [{
           "text": "Of these figures, how much were from internet sales?",
           "question_id": "21"

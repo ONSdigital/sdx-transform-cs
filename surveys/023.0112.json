@@ -4,7 +4,7 @@
   "form_type": "0112",
   "question_groups": [
     {
-      "title": "Period",
+      "title": "2. Period",
       "questions": [
         {
           "text": "From",
@@ -19,7 +19,7 @@
       ]
     },
     {
-      "title": "Retail Turnover",
+      "title": "3. Retail Turnover",
       "meta": "(£)",
       "questions": [
         {
@@ -29,12 +29,14 @@
       ]
     },
     {
+      "title": "4.",
       "questions": [{
           "text": "Of your total retail turnover, what was the value of internet sales?",
           "question_id": "21"
       }]
     },
     {
+      "title": "Employees",
       "questions": [
         {
           "text": "Male employees working more than 30 hours per week?",
