@@ -24,7 +24,7 @@ class CSTransformer(object):
         self.sequence_no = sequence_no
 
     def create_formats(self):
-        itransformer = ImageTransformer(self.survey, self.response)
+        itransformer = ImageTransformer(self.survey, self.response, sequence_no=self.sequence_no)
 
         itransformer.create_pdf()
         im_seq_no = self.get_image_sequence_no()
