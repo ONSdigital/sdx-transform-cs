@@ -1,7 +1,7 @@
 from transform import app
 
 from flask import request, make_response, send_file, jsonify
-from transformers import PCKTransformer, PDFTransformer, ImageTransformer, CSTransformer
+from transform.transformers import PCKTransformer, PDFTransformer, ImageTransformer, CSTransformer
 from jinja2 import Environment, PackageLoader
 
 import json
@@ -43,7 +43,7 @@ def get_survey(survey_response):
     try:
         form_id = survey_response['collection']['instrument_id']
 
-        with open("./surveys/%s.%s.json" % (survey_response['survey_id'], form_id)) as json_file:
+        with open("./transform/surveys/%s.%s.json" % (survey_response['survey_id'], form_id)) as json_file:
             return json.load(json_file)
     except IOError:
         return False

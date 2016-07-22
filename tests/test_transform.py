@@ -1,4 +1,4 @@
-from server import app
+from transform import app
 
 import unittest
 import glob
@@ -9,7 +9,7 @@ from datetime import datetime
 import dateutil
 import csv
 import json
-from image_filters import format_date
+from transform.views.image_filters import format_date
 
 
 def get_file_as_string(filename):
