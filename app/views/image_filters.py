@@ -47,7 +47,7 @@ def trim_final_newline(value):
 
 
 def get_env():
-    env = Environment(loader=PackageLoader('transform', 'templates'))
+    env = Environment(loader=PackageLoader('app', 'templates'))
 
     env.filters['format_date'] = format_date
     env.filters['statistical_unit_id'] = statistical_unit_id_filter

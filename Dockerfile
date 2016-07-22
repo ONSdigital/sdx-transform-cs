@@ -5,11 +5,7 @@ RUN apt-get update && apt-get install -y poppler-utils
 ADD requirements.txt /app/requirements.txt
 
 ADD server.py /app/server.py
-ADD settings.py /app/settings.py
-ADD transform /app/transform
-ADD transformers /app/transformers
-ADD surveys /app/surveys
-ADD image_filters.py /app/image_filters.py
+ADD app /app
 ADD startup.sh /app/startup.sh
 
 RUN mkdir -p /app/tmp

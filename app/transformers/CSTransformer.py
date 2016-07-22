@@ -7,7 +7,7 @@ from .PCKTransformer import PCKTransformer
 import dateutil.parser
 import shutil
 
-env = Environment(loader=PackageLoader('transform', 'templates'))
+env = Environment(loader=PackageLoader('app', 'templates'))
 
 
 class CSTransformer(object):

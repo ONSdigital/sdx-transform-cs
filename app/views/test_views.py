@@ -1,13 +1,12 @@
-from transform import app
-
-from transformers import PDFTransformer, ImageTransformer, CSTransformer
+from app.transformers import PDFTransformer, ImageTransformer, CSTransformer
+from app import app
 from jinja2 import Environment, PackageLoader
 
 from flask import make_response, send_file
 
 import json
 
-env = Environment(loader=PackageLoader('transform', 'templates'))
+env = Environment(loader=PackageLoader('app', 'templates'))
 
 test_message = '''{
    "type": "uk.gov.ons.edc.eq:surveyresponse",

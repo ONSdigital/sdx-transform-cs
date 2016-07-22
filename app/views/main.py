@@ -1,12 +1,12 @@
-from transform import app
+from app import app
 
 from flask import request, make_response, send_file, jsonify
-from transformers import PCKTransformer, PDFTransformer, ImageTransformer, CSTransformer
+from app.transformers import PCKTransformer, PDFTransformer, ImageTransformer, CSTransformer
 from jinja2 import Environment, PackageLoader
 
 import json
 
-env = Environment(loader=PackageLoader('transform', 'templates'))
+env = Environment(loader=PackageLoader('app', 'templates'))
 
 
 @app.errorhandler(400)
