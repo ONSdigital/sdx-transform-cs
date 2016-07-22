@@ -1,4 +1,4 @@
-from server import app
+from transform import app
 from tests.test_transform import get_file_as_string, get_test_scenarios, get_expected_output
 import unittest
 

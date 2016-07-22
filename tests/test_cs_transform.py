@@ -1,4 +1,4 @@
-from server import app
+from transform import app
 from transform.views.test_views import test_message
 import unittest
 import io

@@ -4,7 +4,7 @@ import subprocess
 import zipfile
 import datetime
 import dateutil.parser
-import settings
+from transform import settings
 import shutil
 from io import BytesIO
 from .PDFTransformer import PDFTransformer
