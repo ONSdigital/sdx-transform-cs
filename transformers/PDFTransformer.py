@@ -63,7 +63,7 @@ class PDFTransformer(object):
         heading_style.add('SPAN', (0, 0), (1, 0))
         heading_style.add('ALIGN', (0, 0), (1, 0), 'CENTER')
 
-        localised_date_str = self.get_localised_date()
+        localised_date_str = self.get_localised_date(self.response['submitted_at'])
 
         heading_data = [[Paragraph(self.survey['title'], styleH)]]
         heading_data.append(['Form Type', self.response['collection']['instrument_id']])
@@ -84,8 +84,8 @@ class PDFTransformer(object):
 
         return elements
 
-    def get_localised_date(self, timezone='Europe/London'):
-        return arrow.get(self.response['submitted_at']).to(timezone).format("ddd DD MMM HH:mm:ssa YYYY")
+    def get_localised_date(self, date_to_transform, timezone='Europe/London'):
+        return arrow.get(date_to_transform).to(timezone).format("ddd DD MMM HH:mm:ss YYYY")
 
     def get_table_data(self, question_group):
         table_data = []
