@@ -6,6 +6,9 @@ from .PCKTransformer import PCKTransformer
 from jinja2 import Environment, PackageLoader
 import dateutil.parser
 import shutil
+from transform import settings
+from requests.packages.urllib3.exceptions import MaxRetryError
+from transform.settings import session
 
 env = Environment(loader=PackageLoader('transform', 'templates'))
 
@@ -21,10 +24,11 @@ class CSTransformer(object):
         self.sequence_no = sequence_no
 
     def create_formats(self):
-        itransformer = ImageTransformer(self.survey, self.response, self.sequence_no)
+        itransformer = ImageTransformer(self.survey, self.response)
 
         itransformer.create_pdf()
-        itransformer.create_image_sequence()
+        im_seq_no = self.get_image_sequence_no()
+        itransformer.create_image_sequence(start=im_seq_no)
         itransformer.create_image_index()
 
         self.path = itransformer.path
@@ -33,6 +37,40 @@ class CSTransformer(object):
 
         self.create_pck()
         self.create_idbr()
+
+    def response_ok(self, res):
+        if res.status_code == 200:
+            self.logger.info("Returned from service", request_url=res.url, status_code=res.status_code)
+            return True
+        else:
+            self.logger.error("Returned from service", request_url=res.url, status_code=res.status_code)
+            return False
+
+    def remote_call(self, request_url, json=None):
+        try:
+            self.logger.info("Calling service", request_url=request_url)
+
+            r = None
+
+            if json:
+                r = session.post(request_url, json=json)
+            else:
+                r = session.get(request_url)
+
+            return r
+        except MaxRetryError:
+            self.logger.error("Max retries exceeded (5)", request_url=request_url)
+
+    def get_image_sequence_no(self):
+        sequence_url = settings.SDX_SEQUENCE_URL + "/image-sequence"
+
+        r = self.remote_call(sequence_url)
+
+        if not self.response_ok(r):
+            return False
+
+        result = r.json()
+        return result['sequence_no']
 
     def prepare_archive(self):
         '''

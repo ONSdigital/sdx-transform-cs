@@ -174,6 +174,8 @@ def common_software(sequence_no=1000, batch_number=False):
         ctransformer.cleanup()
     except IOError as e:
         return client_error("CS:Could not create zip buffer: %s" % repr(e))
+    except e:
+        return server_error(e)
 
     app.logger.info("CS:SUCCESS")
 
