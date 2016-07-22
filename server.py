@@ -1,5 +1,4 @@
-import settings
-from transform import app
+from transform import app, settings
 import logging
 import os
 
