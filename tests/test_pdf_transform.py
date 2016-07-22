@@ -1,12 +1,12 @@
 import unittest
 import json
 from transform.views.test_views import test_message
-from transformers import PDFTransformer
+from transform.transformers import PDFTransformer
 
 
 class TestPDFTransformer(unittest.TestCase):
     def test_localised_time(self):
-        with open("./surveys/023.0203.json") as survey:
+        with open("./transform/surveys/023.0203.json") as survey:
             response = json.loads(test_message)
             pdf_transformer = PDFTransformer(survey, response)
 
