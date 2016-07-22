@@ -5,7 +5,7 @@ RUN apt-get update && apt-get install -y poppler-utils
 ADD requirements.txt /app/requirements.txt
 
 ADD server.py /app/server.py
-ADD app /app
+ADD transform /app
 ADD startup.sh /app/startup.sh
 
 RUN mkdir -p /app/tmp

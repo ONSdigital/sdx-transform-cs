@@ -49,7 +49,7 @@ def images_test():
     survey_response = json.loads(test_message)
     form_id = survey_response['collection']['instrument_id']
 
-    with open("./surveys/%s.%s.json" % (survey_response['survey_id'], form_id)) as json_file:
+    with open("./transform/surveys/%s.%s.json" % (survey_response['survey_id'], form_id)) as json_file:
         survey = json.load(json_file)
 
         itransformer = ImageTransformer(survey, survey_response)
@@ -69,7 +69,7 @@ def pdf_test():
     survey_response = json.loads(test_message)
     form_id = survey_response['collection']['instrument_id']
 
-    with open("./surveys/%s.%s.json" % (survey_response['survey_id'], form_id)) as json_file:
+    with open("./transform/surveys/%s.%s.json" % (survey_response['survey_id'], form_id)) as json_file:
         survey = json.load(json_file)
 
         pdf = PDFTransformer(survey, survey_response)
@@ -88,7 +88,7 @@ def html_test():
     template = env.get_template('html.tmpl')
     form_id = response['collection']['instrument_id']
 
-    with open("./surveys/%s.%s.json" % (response['survey_id'], form_id)) as json_file:
+    with open("./transform/surveys/%s.%s.json" % (response['survey_id'], form_id)) as json_file:
         survey = json.load(json_file)
         return template.render(response=response, survey=survey)
 
@@ -98,7 +98,7 @@ def cs_test():
     survey_response = json.loads(test_message)
     form_id = survey_response['collection']['instrument_id']
 
-    with open("./surveys/%s.%s.json" % (survey_response['survey_id'], form_id)) as json_file:
+    with open("./transform/surveys/%s.%s.json" % (survey_response['survey_id'], form_id)) as json_file:
         survey = json.load(json_file)
 
         ctransformer = CSTransformer(survey, survey_response)
