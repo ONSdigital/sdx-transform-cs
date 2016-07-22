@@ -28,7 +28,14 @@ class CSTransformer(object):
 
         itransformer.create_pdf()
         im_seq_no = self.get_image_sequence_no()
-        itransformer.create_image_sequence(start=im_seq_no)
+        images = itransformer.create_image_sequence(start=im_seq_no)
+
+        # Call sequence a number of times if more than 1 image
+        remaining_calls = len(images) - 1
+        while remaining_calls > 0:
+            self.get_image_sequence_no()
+            remaining_calls -= 1
+
         itransformer.create_image_index()
 
         self.path = itransformer.path
