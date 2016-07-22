@@ -8,7 +8,7 @@ import settings
 import shutil
 from io import BytesIO
 from .PDFTransformer import PDFTransformer
-from app.views.image_filters import get_env, format_date
+from transform.views.image_filters import get_env, format_date
 
 
 class ImageTransformer(object):

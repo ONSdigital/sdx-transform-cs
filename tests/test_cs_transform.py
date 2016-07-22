@@ -1,5 +1,5 @@
 from server import app
-from app.views.test_views import test_message
+from transform.views.test_views import test_message
 import unittest
 import io
 import zipfile
