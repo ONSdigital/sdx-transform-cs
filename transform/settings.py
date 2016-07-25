@@ -1,12 +1,13 @@
 import logging
 import requests
+import os
 from requests.packages.urllib3.util.retry import Retry
 from requests.adapters import HTTPAdapter
 
-logger = logging.getLogger(__name__)
-
 LOGGING_FORMAT = "%(asctime)s|%(levelname)s: sdx-transform-cs: %(message)s"
 LOGGING_LEVEL = logging.DEBUG
+
+SDX_SEQUENCE_URL = os.getenv("SDX_SEQUENCE_URL", "http://sdx-sequence:5000")
 
 IMAGE_PATH = "\\\\NP3RVWAPXX370\SDX_preprod\EDC_QImages\Images"
 

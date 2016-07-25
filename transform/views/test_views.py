@@ -3,8 +3,11 @@ from transform import app
 from jinja2 import Environment, PackageLoader
 
 from flask import make_response, send_file
-
+import logging
+from structlog import wrap_logger
 import json
+
+logger = wrap_logger(logging.getLogger(__name__))
 
 env = Environment(loader=PackageLoader('transform', 'templates'))
 
@@ -101,7 +104,7 @@ def cs_test():
     with open("./transform/surveys/%s.%s.json" % (survey_response['survey_id'], form_id)) as json_file:
         survey = json.load(json_file)
 
-        ctransformer = CSTransformer(survey, survey_response)
+        ctransformer = CSTransformer(logger, survey, survey_response)
 
         ctransformer.create_formats()
         ctransformer.prepare_archive()

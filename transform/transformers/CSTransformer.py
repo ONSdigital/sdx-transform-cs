@@ -14,7 +14,8 @@ env = Environment(loader=PackageLoader('transform', 'templates'))
 
 
 class CSTransformer(object):
-    def __init__(self, survey, response_data, batch_number=False, sequence_no=1000):
+    def __init__(self, logger, survey, response_data, batch_number=False, sequence_no=1000):
+        self.logger = logger
         self.survey = survey
         self.response = response_data
         self.path = ""

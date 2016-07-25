@@ -1,5 +1,7 @@
 from transform import app
-
+from transform import settings
+import logging
+from structlog import wrap_logger
 from flask import request, make_response, send_file, jsonify
 from transform.transformers import PCKTransformer, PDFTransformer, ImageTransformer, CSTransformer
 from jinja2 import Environment, PackageLoader
@@ -8,6 +10,9 @@ import json
 
 env = Environment(loader=PackageLoader('transform', 'templates'))
 
+logging.basicConfig(level=settings.LOGGING_LEVEL, format=settings.LOGGING_FORMAT)
+logger = wrap_logger(logging.getLogger(__name__))
+
 
 @app.errorhandler(400)
 def errorhandler_400(e):
@@ -15,7 +20,7 @@ def errorhandler_400(e):
 
 
 def client_error(error=None):
-    app.logger.error("FAILURE:%s", error)
+    logger.error("Client error", error=error)
     message = {
         'status': 400,
         'message': error,
@@ -29,6 +34,7 @@ def client_error(error=None):
 
 @app.errorhandler(500)
 def server_error(error=None):
+    logger.error("Server error", error=repr(error))
     message = {
         'status': 500,
         'message': "Internal server error: " + repr(error),
@@ -67,7 +73,7 @@ def render_pck(batch_number=False):
     cs_form_id = pck_transformer.get_cs_form_id()
     sub_date_str = pck_transformer.get_subdate_str()
 
-    app.logger.info("PCK:SUCCESS")
+    logger.info("PCK:SUCCESS")
 
     return template.render(response=response, submission_date=sub_date_str,
                            batch_number=batch_number, form_id=cs_form_id,
@@ -79,7 +85,7 @@ def render_idbr():
     response = request.get_json(force=True)
     template = env.get_template('idbr.tmpl')
 
-    app.logger.info("IDBR:SUCCESS")
+    logger.info("IDBR:SUCCESS")
 
     return template.render(response=response)
 
@@ -94,7 +100,7 @@ def render_html():
     if not survey:
         return client_error("HTML:Unsupported survey/instrument id")
 
-    app.logger.info("HTML:SUCCESS")
+    logger.info("HTML:SUCCESS")
 
     return template.render(response=response, survey=survey)
 
@@ -118,7 +124,7 @@ def render_pdf():
     response = make_response(rendered_pdf)
     response.mimetype = 'application/pdf'
 
-    app.logger.info("PDF:SUCCESS")
+    logger.info("PDF:SUCCESS")
 
     return response
 
@@ -143,7 +149,7 @@ def render_images():
     except IOError as e:
         return client_error("IMAGES:Could not create zip buffer: %s" % repr(e))
 
-    app.logger.info("IMAGES:SUCCESS")
+    logger.info("IMAGES:SUCCESS")
 
     return send_file(zipfile, mimetype='application/zip', add_etags=False)
 
@@ -165,7 +171,7 @@ def common_software(sequence_no=1000, batch_number=False):
     if not survey:
         return client_error("CS:Unsupported survey/instrument id")
 
-    ctransformer = CSTransformer(survey, survey_response, batch_number, sequence_no)
+    ctransformer = CSTransformer(logger, survey, survey_response, batch_number, sequence_no)
 
     try:
         ctransformer.create_formats()
@@ -177,6 +183,6 @@ def common_software(sequence_no=1000, batch_number=False):
     except Exception as e:
         return server_error(e)
 
-    app.logger.info("CS:SUCCESS")
+    logger.info("CS:SUCCESS")
 
     return send_file(zipfile, mimetype='application/zip', add_etags=False)
