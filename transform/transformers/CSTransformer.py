@@ -26,9 +26,7 @@ class CSTransformer(object):
         itransformer = ImageTransformer(self.logger, self.survey, self.response, sequence_no=self.sequence_no)
 
         itransformer.create_pdf()
-
         itransformer.create_image_sequence()
-
         itransformer.create_image_index()
 
         self.path = itransformer.path

@@ -55,7 +55,6 @@ class ImageTransformer(object):
         images = self.extract_pdf_images()
         self.logger.debug('Images generated', images=images)
 
-
         new_images = []
         index = 0
 
