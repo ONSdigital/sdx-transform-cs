@@ -6,7 +6,6 @@ from .PCKTransformer import PCKTransformer
 from jinja2 import Environment, PackageLoader
 import dateutil.parser
 import shutil
-from transform import settings
 
 env = Environment(loader=PackageLoader('transform', 'templates'))
 
