@@ -53,6 +53,8 @@ class ImageTransformer(object):
         Renumber the image sequence extracted from pdf
         '''
         images = self.extract_pdf_images()
+        self.logger.debug('Images generated', images=images)
+
 
         new_images = []
         index = 0
