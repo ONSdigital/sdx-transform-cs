@@ -85,7 +85,7 @@ class PDFTransformer(object):
         return elements
 
     def get_localised_date(self, date_to_transform, timezone='Europe/London'):
-        return arrow.get(date_to_transform).to(timezone).format("ddd DD MMM HH:mm:ss YYYY")
+        return arrow.get(date_to_transform).to(timezone).format("DD MMMM YYYY HH:mm:ss")
 
     def get_table_data(self, question_group):
         table_data = []
