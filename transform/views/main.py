@@ -138,7 +138,7 @@ def render_images():
     if not survey:
         return client_error("IMAGES:Unsupported survey/instrument id")
 
-    itransformer = ImageTransformer(survey, survey_response)
+    itransformer = ImageTransformer(logger, survey, survey_response)
 
     try:
         itransformer.create_pdf()

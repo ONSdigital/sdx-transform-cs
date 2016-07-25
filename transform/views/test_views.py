@@ -55,7 +55,7 @@ def images_test():
     with open("./transform/surveys/%s.%s.json" % (survey_response['survey_id'], form_id)) as json_file:
         survey = json.load(json_file)
 
-        itransformer = ImageTransformer(survey, survey_response)
+        itransformer = ImageTransformer(logger, survey, survey_response)
 
         itransformer.create_pdf()
         itransformer.create_image_sequence()
