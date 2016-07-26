@@ -9,10 +9,13 @@ import shutil
 from io import BytesIO
 from .PDFTransformer import PDFTransformer
 from transform.views.image_filters import get_env, format_date
+from requests.packages.urllib3.exceptions import MaxRetryError
+from transform.settings import session
 
 
 class ImageTransformer(object):
-    def __init__(self, survey, response_data, sequence_no=1000):
+    def __init__(self, logger, survey, response_data, sequence_no=1000):
+        self.logger = logger
         self.survey = survey
         self.response = response_data
         self.sequence_no = sequence_no
@@ -36,17 +39,30 @@ class ImageTransformer(object):
 
         return self.images
 
-    def create_image_sequence(self, start=1):
+    def get_image_sequence_numbers(self):
+        sequence_numbers = []
+        for image in self.images:
+            sequence_number = self.get_image_sequence_no()
+            sequence_numbers.append(sequence_number)
+
+        self.logger.debug('Sequence numbers generated', sequence_numbers=sequence_numbers)
+        return sequence_numbers
+
+    def create_image_sequence(self):
         '''
         Renumber the image sequence extracted from pdf
         '''
-        new_images = []
-        index = start
+        images = self.extract_pdf_images()
+        self.logger.debug('Images generated', images=images)
 
-        for file in self.extract_pdf_images():
-            new_name = "S%05d%04d.JPG" % (self.sequence_no, index)
+        new_images = []
+        index = 0
+
+        sequence_numbers = self.get_image_sequence_numbers()
+        for image_file in images:
+            new_name = "S%09d.JPG" % sequence_numbers[index]
             new_images.append(new_name)
-            os.rename(os.path.join(self.path, file), os.path.join(self.path, new_name))
+            os.rename(os.path.join(self.path, image_file), os.path.join(self.path, new_name))
             index += 1
 
         self.images = new_images
@@ -94,3 +110,37 @@ class ImageTransformer(object):
         Remove all temporary files, by removing top level dir
         '''
         shutil.rmtree(os.path.join(self.path))
+
+    def response_ok(self, res):
+        if res.status_code == 200:
+            self.logger.info("Returned from service", request_url=res.url, status_code=res.status_code)
+            return True
+        else:
+            self.logger.error("Returned from service", request_url=res.url, status_code=res.status_code)
+            return False
+
+    def remote_call(self, request_url, json=None):
+        try:
+            self.logger.info("Calling service", request_url=request_url)
+
+            r = None
+
+            if json:
+                r = session.post(request_url, json=json)
+            else:
+                r = session.get(request_url)
+
+            return r
+        except MaxRetryError:
+            self.logger.error("Max retries exceeded (5)", request_url=request_url)
+
+    def get_image_sequence_no(self):
+        sequence_url = settings.SDX_SEQUENCE_URL + "/image-sequence"
+
+        r = self.remote_call(sequence_url)
+
+        if not self.response_ok(r):
+            return False
+
+        result = r.json()
+        return result['sequence_no']

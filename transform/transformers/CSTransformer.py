@@ -11,7 +11,8 @@ env = Environment(loader=PackageLoader('transform', 'templates'))
 
 
 class CSTransformer(object):
-    def __init__(self, survey, response_data, batch_number=False, sequence_no=1000):
+    def __init__(self, logger, survey, response_data, batch_number=False, sequence_no=1000):
+        self.logger = logger
         self.survey = survey
         self.response = response_data
         self.path = ""
@@ -21,7 +22,7 @@ class CSTransformer(object):
         self.sequence_no = sequence_no
 
     def create_formats(self):
-        itransformer = ImageTransformer(self.survey, self.response, self.sequence_no)
+        itransformer = ImageTransformer(self.logger, self.survey, self.response, sequence_no=self.sequence_no)
 
         itransformer.create_pdf()
         itransformer.create_image_sequence()

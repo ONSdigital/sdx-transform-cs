@@ -10,6 +10,7 @@ import dateutil
 import csv
 import json
 from transform.views.image_filters import format_date
+from unittest.mock import patch
 
 
 def get_file_as_string(filename):
@@ -114,7 +115,8 @@ class TestTransformService(unittest.TestCase):
 
             self.assertEqual(actual_response, expected_response)
 
-    def test_transforms_csv(self):
+    @patch('transform.transformers.ImageTransformer.get_image_sequence_numbers', return_value=[1])
+    def test_transforms_csv(self, mock_sequence_no):
         test_scenarios = get_test_scenarios('csv')
 
         print("Found %d csv scenarios" % len(test_scenarios))
