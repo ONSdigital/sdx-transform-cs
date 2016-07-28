@@ -96,7 +96,9 @@ class PDFTransformer(object):
 
         for question in question_group['questions']:
             if 'text' in question:
-                answer = self.response['data'][question['question_id']]
+                answer = ''
+                if question['question_id'] in self.response['data']:
+                    answer = self.response['data'][question['question_id']]
                 table_data.append([Paragraph(question['text'], styleN), answer])
 
         return table_data
