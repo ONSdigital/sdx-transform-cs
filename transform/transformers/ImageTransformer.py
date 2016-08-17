@@ -91,7 +91,6 @@ class ImageTransformer(object):
         with open(os.path.join(self.path, self.index_file), "w") as fh:
             fh.write(template_output)
 
-
     def create_zip(self):
         '''
         Create a zip from a renumbered sequence
