@@ -1,5 +1,5 @@
 {% filter trim_final_newline -%}
 {% for image in images -%}
-{{creation_time|format_date}},{{IMAGE_PATH}}\{{image}},{{creation_time|format_date('short')}},{{image|scan_id}},{{response.survey_id}},{{response.collection.instrument_id}},{{response.metadata.ru_ref|statistical_unit_id}},{{response.collection.period|format_period}},{{loop.index|format_page}}
+{{creation_time.long}},{{IMAGE_PATH}}\{{image}},{{creation_time.short}},{{image|scan_id}},{{response.survey_id}},{{response.collection.instrument_id}},{{response.metadata.ru_ref|statistical_unit_id}},{{response.collection.period|format_period}},{{loop.index|format_page}}
 {% endfor %}
 {%- endfilter %}

@@ -76,11 +76,15 @@ class ImageTransformer(object):
         env = get_env()
         template = env.get_template('csv.tmpl')
 
-        current_time = datetime.datetime.now()
+        current_time = datetime.datetime.utcnow()
+        creation_time = {
+            'short': format_date(current_time, 'short'),
+            'long': format_date(current_time)
+        }
         submission_date = dateutil.parser.parse(self.response['submitted_at'])
         submission_date_str = format_date(submission_date, 'short')
 
-        template_output = template.render(IMAGE_PATH=settings.IMAGE_PATH, images=self.images, response=self.response, creation_time=current_time)
+        template_output = template.render(IMAGE_PATH=settings.IMAGE_PATH, images=self.images, response=self.response, creation_time=creation_time)
 
         self.index_file = "EDC_%s_%s_%04d.csv" % (self.survey['survey_id'], submission_date_str, self.sequence_no)
 
