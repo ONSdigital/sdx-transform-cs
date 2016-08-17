@@ -76,7 +76,7 @@ class ImageTransformer(object):
         env = get_env()
         template = env.get_template('csv.tmpl')
 
-        current_time = datetime.datetime.now()
+        current_time = datetime.datetime.utcnow()
         creation_time = {
             'short': format_date(current_time, 'short'),
             'long': format_date(current_time)
@@ -90,6 +90,7 @@ class ImageTransformer(object):
 
         with open(os.path.join(self.path, self.index_file), "w") as fh:
             fh.write(template_output)
+
 
     def create_zip(self):
         '''
