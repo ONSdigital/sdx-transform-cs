@@ -9,7 +9,7 @@ LOGGING_LEVEL = logging.DEBUG
 
 SDX_SEQUENCE_URL = os.getenv("SDX_SEQUENCE_URL", "http://sdx-sequence:5000")
 
-IMAGE_PATH = "\\\\NP3RVWAPXX370\SDX_preprod\EDC_QImages\Images"
+SDX_FTP_IMAGES_PATH = os.getenv("SDX_FTP_IMAGES_PATH", "\\\\NP3RVWAPXX370\SDX_preprod\EDC_QImages\Images")
 
 # Configure the number of retries attempted before failing call
 session = requests.Session()
