@@ -4,6 +4,14 @@
   "form_type": "0112",
   "question_groups": [
     {
+      "title": "Comments",
+      "questions": [{
+        "text": "Please indicate the reasons for any changes in the business's total retail turnover",
+        "question_id": "146",
+        "type": "contains"
+      }]
+    },
+    {
       "title": "2. Period",
       "questions": [
         {
