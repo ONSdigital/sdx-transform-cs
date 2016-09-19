@@ -29,9 +29,10 @@ class PCKTransformer(object):
         for question_group in self.survey['question_groups']:
             for answer in question_group['questions']:
                 question_id = answer['question_id']
-                questions.append(int(answer['question_id']))
-                if 'type' in answer:
-                    question_types[question_id] = answer['type']
+                if int(question_id) is not 147:
+                    questions.append(int(answer['question_id']))
+                    if 'type' in answer:
+                        question_types[question_id] = answer['type']
 
         return questions, question_types
 
@@ -75,13 +76,25 @@ class PCKTransformer(object):
 
         return required
 
+    def preprocess_comments(self):
+        '''
+        147 indicates a special comment type that should not be shown
+        in pck, but in image. Additionally should set 146 if unset.
+        '''
+        if '147' in self.data:
+            del self.data['147']
+            if '146' not in self.data:
+                self.data['146'] = 1
+
+        return self.data
+
     def derive_answers(self):
         '''
         Takes a loaded dict structure of survey data and answers sent
         in a request and derives values to use in response
         '''
         derived = []
-        answers = self.data
+        answers = self.preprocess_comments()
 
         self.form_questions, self.form_question_types = self.get_form_questions()
 
