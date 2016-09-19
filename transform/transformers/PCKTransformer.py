@@ -1,6 +1,13 @@
 from datetime import datetime
 import dateutil.parser
 
+from transform import settings
+import logging
+from structlog import wrap_logger
+
+logging.basicConfig(level=settings.LOGGING_LEVEL, format=settings.LOGGING_FORMAT)
+logger = wrap_logger(logging.getLogger(__name__))
+
 
 class PCKTransformer(object):
     form_ids = {
@@ -29,9 +36,10 @@ class PCKTransformer(object):
         for question_group in self.survey['question_groups']:
             for answer in question_group['questions']:
                 question_id = answer['question_id']
-                questions.append(int(answer['question_id']))
-                if 'type' in answer:
-                    question_types[question_id] = answer['type']
+                if int(question_id) is not 147:
+                    questions.append(int(answer['question_id']))
+                    if 'type' in answer:
+                        question_types[question_id] = answer['type']
 
         return questions, question_types
 
@@ -75,18 +83,17 @@ class PCKTransformer(object):
 
         return required
 
-    def derive_comments(self, answers):
+    def preprocess_comments(self):
         '''
         147 indicates a special comment type that should not be shown
         in pck, but in image. Additionally should set 146 if unset.
         '''
-        if answers[147] and not answers[146]:
-            answers[146] = 1
+        if '147' in self.data:
+            del self.data['147']
+            if '146' not in self.data:
+                self.data['146'] = 1
 
-        if answers[147]:
-            del answers[147]
-
-        return answers
+        return self.data
 
     def derive_answers(self):
         '''
@@ -94,7 +101,7 @@ class PCKTransformer(object):
         in a request and derives values to use in response
         '''
         derived = []
-        answers = self.data
+        answers = self.preprocess_comments()
 
         self.form_questions, self.form_question_types = self.get_form_questions()
 
