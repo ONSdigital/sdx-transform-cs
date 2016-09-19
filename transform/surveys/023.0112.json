@@ -9,6 +9,10 @@
         "text": "Please indicate the reasons for any changes in the business's total retail turnover",
         "question_id": "146",
         "type": "contains"
+      }, {
+        "text": "Explain any significant changes in the number of employees",
+        "question_id": "147",
+        "type": "contains"
       }]
     },
     {

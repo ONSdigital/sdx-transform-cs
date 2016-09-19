@@ -75,6 +75,19 @@ class PCKTransformer(object):
 
         return required
 
+    def derive_comments(self, answers):
+        '''
+        147 indicates a special comment type that should not be shown
+        in pck, but in image. Additionally should set 146 if unset.
+        '''
+        if answers[147] and not answers[146]:
+            answers[146] = 1
+
+        if answers[147]:
+            del answers[147]
+
+        return answers
+
     def derive_answers(self):
         '''
         Takes a loaded dict structure of survey data and answers sent
