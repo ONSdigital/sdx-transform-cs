@@ -99,6 +99,6 @@ class PDFTransformer(object):
                 answer = ''
                 if question['question_id'] in self.response['data']:
                     answer = self.response['data'][question['question_id']]
-                table_data.append([Paragraph(question['text'], styleN), answer])
+                table_data.append([Paragraph(question['text'], styleN), Paragraph(answer, styleN)])
 
         return table_data
