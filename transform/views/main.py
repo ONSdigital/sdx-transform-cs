@@ -186,3 +186,8 @@ def common_software(sequence_no=1000, batch_number=False):
     logger.info("CS:SUCCESS")
 
     return send_file(zipfile, mimetype='application/zip', add_etags=False)
+
+
+@app.route('/healthcheck', methods=['GET'])
+def healthcheck():
+    return jsonify({'status': 'OK'})
