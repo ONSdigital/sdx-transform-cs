@@ -7,6 +7,7 @@
     {
       "title": "Comments",
       "questions": [{
+        "text": "Please explain any movements in your data e.g. sale held, branches opened or sold, extreme weather, or temporary closure of shop",
         "question_id": "146",
         "type": "contains"
       }]
