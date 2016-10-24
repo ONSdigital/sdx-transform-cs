@@ -16,6 +16,7 @@ styleN.alignment = TA_LEFT
 styleH = styles['Heading1']
 styleH.alignment = TA_CENTER
 
+MAX_ANSWER_CHARACTERS_PER_LINE = 35
 
 class PDFTransformer(object):
     def __init__(self, survey, response_data):
@@ -101,7 +102,7 @@ class PDFTransformer(object):
                 if question['question_id'] in self.response['data']:
                     answer = self.response['data'][question['question_id']]
 
-                wrapped_answer = "\n".join(wrap(answer, 35))
+                wrapped_answer = "\n".join(wrap(answer, MAX_ANSWER_CHARACTERS_PER_LINE))
 
                 table_data.append([Paragraph(question['text'], styleN), Paragraph(wrapped_answer, styleN)])
 
