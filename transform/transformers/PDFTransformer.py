@@ -18,6 +18,7 @@ styleH.alignment = TA_CENTER
 
 MAX_ANSWER_CHARACTERS_PER_LINE = 35
 
+
 class PDFTransformer(object):
     def __init__(self, survey, response_data):
         '''
