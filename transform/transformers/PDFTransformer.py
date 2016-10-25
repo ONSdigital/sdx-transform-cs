@@ -4,6 +4,7 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
 from reportlab.lib.enums import TA_LEFT, TA_CENTER
 from io import BytesIO
+from textwrap import wrap
 import uuid
 import os
 import arrow
@@ -14,6 +15,8 @@ styleN.alignment = TA_LEFT
 
 styleH = styles['Heading1']
 styleH.alignment = TA_CENTER
+
+MAX_ANSWER_CHARACTERS_PER_LINE = 35
 
 
 class PDFTransformer(object):
@@ -99,6 +102,9 @@ class PDFTransformer(object):
                 answer = ''
                 if question['question_id'] in self.response['data']:
                     answer = self.response['data'][question['question_id']]
-                table_data.append([Paragraph(question['text'], styleN), Paragraph(answer, styleN)])
+
+                wrapped_answer = "\n".join(wrap(answer, MAX_ANSWER_CHARACTERS_PER_LINE))
+
+                table_data.append([Paragraph(question['text'], styleN), Paragraph(wrapped_answer, styleN)])
 
         return table_data
