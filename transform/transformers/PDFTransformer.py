@@ -103,27 +103,7 @@ class PDFTransformer(object):
                         elements.append(Paragraph(question['text'], styleSSH))
                         elements.append(Paragraph(answer, styleN))
 
-
         return elements
 
     def get_localised_date(self, date_to_transform, timezone='Europe/London'):
         return arrow.get(date_to_transform).to(timezone).format("DD MMMM YYYY HH:mm:ss")
-
-    def get_table_data(self, question_group):
-        table_data = []
-
-        if 'title' in question_group:
-            meta = question_group['meta'] if 'meta' in question_group else ''
-            table_data.append([question_group['title'], meta])
-
-        for question in question_group['questions']:
-            if 'text' in question:
-                answer = ''
-                if question['question_id'] in self.response['data']:
-                    answer = self.response['data'][question['question_id']]
-
-                wrapped_answer = "\n".join(wrap(answer, MAX_ANSWER_CHARACTERS_PER_LINE))
-
-                table_data.append([Paragraph(question['text'], styleN), Paragraph(wrapped_answer, styleN)])
-
-        return table_data
