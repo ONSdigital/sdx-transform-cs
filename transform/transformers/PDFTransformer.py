@@ -10,9 +10,21 @@ import os
 import arrow
 
 styles = getSampleStyleSheet()
+
+# Basic text style
 styleN = styles["BodyText"]
 styleN.alignment = TA_LEFT
+styleN.spaceAfter = 25
 
+# Subheading style
+styleSH = styles["Heading2"]
+styleSH.alignment = TA_LEFT
+
+# Sub-subheading style (questions)
+styleSSH = styles["Heading3"]
+styleSSH.alignment = TA_LEFT
+
+# Main heading style
 styleH = styles['Heading1']
 styleH.alignment = TA_CENTER
 
@@ -78,33 +90,20 @@ class PDFTransformer(object):
         elements.append(heading)
 
         for question_group in self.survey['question_groups']:
-            table_data = self.get_table_data(question_group)
 
-            if len(table_data) > 0:
-                table = Table(table_data, style=table_style, colWidths='*', repeatRows=1)
+            if 'title' in question_group:
+                elements.append(Paragraph(question_group['title'], styleSH))
 
-                elements.append(table)
+                for question in question_group['questions']:
+                    if 'text' in question:
+                        answer = ''
+                        if question['question_id'] in self.response['data']:
+                            answer = self.response['data'][question['question_id']]
+
+                        elements.append(Paragraph(question['text'], styleSSH))
+                        elements.append(Paragraph(answer,styleN))
 
         return elements
 
     def get_localised_date(self, date_to_transform, timezone='Europe/London'):
         return arrow.get(date_to_transform).to(timezone).format("DD MMMM YYYY HH:mm:ss")
-
-    def get_table_data(self, question_group):
-        table_data = []
-
-        if 'title' in question_group:
-            meta = question_group['meta'] if 'meta' in question_group else ''
-            table_data.append([question_group['title'], meta])
-
-        for question in question_group['questions']:
-            if 'text' in question:
-                answer = ''
-                if question['question_id'] in self.response['data']:
-                    answer = self.response['data'][question['question_id']]
-
-                wrapped_answer = "\n".join(wrap(answer, MAX_ANSWER_CHARACTERS_PER_LINE))
-
-                table_data.append([Paragraph(question['text'], styleN), Paragraph(wrapped_answer, styleN)])
-
-        return table_data
