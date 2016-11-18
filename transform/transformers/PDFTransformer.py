@@ -4,7 +4,6 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
 from reportlab.lib.enums import TA_LEFT, TA_CENTER
 from io import BytesIO
-from textwrap import wrap
 import uuid
 import os
 import arrow
@@ -92,6 +91,7 @@ class PDFTransformer(object):
         for question_group in self.survey['question_groups']:
 
             if 'title' in question_group:
+                # meta = question_group['meta'] if 'meta' in question_group else ''
                 elements.append(Paragraph(question_group['title'], styleSH))
 
                 for question in question_group['questions']:
@@ -101,9 +101,29 @@ class PDFTransformer(object):
                             answer = self.response['data'][question['question_id']]
 
                         elements.append(Paragraph(question['text'], styleSSH))
-                        elements.append(Paragraph(answer,styleN))
+                        elements.append(Paragraph(answer, styleN))
+
 
         return elements
 
     def get_localised_date(self, date_to_transform, timezone='Europe/London'):
         return arrow.get(date_to_transform).to(timezone).format("DD MMMM YYYY HH:mm:ss")
+
+    def get_table_data(self, question_group):
+        table_data = []
+
+        if 'title' in question_group:
+            meta = question_group['meta'] if 'meta' in question_group else ''
+            table_data.append([question_group['title'], meta])
+
+        for question in question_group['questions']:
+            if 'text' in question:
+                answer = ''
+                if question['question_id'] in self.response['data']:
+                    answer = self.response['data'][question['question_id']]
+
+                wrapped_answer = "\n".join(wrap(answer, MAX_ANSWER_CHARACTERS_PER_LINE))
+
+                table_data.append([Paragraph(question['text'], styleN), Paragraph(wrapped_answer, styleN)])
+
+        return table_data
