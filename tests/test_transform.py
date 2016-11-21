@@ -115,7 +115,7 @@ class TestTransformService(unittest.TestCase):
 
             self.assertEqual(actual_response, expected_response)
 
-    @patch('transform.transformers.ImageTransformer.get_image_sequence_numbers', return_value=[1,2])
+    @patch('transform.transformers.ImageTransformer.get_image_sequence_numbers', return_value=[1, 2])
     def test_transforms_csv(self, mock_sequence_no):
         test_scenarios = get_test_scenarios('csv')
 
@@ -154,7 +154,6 @@ class TestTransformService(unittest.TestCase):
             modified_csv = list(csv.reader(io.StringIO(modified_content)))
 
             self.assertEqual(expected_csv, modified_csv)
-
 
     def test_invalid_input(self):
         r = self.app.post(self.transform_pck_endpoint, data="rubbish")
