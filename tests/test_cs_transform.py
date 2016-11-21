@@ -29,7 +29,7 @@ class TestCSTransformService(unittest.TestCase):
 
         return z.namelist()
 
-    @patch('transform.transformers.ImageTransformer.get_image_sequence_numbers', return_value=[13])
+    @patch('transform.transformers.ImageTransformer.get_image_sequence_numbers', return_value=[13,14])
     def test_creates_cs_defaults(self, mock_sequence_no):
 
         ziplist = self.get_zip_list(self.transform_cs_endpoint)
@@ -39,12 +39,13 @@ class TestCSTransformService(unittest.TestCase):
             'EDC_QData/023_1000',
             'EDC_QReceipts/REC1203_1000.DAT',
             'EDC_QImages/Images/S000000013.JPG',
+            'EDC_QImages/Images/S000000014.JPG',
             'EDC_QImages/Index/EDC_023_20160312_1000.csv'
         ]
 
         self.assertEqual(expected, ziplist)
 
-    @patch('transform.transformers.ImageTransformer.get_image_sequence_numbers', return_value=[1985])
+    @patch('transform.transformers.ImageTransformer.get_image_sequence_numbers', return_value=[1985,1986])
     def test_creates_cs_sequence(self, mock_sequence_no):
 
         ziplist = self.get_zip_list(self.transform_cs_endpoint + "/2345")
@@ -54,6 +55,7 @@ class TestCSTransformService(unittest.TestCase):
             'EDC_QData/023_2345',
             'EDC_QReceipts/REC1203_2345.DAT',
             'EDC_QImages/Images/S000001985.JPG',
+            'EDC_QImages/Images/S000001986.JPG',
             'EDC_QImages/Index/EDC_023_20160312_2345.csv'
         ]
 
@@ -66,6 +68,7 @@ class TestCSTransformService(unittest.TestCase):
             'EDC_QData/023_0999',
             'EDC_QReceipts/REC1203_0999.DAT',
             'EDC_QImages/Images/S000001985.JPG',
+            'EDC_QImages/Images/S000001986.JPG',
             'EDC_QImages/Index/EDC_023_20160312_0999.csv'
         ]
 
