@@ -4,6 +4,7 @@ build: check-dependencies
 	pip install -r requirements.txt
 
 test: build
+	pip install -r test_requirements.txt
 	python3 -m unittest tests/*.py
 
 check-dependencies:
