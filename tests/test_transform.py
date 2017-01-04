@@ -136,6 +136,7 @@ class TestTransformService(unittest.TestCase):
 
             expected_content = get_expected_output(scenario_filename, 'csv')
             expected_csv = list(csv.reader(io.StringIO(expected_content)))
+            print(expected_csv)
 
             date_object = datetime.strptime(expected_csv[0][0], '%d/%m/%Y %H:%M:%S')
 
