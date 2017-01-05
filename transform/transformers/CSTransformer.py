@@ -16,6 +16,8 @@ class CSTransformer(object):
         self.survey = survey
         self.response = response_data
         self.path = ""
+        self.images = []
+        self.index = None
         # A list of (dest, file) tuples
         self.files_to_archive = []
         self.batch_number = batch_number
@@ -24,13 +26,12 @@ class CSTransformer(object):
     def create_formats(self):
         itransformer = ImageTransformer(self.logger, self.survey, self.response, sequence_no=self.sequence_no)
 
-        itransformer.create_pdf()
-        itransformer.create_image_sequence()
-        itransformer.create_image_index()
+        path = itransformer.create_pdf()
+        self.images = itransformer.create_image_sequence(path)
+        self.index = itransformer.create_image_index(self.images)
 
-        self.path = itransformer.path
-        self.rootname = itransformer.rootname
-        self.itransformer = itransformer
+        self.path, baseName = os.path.split(path)
+        self.rootname, _ = os.path.splitext(baseName)
 
         self.create_pck()
         self.create_idbr()
@@ -42,10 +43,12 @@ class CSTransformer(object):
         self.files_to_archive.append(("EDC_QData", self.pck_file))
         self.files_to_archive.append(("EDC_QReceipts", self.idbr_file))
 
-        for image in self.itransformer.images:
+        for image in self.images:
             self.files_to_archive.append(("EDC_QImages/Images", image))
 
-        self.files_to_archive.append(("EDC_QImages/Index", self.itransformer.index_file))
+        if self.index is not None:
+            locn, fN = os.path.split(self.index)
+            self.files_to_archive.append(("EDC_QImages/Index", fN))
 
     def create_pck(self):
         template = env.get_template('pck.tmpl')

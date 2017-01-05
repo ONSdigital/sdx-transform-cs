@@ -1,4 +1,4 @@
-import os
+import os.path
 import glob
 import subprocess
 import zipfile
@@ -43,6 +43,7 @@ class ImageTransformer(object):
         self.pdf_file = pdf_transformer.render_to_file()
         self.path, self.base_name = os.path.split(self.pdf_file)
         self.rootname, _ = os.path.splitext(self.base_name)
+        return self.pdf_file
 
     def get_image_sequence_numbers(self):
         sequence_numbers = []
@@ -53,28 +54,25 @@ class ImageTransformer(object):
         self.logger.debug('Sequence numbers generated', sequence_numbers=sequence_numbers)
         return sequence_numbers
 
-    def create_image_sequence(self):
+    def create_image_sequence(self, path, numberSeq=None):
         '''
         Renumber the image sequence extracted from pdf
         '''
-        self.images = ImageTransformer.extract_pdf_images(self.path, self.base_name)
-        self.logger.debug('Images generated', images=self.images)
+        locn, baseName = os.path.split(path)
+        images = ImageTransformer.extract_pdf_images(locn, baseName)
+        self.logger.debug('Images generated', images=images)
 
-        new_images = []
-        index = 0
+        rv = []
 
-        sequence_numbers = self.get_image_sequence_numbers()
-        for image_file in self.images:
-            new_name = "S%09d.JPG" % sequence_numbers[index]
-            new_images.append(new_name)
-            os.rename(os.path.join(self.path, image_file), os.path.join(self.path, new_name))
-            index += 1
+        numberSeq = numberSeq or self.get_image_sequence_numbers()
+        for imageFile, n in zip(images, numberSeq):
+            name = "S%09d.JPG" % n
+            rv.append(name)
+            os.rename(imageFile, os.path.join(self.path, name))
 
-        self.images = new_images
+        return rv
 
-        return self.images
-
-    def create_image_index(self):
+    def create_image_index(self, images):
         '''
         Takes a list of images and creates a index csv from them
         '''
@@ -89,37 +87,47 @@ class ImageTransformer(object):
         submission_date = dateutil.parser.parse(self.response['submitted_at'])
         submission_date_str = format_date(submission_date, 'short')
 
-        template_output = template.render(SDX_FTP_IMAGES_PATH=settings.SDX_FTP_IMAGES_PATH,
-                                          images=self.images, response=self.response, creation_time=creation_time)
+        template_output = template.render(
+            SDX_FTP_IMAGES_PATH=settings.SDX_FTP_IMAGES_PATH,
+            images=images, response=self.response, creation_time=creation_time
+        )
 
         self.index_file = "EDC_%s_%s_%04d.csv" % (self.survey['survey_id'], submission_date_str, self.sequence_no)
 
-        with open(os.path.join(self.path, self.index_file), "w") as fh:
+        path = os.path.join(self.path, self.index_file)
+        with open(path, "w") as fh:
             fh.write(template_output)
+        return path
 
-    def create_zip(self):
+    def create_zip(self, images, index):
         '''
         Create a zip from a renumbered sequence
         '''
         in_memory_zip = BytesIO()
 
         with zipfile.ZipFile(in_memory_zip, 'w', zipfile.ZIP_DEFLATED) as zipf:
-            for file in self.images:
-                zipf.write(os.path.join(self.path, file), arcname=file)
+            for fP in images:
+                fN = os.path.basename(fP)
+                try:
+                    zipf.write(fP, arcname=fN)
+                except Exception as e:
+                    self.logger.error(e)
 
-            if self.index_file:
-                zipf.write(os.path.join(self.path, self.index_file), arcname=self.index_file)
+            if index:
+                fN = os.path.basename(index)
+                zipf.write(index, arcname=fN)
 
         # Return to beginning of file
         in_memory_zip.seek(0)
 
         return in_memory_zip
 
-    def cleanup(self):
+    def cleanup(self, locn):
         '''
         Remove all temporary files, by removing top level dir
         '''
-        shutil.rmtree(os.path.join(self.path))
+        self.logger.debug(locn)
+        shutil.rmtree(locn)
 
     def response_ok(self, res):
         if res.status_code == 200:

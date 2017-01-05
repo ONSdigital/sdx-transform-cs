@@ -145,7 +145,7 @@ class TestTransformService(unittest.TestCase):
 
             filename = 'EDC_{}_{}_1000.csv'.format(payload_object['survey_id'], sub_date_str)
 
-            self.assertTrue(filename in z.namelist())
+            self.assertTrue(filename in z.namelist(), z.namelist())
 
             edc_file = z.open(filename)
 
