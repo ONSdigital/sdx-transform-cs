@@ -20,7 +20,7 @@ from transform.settings import session
 
 
 __doc__ = """
-SDX PDF Transformer.
+SDX Image Transformer.
 
 Example:
 
@@ -75,17 +75,12 @@ class ImageTransformer(object):
         locn, baseName = os.path.split(path)
         images = ImageTransformer.extract_pdf_images(locn, baseName)
 
-        rv = []
-
         numberSeq = numberSeq or self.get_image_sequence_numbers()
         for imageFile, n in zip(images, numberSeq):
             name = "S%09d.JPG" % n
             fP = os.path.join(locn, name)
-            rv.append(fP)
             os.rename(imageFile, fP)
-            self.logger.debug('Image named:', name=fP)
-
-        return rv
+            yield fP
 
     def create_image_index(self, images):
         '''

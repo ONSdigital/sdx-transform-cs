@@ -59,7 +59,7 @@ def images_test():
         itransformer = ImageTransformer(logger, survey, survey_response)
 
         path = itransformer.create_pdf(survey, survey_response)
-        images = itransformer.create_image_sequence(path)
+        images = list(itransformer.create_image_sequence(path))
         index = itransformer.create_image_index(images)
         zipfile = itransformer.create_zip(images, index)
 

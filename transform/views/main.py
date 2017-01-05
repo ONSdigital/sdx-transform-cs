@@ -143,7 +143,7 @@ def render_images():
 
     try:
         path = itransformer.create_pdf(survey, survey_response)
-        images = itransformer.create_image_sequence(path)
+        images = list(itransformer.create_image_sequence(path))
         index = itransformer.create_image_index(images)
         zipfile = itransformer.create_zip(images, index)
         locn, _ = os.path.split(path)

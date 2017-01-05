@@ -31,7 +31,7 @@ class CSTransformer(object):
         path = itransformer.create_pdf(self.survey, self.response)
         self.logger.debug("create_formats")
         self.logger.debug(path)
-        self.images = itransformer.create_image_sequence(path)
+        self.images = list(itransformer.create_image_sequence(path))
         self.index = itransformer.create_image_index(self.images)
 
         self.path, baseName = os.path.split(path)
