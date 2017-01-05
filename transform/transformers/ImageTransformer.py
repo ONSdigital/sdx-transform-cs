@@ -34,10 +34,12 @@ class ImageTransformer(object):
         '''
         Extract all pdf pages as jpegs
         '''
-        subprocess.run(["pdftoppm", "-jpeg", self.base_name, self.rootname], cwd=self.path)
-        self.images = glob.glob("%s/%s-*.jpg" % (self.path, self.rootname))
-
-        return self.images
+        subprocess.run(
+            ["pdftoppm", "-jpeg", self.base_name, self.rootname],
+            check=True,
+            cwd=self.path
+        )
+        return glob.glob("%s/%s-*.jpg" % (self.path, self.rootname))
 
     def get_image_sequence_numbers(self):
         sequence_numbers = []
@@ -52,14 +54,14 @@ class ImageTransformer(object):
         '''
         Renumber the image sequence extracted from pdf
         '''
-        images = self.extract_pdf_images()
-        self.logger.debug('Images generated', images=images)
+        self.images = self.extract_pdf_images()
+        self.logger.debug('Images generated', images=self.images)
 
         new_images = []
         index = 0
 
         sequence_numbers = self.get_image_sequence_numbers()
-        for image_file in images:
+        for image_file in self.images:
             new_name = "S%09d.JPG" % sequence_numbers[index]
             new_images.append(new_name)
             os.rename(os.path.join(self.path, image_file), os.path.join(self.path, new_name))
