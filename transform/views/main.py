@@ -142,7 +142,7 @@ def render_images():
     itransformer = ImageTransformer(logger, survey, survey_response)
 
     try:
-        path = itransformer.create_pdf()
+        path = itransformer.create_pdf(survey, survey_response)
         images = itransformer.create_image_sequence(path)
         index = itransformer.create_image_index(images)
         zipfile = itransformer.create_zip(images, index)

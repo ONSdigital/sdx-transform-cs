@@ -24,9 +24,13 @@ class CSTransformer(object):
         self.sequence_no = sequence_no
 
     def create_formats(self):
-        itransformer = ImageTransformer(self.logger, self.survey, self.response, sequence_no=self.sequence_no)
+        itransformer = ImageTransformer(
+            self.logger, self.survey, self.response, sequence_no=self.sequence_no
+        )
 
-        path = itransformer.create_pdf()
+        path = itransformer.create_pdf(self.survey, self.response)
+        self.logger.debug("create_formats")
+        self.logger.debug(path)
         self.images = itransformer.create_image_sequence(path)
         self.index = itransformer.create_image_index(self.images)
 
@@ -44,10 +48,11 @@ class CSTransformer(object):
         self.files_to_archive.append(("EDC_QReceipts", self.idbr_file))
 
         for image in self.images:
-            self.files_to_archive.append(("EDC_QImages/Images", image))
+            fN = os.path.basename(image)
+            self.files_to_archive.append(("EDC_QImages/Images", fN))
 
         if self.index is not None:
-            locn, fN = os.path.split(self.index)
+            fN = os.path.basename(self.index)
             self.files_to_archive.append(("EDC_QImages/Index", fN))
 
     def create_pck(self):
@@ -96,4 +101,4 @@ class CSTransformer(object):
         return in_memory_zip
 
     def cleanup(self):
-        shutil.rmtree(os.path.join(self.path))
+        shutil.rmtree(self.path)

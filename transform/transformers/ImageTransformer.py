@@ -1,6 +1,12 @@
+#!/usr/bin/env python
+#   coding: UTF-8
+
+import argparse
 import os.path
 import glob
+import json
 import subprocess
+import sys
 import zipfile
 import datetime
 import dateutil.parser
@@ -13,7 +19,26 @@ from requests.packages.urllib3.exceptions import MaxRetryError
 from transform.settings import session
 
 
+__doc__ = """
+SDX PDF Transformer.
+
+Example:
+
+python transform/transformers/ImageTransformer.py --survey transform/surveys/023.0102.json \\
+< tests/replies/ukis-01.json > output.zip
+
+"""
+
+
 class ImageTransformer(object):
+
+    @staticmethod
+    def create_pdf(survey, data):
+        '''
+        Create a pdf which will be used as the basis for images
+        '''
+        pdf_transformer = PDFTransformer(survey, data)
+        return pdf_transformer.render_to_file()
 
     @staticmethod
     def extract_pdf_images(path, fileName):
@@ -34,17 +59,6 @@ class ImageTransformer(object):
         self.response = response_data
         self.sequence_no = sequence_no
 
-    def create_pdf(self):
-        '''
-        Create a pdf which will be used as the basis for images
-        '''
-        pdf_transformer = PDFTransformer(self.survey, self.response)
-
-        self.pdf_file = pdf_transformer.render_to_file()
-        self.path, self.base_name = os.path.split(self.pdf_file)
-        self.rootname, _ = os.path.splitext(self.base_name)
-        return self.pdf_file
-
     def get_image_sequence_numbers(self):
         sequence_numbers = []
         for image in self.images:
@@ -60,15 +74,16 @@ class ImageTransformer(object):
         '''
         locn, baseName = os.path.split(path)
         images = ImageTransformer.extract_pdf_images(locn, baseName)
-        self.logger.debug('Images generated', images=images)
 
         rv = []
 
         numberSeq = numberSeq or self.get_image_sequence_numbers()
         for imageFile, n in zip(images, numberSeq):
             name = "S%09d.JPG" % n
-            rv.append(name)
-            os.rename(imageFile, os.path.join(self.path, name))
+            fP = os.path.join(locn, name)
+            rv.append(fP)
+            os.rename(imageFile, fP)
+            self.logger.debug('Image named:', name=fP)
 
         return rv
 
@@ -89,12 +104,14 @@ class ImageTransformer(object):
 
         template_output = template.render(
             SDX_FTP_IMAGES_PATH=settings.SDX_FTP_IMAGES_PATH,
-            images=images, response=self.response, creation_time=creation_time
+            images=[os.path.basename(i) for i in images],
+            response=self.response, creation_time=creation_time
         )
 
         self.index_file = "EDC_%s_%s_%04d.csv" % (self.survey['survey_id'], submission_date_str, self.sequence_no)
 
-        path = os.path.join(self.path, self.index_file)
+        locn = os.path.commonpath(images)
+        path = os.path.join(locn, self.index_file)
         with open(path, "w") as fh:
             fh.write(template_output)
         return path
@@ -162,3 +179,35 @@ class ImageTransformer(object):
 
         result = r.json()
         return result['sequence_no']
+
+
+def parser(description=__doc__):
+    rv = argparse.ArgumentParser(
+        description,
+    )
+    rv.add_argument(
+        "--survey", required=True,
+        help="Set a path to the survey JSON file.")
+    return rv
+
+
+def main(args):
+    fP = os.path.expanduser(os.path.abspath(args.survey))
+    with open(fP, "r") as fObj:
+        survey = json.load(fObj)
+
+    data = json.load(sys.stdin)
+    tx = PDFTransformer(survey, data)
+    output = tx.render()
+    sys.stdout.write(output.decode("latin-1"))
+    return 0
+
+
+def run():
+    p = parser()
+    args = p.parse_args()
+    rv = main(args)
+    sys.exit(rv)
+
+if __name__ == "__main__":
+    run()
