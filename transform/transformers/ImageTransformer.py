@@ -2,22 +2,31 @@
 #   coding: UTF-8
 
 import argparse
-import os.path
+import datetime
+import dateutil.parser
 import glob
+from io import BytesIO
 import json
+import logging
+import os.path
+import shutil
 import subprocess
 import sys
 import zipfile
-import datetime
-import dateutil.parser
-from transform import settings
-import shutil
-from io import BytesIO
-from .PDFTransformer import PDFTransformer
-from transform.views.image_filters import get_env, format_date
-from requests.packages.urllib3.exceptions import MaxRetryError
-from transform.settings import session
 
+from requests.packages.urllib3.exceptions import MaxRetryError
+
+try:
+    from PDFTransformer import PDFTransformer
+except ImportError:
+    from .PDFTransformer import PDFTransformer
+
+try:
+    from transform import settings
+    from transform.settings import session
+    from transform.views.image_filters import get_env, format_date
+except ImportError:
+    print("Available for command line operation only", file=sys.stderr)
 
 __doc__ = """
 SDX Image Transformer.
@@ -187,14 +196,14 @@ def parser(description=__doc__):
 
 
 def main(args):
+    log = logging.getLogger("ImageTransformer")
     fP = os.path.expanduser(os.path.abspath(args.survey))
     with open(fP, "r") as fObj:
         survey = json.load(fObj)
 
     data = json.load(sys.stdin)
-    tx = PDFTransformer(survey, data)
-    output = tx.render()
-    sys.stdout.write(output.decode("latin-1"))
+    tx = ImageTransformer(log, survey, data)
+    sys.stdout.write(repr(tx))
     return 0
 
 
