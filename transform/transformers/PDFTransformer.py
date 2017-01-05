@@ -17,6 +17,12 @@ from reportlab.lib.enums import TA_LEFT, TA_CENTER
 
 __doc__ = """
 SDX PDF Transformer.
+
+Example:
+
+python transform/transformers/PDFTransformer.py --survey transform/surveys/023.0102.json \\
+< tests/replies/ukis-01.json > output.pdf
+
 """
 
 styles = getSampleStyleSheet()
@@ -120,19 +126,28 @@ class PDFTransformer(object):
     def get_localised_date(self, date_to_transform, timezone='Europe/London'):
         return arrow.get(date_to_transform).to(timezone).format("DD MMMM YYYY HH:mm:ss")
 
+
 def parser(description=__doc__):
     rv = argparse.ArgumentParser(
         description,
     )
+    rv.add_argument(
+        "--survey", required=True,
+        help="Set a path to the survey JSON file.")
     return rv
 
+
 def main(args):
-    data = json.loads(sys.stdin.read())
-    
-    tx = PDFTransformer({}, data)
+    fP = os.path.expanduser(os.path.abspath(args.survey))
+    with open(fP, "r") as fObj:
+        survey = json.load(fObj)
+
+    data = json.load(sys.stdin)
+    tx = PDFTransformer(survey, data)
     output = tx.render()
-    sys.stdout.write(output)
+    sys.stdout.write(output.decode("latin-1"))
     return 0
+
 
 def run():
     p = parser()
