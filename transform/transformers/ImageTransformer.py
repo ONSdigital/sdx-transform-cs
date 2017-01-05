@@ -14,6 +14,20 @@ from transform.settings import session
 
 
 class ImageTransformer(object):
+
+    @staticmethod
+    def extract_pdf_images(path, fileName):
+        '''
+        Extract all pdf pages as jpegs
+        '''
+        rootName, _ = os.path.splitext(fileName)
+        subprocess.run(
+            ["pdftoppm", "-jpeg", fileName, rootName],
+            check=True,
+            cwd=path
+        )
+        return glob.glob("%s/%s-*.jpg" % (path, rootName))
+
     def __init__(self, logger, survey, response_data, sequence_no=1000):
         self.logger = logger
         self.survey = survey
@@ -30,17 +44,6 @@ class ImageTransformer(object):
         self.path, self.base_name = os.path.split(self.pdf_file)
         self.rootname, _ = os.path.splitext(self.base_name)
 
-    def extract_pdf_images(self):
-        '''
-        Extract all pdf pages as jpegs
-        '''
-        subprocess.run(
-            ["pdftoppm", "-jpeg", self.base_name, self.rootname],
-            check=True,
-            cwd=self.path
-        )
-        return glob.glob("%s/%s-*.jpg" % (self.path, self.rootname))
-
     def get_image_sequence_numbers(self):
         sequence_numbers = []
         for image in self.images:
@@ -54,7 +57,7 @@ class ImageTransformer(object):
         '''
         Renumber the image sequence extracted from pdf
         '''
-        self.images = self.extract_pdf_images()
+        self.images = ImageTransformer.extract_pdf_images(self.path, self.base_name)
         self.logger.debug('Images generated', images=self.images)
 
         new_images = []
