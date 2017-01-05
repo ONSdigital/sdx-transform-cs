@@ -1,12 +1,23 @@
+#!/usr/bin/env python
+#   coding: UTF-8
+
+import argparse
+from io import BytesIO
+import json
+import os
+import sys
+import uuid
+
+import arrow
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
 from reportlab.lib.enums import TA_LEFT, TA_CENTER
-from io import BytesIO
-import uuid
-import os
-import arrow
+
+__doc__ = """
+SDX PDF Transformer.
+"""
 
 styles = getSampleStyleSheet()
 
@@ -31,6 +42,7 @@ MAX_ANSWER_CHARACTERS_PER_LINE = 35
 
 
 class PDFTransformer(object):
+
     def __init__(self, survey, response_data):
         '''
         Sets up variables needed to write out a pdf
@@ -107,3 +119,26 @@ class PDFTransformer(object):
 
     def get_localised_date(self, date_to_transform, timezone='Europe/London'):
         return arrow.get(date_to_transform).to(timezone).format("DD MMMM YYYY HH:mm:ss")
+
+def parser(description=__doc__):
+    rv = argparse.ArgumentParser(
+        description,
+    )
+    return rv
+
+def main(args):
+    data = json.loads(sys.stdin.read())
+    
+    tx = PDFTransformer({}, data)
+    output = tx.render()
+    sys.stdout.write(output)
+    return 0
+
+def run():
+    p = parser()
+    args = p.parse_args()
+    rv = main(args)
+    sys.exit(rv)
+
+if __name__ == "__main__":
+    run()
