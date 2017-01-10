@@ -3,6 +3,7 @@
   - Add license
   - Update python library '_requests_': `2.10.0` -> `2.12.4`
   - Update build process to simplify testing
+  - Add image mapping and form type for QBS
 
 ### 1.3.0 2016-11-23
   - Fix [#32](https://github.com/ONSdigital/sdx-transform-cs/issues/32) change layout of image to use paragraphs not tables
