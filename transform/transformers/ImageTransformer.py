@@ -6,6 +6,7 @@ import datetime
 import dateutil.parser
 import glob
 from io import BytesIO
+import itertools
 import json
 import logging
 import os.path
@@ -203,7 +204,12 @@ def main(args):
 
     data = json.load(sys.stdin)
     tx = ImageTransformer(log, survey, data)
-    sys.stdout.write(repr(tx))
+    path = tx.create_pdf(survey, data)
+    images = list(tx.create_image_sequence(path, numberSeq=itertools.count()))
+    # Need to unwind Flask dependency
+    # index = tx.create_image_index(images)
+    # zipfile = tx.create_zip(images, index)
+    sys.stdout.write(repr(images))
     return 0
 
 
