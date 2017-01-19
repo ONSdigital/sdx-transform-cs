@@ -20,7 +20,7 @@ class CSTransformer(object):
         self.files_to_archive = []
         self.batch_number = batch_number
         self.sequence_no = sequence_no
-        setup_logger()
+        self.setup_logger()
 
     def setup_logger(self):
         if self.survey:
