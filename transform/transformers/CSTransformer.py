@@ -13,7 +13,14 @@ env = Environment(loader=PackageLoader('transform', 'templates'))
 class CSTransformer(object):
     def __init__(self, logger, survey, response_data, batch_number=False, sequence_no=1000):
         self.logger = logger
-        self.setup_logger()
+        self.survey = survey
+        self.response = response_data
+        self.path = ""
+        # A list of (dest, file) tuples
+        self.files_to_archive = []
+        self.batch_number = batch_number
+        self.sequence_no = sequence_no
+        setup_logger()
 
     def setup_logger(self):
         if self.survey:
