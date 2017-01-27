@@ -20,6 +20,17 @@ class CSTransformer(object):
         self.files_to_archive = []
         self.batch_number = batch_number
         self.sequence_no = sequence_no
+        self.setup_logger()
+
+    def setup_logger(self):
+        if self.survey:
+            if 'metadata' in self.survey:
+                metadata = self.survey['metadata']
+                self.logger = self.logger.bind(user_id=metadata['user_id'], ru_ref=metadata['ru_ref'])
+
+            if 'tx_id' in self.survey:
+                self.tx_id = self.survey['tx_id']
+                self.logger = self.logger.bind(tx_id=self.tx_id)
 
     def create_formats(self):
         itransformer = ImageTransformer(self.logger, self.survey, self.response, sequence_no=self.sequence_no)
