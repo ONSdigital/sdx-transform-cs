@@ -1,12 +1,13 @@
 language: python
-dist: trusty
-sudo: required
 python:
     - "3.5"
 before_install:
-    - apt-get update
-    - apt-get install -y poppler-utils
+    - sudo apt-get update
+    - sudo apt-get install -y poppler-utils
 install:
     - make
 script:
     - make test
+group: stable
+dist: precise
+os: linux
