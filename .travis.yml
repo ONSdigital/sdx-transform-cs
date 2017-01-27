@@ -10,4 +10,5 @@ script:
     - make test
 group: stable
 dist: precise
+sudo: required
 os: linux
