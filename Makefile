@@ -10,7 +10,7 @@ test: build
 	pip install -r test_requirements.txt
 	python3 -m unittest tests/*.py
 
-check-dependencies: osinstall
+check-dependencies:
 ifndef PDFTOPPM
 	$(error Missing dependency 'pdftoppm')
 else
