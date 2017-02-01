@@ -34,7 +34,7 @@ class ImageTransformer(object):
         '''
         Extract all pdf pages as jpegs
         '''
-        subprocess.run(["pdftoppm", "-jpeg", self.base_name, self.rootname], cwd=self.path)
+        subprocess.call(["pdftoppm", "-jpeg", self.base_name, self.rootname], cwd=self.path)
         self.images = glob.glob("%s/%s-*.jpg" % (self.path, self.rootname))
 
         return self.images
