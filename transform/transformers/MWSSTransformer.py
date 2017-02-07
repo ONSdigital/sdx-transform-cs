@@ -11,8 +11,10 @@ class CSFormatter:
         return "{0}:{1}{2}:{3}".format(formId, ruRef, check, period)
 
     @staticmethod
-    def pck_lines(batchNo, ts, data):
+    def pck_lines(batchNo, ts, formId, ruRef, check, period, data):
         return [
-            header(batchNo, ts),
+            CSFormatter.batch_header(batchNo, ts),
             "FV",
+        ] + [
+        " ".join((q, a)) for q, a in data.items()
         ]
