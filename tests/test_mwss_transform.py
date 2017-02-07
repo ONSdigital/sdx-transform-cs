@@ -37,7 +37,7 @@ class BatchFileTests(unittest.TestCase):
             ("0151", "{0:011}".format(217222))
         ])
         self.assertTrue(all(len(val) == 11 for val in data.values()))
-        rv = CSFormatter.pck_lines(batchNr, batchDate, formId, ruRef, check, period, data)
+        rv = CSFormatter.pck_lines(data, batchNr, batchDate, formId, ruRef, check, period)
         self.assertEqual([
             "FBFV00386629/12/09",
             "FV",
@@ -62,3 +62,23 @@ class BatchFileTests(unittest.TestCase):
         self.assertEqual("12345678901", ids.ruRef)
         self.assertEqual("A", ids.ruChk)
         self.assertEqual("1604", ids.period)
+
+    def test_pck_from_data(self):
+        src = pkg_resources.resource_string(__name__, "pck/023.0102.json")
+        reply = json.loads(src.decode("utf-8"))
+        reply["tx_id"] = "27923934-62de-475c-bc01-433c09fd38b8"
+        reply["data"] = OrderedDict([
+            ("0001", "{0:011}".format(2)),
+            ("0140", "{0:011}".format(124)),
+            ("0151", "{0:011}".format(217222))
+        ])
+        ids = CSFormatter.identifiers(reply)
+        rv = CSFormatter.pck_lines(reply["data"], **ids._asdict())
+        self.assertEqual([
+            "FBFV00386629/12/09",
+            "FV",
+            "0004:49900001225C:200911",
+            "0001 00000000002",
+            "0140 00000000124",
+            "0151 00000217222",
+        ], rv)

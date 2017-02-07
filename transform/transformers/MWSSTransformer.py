@@ -44,16 +44,16 @@ class CSFormatter:
         return "{0}{1:06}{2}".format("FBFV", batchNr, ts.strftime("%d/%m/%y"))
 
     @staticmethod
-    def form_header(formId, ruRef, check, period):
+    def form_header(formId, ruRef, ruChk, period):
         formId = "{0:04}".format(formId) if isinstance(formId, int) else formId
-        return "{0}:{1}{2}:{3}".format(formId, ruRef, check, period)
+        return "{0}:{1}{2}:{3}".format(formId, ruRef, ruChk, period)
 
     @staticmethod
-    def pck_lines(batchNr, ts, formId, ruRef, check, period, data):
+    def pck_lines(data, batchNr, ts, formId, ruRef, ruChk, period, **kwargs):
         return [
             CSFormatter.batch_header(batchNr, ts),
             "FV",
-            CSFormatter.form_header(formId, ruRef, check, period),
+            CSFormatter.form_header(formId, ruRef, ruChk, period),
         ] + [
             " ".join((q, a)) for q, a in data.items()
         ]
