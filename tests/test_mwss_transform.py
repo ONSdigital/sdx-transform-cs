@@ -50,5 +50,15 @@ class BatchFileTests(unittest.TestCase):
     def test_identifiers(self):
         reply = pkg_resources.resource_string(__name__, "pck/023.0102.json")
         data = json.loads(reply.decode("utf-8"))
+        data["tx_id"] = "27923934-62de-475c-bc01-433c09fd38b8"
         ids = CSFormatter.identifiers(data)
         self.assertIsInstance(ids, CSFormatter.Identifiers)
+        self.assertEqual(0, ids.batchNr)
+        self.assertEqual(0, ids.seqNr)
+        self.assertEqual(data["tx_id"], ids.txId)
+        self.assertEqual(datetime.date.today(), ids.ts)
+        self.assertEqual("023", ids.surveyId)
+        self.assertEqual("RSI5B", ids.formId)
+        self.assertEqual("12345678901", ids.ruRef)
+        self.assertEqual("A", ids.ruChk)
+        self.assertEqual("1604", ids.period)

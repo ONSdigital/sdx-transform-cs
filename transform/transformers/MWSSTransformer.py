@@ -15,7 +15,8 @@ class CSFormatter:
     }
 
     Identifiers = namedtuple("Identifiers", [
-        "batchNr", "seqNr", "ts", "surveyId", "instId", "formId", "ruRef", "check", "period"
+        "batchNr", "seqNr", "ts", "txId", "surveyId", "instId",
+        "formId", "ruRef", "ruChk", "period"
     ])
 
     @staticmethod
@@ -24,6 +25,7 @@ class CSFormatter:
         ruRef = data.get("metadata", {}).get("ru_ref")
         rv = CSFormatter.Identifiers(
             batchNr, seqNr, datetime.date.today(),
+            data.get("tx_id"),
             data.get("survey_id"),
             data.get("collection", {}).get("instrument_id"),
             CSFormatter.formIds.get(data.get("collection", {}).get("instrument_id")),
