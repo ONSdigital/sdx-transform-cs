@@ -1,15 +1,19 @@
 from collections import OrderedDict
 import datetime
+import json
 import unittest
 
 from transform.transformers.MWSSTransformer import CSFormatter
 
+import pkg_resources
+
+
 class BatchFileTests(unittest.TestCase):
 
     def test_batch_header(self):
-        batchNo = 3866
+        batchNr = 3866
         batchDate = datetime.date(2009, 12, 29)
-        rv = CSFormatter.batch_header(batchNo, batchDate)
+        rv = CSFormatter.batch_header(batchNr, batchDate)
         self.assertEqual("FBFV00386629/12/09", rv)
 
     def test_form_header(self):
@@ -21,7 +25,7 @@ class BatchFileTests(unittest.TestCase):
         self.assertEqual("0004:49900001225C:200911", rv)
 
     def test_pck_lines(self):
-        batchNo = 3866
+        batchNr = 3866
         batchDate = datetime.date(2009, 12, 29)
         formId = 4
         ruRef = 49900001225
@@ -33,7 +37,7 @@ class BatchFileTests(unittest.TestCase):
             ("0151", "{0:011}".format(217222))
         ])
         self.assertTrue(all(len(val) == 11 for val in data.values()))
-        rv = CSFormatter.pck_lines(batchNo, batchDate, formId, ruRef, check, period, data)
+        rv = CSFormatter.pck_lines(batchNr, batchDate, formId, ruRef, check, period, data)
         self.assertEqual([
             "FBFV00386629/12/09",
             "FV",
@@ -42,3 +46,9 @@ class BatchFileTests(unittest.TestCase):
             "0140 00000000124",
             "0151 00000217222",
         ], rv)
+
+    def test_identifiers(self):
+        reply = pkg_resources.resource_string(__name__, "pck/023.0102.json")
+        data = json.loads(reply.decode("utf-8"))
+        ids = CSFormatter.identifiers(data)
+        self.assertIsInstance(ids, CSFormatter.Identifiers)
