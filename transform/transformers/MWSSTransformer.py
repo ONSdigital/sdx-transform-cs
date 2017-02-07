@@ -15,6 +15,7 @@ class CSFormatter:
         return [
             CSFormatter.batch_header(batchNo, ts),
             "FV",
+            CSFormatter.form_header(formId, ruRef, check, period),
         ] + [
         " ".join((q, a)) for q, a in data.items()
         ]

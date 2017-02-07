@@ -28,7 +28,9 @@ class BatchFileTests(unittest.TestCase):
         check = "C"
         period = "200911"
         data = OrderedDict([
-            ("0004", "{0:011}".format(2))
+            ("0001", "{0:011}".format(2)),
+            ("0140", "{0:011}".format(124)),
+            ("0151", "{0:011}".format(217222))
         ])
         self.assertTrue(all(len(val) == 11 for val in data.values()))
         rv = CSFormatter.pck_lines(batchNo, batchDate, formId, ruRef, check, period, data)
@@ -37,4 +39,6 @@ class BatchFileTests(unittest.TestCase):
             "FV",
             "0004:49900001225C:200911",
             "0001 00000000002",
+            "0140 00000000124",
+            "0151 00000217222",
         ], rv)
