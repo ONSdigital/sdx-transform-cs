@@ -1,6 +1,7 @@
 import zipfile
 import os
 from io import BytesIO
+from transform import settings
 from .ImageTransformer import ImageTransformer
 from .PCKTransformer import PCKTransformer
 from jinja2 import Environment, PackageLoader
@@ -54,9 +55,9 @@ class CSTransformer(object):
         self.files_to_archive.append((settings.SDX_FTP_RECEIPT_PATH, self.idbr_file))
 
         for image in self.itransformer.images:
-            self.files_to_archive.append((settings.SDX_FTP_IMAGES_PATH, image))
+            self.files_to_archive.append((settings.SDX_FTP_IMAGE_PATH + "/Images", image))
 
-        self.files_to_archive.append((settings.SDX_FTP_INDEX_PATH, self.itransformer.index_file))
+        self.files_to_archive.append((settings.SDX_FTP_IMAGE_PATH + "/Index", self.itransformer.index_file))
 
     def create_pck(self):
         template = env.get_template('pck.tmpl')
