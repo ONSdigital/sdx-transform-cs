@@ -29,7 +29,7 @@ class BatchFileTests(unittest.TestCase):
     def test_pck_lines(self):
         batchNr = 3866
         batchDate = datetime.date(2009, 12, 29)
-        formId = 4
+        instId = "134"
         ruRef = 49900001225
         check = "C"
         period = "200911"
@@ -39,7 +39,7 @@ class BatchFileTests(unittest.TestCase):
             ("0151", "{0:011}".format(217222))
         ])
         self.assertTrue(all(len(val) == 11 for val in data.values()))
-        rv = CSFormatter.pck_lines(data, batchNr, batchDate, formId, ruRef, check, period)
+        rv = CSFormatter.pck_lines(data, batchNr, batchDate, instId, ruRef, check, period)
         self.assertEqual([
             "FBFV00386629/12/09",
             "FV",
@@ -60,7 +60,6 @@ class BatchFileTests(unittest.TestCase):
         self.assertEqual(data["tx_id"], ids.txId)
         self.assertEqual(datetime.date.today(), ids.ts)
         self.assertEqual("023", ids.surveyId)
-        self.assertEqual("RSI5B", ids.formId)
         self.assertEqual("789473423", ids.userId)
         self.assertEqual("12345678901", ids.ruRef)
         self.assertEqual("A", ids.ruChk)
@@ -76,6 +75,7 @@ class BatchFileTests(unittest.TestCase):
             ("0151", "{0:011}".format(217222))
         ])
         ids = Survey.identifiers(reply)
+        print(ids)
         rv = CSFormatter.pck_lines(reply["data"], **ids._asdict())
         self.assertEqual([
             "FBFV00386629/12/09",

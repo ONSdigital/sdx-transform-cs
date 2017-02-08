@@ -8,7 +8,7 @@ class Survey:
 
     Identifiers = namedtuple("Identifiers", [
         "batchNr", "seqNr", "ts", "txId", "surveyId", "instId",
-        "formId", "userId", "ruRef", "ruChk", "period"
+        "userId", "ruRef", "ruChk", "period"
     ])
 
     @staticmethod
@@ -20,7 +20,6 @@ class Survey:
             data.get("tx_id"),
             data.get("survey_id"),
             data.get("collection", {}).get("instrument_id"),
-            CSFormatter.formIds.get(data.get("collection", {}).get("instrument_id")),
             data.get("metadata", {}).get("user_id"),
             ''.join(i for i in ruRef if i.isdigit()),
             ruRef[-1] if ruRef and ruRef[-1].isalpha() else "",
@@ -43,6 +42,7 @@ class CSFormatter:
         "141": "HE2015",
         "0102": "RSI5B",  # TODO: Check which mapping
     }
+
     @staticmethod
     def batch_header(batchNr, ts):
         return "{0}{1:06}{2}".format("FBFV", batchNr, ts.strftime("%d/%m/%y"))
@@ -53,7 +53,8 @@ class CSFormatter:
         return "{0}:{1}{2}:{3}".format(formId, ruRef, ruChk, period)
 
     @staticmethod
-    def pck_lines(data, batchNr, ts, formId, ruRef, ruChk, period, **kwargs):
+    def pck_lines(data, batchNr, ts, instId, ruRef, ruChk, period, **kwargs):
+        formId = CSFormatter.formIds[instId]
         return [
             CSFormatter.batch_header(batchNr, ts),
             "FV",
