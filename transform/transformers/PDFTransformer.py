@@ -41,7 +41,7 @@ class PDFTransformer(object):
     def render(self):
         buffer = BytesIO()
         doc = SimpleDocTemplate(buffer, pagesize=A4)
-        doc.build(self.get_elements())
+        doc.build(self.get_elements(self.survey, self.response))
 
         pdf = buffer.getvalue()
         buffer.close()
@@ -55,11 +55,12 @@ class PDFTransformer(object):
 
         tmpName = "./tmp/%s/%s.pdf" % (randomName, randomName)
         doc = SimpleDocTemplate(tmpName, pagesize=A4)
-        doc.build(self.get_elements())
+        doc.build(self.get_elements(self.survey, self.response))
 
         return os.path.realpath(tmpName)
 
-    def get_elements(self):
+    @staticmethod
+    def get_elements(survey, response):
 
         elements = []
         table_style_data = [('TEXTCOLOR', (0, 0), (-1, -1), colors.black),
@@ -77,18 +78,18 @@ class PDFTransformer(object):
         heading_style.add('SPAN', (0, 0), (1, 0))
         heading_style.add('ALIGN', (0, 0), (1, 0), 'CENTER')
 
-        localised_date_str = self.get_localised_date(self.response['submitted_at'])
+        localised_date_str = PDFTransformer.get_localised_date(response['submitted_at'])
 
-        heading_data = [[Paragraph(self.survey['title'], styleH)]]
-        heading_data.append(['Form Type', self.response['collection']['instrument_id']])
-        heading_data.append(['Respondent', self.response['metadata']['ru_ref']])
+        heading_data = [[Paragraph(survey['title'], styleH)]]
+        heading_data.append(['Form Type', response['collection']['instrument_id']])
+        heading_data.append(['Respondent', response['metadata']['ru_ref']])
         heading_data.append(['Submitted At', localised_date_str])
 
         heading = Table(heading_data, style=heading_style, colWidths='*')
 
         elements.append(heading)
 
-        for question_group in self.survey['question_groups']:
+        for question_group in survey['question_groups']:
 
             if 'title' in question_group:
                 # meta = question_group['meta'] if 'meta' in question_group else ''
@@ -97,13 +98,14 @@ class PDFTransformer(object):
                 for question in question_group['questions']:
                     if 'text' in question:
                         answer = ''
-                        if question['question_id'] in self.response['data']:
-                            answer = self.response['data'][question['question_id']]
+                        if question['question_id'] in response['data']:
+                            answer = response['data'][question['question_id']]
 
                         elements.append(Paragraph(question['text'], styleSSH))
                         elements.append(Paragraph(answer, styleN))
 
         return elements
 
-    def get_localised_date(self, date_to_transform, timezone='Europe/London'):
+    @staticmethod
+    def get_localised_date(date_to_transform, timezone='Europe/London'):
         return arrow.get(date_to_transform).to(timezone).format("DD MMMM YYYY HH:mm:ss")

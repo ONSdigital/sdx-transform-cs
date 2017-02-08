@@ -1,7 +1,15 @@
 from collections import namedtuple
 import datetime
+import json
 import logging
+import os
 import tempfile
+
+import pkg_resources
+from reportlab.platypus import SimpleDocTemplate
+from reportlab.lib.pagesizes import A4
+
+from transform.transformers.PDFTransformer import PDFTransformer
 
 
 class Survey:
@@ -66,8 +74,21 @@ class CSFormatter:
 
 class MWSSTransformer:
 
-    def __init__(self, survey, log=None):
-        self.ids = Survey.identifiers(survey)
+    @staticmethod
+    def load_survey(ids):
+        try:
+            content = pkg_resources.resource_string(
+            __name__, "../surveys/{surveyId}.{instId}.json".format(**ids._asdict())
+            )
+        except FileNotFoundError:
+            return None
+        else:
+            return json.loads(content.decode("utf-8"))
+
+    def __init__(self, response, log=None):
+        self.response = response
+        self.ids = Survey.identifiers(response)
+
         if log is None:
             self.log = logging.getLogger(__name__)
         else:
@@ -83,5 +104,8 @@ class MWSSTransformer:
         )
 
     def pack(self):
+        survey = self.load_survey(self.ids)
         with tempfile.TemporaryDirectory(prefix="mwss_", dir="tmp") as self.home:
-            print(self.home)
+            fP = os.path.join(self.home, "pages.pdf")
+            doc = SimpleDocTemplate(fP, pagesize=A4)
+            doc.build(PDFTransformer.get_elements(survey, self.response))

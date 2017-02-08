@@ -26,6 +26,38 @@ class BatchFileTests(unittest.TestCase):
         rv = CSFormatter.form_header(formId, ruRef, check, period)
         self.assertEqual("0004:49900001225C:200911", rv)
 
+    def test_load_survey(self):
+        ids = Survey.identifiers({
+            "survey_id": "134",
+            "tx_id": "27923934-62de-475c-bc01-433c09fd38b8",
+            "collection": {
+                "instrument_id": "0001",
+                "period": "201704"
+            },
+            "metadata": {
+                "user_id": "123456789",
+                "ru_ref": "12345678901A"
+            }
+        })
+        rv = MWSSTransformer.load_survey(ids)
+        self.assertIsNotNone(rv)
+
+    def test_load_survey_miss(self):
+        ids = Survey.identifiers({
+            "survey_id": "127",
+            "tx_id": "27923934-62de-475c-bc01-433c09fd38b8",
+            "collection": {
+                "instrument_id": "0001",
+                "period": "201704"
+            },
+            "metadata": {
+                "user_id": "123456789",
+                "ru_ref": "12345678901A"
+            }
+        })
+        rv = MWSSTransformer.load_survey(ids)
+        self.assertIsNone(rv)
+
     def test_pck_lines(self):
         batchNr = 3866
         batchDate = datetime.date(2009, 12, 29)
@@ -90,7 +122,22 @@ class BatchFileTests(unittest.TestCase):
 class PackingTests(unittest.TestCase):
 
     def test_tempdir(self):
-        tfr = MWSSTransformer({})
-        self.assertIsNone(tfr.ids)
-        tfr.pack()
+        survey = {
+            "survey_id": "134",
+            "tx_id": "27923934-62de-475c-bc01-433c09fd38b8",
+            "collection": {
+                "instrument_id": "0001",
+                "period": "201704"
+            },
+            "metadata": {
+                "user_id": "123456789",
+                "ru_ref": "12345678901A"
+            },
+            "submitted_at": "2017-04-12T13:01:26Z",
+        }
+        tfr = MWSSTransformer(survey)
+        try:
+            tfr.pack()
+        except KeyError:
+            self.fail("TODO: define pages.")
 
