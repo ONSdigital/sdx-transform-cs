@@ -7,6 +7,7 @@ from transform.transformers import PCKTransformer, PDFTransformer, ImageTransfor
 from jinja2 import Environment, PackageLoader
 
 import json
+import os.path
 
 env = Environment(loader=PackageLoader('transform', 'templates'))
 
@@ -141,11 +142,11 @@ def render_images():
     itransformer = ImageTransformer(logger, survey, survey_response)
 
     try:
-        itransformer.create_pdf()
-        itransformer.create_image_sequence()
-        itransformer.create_image_index()
-        zipfile = itransformer.create_zip()
-        itransformer.cleanup()
+        path = itransformer.create_pdf(survey, survey_response)
+        images = list(itransformer.create_image_sequence(path))
+        index = itransformer.create_image_index(images)
+        zipfile = itransformer.create_zip(images, index)
+        itransformer.cleanup(os.path.dirname(path))
     except IOError as e:
         return client_error("IMAGES:Could not create zip buffer: %s" % repr(e))
 

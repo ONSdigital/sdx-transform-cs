@@ -1,12 +1,29 @@
+#!/usr/bin/env python
+#   coding: UTF-8
+
+import argparse
+from io import BytesIO
+import json
+import os
+import sys
+import uuid
+
+import arrow
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
 from reportlab.lib.enums import TA_LEFT, TA_CENTER
-from io import BytesIO
-import uuid
-import os
-import arrow
+
+__doc__ = """
+SDX PDF Transformer.
+
+Example:
+
+python transform/transformers/PDFTransformer.py --survey transform/surveys/144.0001.json \\
+< tests/replies/ukis-01.json > output.pdf
+
+"""
 
 styles = getSampleStyleSheet()
 
@@ -31,6 +48,7 @@ MAX_ANSWER_CHARACTERS_PER_LINE = 35
 
 
 class PDFTransformer(object):
+
     def __init__(self, survey, response_data):
         '''
         Sets up variables needed to write out a pdf
@@ -82,7 +100,7 @@ class PDFTransformer(object):
 
         heading_data = [[Paragraph(survey['title'], styleH)]]
         heading_data.append(['Form Type', response['collection']['instrument_id']])
-        heading_data.append(['Respondent', response['metadata']['ru_ref']])
+        heading_data.append(['Respondent', response['metadata']['ru_ref'][:11]])
         heading_data.append(['Submitted At', localised_date_str])
 
         heading = Table(heading_data, style=heading_style, colWidths='*')
@@ -92,7 +110,6 @@ class PDFTransformer(object):
         for question_group in survey['question_groups']:
 
             if 'title' in question_group:
-                # meta = question_group['meta'] if 'meta' in question_group else ''
                 elements.append(Paragraph(question_group['title'], styleSH))
 
                 for question in question_group['questions']:
@@ -109,3 +126,35 @@ class PDFTransformer(object):
     @staticmethod
     def get_localised_date(date_to_transform, timezone='Europe/London'):
         return arrow.get(date_to_transform).to(timezone).format("DD MMMM YYYY HH:mm:ss")
+
+
+def parser(description=__doc__):
+    rv = argparse.ArgumentParser(
+        description,
+    )
+    rv.add_argument(
+        "--survey", required=True,
+        help="Set a path to the survey JSON file.")
+    return rv
+
+
+def main(args):
+    fP = os.path.expanduser(os.path.abspath(args.survey))
+    with open(fP, "r") as fObj:
+        survey = json.load(fObj)
+
+    data = json.load(sys.stdin)
+    tx = PDFTransformer(survey, data)
+    output = tx.render()
+    sys.stdout.write(output.decode("latin-1"))
+    return 0
+
+
+def run():
+    p = parser()
+    args = p.parse_args()
+    rv = main(args)
+    sys.exit(rv)
+
+if __name__ == "__main__":
+    run()

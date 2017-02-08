@@ -98,19 +98,22 @@ class BatchFileTests(unittest.TestCase):
         self.assertEqual("1604", ids.period)
 
     def test_pck_from_data(self):
+        # TODO: Get proper response data
         src = pkg_resources.resource_string(__name__, "pck/023.0102.json")
         reply = json.loads(src.decode("utf-8"))
         reply["tx_id"] = "27923934-62de-475c-bc01-433c09fd38b8"
+        reply["survey_id"] = "134"
+        reply["collection"]["period"] = "200911"
+        reply["metadata"]["ru_ref"] = "49900001225C"
         reply["data"] = OrderedDict([
             ("0001", "{0:011}".format(2)),
             ("0140", "{0:011}".format(124)),
             ("0151", "{0:011}".format(217222))
         ])
-        ids = Survey.identifiers(reply)
-        print(ids)
+        ids = Survey.identifiers(reply, batchNr=3866)
         rv = CSFormatter.pck_lines(reply["data"], **ids._asdict())
         self.assertEqual([
-            "FBFV00386629/12/09",
+            "FBFV003866{0}".format(datetime.date.today().strftime("%d/%m/%y")),
             "FV",
             "0004:49900001225C:200911",
             "0001 00000000002",

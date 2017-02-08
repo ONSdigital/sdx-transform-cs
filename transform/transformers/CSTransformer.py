@@ -35,16 +35,17 @@ class CSTransformer(object):
     def create_formats(self):
         itransformer = ImageTransformer(self.logger, self.survey, self.response, sequence_no=self.sequence_no)
 
-        itransformer.create_pdf()
-        itransformer.create_image_sequence()
-        itransformer.create_image_index()
+        path = itransformer.create_pdf(self.survey, self.response)
+        self.images = list(itransformer.create_image_sequence(path))
+        self.index = itransformer.create_image_index(self.images)
 
-        self.path = itransformer.path
-        self.rootname = itransformer.rootname
+        self.path, baseName = os.path.split(path)
+        self.rootname, _ = os.path.splitext(baseName)
         self.itransformer = itransformer
 
         self.create_pck()
         self.create_idbr()
+        return path
 
     def prepare_archive(self):
         '''

@@ -43,12 +43,7 @@ class Survey:
 class CSFormatter:
 
     formIds = {
-        "008": "MS31B",
-        "017": "STW01",
-        "050": "0008",
         "134": "0004",
-        "141": "HE2015",
-        "0102": "RSI5B",  # TODO: Check which mapping
     }
 
     @staticmethod
@@ -61,8 +56,8 @@ class CSFormatter:
         return "{0}:{1}{2}:{3}".format(formId, ruRef, ruChk, period)
 
     @staticmethod
-    def pck_lines(data, batchNr, ts, instId, ruRef, ruChk, period, **kwargs):
-        formId = CSFormatter.formIds[instId]
+    def pck_lines(data, batchNr, ts, surveyId, ruRef, ruChk, period, **kwargs):
+        formId = CSFormatter.formIds[surveyId]
         return [
             CSFormatter.batch_header(batchNr, ts),
             "FV",

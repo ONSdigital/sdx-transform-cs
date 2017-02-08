@@ -6,6 +6,7 @@ from flask import make_response, send_file
 import logging
 from structlog import wrap_logger
 import json
+import os.path
 
 logger = wrap_logger(logging.getLogger(__name__))
 
@@ -57,12 +58,12 @@ def images_test():
 
         itransformer = ImageTransformer(logger, survey, survey_response)
 
-        itransformer.create_pdf()
-        itransformer.create_image_sequence()
-        itransformer.create_image_index()
-        zipfile = itransformer.create_zip()
+        path = itransformer.create_pdf(survey, survey_response)
+        images = list(itransformer.create_image_sequence(path))
+        index = itransformer.create_image_index(images)
+        zipfile = itransformer.create_zip(images, index)
 
-        itransformer.cleanup()
+        itransformer.cleanup(os.path.dirname(path))
 
         return send_file(zipfile, mimetype='application/zip')
 
