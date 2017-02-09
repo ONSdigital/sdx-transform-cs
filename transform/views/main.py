@@ -174,10 +174,10 @@ def common_software(sequence_no=1000, batch_number=False):
 
     ctransformer = CSTransformer(logger, survey, survey_response, batch_number, sequence_no)
 
+    ctransformer.create_formats()
+    ctransformer.prepare_archive()
+    zipfile = ctransformer.create_zip()
     try:
-        ctransformer.create_formats()
-        ctransformer.prepare_archive()
-        zipfile = ctransformer.create_zip()
         ctransformer.cleanup()
     except IOError as e:
         return client_error("CS:Could not create zip buffer: %s" % repr(e))

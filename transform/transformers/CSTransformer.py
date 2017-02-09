@@ -54,10 +54,13 @@ class CSTransformer(object):
         self.files_to_archive.append(("EDC_QData", self.pck_file))
         self.files_to_archive.append(("EDC_QReceipts", self.idbr_file))
 
-        for image in self.itransformer.images:
-            self.files_to_archive.append(("EDC_QImages/Images", image))
+        for image in self.images:
+            fN = os.path.basename(image)
+            self.files_to_archive.append(("EDC_QImages/Images", fN))
 
-        self.files_to_archive.append(("EDC_QImages/Index", self.itransformer.index_file))
+        if self.index is not None:
+            fN = os.path.basename(self.index)
+            self.files_to_archive.append(("EDC_QImages/Index", fN))
 
     def create_pck(self):
         template = env.get_template('pck.tmpl')
@@ -97,6 +100,7 @@ class CSTransformer(object):
 
         with zipfile.ZipFile(in_memory_zip, 'w', zipfile.ZIP_DEFLATED) as zipf:
             for dest, file in self.files_to_archive:
+                print(dest, file)
                 zipf.write(os.path.join(self.path, file), arcname="%s/%s" % (dest, file))
 
         # Return to beginning of file
