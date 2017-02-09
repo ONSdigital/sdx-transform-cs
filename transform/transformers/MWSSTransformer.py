@@ -85,15 +85,6 @@ class MWSSTransformer:
         else:
             return json.loads(content.decode("utf-8"))
 
-    def __init__(self, response, log=None):
-        self.response = response
-        self.ids = Survey.identifiers(response)
-
-        if log is None:
-            self.log = logging.getLogger(__name__)
-        else:
-            self.log = self.bind_logger(log, self.ids)
-
     @staticmethod
     def bind_logger(log, ids):
         return log.bind(
@@ -112,22 +103,42 @@ class MWSSTransformer:
         fObj.write("\n".join(output))
         fObj.write("\n")
 
+    @staticmethod
+    def create_zip(locn, manifest):
+        zipBytes = BytesIO()
+
+        with zipfile.ZipFile(zipBytes, "w", zipfile.ZIP_DEFLATED) as zipObj:
+            for dst, fN in manifest:
+                zipObj.write(os.path.join(locn, fN), arcname=os.path.join(dst, fN))
+
+        zipBytes.seek(0)
+        return zipBytes
+
+    def __init__(self, response, log=None):
+        self.response = response
+        self.ids = Survey.identifiers(response)
+
+        if log is None:
+            self.log = logging.getLogger(__name__)
+        else:
+            self.log = self.bind_logger(log, self.ids)
+
     def pack(self):
         survey = self.load_survey(self.ids)
         manifest = []
-        with tempfile.TemporaryDirectory(prefix="mwss_", dir="tmp") as home:
+        with tempfile.TemporaryDirectory(prefix="mwss_", dir="tmp") as locn:
             # TODO: Do transform and write PCK
             #data = self.transform(self.response["data"])
             #fN = self.pck_name(**self.ids._asdict())
-            #with open(os.path.join(home, fN), "w") as pck:
+            #with open(os.path.join(locn, fN), "w") as pck:
             #    self.write_pck(pck, data, **self.ids._asdict())
             #manifest.append(("EDC_QData", fN))
 
             # TODO: Create IDBR file
-            # fN = os.path.basename(self.write_idbr(home))
+            # fN = os.path.basename(self.write_idbr(locn))
             # manifest.append(("EDC_QReceipts", fN))
 
-            fP = os.path.join(home, "pages.pdf")
+            fP = os.path.join(locn, "pages.pdf")
             doc = SimpleDocTemplate(fP, pagesize=A4)
             doc.build(PDFTransformer.get_elements(survey, self.response))
             imgTfr = ImageTransformer(self.log, survey, self.response)
@@ -140,7 +151,7 @@ class MWSSTransformer:
                 fN = os.path.basename(self.index)
                 manifest.append(("EDC_QImages/Index", fN))
 
-            return self.create_zip(home, manifest)
+            return self.create_zip(locn, manifest)
 
 def run():
     reply = json.load(sys.stdin)
