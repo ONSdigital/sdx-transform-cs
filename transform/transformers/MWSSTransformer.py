@@ -110,7 +110,7 @@ class MWSSTransformer:
             doc = SimpleDocTemplate(fP, pagesize=A4)
             doc.build(PDFTransformer.get_elements(survey, self.response))
             imgTfr = ImageTransformer(self.log, survey, self.response)
-            images = list(imgTfr.create_image_sequence(path))
+            images = list(imgTfr.create_image_sequence(fP))
             index = imgTfr.create_image_index(images)
             return imgTfr.create_zip(images, index)
 
