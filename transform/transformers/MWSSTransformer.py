@@ -3,14 +3,18 @@ import datetime
 import json
 import logging
 import os
+import sys
 import tempfile
 
 import pkg_resources
 from reportlab.platypus import SimpleDocTemplate
 from reportlab.lib.pagesizes import A4
 
-from transform.transformers.PDFTransformer import PDFTransformer
+#from transform.transformers.ImageTransformer import ImageTransformer
+#from transform.transformers.PDFTransformer import PDFTransformer
 
+from ImageTransformer import ImageTransformer
+from PDFTransformer import PDFTransformer
 
 class Survey:
 
@@ -59,10 +63,6 @@ class CSFormatter:
     def pck_lines(data, batchNr, ts, surveyId, ruRef, ruChk, period, **kwargs):
         formId = CSFormatter.formIds[surveyId]
         return [
-            CSFormatter.pck_batch_header(batchNr, ts),
-            "FV",
-            CSFormatter.pck_form_header(formId, ruRef, ruChk, period),
-        ] + [
             " ".join((q, a)) for q, a in data.items()
         ]
 
@@ -109,3 +109,17 @@ class MWSSTransformer:
             fP = os.path.join(self.home, "pages.pdf")
             doc = SimpleDocTemplate(fP, pagesize=A4)
             doc.build(PDFTransformer.get_elements(survey, self.response))
+            imgTfr = ImageTransformer(self.log, survey, self.response)
+            images = list(imgTfr.create_image_sequence(path))
+            index = imgTfr.create_image_index(images)
+            return imgTfr.create_zip(images, index)
+
+def run():
+    reply = json.load(sys.stdin)
+    tfr = MWSSTransformer(reply)
+    zipfile = tfr.pack()
+    sys.stdout.write(zipfile)
+    return 0
+
+if __name__ == "__main__":
+    run()
