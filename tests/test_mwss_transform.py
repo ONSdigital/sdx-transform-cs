@@ -156,9 +156,8 @@ class PackingTests(unittest.TestCase):
                 survey["submitted_at"],
                 **tfr.ids._asdict()
             )
-        ) 
+        )
         try:
             tfr.pack()
         except KeyError:
             self.fail("TODO: define pages.")
-

@@ -1,10 +1,12 @@
 from collections import namedtuple
 import datetime
+import io
 import json
 import logging
 import os
 import sys
 import tempfile
+import zipfile
 
 import pkg_resources
 from reportlab.platypus import SimpleDocTemplate
@@ -17,6 +19,7 @@ except ImportError:
     # CLI operation
     from ImageTransformer import ImageTransformer
     from PDFTransformer import PDFTransformer
+
 
 class Survey:
 
@@ -78,13 +81,14 @@ class CSFormatter:
             surveyId=int(surveyId), ruRef=ruRef, ruChk=ruChk, period=period
         )
 
+
 class MWSSTransformer:
 
     @staticmethod
     def load_survey(ids):
         try:
             content = pkg_resources.resource_string(
-            __name__, "../surveys/{surveyId}.{instId}.json".format(**ids._asdict())
+                __name__, "../surveys/{surveyId}.{instId}.json".format(**ids._asdict())
             )
         except FileNotFoundError:
             return None
@@ -126,7 +130,7 @@ class MWSSTransformer:
 
     @staticmethod
     def create_zip(locn, manifest):
-        zipBytes = BytesIO()
+        zipBytes = io.BytesIO()
 
         with zipfile.ZipFile(zipBytes, "w", zipfile.ZIP_DEFLATED) as zipObj:
             for dst, fN in manifest:
@@ -161,7 +165,7 @@ class MWSSTransformer:
             # Create IDBR file
             fN = self.idbr_name(**self.ids._asdict())
             with open(os.path.join(locn, fN), "w") as idbr:
-                self.write_idbr(pck, **self.ids._asdict())
+                self.write_idbr(idbr, **self.ids._asdict())
             manifest.append(("EDC_QReceipts", fN))
 
             # Build PDF
@@ -171,7 +175,8 @@ class MWSSTransformer:
 
             # Create page images from PDF
             imgTfr = ImageTransformer(self.log, survey, self.response)
-            for img in imgTfr.create_image_sequence(fP):
+            images = imgTfr.create_image_sequence(fP)
+            for img in images:
                 fN = os.path.basename(img)
                 manifest.append(("EDC_QImages/Images", fN))
 
@@ -182,6 +187,7 @@ class MWSSTransformer:
                 manifest.append(("EDC_QImages/Index", fN))
 
             return self.create_zip(locn, manifest)
+
 
 def run():
     reply = json.load(sys.stdin)
