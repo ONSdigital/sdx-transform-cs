@@ -10,11 +10,13 @@ import pkg_resources
 from reportlab.platypus import SimpleDocTemplate
 from reportlab.lib.pagesizes import A4
 
-#from transform.transformers.ImageTransformer import ImageTransformer
-#from transform.transformers.PDFTransformer import PDFTransformer
-
-from ImageTransformer import ImageTransformer
-from PDFTransformer import PDFTransformer
+try:
+    from transform.transformers.ImageTransformer import ImageTransformer
+    from transform.transformers.PDFTransformer import PDFTransformer
+except ImportError:
+    # CLI operation
+    from ImageTransformer import ImageTransformer
+    from PDFTransformer import PDFTransformer
 
 class Survey:
 
@@ -63,6 +65,10 @@ class CSFormatter:
     def pck_lines(data, batchNr, ts, surveyId, ruRef, ruChk, period, **kwargs):
         formId = CSFormatter.formIds[surveyId]
         return [
+            CSFormatter.pck_batch_header(batchNr, ts),
+            "FV",
+            CSFormatter.pck_form_header(formId, ruRef, ruChk, period),
+        ] + [
             " ".join((q, a)) for q, a in data.items()
         ]
 
@@ -94,8 +100,23 @@ class MWSSTransformer:
         )
 
     @staticmethod
+    def transform(data):
+        raise NotImplementedError
+
+    @staticmethod
+    def idbr_name(submittedAt, seqNr, **kwargs):
+        subDT = datetime.datetime.strptime(submittedAt, "%Y-%m-%dT%H:%M:%SZ")
+        return "REC{0}_{1:04}.DAT".format(subDT.strftime("%d%m"), int(seqNr))
+
+    @staticmethod
     def pck_name(surveyId, seqNr, **kwargs):
-        return "{0}_{1:04}".format(surveyId, seqNr)
+        return "{0}_{1:04}".format(surveyId, int(seqNr))
+
+    @staticmethod
+    def write_idbr(fObj, **kwargs):
+        output = CSFormatter.idbr_receipt(fObj, **kwargs)
+        fObj.write(output)
+        fObj.write("\n")
 
     @staticmethod
     def write_pck(fObj, data, **kwargs):
@@ -127,14 +148,15 @@ class MWSSTransformer:
         survey = self.load_survey(self.ids)
         manifest = []
         with tempfile.TemporaryDirectory(prefix="mwss_", dir="tmp") as locn:
-            # TODO: Do transform and write PCK
-            #data = self.transform(self.response["data"])
-            #fN = self.pck_name(**self.ids._asdict())
-            #with open(os.path.join(locn, fN), "w") as pck:
-            #    self.write_pck(pck, data, **self.ids._asdict())
-            #manifest.append(("EDC_QData", fN))
+            # Do transform and write PCK
+            data = self.transform(self.response["data"])
+            fN = self.pck_name(**self.ids._asdict())
+            with open(os.path.join(locn, fN), "w") as pck:
+                self.write_pck(pck, data, **self.ids._asdict())
+            manifest.append(("EDC_QData", fN))
 
-            # TODO: Create IDBR file
+            # Create IDBR file
+            fN = self.idbr_name(**self.ids._asdict())
             # fN = os.path.basename(self.write_idbr(locn))
             # manifest.append(("EDC_QReceipts", fN))
 

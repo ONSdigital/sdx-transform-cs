@@ -150,6 +150,13 @@ class PackingTests(unittest.TestCase):
             "submitted_at": "2017-04-12T13:01:26Z",
         }
         tfr = MWSSTransformer(survey)
+        self.assertEqual(
+            "REC1204_0000.DAT",
+            MWSSTransformer.idbr_name(
+                survey["submitted_at"],
+                **tfr.ids._asdict()
+            )
+        ) 
         try:
             tfr.pack()
         except KeyError:
