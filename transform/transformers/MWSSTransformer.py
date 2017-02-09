@@ -66,6 +66,11 @@ class CSFormatter:
             " ".join((q, a)) for q, a in data.items()
         ]
 
+    @staticmethod
+    def idbr_receipt(surveyId, ruRef, ruChk, period, **kwargs):
+        return "{ruRef}:{ruChk}:{surveyId:03}:{period}".format(
+            surveyId=int(surveyId), ruRef=ruRef, ruChk=ruChk, period=period
+        )
 
 class MWSSTransformer:
 
