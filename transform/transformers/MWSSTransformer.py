@@ -139,6 +139,9 @@ class MWSSTransformer:
         self.response = response
         self.ids = Survey.identifiers(response)
 
+        if self.ids is None:
+            raise UserWarning("Missing identifiers")
+
         if log is None:
             self.log = logging.getLogger(__name__)
         else:
@@ -157,17 +160,22 @@ class MWSSTransformer:
 
             # Create IDBR file
             fN = self.idbr_name(**self.ids._asdict())
-            # fN = os.path.basename(self.write_idbr(locn))
-            # manifest.append(("EDC_QReceipts", fN))
+            with open(os.path.join(locn, fN), "w") as idbr:
+                self.write_idbr(pck, **self.ids._asdict())
+            manifest.append(("EDC_QReceipts", fN))
 
+            # Build PDF
             fP = os.path.join(locn, "pages.pdf")
             doc = SimpleDocTemplate(fP, pagesize=A4)
             doc.build(PDFTransformer.get_elements(survey, self.response))
+
+            # Create page images from PDF
             imgTfr = ImageTransformer(self.log, survey, self.response)
             for img in imgTfr.create_image_sequence(fP):
                 fN = os.path.basename(img)
                 manifest.append(("EDC_QImages/Images", fN))
 
+            # Write image index
             index = imgTfr.create_image_index(images)
             if index is not None:
                 fN = os.path.basename(self.index)
