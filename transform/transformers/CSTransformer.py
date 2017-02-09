@@ -1,6 +1,7 @@
 import zipfile
 import os
 from io import BytesIO
+from transform import settings
 from .ImageTransformer import ImageTransformer
 from .PCKTransformer import PCKTransformer
 from jinja2 import Environment, PackageLoader
@@ -50,13 +51,13 @@ class CSTransformer(object):
         '''
         Prepare a list of files to save
         '''
-        self.files_to_archive.append(("EDC_QData", self.pck_file))
-        self.files_to_archive.append(("EDC_QReceipts", self.idbr_file))
+        self.files_to_archive.append((settings.SDX_FTP_DATA_PATH, self.pck_file))
+        self.files_to_archive.append((settings.SDX_FTP_RECEIPT_PATH, self.idbr_file))
 
         for image in self.itransformer.images:
-            self.files_to_archive.append(("EDC_QImages/Images", image))
+            self.files_to_archive.append((settings.SDX_FTP_IMAGE_PATH + "/Images", image))
 
-        self.files_to_archive.append(("EDC_QImages/Index", self.itransformer.index_file))
+        self.files_to_archive.append((settings.SDX_FTP_IMAGE_PATH + "/Index", self.itransformer.index_file))
 
     def create_pck(self):
         template = env.get_template('pck.tmpl')
