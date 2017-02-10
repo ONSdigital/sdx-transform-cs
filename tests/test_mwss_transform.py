@@ -5,6 +5,7 @@ import unittest
 
 from transform.transformers.MWSSTransformer import CSFormatter
 from transform.transformers.MWSSTransformer import MWSSTransformer
+from transform.transformers.MWSSTransformer import Processor
 from transform.transformers.MWSSTransformer import Survey
 
 import pkg_resources
@@ -14,7 +15,7 @@ class TransformTests(unittest.TestCase):
 
 
     def test_processor_match_type(self):
-        proc = MWSSTransformer.Processor.match_type
+        proc = Processor.match_type
 
         # ints and strings
         self.assertEqual(1, proc("q", {"q": "1"}, 0))
@@ -26,7 +27,7 @@ class TransformTests(unittest.TestCase):
         self.assertEqual(False, proc("q", {"q": ""}, True))
 
     def test_processor_percentage(self):
-        proc = MWSSTransformer.Processor.unsigned_integer
+        proc =Processor.unsigned_integer
 
         # Supply int default for range checking
         self.assertEqual(0, proc("q", {"q": -1}, 0))
@@ -44,7 +45,7 @@ class TransformTests(unittest.TestCase):
         self.assertIs(False, proc("q", {"q": 0}, False))
 
     def test_processor_percentage(self):
-        proc = MWSSTransformer.Processor.percentage
+        proc = Processor.percentage
 
         # Supply int default for range checking
         self.assertEqual(0, proc("q", {"q": -1}, 0))
@@ -73,7 +74,6 @@ class TransformTests(unittest.TestCase):
             "submitted_at": "2017-04-12T13:01:26Z",
         }
         tfr = MWSSTransformer(response)
-        print(tfr.ops)
 
 
 class BatchFileTests(unittest.TestCase):

@@ -56,6 +56,35 @@ class Survey:
             return rv
 
 
+class Processor:
+    """
+    Principles for processors:
+
+    * function is responsible for range check according to own logic.
+    * parametrisation is possible; use functools.partial
+    * returns data of the same type as the supplied default. 
+
+    """
+
+    @staticmethod
+    def match_type(qId, data, default):
+        try:
+            return type(default)(data.get(qId, default))
+        except ValueError:
+            return default
+
+    @staticmethod
+    def unsigned_integer(qId, data, default):
+        rv = int(data.get(qId, default))
+        return rv if rv >= 0 else default
+
+    @staticmethod
+    def percentage(qId, data, default):
+        typ = type(default)
+        rv = int(data.get(qId, default))
+        return typ(rv) if 0 <= rv >= 100 else default
+
+
 class CSFormatter:
     """
     Formatter for common software systems.
@@ -105,34 +134,6 @@ class CSFormatter:
 
 
 class MWSSTransformer:
-
-    class Processor:
-        """
-        Principles for processors:
-
-        * function is responsible for range check according to own logic.
-        * parametrisation is possible; use functools.partial
-        * returns data of the same type as the supplied default. 
-
-        """
-
-        @staticmethod
-        def match_type(qId, data, default):
-            try:
-                return type(default)(data.get(qId, default))
-            except ValueError:
-                return default
-
-        @staticmethod
-        def unsigned_integer(qId, data, default):
-            rv = int(data.get(qId, default))
-            return rv if rv >= 0 else default
-
-        @staticmethod
-        def percentage(qId, data, default):
-            typ = type(default)
-            rv = int(data.get(qId, default))
-            return typ(rv) if 0 <= rv >= 100 else default
 
     defn = [
         (range(40, 90, 10), 0, Processor.unsigned_integer),
@@ -217,6 +218,10 @@ class MWSSTransformer:
 
     @property
     def ops(self):
+        """
+        A mapping from question id to default value and operator.
+
+        """
         return OrderedDict([
             (qId, (dflt, fn))
             for rng, dflt, fn in self.defn
