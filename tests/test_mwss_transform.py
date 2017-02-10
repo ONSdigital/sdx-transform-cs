@@ -10,6 +10,68 @@ from transform.transformers.MWSSTransformer import Survey
 import pkg_resources
 
 
+class TransformTests(unittest.TestCase):
+
+
+    def test_processor_match_type(self):
+        proc = MWSSTransformer.Processor.match_type
+
+        # ints and strings
+        self.assertEqual(1, proc("q", {"q": "1"}, 0))
+        self.assertEqual(0, proc("q", {"q": "NaN"}, 0))
+        self.assertEqual("1", proc("q", {"q": 1}, ""))
+
+    def test_processor_percentage(self):
+        proc = MWSSTransformer.Processor.unsigned_integer
+
+        # Supply int default for range checking
+        self.assertEqual(0, proc("q", {"q": -1}, 0))
+        self.assertEqual(0, proc("q", {"q": 0}, 0))
+        self.assertEqual(1, proc("q", {"q": 1}, 0))
+        self.assertEqual(100, proc("q", {"q": 1E2}, 0))
+        self.assertEqual(1000000000, proc("q", {"q": 1E9}, 0))
+
+        # Supply bool default for range checking and type coercion
+        self.assertIs(False, proc("q", {"q": -1}, False))
+        self.assertIs(False, proc("q", {"q": 0}, False))
+        self.assertIs(True, proc("q", {"q": 1}, False))
+        self.assertIs(True, proc("q", {"q": 1E2}, False))
+        self.assertIs(True, proc("q", {"q": 1E9}, False))
+        self.assertIs(False, proc("q", {"q": 0}, False))
+
+    def test_processor_percentage(self):
+        proc = MWSSTransformer.Processor.percentage
+
+        # Supply int default for range checking
+        self.assertEqual(0, proc("q", {"q": -1}, 0))
+        self.assertEqual(0, proc("q", {"q": 0}, 0))
+        self.assertEqual(100, proc("q", {"q": 100}, 0))
+        self.assertEqual(0, proc("q", {"q": 0}, 0))
+
+        # Supply bool default for range checking and type coercion
+        self.assertIs(False, proc("q", {"q": -1}, False))
+        self.assertIs(False, proc("q", {"q": 0}, False))
+        self.assertIs(True, proc("q", {"q": 100}, False))
+        self.assertIs(False, proc("q", {"q": 0}, False))
+
+    def test_ops(self):
+        response = {
+            "survey_id": "134",
+            "tx_id": "27923934-62de-475c-bc01-433c09fd38b8",
+            "collection": {
+                "instrument_id": "0001",
+                "period": "201704"
+            },
+            "metadata": {
+                "user_id": "123456789",
+                "ru_ref": "12345678901A"
+            },
+            "submitted_at": "2017-04-12T13:01:26Z",
+        }
+        tfr = MWSSTransformer(response)
+        print(tfr.ops)
+
+
 class BatchFileTests(unittest.TestCase):
 
     def test_pck_batch_header(self):
@@ -132,25 +194,6 @@ class BatchFileTests(unittest.TestCase):
             "0151 00000217222",
         ], rv)
 
-
-class TransformTests(unittest.TestCase):
-
-    def test_ops(self):
-        response = {
-            "survey_id": "134",
-            "tx_id": "27923934-62de-475c-bc01-433c09fd38b8",
-            "collection": {
-                "instrument_id": "0001",
-                "period": "201704"
-            },
-            "metadata": {
-                "user_id": "123456789",
-                "ru_ref": "12345678901A"
-            },
-            "submitted_at": "2017-04-12T13:01:26Z",
-        }
-        tfr = MWSSTransformer(response)
-        print(tfr.ops)
 
 class PackingTests(unittest.TestCase):
 

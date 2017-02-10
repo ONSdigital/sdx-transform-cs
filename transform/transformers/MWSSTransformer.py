@@ -56,6 +56,10 @@ class CSFormatter:
         "134": "0004",
     }
 
+    formats = {
+        bool: {True: 1, False: 2}
+    }
+
     @staticmethod
     def pck_batch_header(batchNr, ts):
         return "{0}{1:06}{2}".format("FBFV", batchNr, ts.strftime("%d/%m/%y"))
@@ -66,6 +70,13 @@ class CSFormatter:
         return "{0}:{1}{2}:{3}".format(formId, ruRef, ruChk, period)
 
     @staticmethod
+    def pck_value(val):
+        if isinstance(val, bool):
+            return 1 if val else 2
+        else:
+            return val
+
+    @staticmethod
     def pck_lines(data, batchNr, ts, surveyId, ruRef, ruChk, period, **kwargs):
         formId = CSFormatter.formIds[surveyId]
         return [
@@ -73,7 +84,7 @@ class CSFormatter:
             "FV",
             CSFormatter.pck_form_header(formId, ruRef, ruChk, period),
         ] + [
-            "{0} {1:011}".format(q, a) for q, a in data.items()
+            "{0} {1:011}".format(q, CSFormatter.pck_value(a)) for q, a in data.items()
         ]
 
     @staticmethod
@@ -87,22 +98,36 @@ class MWSSTransformer:
 
     class Processor:
         """
-        Processors return data of the same type as the supplied default.
+        Principles for processors:
+
+        * function is responsible for range check according to own logic.
+        * parametrisation is possible; use functools.partial
+        * returns data of the same type as the supplied default. 
 
         """
 
         @staticmethod
         def match_type(qId, data, default):
-            return type(default)(data.get(qId, default))
+            try:
+                return type(default)(data.get(qId, default))
+            except ValueError:
+                return default
 
         @staticmethod
         def unsigned_integer(qId, data, default):
             rv = int(data.get(qId, default))
             return rv if rv >= 0 else default
 
+        @staticmethod
+        def percentage(qId, data, default):
+            typ = type(default)
+            rv = int(data.get(qId, default))
+            return typ(rv) if 0 <= rv >= 100 else default
+
     defn = [
         (range(40, 90, 10), 0, Processor.unsigned_integer),
-        (3, 0, Processor.match_type)
+        (90, False, Processor.match_type),
+        (100, False, Processor.percentage)
     ]
 
     @staticmethod
@@ -126,7 +151,10 @@ class MWSSTransformer:
 
     @staticmethod
     def transform(data):
-        ops = MWSSTransformer.ops
+        return OrderedDict(
+            (qId, fn(qId, data, dflt))
+            for qId, dflt, fn in MWSSTransformer.ops
+        )
 
     @staticmethod
     def idbr_name(submittedAt, seqNr, **kwargs):
