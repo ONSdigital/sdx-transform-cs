@@ -133,10 +133,10 @@ class BatchFileTests(unittest.TestCase):
         ], rv)
 
 
-class PackingTests(unittest.TestCase):
+class TransformTests(unittest.TestCase):
 
-    def test_tempdir(self):
-        survey = {
+    def test_ops(self):
+        response = {
             "survey_id": "134",
             "tx_id": "27923934-62de-475c-bc01-433c09fd38b8",
             "collection": {
@@ -149,11 +149,30 @@ class PackingTests(unittest.TestCase):
             },
             "submitted_at": "2017-04-12T13:01:26Z",
         }
-        tfr = MWSSTransformer(survey)
+        tfr = MWSSTransformer(response)
+        print(tfr.ops)
+
+class PackingTests(unittest.TestCase):
+
+    def test_tempdir(self):
+        response = {
+            "survey_id": "134",
+            "tx_id": "27923934-62de-475c-bc01-433c09fd38b8",
+            "collection": {
+                "instrument_id": "0001",
+                "period": "201704"
+            },
+            "metadata": {
+                "user_id": "123456789",
+                "ru_ref": "12345678901A"
+            },
+            "submitted_at": "2017-04-12T13:01:26Z",
+        }
+        tfr = MWSSTransformer(response)
         self.assertEqual(
             "REC1204_0000.DAT",
             MWSSTransformer.idbr_name(
-                survey["submitted_at"],
+                response["submitted_at"],
                 **tfr.ids._asdict()
             )
         )

@@ -1,4 +1,5 @@
 from collections import namedtuple
+from collections import OrderedDict
 import datetime
 import io
 import json
@@ -84,6 +85,21 @@ class CSFormatter:
 
 class MWSSTransformer:
 
+    class Processor:
+
+        @staticmethod
+        def unchanged(qId, data, default):
+            return data.get(qId, default)
+
+        @staticmethod
+        def unsigned_integer(qId, data, default):
+            return "{0:011}".format(data.get(qId, default))
+
+    defn = [
+        (range(40, 90, 10), 0, Processor.unsigned_integer),
+        (3, 0, Processor.unchanged)
+    ]
+
     @staticmethod
     def load_survey(ids):
         try:
@@ -105,7 +121,7 @@ class MWSSTransformer:
 
     @staticmethod
     def transform(data):
-        raise NotImplementedError
+        ops = MWSSTransformer.ops
 
     @staticmethod
     def idbr_name(submittedAt, seqNr, **kwargs):
@@ -150,6 +166,14 @@ class MWSSTransformer:
             self.log = logging.getLogger(__name__)
         else:
             self.log = self.bind_logger(log, self.ids)
+
+    @property
+    def ops(self):
+        return OrderedDict([
+            (qId, (dflt, fn))
+            for rng, dflt, fn in self.defn
+            for qId in (rng if isinstance(rng, range) else [rng])
+        ])
 
     def pack(self):
         survey = self.load_survey(self.ids)
