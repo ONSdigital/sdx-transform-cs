@@ -31,6 +31,12 @@ class Survey:
 
     @staticmethod
     def identifiers(data, batchNr=0, seqNr=0, log=None):
+        """
+        Parse common metadata from the survey. Return a
+        defined type which all code can use to access
+        ids.
+
+        """
         log = log or logging.getLogger(__name__)
         ruRef = data.get("metadata", {}).get("ru_ref", "")
         rv = Survey.Identifiers(
@@ -51,13 +57,15 @@ class Survey:
 
 
 class CSFormatter:
+    """
+    Formatter for common software systems.
+
+    Serialises standard data types to PCK format.
+
+    """
 
     formIds = {
         "134": "0004",
-    }
-
-    formats = {
-        bool: {True: 1, False: 2}
     }
 
     @staticmethod
@@ -70,9 +78,11 @@ class CSFormatter:
         return "{0}:{1}{2}:{3}".format(formId, ruRef, ruChk, period)
 
     @staticmethod
-    def pck_value(val):
+    def pck_value(qId, val):
         if isinstance(val, bool):
             return 1 if val else 2
+        elif isinstance(val, str):
+            return 1 if val else 0
         else:
             return val
 
@@ -84,7 +94,7 @@ class CSFormatter:
             "FV",
             CSFormatter.pck_form_header(formId, ruRef, ruChk, period),
         ] + [
-            "{0} {1:011}".format(q, CSFormatter.pck_value(a)) for q, a in data.items()
+            "{0} {1:011}".format(q, CSFormatter.pck_value(q, a)) for q, a in data.items()
         ]
 
     @staticmethod
@@ -151,6 +161,11 @@ class MWSSTransformer:
 
     @staticmethod
     def transform(data):
+        """
+        Normalise the document so that it contains all items required by downstream
+        systems. Validate those items and apply business logic.
+
+        """
         return OrderedDict(
             (qId, fn(qId, data, dflt))
             for qId, dflt, fn in MWSSTransformer.ops

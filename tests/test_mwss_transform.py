@@ -21,6 +21,10 @@ class TransformTests(unittest.TestCase):
         self.assertEqual(0, proc("q", {"q": "NaN"}, 0))
         self.assertEqual("1", proc("q", {"q": 1}, ""))
 
+        # bools and strings
+        self.assertEqual(True, proc("q", {"q": "1"}, False))
+        self.assertEqual(False, proc("q", {"q": ""}, True))
+
     def test_processor_percentage(self):
         proc = MWSSTransformer.Processor.unsigned_integer
 
