@@ -66,11 +66,11 @@ class BatchFileTests(unittest.TestCase):
         check = "C"
         period = "200911"
         data = OrderedDict([
-            ("0001", "{0:011}".format(2)),
-            ("0140", "{0:011}".format(124)),
-            ("0151", "{0:011}".format(217222))
+            ("0001", 2),
+            ("0140", 124),
+            ("0151", 217222)
         ])
-        self.assertTrue(all(len(val) == 11 for val in data.values()))
+        self.assertTrue(isinstance(val, int) for val in data.values())
         rv = CSFormatter.pck_lines(data, batchNr, batchDate, instId, ruRef, check, period)
         self.assertEqual([
             "FBFV00386629/12/09",
@@ -108,7 +108,7 @@ class BatchFileTests(unittest.TestCase):
         self.assertEqual("A", ids.ruChk)
         self.assertEqual("200911", ids.period)
 
-    def test_pck_from_data(self):
+    def test_pck_from_transformed_data(self):
         # TODO: Get proper response data
         src = pkg_resources.resource_string(__name__, "pck/023.0102.json")
         reply = json.loads(src.decode("utf-8"))
@@ -117,9 +117,9 @@ class BatchFileTests(unittest.TestCase):
         reply["collection"]["period"] = "200911"
         reply["metadata"]["ru_ref"] = "49900001225C"
         reply["data"] = OrderedDict([
-            ("0001", "{0:011}".format(2)),
-            ("0140", "{0:011}".format(124)),
-            ("0151", "{0:011}".format(217222))
+            ("0001", 2),
+            ("0140", 124),
+            ("0151", 217222)
         ])
         ids = Survey.identifiers(reply, batchNr=3866)
         rv = CSFormatter.pck_lines(reply["data"], **ids._asdict())

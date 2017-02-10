@@ -73,7 +73,7 @@ class CSFormatter:
             "FV",
             CSFormatter.pck_form_header(formId, ruRef, ruChk, period),
         ] + [
-            " ".join((q, a)) for q, a in data.items()
+            "{0} {1:011}".format(q, a) for q, a in data.items()
         ]
 
     @staticmethod
@@ -86,18 +86,23 @@ class CSFormatter:
 class MWSSTransformer:
 
     class Processor:
+        """
+        Processors return data of the same type as the supplied default.
+
+        """
 
         @staticmethod
-        def unchanged(qId, data, default):
-            return data.get(qId, default)
+        def match_type(qId, data, default):
+            return type(default)(data.get(qId, default))
 
         @staticmethod
         def unsigned_integer(qId, data, default):
-            return "{0:011}".format(data.get(qId, default))
+            rv = int(data.get(qId, default))
+            return rv if rv >= 0 else default
 
     defn = [
         (range(40, 90, 10), 0, Processor.unsigned_integer),
-        (3, 0, Processor.unchanged)
+        (3, 0, Processor.match_type)
     ]
 
     @staticmethod
