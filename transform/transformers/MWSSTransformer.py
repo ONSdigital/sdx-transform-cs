@@ -181,8 +181,11 @@ class MWSSTransformer:
         (120, False, Processor.percentage),
         (range(130, 133, 1), False, Processor.single),
         (140, 0, Processor.unsigned_integer),
+        # 150; how generated?
         (range(151, 154, 1), 0, Processor.unsigned_integer),
+        # 170; how generated?
         (range(171, 174, 1), 0, Processor.unsigned_integer),
+        # 180; how generated?
         (range(181, 184, 1), 0, Processor.unsigned_integer),
         (190, False, Processor.multiple),
         (200, False, Processor.percentage),
