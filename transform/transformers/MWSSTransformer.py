@@ -67,19 +67,47 @@ class Processor:
     """
 
     @staticmethod
-    def match_type(qId, data, default):
+    def comment(qId, data, default, *args, **kwargs):
         try:
             return type(default)(data.get(qId, default))
         except ValueError:
             return default
 
     @staticmethod
-    def unsigned_integer(qId, data, default):
+    def diarydate(qId, data, default, *args, **kwargs):
+        if qId not in data:
+            return default
+        else:
+            try:
+                date = datetime.date.strptime("%d/%m/%Y")
+                return type(default)(date)
+            except ValueError:
+                return default
+
+    @staticmethod
+    def match_type(qId, data, default, *args, **kwargs):
+        try:
+            return type(default)(data.get(qId, default))
+        except ValueError:
+            return default
+
+    @staticmethod
+    def multiple(qId, data, default, *args, survey=None, **kwargs):
+        if survey is not None:
+            # TODO: Look up valid options
+            pass
+        try:
+            return type(default)(data.get(qId, default))
+        except ValueError:
+            return default
+
+    @staticmethod
+    def unsigned_integer(qId, data, default, *args, **kwargs):
         rv = int(data.get(qId, default))
         return rv if rv >= 0 else default
 
     @staticmethod
-    def percentage(qId, data, default):
+    def percentage(qId, data, default, *args, **kwargs):
         typ = type(default)
         rv = int(data.get(qId, default))
         return typ(rv) if 0 <= rv >= 100 else default
@@ -137,8 +165,10 @@ class MWSSTransformer:
 
     defn = [
         (range(40, 90, 10), 0, Processor.unsigned_integer),
-        (90, False, Processor.match_type),
-        (100, False, Processor.percentage)
+        (90, False, Processor.multiple),
+        (100, False, Processor.percentage),
+        (110, False, Processor.diarydate),
+        (120, False, Processor.comment),
     ]
 
     @staticmethod
@@ -161,14 +191,14 @@ class MWSSTransformer:
         )
 
     @staticmethod
-    def transform(data):
+    def transform(data, survey=None):
         """
         Normalise the document so that it contains all items required by downstream
         systems. Validate those items and apply business logic.
 
         """
         return OrderedDict(
-            (qId, fn(qId, data, dflt))
+            (qId, fn(qId, data, dflt, survey))
             for qId, dflt, fn in MWSSTransformer.ops
         )
 
@@ -233,7 +263,7 @@ class MWSSTransformer:
         manifest = []
         with tempfile.TemporaryDirectory(prefix="mwss_", dir="tmp") as locn:
             # Do transform and write PCK
-            data = self.transform(self.response["data"])
+            data = self.transform(self.response["data"], survey)
             fN = self.pck_name(**self.ids._asdict())
             with open(os.path.join(locn, fN), "w") as pck:
                 self.write_pck(pck, data, **self.ids._asdict())
