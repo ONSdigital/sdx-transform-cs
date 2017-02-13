@@ -92,6 +92,16 @@ class Processor:
             return default
 
     @staticmethod
+    def single(qId, data, default, *args, survey=None, **kwargs):
+        if survey is not None:
+            # TODO: Look up valid option
+            pass
+        try:
+            return type(default)(data.get(qId, default))
+        except ValueError:
+            return default
+
+    @staticmethod
     def multiple(qId, data, default, *args, survey=None, **kwargs):
         if survey is not None:
             # TODO: Look up valid options
@@ -168,7 +178,17 @@ class MWSSTransformer:
         (90, False, Processor.multiple),
         (100, False, Processor.percentage),
         (110, False, Processor.diarydate),
-        (120, False, Processor.comment),
+        (120, False, Processor.percentage),
+        (range(130, 133, 1), False, Processor.single),
+        (140, 0, Processor.unsigned_integer),
+        (range(151, 154, 1), 0, Processor.unsigned_integer),
+        (range(171, 174, 1), 0, Processor.unsigned_integer),
+        (range(181, 184, 1), 0, Processor.unsigned_integer),
+        (190, False, Processor.multiple),
+        (200, False, Processor.percentage),
+        (210, False, Processor.diarydate),
+        (220, False, Processor.percentage),
+        (300, False, Processor.comment),
     ]
 
     @staticmethod
