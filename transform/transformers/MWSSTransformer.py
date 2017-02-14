@@ -154,6 +154,10 @@ class CSFormatter:
             return val
 
     @staticmethod
+    def pck_item(q, a):
+        return "{0} {1:011}".format(q, CSFormatter.pck_value(q, a))
+
+    @staticmethod
     def pck_lines(data, batchNr, ts, surveyId, ruRef, ruChk, period, **kwargs):
         formId = CSFormatter.formIds[surveyId]
         return [
@@ -161,7 +165,7 @@ class CSFormatter:
             "FV",
             CSFormatter.pck_form_header(formId, ruRef, ruChk, period),
         ] + [
-            "{0} {1:011}".format(q, CSFormatter.pck_value(q, a)) for q, a in data.items()
+            CSFormatter.pck_item(q, a) for q, a in data.items()
         ]
 
     @staticmethod
@@ -213,6 +217,18 @@ class MWSSTransformer:
             user_id=ids.userId,
         )
 
+    @classmethod
+    def ops(cls):
+        """
+        A mapping from question id to default value and operator.
+
+        """
+        return OrderedDict([
+            ("{0:04}".format(qNr), (dflt, fn))
+            for rng, dflt, fn in cls.defn
+            for qNr in (rng if isinstance(rng, range) else [rng])
+        ])
+
     @staticmethod
     def transform(data, survey=None):
         """
@@ -222,7 +238,7 @@ class MWSSTransformer:
         """
         return OrderedDict(
             (qId, fn(qId, data, dflt, survey))
-            for qId, dflt, fn in MWSSTransformer.ops
+            for qId, (dflt, fn) in MWSSTransformer.ops().items()
         )
 
     @staticmethod
@@ -268,18 +284,6 @@ class MWSSTransformer:
             self.log = logging.getLogger(__name__)
         else:
             self.log = self.bind_logger(log, self.ids)
-
-    @property
-    def ops(self):
-        """
-        A mapping from question id to default value and operator.
-
-        """
-        return OrderedDict([
-            (qId, (dflt, fn))
-            for rng, dflt, fn in self.defn
-            for qId in (rng if isinstance(rng, range) else [rng])
-        ])
 
     def pack(self):
         survey = self.load_survey(self.ids)

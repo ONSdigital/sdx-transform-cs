@@ -11,8 +11,7 @@ from transform.transformers.MWSSTransformer import Survey
 import pkg_resources
 
 
-class TransformTests(unittest.TestCase):
-
+class OpTests(unittest.TestCase):
 
     def test_processor_match_type(self):
         proc = Processor.match_type
@@ -74,6 +73,15 @@ class TransformTests(unittest.TestCase):
             "submitted_at": "2017-04-12T13:01:26Z",
         }
         tfr = MWSSTransformer(response)
+
+
+class TransformTests(unittest.TestCase):
+
+    def test_unsigned(self):
+        rv = MWSSTransformer.transform({"0040": "33"}) 
+        self.assertEqual(33, rv["0040"])
+        item = CSFormatter.pck_item("0040", rv["0040"])
+        self.assertEqual(item, "0040 00000000033")
 
 
 class BatchFileTests(unittest.TestCase):
