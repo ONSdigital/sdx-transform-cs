@@ -78,10 +78,16 @@ class OpTests(unittest.TestCase):
 class TransformTests(unittest.TestCase):
 
     def test_unsigned(self):
-        rv = MWSSTransformer.transform({"0040": "33"}) 
+        rv = MWSSTransformer.transform({"0040": "33"})
         self.assertEqual(33, rv["0040"])
         item = CSFormatter.pck_item("0040", rv["0040"])
         self.assertEqual(item, "0040 00000000033")
+
+    def test_currency(self):
+        rv = MWSSTransformer.transform({"0050": "36852"})
+        self.assertEqual(36852, rv["0050"])
+        item = CSFormatter.pck_item("0050", rv["0050"])
+        self.assertEqual(item, "0050 00000036852")
 
 
 class BatchFileTests(unittest.TestCase):
