@@ -32,6 +32,7 @@ class Survey:
     @staticmethod
     def parse_timestamp(text):
         cls = datetime.datetime
+
         if text.endswith("Z"):
             return cls.strptime(text, "%Y-%m-%dT%H:%M:%SZ").replace(
                 tzinfo=datetime.timezone.utc
@@ -48,7 +49,12 @@ class Survey:
             pass
 
         try:
-            return cls.strptime(text, "%Y-%m-%d")
+            return cls.strptime(text, "%Y-%m-%d").date()
+        except ValueError:
+            pass
+
+        try:
+            return cls.strptime(text, "%d/%m/%Y").date()
         except ValueError:
             return None
 
@@ -85,7 +91,7 @@ class Processor:
     """
     Principles for processors:
 
-    * function is responsible for range check according to own logic.
+    * method is responsible for range check according to own logic.
     * parametrisation is possible; use functools.partial
     * returns data of the same type as the supplied default. 
 
@@ -100,14 +106,14 @@ class Processor:
 
     @staticmethod
     def diarydate(qId, data, default, *args, **kwargs):
-        if qId not in data:
+        try:
+            rv = Survey.parse_timestamp(data[qId])
+            if isinstance(rv, datetime.datetime):
+                return rv.date()
+            else:
+                return rv
+        except KeyError:
             return default
-        else:
-            try:
-                date = datetime.date.strptime("%d/%m/%Y")
-                return type(default)(date)
-            except ValueError:
-                return default
 
     @staticmethod
     def match_type(qId, data, default, *args, **kwargs):

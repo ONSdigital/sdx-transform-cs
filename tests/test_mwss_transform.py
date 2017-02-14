@@ -25,7 +25,23 @@ class SurveyTests(unittest.TestCase):
         rv = Survey.parse_timestamp("2017-01-11T17:18:53Z")
         self.assertIsInstance(rv, datetime.datetime)
 
+    def test_date_iso(self):
+        rv = Survey.parse_timestamp("2017-01-11")
+        self.assertNotIsInstance(rv, datetime.datetime)
+        self.assertIsInstance(rv, datetime.date)
+
+    def test_date_diary(self):
+        rv = Survey.parse_timestamp("11/07/2017")
+        self.assertNotIsInstance(rv, datetime.datetime)
+        self.assertIsInstance(rv, datetime.date)
+
+
 class OpTests(unittest.TestCase):
+
+    def test_processor_diarydate(self):
+        proc = Processor.diarydate
+        rv = proc("q", {"q": "11/07/2017"}, None)
+        self.assertEqual(datetime.date(2017, 7, 11), rv)
 
     def test_processor_match_type(self):
         proc = Processor.match_type
