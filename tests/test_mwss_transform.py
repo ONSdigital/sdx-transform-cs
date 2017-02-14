@@ -254,4 +254,4 @@ class PackingTests(unittest.TestCase):
         try:
             tfr.pack()
         except KeyError:
-            self.fail("TODO: define pages.")
+            self.fail("TODO: define pages of survey.")

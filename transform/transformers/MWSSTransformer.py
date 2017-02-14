@@ -276,7 +276,7 @@ class MWSSTransformer:
 
     @staticmethod
     def write_idbr(fObj, **kwargs):
-        output = CSFormatter.idbr_receipt(fObj, **kwargs)
+        output = CSFormatter.idbr_receipt(**kwargs)
         fObj.write(output)
         fObj.write("\n")
 
