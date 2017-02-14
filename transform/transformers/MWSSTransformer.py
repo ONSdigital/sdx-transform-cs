@@ -26,8 +26,31 @@ class Survey:
 
     Identifiers = namedtuple("Identifiers", [
         "batchNr", "seqNr", "ts", "txId", "surveyId", "instId",
-        "userId", "ruRef", "ruChk", "period"
+        "userTs", "userId", "ruRef", "ruChk", "period"
     ])
+
+    @staticmethod
+    def parse_timestamp(text):
+        cls = datetime.datetime
+        if text.endswith("Z"):
+            return cls.strptime(text, "%Y-%m-%dT%H:%M:%SZ").replace(
+                tzinfo=datetime.timezone.utc
+            )
+
+        try:
+            return cls.strptime(text, "%Y-%m-%dT%H:%M:%S.%f%z")
+        except ValueError:
+            pass
+
+        try:
+            return cls.strptime(text.partition(".")[0], "%Y-%m-%dT%H:%M:%S")
+        except ValueError:
+            pass
+
+        try:
+            return cls.strptime(text, "%Y-%m-%d")
+        except ValueError:
+            return None
 
     @staticmethod
     def identifiers(data, batchNr=0, seqNr=0, log=None):
@@ -39,11 +62,13 @@ class Survey:
         """
         log = log or logging.getLogger(__name__)
         ruRef = data.get("metadata", {}).get("ru_ref", "")
+        ts = datetime.datetime.now(datetime.timezone.utc)
         rv = Survey.Identifiers(
-            batchNr, seqNr, datetime.date.today(),
+            batchNr, seqNr, ts,
             data.get("tx_id"),
             data.get("survey_id"),
             data.get("collection", {}).get("instrument_id"),
+            Survey.parse_timestamp(data.get("submitted_at", ts.isoformat())),
             data.get("metadata", {}).get("user_id"),
             ''.join(i for i in ruRef if i.isdigit()),
             ruRef[-1] if ruRef and ruRef[-1].isalpha() else "",
@@ -145,7 +170,7 @@ class CSFormatter:
         return "{0}:{1}{2}:{3}".format(formId, ruRef, ruChk, period)
 
     @staticmethod
-    def pck_value(qId, val):
+    def pck_value(qNr, val, surveyId=None):
         if isinstance(val, bool):
             return 1 if val else 2
         elif isinstance(val, str):
@@ -242,9 +267,8 @@ class MWSSTransformer:
         )
 
     @staticmethod
-    def idbr_name(submittedAt, seqNr, **kwargs):
-        subDT = datetime.datetime.strptime(submittedAt, "%Y-%m-%dT%H:%M:%SZ")
-        return "REC{0}_{1:04}.DAT".format(subDT.strftime("%d%m"), int(seqNr))
+    def idbr_name(userTs, seqNr, **kwargs):
+        return "REC{0}_{1:04}.DAT".format(userTs.strftime("%d%m"), int(seqNr))
 
     @staticmethod
     def pck_name(surveyId, seqNr, **kwargs):

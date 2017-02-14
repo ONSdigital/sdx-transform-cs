@@ -11,6 +11,20 @@ from transform.transformers.MWSSTransformer import Survey
 import pkg_resources
 
 
+class SurveyTests(unittest.TestCase):
+
+    def test_datetime_ms_with_colon_in_timezone(self):
+        rv = Survey.parse_timestamp("2017-01-11T17:18:53.020222+00:00")
+        self.assertIsInstance(rv, datetime.datetime)
+
+    def test_datetime_ms_with_timezone(self):
+        rv = Survey.parse_timestamp("2017-01-11T17:18:53.020222+0000")
+        self.assertIsInstance(rv, datetime.datetime)
+
+    def test_datetime_zulu(self):
+        rv = Survey.parse_timestamp("2017-01-11T17:18:53Z")
+        self.assertIsInstance(rv, datetime.datetime)
+
 class OpTests(unittest.TestCase):
 
     def test_processor_match_type(self):
@@ -181,7 +195,7 @@ class BatchFileTests(unittest.TestCase):
         self.assertEqual(0, ids.batchNr)
         self.assertEqual(0, ids.seqNr)
         self.assertEqual(reply["tx_id"], ids.txId)
-        self.assertEqual(datetime.date.today(), ids.ts)
+        self.assertEqual(datetime.date.today(), ids.ts.date())
         self.assertEqual("023", ids.surveyId)
         self.assertEqual("789473423", ids.userId)
         self.assertEqual("12345678901", ids.ruRef)
@@ -228,12 +242,12 @@ class PackingTests(unittest.TestCase):
                 "ru_ref": "12345678901A"
             },
             "submitted_at": "2017-04-12T13:01:26Z",
+            "data": {}
         }
         tfr = MWSSTransformer(response)
         self.assertEqual(
             "REC1204_0000.DAT",
             MWSSTransformer.idbr_name(
-                response["submitted_at"],
                 **tfr.ids._asdict()
             )
         )
