@@ -93,7 +93,7 @@ class Processor:
 
     * method is responsible for range check according to own logic.
     * parametrisation is possible; use functools.partial
-    * returns data of the same type as the supplied default. 
+    * returns data of the same type as the supplied default.
 
     """
 
@@ -145,7 +145,7 @@ class Processor:
     @staticmethod
     def unsigned_integer(qId, data, default, *args, **kwargs):
         rv = int(data.get(qId, default))
-        return rv if rv >= 0 else default
+        return type(default)(rv) if rv >= 0 else default
 
     @staticmethod
     def percentage(qId, data, default, *args, **kwargs):

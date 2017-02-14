@@ -55,8 +55,8 @@ class OpTests(unittest.TestCase):
         self.assertEqual(True, proc("q", {"q": "1"}, False))
         self.assertEqual(False, proc("q", {"q": ""}, True))
 
-    def test_processor_percentage(self):
-        proc =Processor.unsigned_integer
+    def test_processor_unsigned(self):
+        proc = Processor.unsigned_integer
 
         # Supply int default for range checking
         self.assertEqual(0, proc("q", {"q": -1}, 0))
@@ -103,6 +103,7 @@ class OpTests(unittest.TestCase):
             "submitted_at": "2017-04-12T13:01:26Z",
         }
         tfr = MWSSTransformer(response)
+        self.failUnless(tfr)
 
 
 class TransformTests(unittest.TestCase):
