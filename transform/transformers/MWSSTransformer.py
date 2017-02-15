@@ -2,6 +2,7 @@ from collections import namedtuple
 from collections import OrderedDict
 import datetime
 import io
+import itertools
 import json
 import logging
 import os
@@ -13,14 +14,14 @@ import pkg_resources
 from reportlab.platypus import SimpleDocTemplate
 from reportlab.lib.pagesizes import A4
 
-try:
-    from transform.transformers.ImageTransformer import ImageTransformer
-    from transform.transformers.PDFTransformer import PDFTransformer
-except ImportError:
-    # CLI operation
-    from ImageTransformer import ImageTransformer
-    from PDFTransformer import PDFTransformer
+from transform.transformers.ImageTransformer import ImageTransformer
+from transform.transformers.PDFTransformer import PDFTransformer
 
+__doc__ = """
+python -m transform.transformers.MWSSTransformer \
+< tests/replies/eq-mwss-test-submission.json > test-output.zip
+
+"""
 
 class Survey:
 
@@ -186,7 +187,10 @@ class CSFormatter:
 
     @staticmethod
     def pck_item(q, a):
-        return "{0} {1:011}".format(q, CSFormatter.pck_value(q, a))
+        try:
+            return "{0} {1:011}".format(q, CSFormatter.pck_value(q, a))
+        except TypeError:
+            return "{0} ???????????".format(q)
 
     @staticmethod
     def pck_lines(data, batchNr, ts, surveyId, ruRef, ruChk, period, **kwargs):
@@ -356,8 +360,8 @@ class MWSSTransformer:
 def run():
     reply = json.load(sys.stdin)
     tfr = MWSSTransformer(reply)
-    zipfile = tfr.pack()
-    sys.stdout.write(zipfile)
+    zipfile = tfr.pack(imgSeq=itertools.count())
+    sys.stdout.buffer.write(zipfile.read())
     return 0
 
 if __name__ == "__main__":

@@ -22,19 +22,16 @@ try:
 except ImportError:
     from .PDFTransformer import PDFTransformer
 
-try:
-    from transform import settings
-    from transform.settings import session
-    from transform.views.image_filters import get_env, format_date
-except ImportError:
-    print("Available for command line operation only", file=sys.stderr)
+from transform import settings
+from transform.settings import session
+from transform.views.image_filters import get_env, format_date
 
 __doc__ = """
 SDX Image Transformer.
 
 Example:
 
-python transform/transformers/ImageTransformer.py --survey transform/surveys/144.0001.json \\
+python -m transform.transformers.ImageTransformer --survey transform/surveys/144.0001.json \\
 < tests/replies/ukis-01.json > output.zip
 
 """
