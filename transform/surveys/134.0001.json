@@ -1,1 +1,1136 @@
-{}
+{
+  "title": "Monthly Wages and Salary Survey",
+  "survey_id": "134",
+  "form_type": "0001",
+  "question_groups": [
+    {
+      "title": "General Business Information",
+      "questions": [
+        {
+          "number": "1.1",
+          "title": "In which geographic markets did {{respondent.ru_name}} sell goods and/or services?",
+          "text": "UK regional within approximately 100 miles of this business",
+          "question_id": "0210",
+          "type": "checkbox"
+        },
+        {
+          "number": "1.1",
+          "title": "In which geographic markets did {{respondent.ru_name}} sell goods and/or services?",
+          "text": "UK national",
+          "question_id": "0220",
+          "type": "checkbox"
+        },
+        {
+          "number": "1.1",
+          "title": "In which geographic markets did {{respondent.ru_name}} sell goods and/or services?",
+          "text": "European countries",
+          "question_id": "0230",
+          "type": "checkbox"
+        },
+        {
+          "number": "1.1",
+          "title": "In which geographic markets did {{respondent.ru_name}} sell goods and/or services?",
+          "text": "All other countries",
+          "question_id": "0240",
+          "type": "checkbox"
+        },
+        {
+          "number": "1.2",
+          "title": "Did any of the following significant events or changes occur to {{respondent.ru_name}}?",
+          "text": "{{respondent.ru_name}} was established",
+          "question_id": "0410",
+          "type": "radio"
+        },
+        {
+          "number": "1.2",
+          "title": "Did any of the following significant events or changes occur to {{respondent.ru_name}}?",
+          "text": "Turnover increased by at least 10% due to merger with another business or part of it",
+          "question_id": "0420",
+          "type": "radio"
+        },
+        {
+          "number": "1.2",
+          "title": "Did any of the following significant events or changes occur to {{respondent.ru_name}}?",
+          "text": "Turnover decreased by at least 10% due to merger with another business or part of it",
+          "question_id": "0430",
+          "type": "radio"
+        }
+      ]
+    },
+    {
+      "title": "Business Strategy & Practices",
+      "questions": [
+        {
+          "number": "2.1",
+          "title": "Did {{respondent.ru_name}} make changes in the following areas?",
+          "text": "New business practices for organising procedures",
+          "question_id": "2310",
+          "type": "radio"
+        },
+        {
+          "number": "2.1",
+          "title": "Did {{respondent.ru_name}} make changes in the following areas?",
+          "text": "New methods of organising work responsibilities and decision making",
+          "question_id": "2320",
+          "type": "radio"
+        },
+        {
+          "number": "2.1",
+          "title": "Did {{respondent.ru_name}} make changes in the following areas?",
+          "text": "New methods of organising external relationships with other firms or public institutions",
+          "question_id": "2330",
+          "type": "radio"
+        },
+        {
+          "number": "2.1",
+          "title": "Did {{respondent.ru_name}} make changes in the following areas?",
+          "text": "Implementation of significant  changes to marketing concepts or strategies.",
+          "question_id": "2340",
+          "type": "radio"
+        }
+      ]
+    },
+    {
+      "title": "Innovation Investment",
+      "questions": [
+        {
+          "number": "3.1",
+          "title": "Did {{respondent.ru_name}} invest in internal Research and Development for the purposes of current or future innovation?",
+          "text": "Did {{respondent.ru_name}} invest in internal Research and Development for the purposes of current or future innovation?",
+          "question_id": "1310",
+          "type": "radio"
+        },
+        {
+          "number": "3.2",
+          "title": "In which of the following years did {{respondent.ru_name}} invest in internal Research & Development?",
+          "text": "2014",
+          "question_id": "2675",
+          "type": "checkbox"
+        },
+        {
+          "number": "3.2",
+          "title": "In which of the following years did {{respondent.ru_name}} invest in internal Research & Development?",
+          "text": "2015",
+          "question_id": "2676",
+          "type": "checkbox"
+        },
+        {
+          "number": "3.2",
+          "title": "In which of the following years did {{respondent.ru_name}} invest in internal Research & Development?",
+          "text": "2016",
+          "question_id": "2677",
+          "type": "checkbox"
+        },
+        {
+          "number": "3.3",
+          "title": "Please estimate the amount of expenditure on internal Research & Development  the calendar  year 2016 only?",
+          "text": "Total internal Research and Development",
+          "question_id": "1410",
+          "type": "currency"
+        },
+        {
+          "number": "3.4",
+          "title": "Did {{respondent.ru_name}} invest in the acquisition of Research and Development for the purposes of current or future innovation?",
+          "text": "Did {{respondent.ru_name}} invest in the acquisition of Research and Development for the purposes of current or future innovation?",
+          "question_id": "1320",
+          "type": "radio"
+        },
+        {
+          "number": "3.5",
+          "title": "Please estimate the amount of expenditure on acquisition of Research & Development in  the calendar  year 2016 only?",
+          "text": "Total acquisition of Research and Development",
+          "question_id": "1420",
+          "type": "currency"
+        },
+        {
+          "number": "3.6",
+          "title": "Did {{respondent.ru_name}}  invest in acquisition of advanced machinery, equipment or software for the purposes of current or future innovation?",
+          "text": "Did {{respondent.ru_name}}  invest in acquisition of advanced machinery, equipment or software for the purposes of current or future innovation?",
+          "question_id": "10000",
+          "type": "radio"
+        },
+        {
+          "number": "3.7",
+          "title": "Which of the following did {{respondent.ru_name}} invest in for the purposes of current or future innovation?",
+          "text": "Advanced machinery and equipment",
+          "question_id": "1331",
+          "type": "checkbox"
+        },
+        {
+          "number": "3.7",
+          "title": "Which of the following did {{respondent.ru_name}} invest in for the purposes of current or future innovation?",
+          "text": "Computer hardware",
+          "question_id": "1332",
+          "type": "checkbox"
+        },
+        {
+          "number": "3.7",
+          "title": "Which of the following did {{respondent.ru_name}} invest in for the purposes of current or future innovation?",
+          "text": "Computer software",
+          "question_id": "1333",
+          "type": "checkbox"
+        },
+        {
+          "number": "3.8",
+          "title": "Please estimate the amount of expenditure for the total acquisition of advanced machinery, equipment and software for  the calendar year 2016 only?",
+          "text": "Total acquisition of advanced machinery, equipment and software",
+          "question_id": "1430",
+          "type": "currency"
+        },
+        {
+          "number": "3.9",
+          "title": "Did {{respondent.ru_name}} invest in the acquisition of existing knowledge for the purposes of current or future innovation?",
+          "text": "Did {{respondent.ru_name}} invest in the acquisition of existing knowledge for the purposes of current or future innovation?",
+          "question_id": "1340",
+          "type": "radio"
+        },
+        {
+          "number": "3.10",
+          "title": "Please estimate the amount of expenditure for acquisition of existing knowledge for the calendar year 2016 only?",
+          "text": "Total acquisition of existing knowledge",
+          "question_id": "1440",
+          "type": "currency"
+        },
+        {
+          "number": "3.11",
+          "title": "Did {{respondent.ru_name}} invest in training for innovative activities for the purposes of current or future innovation?",
+          "text": "Did {{respondent.ru_name}} invest in training for innovative activities for the purposes of current or future innovation?",
+          "question_id": "1350",
+          "type": "radio"
+        },
+        {
+          "number": "3.12",
+          "title": "Please estimate the amount of expenditure for training for innovative activities for the calendar year 2016 only?",
+          "text": "Total training for innovative activities",
+          "question_id": "1450",
+          "type": "currency"
+        },
+        {
+          "number": "3.13",
+          "title": "Did {{respondent.ru_name}} invest in all forms of design for the purposes of current or future innovation?",
+          "text": "Did {{respondent.ru_name}} invest in all forms of design for the purposes of current or future innovation?",
+          "question_id": "1360",
+          "type": "radio"
+        },
+        {
+          "number": "3.14",
+          "title": "Please estimate the amount of expenditure for all forms of design for the calendar year 2016 only?",
+          "text": "Total training for all forms of design",
+          "question_id": "1460",
+          "type": "currency"
+        },
+        {
+          "number": "3.15",
+          "title": "Did {{respondent.ru_name}} invest in market introduction of innovations for the purposes of current or future innovation?",
+          "text": "Did {{respondent.ru_name}} invest in market introduction of innovations for the purposes of current or future innovation?",
+          "question_id": "10001",
+          "type": "radio"
+        },
+        {
+          "number": "3.16",
+          "title": "Which of the following did {{respondent.ru_name}} invest in for the purposes of current or future innovation?",
+          "text": "Changes to product or service design",
+          "question_id": "1371",
+          "type": "checkbox"
+        },
+        {
+          "number": "3.16",
+          "title": "Which of the following did {{respondent.ru_name}} invest in for the purposes of current or future innovation?",
+          "text": "Market research",
+          "question_id": "1372",
+          "type": "checkbox"
+        },
+        {
+          "number": "3.16",
+          "title": "Which of the following did {{respondent.ru_name}} invest in for the purposes of current or future innovation?",
+          "text": "Changes to marketing methods",
+          "question_id": "1373",
+          "type": "checkbox"
+        },
+        {
+          "number": "3.16",
+          "title": "Which of the following did {{respondent.ru_name}} invest in for the purposes of current or future innovation?",
+          "text": "Launch advertising",
+          "question_id": "1374",
+          "type": "checkbox"
+        },
+        {
+          "number": "3.17",
+          "title": "Please estimate the amount of expenditure for market introduction of innovations for the calendar year 2016 only?",
+          "text": "Total market introduction of innovations",
+          "question_id": "1470",
+          "type": "currency"
+        }
+      ]
+    },
+    {
+      "title": "Goods and Services Innovation",
+      "questions": [
+        {
+          "number": "4.1",
+          "title": "Did {{respondent.ru_name}} introduce new or significantly improved goods?",
+          "text": "Did {{respondent.ru_name}} introduce new or significantly improved goods?",
+          "question_id": "0510",
+          "type": "radio"
+        },
+        {
+          "number": "4.2",
+          "title": "Which entity mainly developed these goods?",
+          "text": "This business or enterprise group",
+          "question_id": "0610",
+          "type": "checkbox"
+        },
+        {
+          "number": "4.2",
+          "title": "Which entity mainly developed these goods?",
+          "text": "This business with other businesses or organisations",
+          "question_id": "0620",
+          "type": "checkbox"
+        },
+        {
+          "number": "4.2",
+          "title": "Which entity mainly developed these goods?",
+          "text": "Other businesses or organisations",
+          "question_id": "0630",
+          "type": "checkbox"
+        },
+        {
+          "number": "4.3",
+          "title": "Did {{respondent.ru_name}} introduce new or significantly improved services?",
+          "text": "Did {{respondent.ru_name}} introduce new or significantly improved services?",
+          "question_id": "0520",
+          "type": "radio"
+        },
+        {
+          "number": "4.4",
+          "title": "Which entity mainly developed these services?",
+          "text": "This business or enterprise group",
+          "question_id": "0601",
+          "type": "checkbox"
+        },
+        {
+          "number": "4.4",
+          "title": "Which entity mainly developed these services?",
+          "text": "This business with other businesses or organisations",
+          "question_id": "0602",
+          "type": "checkbox"
+        },
+        {
+          "number": "4.4",
+          "title": "Which entity mainly developed these services?",
+          "text": "Other businesses or organisations",
+          "question_id": "0603",
+          "type": "checkbox"
+        },
+        {
+          "number": "4.5",
+          "title": "Were any of your goods and services innovations new to the market?",
+          "text": "Were any of your goods and services innovations new to the market?",
+          "question_id": "0710",
+          "type": "radio"
+        },
+        {
+          "number": "4.6",
+          "title": "Were any of your goods and services innovations only new to  {{respondent.ru_name}}?",
+          "text": "Were any of your goods and services innovations only new to  {{respondent.ru_name}}?",
+          "question_id": "0720",
+          "type": "radio"
+        },
+        {
+          "number": "4.7",
+          "title": "Please ESTIMATE the percentage of {{respondent.ru_name}}\u2019s total turnover in calendar year 2016 only from goods and services that were:",
+          "text": "New to the market in 2014-2016",
+          "question_id": "0810",
+          "type": "percentage"
+        },
+        {
+          "number": "4.7",
+          "title": "Please ESTIMATE the percentage of {{respondent.ru_name}}\u2019s total turnover in calendar year 2016 only from goods and services that were:",
+          "text": "Only new to this business in 2014-2016",
+          "question_id": "0820",
+          "type": "percentage"
+        },
+        {
+          "number": "4.7",
+          "title": "Please ESTIMATE the percentage of {{respondent.ru_name}}\u2019s total turnover in calendar year 2016 only from goods and services that were:",
+          "text": "Significantly improved in 2014-2016",
+          "question_id": "0830",
+          "type": "percentage"
+        },
+        {
+          "number": "4.7",
+          "title": "Please ESTIMATE the percentage of {{respondent.ru_name}}\u2019s total turnover in calendar year 2016 only from goods and services that were:",
+          "text": "Unchanged or only marginally modified",
+          "question_id": "0840",
+          "type": "percentage"
+        },
+        {
+          "number": "4.7",
+          "title": "Please ESTIMATE the percentage of {{respondent.ru_name}}\u2019s total turnover in calendar year 2016 only from goods and services that were:",
+          "text": "Total Turnover",
+          "question_id": "10002",
+          "type": "percentage"
+        }
+      ]
+    },
+    {
+      "title": "Process Innovation",
+      "questions": [
+        {
+          "number": "5.1",
+          "title": "Did {{respondent.ru_name}} introduce any new or significantly improved processes for producing or supplying goods or services?",
+          "text": "Did {{respondent.ru_name}} introduce any new or significantly improved processes for producing or supplying goods or services?",
+          "question_id": "0900",
+          "type": "radio"
+        },
+        {
+          "number": "5.2",
+          "title": "Which entity mainly developed these processes?",
+          "text": "This business or enterprise group",
+          "question_id": "1010",
+          "type": "checkbox"
+        },
+        {
+          "number": "5.2",
+          "title": "Which entity mainly developed these processes?",
+          "text": "This business with other businesses or organisations",
+          "question_id": "1020",
+          "type": "checkbox"
+        },
+        {
+          "number": "5.2",
+          "title": "Which entity mainly developed these processes?",
+          "text": "Other businesses or organisations",
+          "question_id": "1030",
+          "type": "checkbox"
+        },
+        {
+          "number": "5.3",
+          "title": "Did {{respondent.ru_name}} introduce any new or significantly improved processes for producing or supplying goods or services which were new to your industry?",
+          "text": "Did {{respondent.ru_name}} introduce any new or significantly improved processes for producing or supplying goods or services which were new to your industry?",
+          "question_id": "1100",
+          "type": "radio"
+        }
+      ]
+    },
+    {
+      "title": "Constraints on Innovation ",
+      "questions": [
+        {
+          "number": "6.1",
+          "title": "Did {{respondent.ru_name}} have any innovation activities that were:",
+          "text": "abandoned?",
+          "question_id": "1510",
+          "type": "radio"
+        },
+        {
+          "number": "6.1",
+          "title": "Did {{respondent.ru_name}} have any innovation activities that were:",
+          "text": "scaled back?",
+          "question_id": "1530",
+          "type": "radio"
+        },
+        {
+          "number": "6.1",
+          "title": "Did {{respondent.ru_name}} have any innovation activities that were:",
+          "text": "still ongoing at the end of 2016?",
+          "question_id": "1520",
+          "type": "radio"
+        },
+        {
+          "number": "6.2",
+          "title": "How important were the following factors in constraining innovation activities?",
+          "text": "How important were the following factors in constraining innovation activities?",
+          "question_id": "2657",
+          "type": "radio"
+        },
+        {
+          "number": "6.3",
+          "title": "How important were the following factors in constraining innovation activities?",
+          "text": "How important were the following factors in constraining innovation activities?",
+          "question_id": "2658",
+          "type": "radio"
+        },
+        {
+          "number": "6.4",
+          "title": "How important were the following factors in constraining innovation activities?",
+          "text": "How important were the following factors in constraining innovation activities?",
+          "question_id": "2659",
+          "type": "radio"
+        },
+        {
+          "number": "6.5",
+          "title": "How important were the following factors in constraining innovation activities?",
+          "text": "How important were the following factors in constraining innovation activities?",
+          "question_id": "2660",
+          "type": "radio"
+        },
+        {
+          "number": "6.6",
+          "title": "How important were the following factors in constraining innovation activities?",
+          "text": "How important were the following factors in constraining innovation activities?",
+          "question_id": "2661",
+          "type": "radio"
+        },
+        {
+          "number": "6.7",
+          "title": "How important were the following factors in constraining innovation activities?",
+          "text": "How important were the following factors in constraining innovation activities?",
+          "question_id": "2662",
+          "type": "radio"
+        },
+        {
+          "number": "6.8",
+          "title": "How important were the following factors in constraining innovation activities?",
+          "text": "How important were the following factors in constraining innovation activities?",
+          "question_id": "2663",
+          "type": "radio"
+        },
+        {
+          "number": "6.9",
+          "title": "How important were the following factors in constraining innovation activities?",
+          "text": "How important were the following factors in constraining innovation activities?",
+          "question_id": "2664",
+          "type": "radio"
+        },
+        {
+          "number": "6.10",
+          "title": "How important were the following factors in constraining innovation activities?",
+          "text": "How important were the following factors in constraining innovation activities?",
+          "question_id": "2665",
+          "type": "radio"
+        },
+        {
+          "number": "6.11",
+          "title": "How important were the following factors in constraining innovation activities?",
+          "text": "How important were the following factors in constraining innovation activities?",
+          "question_id": "2666",
+          "type": "radio"
+        },
+        {
+          "number": "6.12",
+          "title": "How important were the following factors in constraining innovation activities?",
+          "text": "How important were the following factors in constraining innovation activities?",
+          "question_id": "2667",
+          "type": "radio"
+        },
+        {
+          "number": "6.13",
+          "title": "How important were the following factors in constraining innovation activities?",
+          "text": "How important were the following factors in constraining innovation activities?",
+          "question_id": "2678",
+          "type": "radio"
+        },
+        {
+          "number": "6.14",
+          "title": "If {{respondent.ru_name}} had no innovation activity, please indicate why it has not been necessary or possible to innovate",
+          "text": "No need due to previous innovations",
+          "question_id": "2011",
+          "type": "checkbox"
+        },
+        {
+          "number": "6.14",
+          "title": "If {{respondent.ru_name}} had no innovation activity, please indicate why it has not been necessary or possible to innovate",
+          "text": "No need due to market conditions",
+          "question_id": "2020",
+          "type": "checkbox"
+        },
+        {
+          "number": "6.14",
+          "title": "If {{respondent.ru_name}} had no innovation activity, please indicate why it has not been necessary or possible to innovate",
+          "text": "The UK does not have a business environment which encourages companies to innovate",
+          "question_id": "2030",
+          "type": "checkbox"
+        },
+        {
+          "number": "6.14",
+          "title": "If {{respondent.ru_name}} had no innovation activity, please indicate why it has not been necessary or possible to innovate",
+          "text": "Other",
+          "question_id": "2040",
+          "type": "checkbox"
+        }
+      ]
+    },
+    {
+      "title": "Factors Affecting Innovation",
+      "questions": [
+        {
+          "number": "7.1",
+          "title": "How important were the following factors in your decision to innovate in goods or services and/or processes?",
+          "text": "How important were the following factors in your decision to innovate in goods or services and/or processes?",
+          "question_id": "1210",
+          "type": "radio"
+        },
+        {
+          "number": "7.2",
+          "title": "How important were the following factors in your decision to innovate in goods or services and/or processes?",
+          "text": "How important were the following factors in your decision to innovate in goods or services and/or processes?",
+          "question_id": "1211",
+          "type": "radio"
+        },
+        {
+          "number": "7.3",
+          "title": "How important were the following factors in your decision to innovate in goods or services and/or processes?",
+          "text": "How important were the following factors in your decision to innovate in goods or services and/or processes?",
+          "question_id": "1220",
+          "type": "radio"
+        },
+        {
+          "number": "7.4",
+          "title": "How important were the following factors in your decision to innovate in goods or services and/or processes?",
+          "text": "How important were the following factors in your decision to innovate in goods or services and/or processes?",
+          "question_id": "1230",
+          "type": "radio"
+        },
+        {
+          "number": "7.5",
+          "title": "How important were the following factors in your decision to innovate in goods or services and/or processes?",
+          "text": "How important were the following factors in your decision to innovate in goods or services and/or processes?",
+          "question_id": "1240",
+          "type": "radio"
+        },
+        {
+          "number": "7.6",
+          "title": "How important were the following factors in your decision to innovate in goods or services and/or processes?",
+          "text": "How important were the following factors in your decision to innovate in goods or services and/or processes?",
+          "question_id": "1250",
+          "type": "radio"
+        },
+        {
+          "number": "7.7",
+          "title": "How important were the following factors in your decision to innovate in goods or services and/or processes?",
+          "text": "How important were the following factors in your decision to innovate in goods or services and/or processes?",
+          "question_id": "1290",
+          "type": "radio"
+        },
+        {
+          "number": "7.8",
+          "title": "How important were the following factors in your decision to innovate in goods or services and/or processes?",
+          "text": "How important were the following factors in your decision to innovate in goods or services and/or processes?",
+          "question_id": "1260",
+          "type": "radio"
+        },
+        {
+          "number": "7.9",
+          "title": "How important were the following factors in your decision to innovate in goods or services and/or processes?",
+          "text": "How important were the following factors in your decision to innovate in goods or services and/or processes?",
+          "question_id": "1270",
+          "type": "radio"
+        },
+        {
+          "number": "7.10",
+          "title": "How important were the following factors in your decision to innovate in goods or services and/or processes?",
+          "text": "How important were the following factors in your decision to innovate in goods or services and/or processes?",
+          "question_id": "1212",
+          "type": "radio"
+        },
+        {
+          "number": "7.11",
+          "title": "How important were the following factors in your decision to innovate in goods or services and/or processes?",
+          "text": "How important were the following factors in your decision to innovate in goods or services and/or processes?",
+          "question_id": "1213",
+          "type": "radio"
+        },
+        {
+          "number": "7.12",
+          "title": "How important were the following factors in your decision to innovate in goods or services and/or processes?",
+          "text": "How important were the following factors in your decision to innovate in goods or services and/or processes?",
+          "question_id": "1280",
+          "type": "radio"
+        }
+      ]
+    },
+    {
+      "title": "Information Needed for Innovation",
+      "questions": [
+        {
+          "number": "8.1",
+          "title": "How important to {{respondent.ru_name}}\u2019s innovation activities was information from:",
+          "text": "How important to {{respondent.ru_name}}\u2019s innovation activities was information from:",
+          "question_id": "1601",
+          "type": "radio"
+        },
+        {
+          "number": "8.2",
+          "title": "How important to {{respondent.ru_name}}\u2019s innovation activities was information from:",
+          "text": "How important to {{respondent.ru_name}}\u2019s innovation activities was information from:",
+          "question_id": "1620",
+          "type": "radio"
+        },
+        {
+          "number": "8.3",
+          "title": "How important to {{respondent.ru_name}}\u2019s innovation activities was information from:",
+          "text": "How important to {{respondent.ru_name}}\u2019s innovation activities was information from:",
+          "question_id": "1631",
+          "type": "radio"
+        },
+        {
+          "number": "8.4",
+          "title": "How important to {{respondent.ru_name}}\u2019s innovation activities was information from:",
+          "text": "How important to {{respondent.ru_name}}\u2019s innovation activities was information from:",
+          "question_id": "1632",
+          "type": "radio"
+        },
+        {
+          "number": "8.5",
+          "title": "How important to {{respondent.ru_name}}\u2019s innovation activities was information from:",
+          "text": "How important to {{respondent.ru_name}}\u2019s innovation activities was information from:",
+          "question_id": "1640",
+          "type": "radio"
+        },
+        {
+          "number": "8.6",
+          "title": "How important to {{respondent.ru_name}}\u2019s innovation activities was information from:",
+          "text": "How important to {{respondent.ru_name}}\u2019s innovation activities was information from:",
+          "question_id": "1650",
+          "type": "radio"
+        },
+        {
+          "number": "8.7",
+          "title": "How important to {{respondent.ru_name}}\u2019s innovation activities was information from:",
+          "text": "How important to {{respondent.ru_name}}\u2019s innovation activities was information from:",
+          "question_id": "1660",
+          "type": "radio"
+        },
+        {
+          "number": "8.8",
+          "title": "How important to {{respondent.ru_name}}\u2019s innovation activities was information from:",
+          "text": "How important to {{respondent.ru_name}}\u2019s innovation activities was information from:",
+          "question_id": "1670",
+          "type": "radio"
+        },
+        {
+          "number": "8.9",
+          "title": "How important to {{respondent.ru_name}}\u2019s innovation activities was information from:",
+          "text": "How important to {{respondent.ru_name}}\u2019s innovation activities was information from:",
+          "question_id": "1680",
+          "type": "radio"
+        },
+        {
+          "number": "8.10",
+          "title": "How important to {{respondent.ru_name}}\u2019s innovation activities was information from:",
+          "text": "How important to {{respondent.ru_name}}\u2019s innovation activities was information from:",
+          "question_id": "1610",
+          "type": "radio"
+        },
+        {
+          "number": "8.11",
+          "title": "How important to {{respondent.ru_name}}\u2019s innovation activities was information from:",
+          "text": "How important to {{respondent.ru_name}}\u2019s innovation activities was information from:",
+          "question_id": "1611",
+          "type": "radio"
+        },
+        {
+          "number": "8.12",
+          "title": "How important to {{respondent.ru_name}}\u2019s innovation activities was information from:",
+          "text": "How important to {{respondent.ru_name}}\u2019s innovation activities was information from:",
+          "question_id": "1690",
+          "type": "radio"
+        }
+      ]
+    },
+    {
+      "title": "Co-operation on Innovation",
+      "questions": [
+        {
+          "number": "9.1",
+          "title": "Did {{respondent.ru_name}} co-operate on any innovation activities with:",
+          "text": "UK Regional",
+          "question_id": "1811",
+          "type": "checkbox"
+        },
+        {
+          "number": "9.1",
+          "title": "Did {{respondent.ru_name}} co-operate on any innovation activities with:",
+          "text": "UK National",
+          "question_id": "1812",
+          "type": "checkbox"
+        },
+        {
+          "number": "9.1",
+          "title": "Did {{respondent.ru_name}} co-operate on any innovation activities with:",
+          "text": "European Countries",
+          "question_id": "1813",
+          "type": "checkbox"
+        },
+        {
+          "number": "9.1",
+          "title": "Did {{respondent.ru_name}} co-operate on any innovation activities with:",
+          "text": "Other Countries",
+          "question_id": "1814",
+          "type": "checkbox"
+        },
+        {
+          "number": "9.2",
+          "title": "Did {{respondent.ru_name}} co-operate on any innovation activities with:",
+          "text": "UK Regional",
+          "question_id": "1821",
+          "type": "checkbox"
+        },
+        {
+          "number": "9.2",
+          "title": "Did {{respondent.ru_name}} co-operate on any innovation activities with:",
+          "text": "UK National",
+          "question_id": "1822",
+          "type": "checkbox"
+        },
+        {
+          "number": "9.2",
+          "title": "Did {{respondent.ru_name}} co-operate on any innovation activities with:",
+          "text": "European Countries",
+          "question_id": "1823",
+          "type": "checkbox"
+        },
+        {
+          "number": "9.2",
+          "title": "Did {{respondent.ru_name}} co-operate on any innovation activities with:",
+          "text": "Other Countries",
+          "question_id": "1824",
+          "type": "checkbox"
+        },
+        {
+          "number": "9.3",
+          "title": "Did {{respondent.ru_name}} co-operate on any innovation activities with:",
+          "text": "UK Regional",
+          "question_id": "1881",
+          "type": "checkbox"
+        },
+        {
+          "number": "9.3",
+          "title": "Did {{respondent.ru_name}} co-operate on any innovation activities with:",
+          "text": "UK National",
+          "question_id": "1882",
+          "type": "checkbox"
+        },
+        {
+          "number": "9.3",
+          "title": "Did {{respondent.ru_name}} co-operate on any innovation activities with:",
+          "text": "European Countries",
+          "question_id": "1883",
+          "type": "checkbox"
+        },
+        {
+          "number": "9.3",
+          "title": "Did {{respondent.ru_name}} co-operate on any innovation activities with:",
+          "text": "Other Countries",
+          "question_id": "1884",
+          "type": "checkbox"
+        },
+        {
+          "number": "9.4",
+          "title": "Did {{respondent.ru_name}} co-operate on any innovation activities with:",
+          "text": "UK Regional",
+          "question_id": "1891",
+          "type": "checkbox"
+        },
+        {
+          "number": "9.4",
+          "title": "Did {{respondent.ru_name}} co-operate on any innovation activities with:",
+          "text": "UK National",
+          "question_id": "1892",
+          "type": "checkbox"
+        },
+        {
+          "number": "9.4",
+          "title": "Did {{respondent.ru_name}} co-operate on any innovation activities with:",
+          "text": "European Countries",
+          "question_id": "1893",
+          "type": "checkbox"
+        },
+        {
+          "number": "9.4",
+          "title": "Did {{respondent.ru_name}} co-operate on any innovation activities with:",
+          "text": "Other Countries",
+          "question_id": "1894",
+          "type": "checkbox"
+        },
+        {
+          "number": "9.5",
+          "title": "Did {{respondent.ru_name}} co-operate on any innovation activities with:",
+          "text": "UK Regional",
+          "question_id": "1841",
+          "type": "checkbox"
+        },
+        {
+          "number": "9.5",
+          "title": "Did {{respondent.ru_name}} co-operate on any innovation activities with:",
+          "text": "UK National",
+          "question_id": "1842",
+          "type": "checkbox"
+        },
+        {
+          "number": "9.5",
+          "title": "Did {{respondent.ru_name}} co-operate on any innovation activities with:",
+          "text": "European Countries",
+          "question_id": "1843",
+          "type": "checkbox"
+        },
+        {
+          "number": "9.5",
+          "title": "Did {{respondent.ru_name}} co-operate on any innovation activities with:",
+          "text": "Other Countries",
+          "question_id": "1844",
+          "type": "checkbox"
+        },
+        {
+          "number": "9.6",
+          "title": "Did {{respondent.ru_name}} co-operate on any innovation activities with:",
+          "text": "UK Regional",
+          "question_id": "1851",
+          "type": "checkbox"
+        },
+        {
+          "number": "9.6",
+          "title": "Did {{respondent.ru_name}} co-operate on any innovation activities with:",
+          "text": "UK National",
+          "question_id": "1852",
+          "type": "checkbox"
+        },
+        {
+          "number": "9.6",
+          "title": "Did {{respondent.ru_name}} co-operate on any innovation activities with:",
+          "text": "European Countries",
+          "question_id": "1853",
+          "type": "checkbox"
+        },
+        {
+          "number": "9.6",
+          "title": "Did {{respondent.ru_name}} co-operate on any innovation activities with:",
+          "text": "Other Countries",
+          "question_id": "1854",
+          "type": "checkbox"
+        },
+        {
+          "number": "9.7",
+          "title": "Did {{respondent.ru_name}} co-operate on any innovation activities with:",
+          "text": "UK Regional",
+          "question_id": "1861",
+          "type": "checkbox"
+        },
+        {
+          "number": "9.7",
+          "title": "Did {{respondent.ru_name}} co-operate on any innovation activities with:",
+          "text": "UK National",
+          "question_id": "1862",
+          "type": "checkbox"
+        },
+        {
+          "number": "9.7",
+          "title": "Did {{respondent.ru_name}} co-operate on any innovation activities with:",
+          "text": "European Countries",
+          "question_id": "1863",
+          "type": "checkbox"
+        },
+        {
+          "number": "9.7",
+          "title": "Did {{respondent.ru_name}} co-operate on any innovation activities with:",
+          "text": "Other Countries",
+          "question_id": "1864",
+          "type": "checkbox"
+        },
+        {
+          "number": "9.8",
+          "title": "Did {{respondent.ru_name}} co-operate on any innovation activities with:",
+          "text": "UK Regional",
+          "question_id": "1871",
+          "type": "checkbox"
+        },
+        {
+          "number": "9.8",
+          "title": "Did {{respondent.ru_name}} co-operate on any innovation activities with:",
+          "text": "UK National",
+          "question_id": "1872",
+          "type": "checkbox"
+        },
+        {
+          "number": "9.8",
+          "title": "Did {{respondent.ru_name}} co-operate on any innovation activities with:",
+          "text": "European Countries",
+          "question_id": "1873",
+          "type": "checkbox"
+        },
+        {
+          "number": "9.8",
+          "title": "Did {{respondent.ru_name}} co-operate on any innovation activities with:",
+          "text": "Other Countries",
+          "question_id": "1874",
+          "type": "checkbox"
+        },
+        {
+          "number": "9.9",
+          "title": "What proportions of your innovations were protected by:",
+          "text": "What proportions of your innovations were protected by:",
+          "question_id": "2650",
+          "type": "radio"
+        },
+        {
+          "number": "9.10",
+          "title": "What proportions of your innovations were protected by:",
+          "text": "What proportions of your innovations were protected by:",
+          "question_id": "2651",
+          "type": "radio"
+        },
+        {
+          "number": "9.11",
+          "title": "What proportions of your innovations were protected by:",
+          "text": "What proportions of your innovations were protected by:",
+          "question_id": "2652",
+          "type": "radio"
+        },
+        {
+          "number": "9.12",
+          "title": "What proportions of your innovations  were protected by:",
+          "text": "What proportions of your innovations  were protected by:",
+          "question_id": "2653",
+          "type": "radio"
+        },
+        {
+          "number": "9.13",
+          "title": "What proportions of your innovations were protected by:",
+          "text": "What proportions of your innovations were protected by:",
+          "question_id": "2654",
+          "type": "radio"
+        },
+        {
+          "number": "9.14",
+          "title": "What proportions of your innovations were protected by:",
+          "text": "What proportions of your innovations were protected by:",
+          "question_id": "2655",
+          "type": "radio"
+        },
+        {
+          "number": "9.15",
+          "title": "What proportions of your innovations were protected by:",
+          "text": "What proportions of your innovations were protected by:",
+          "question_id": "2656",
+          "type": "radio"
+        }
+      ]
+    },
+    {
+      "title": "Public Financial Support for Innovation",
+      "questions": [
+        {
+          "number": "10.1",
+          "title": "Did {{respondent.ru_name}} receive public financial support for innovation activities from the following levels of government?",
+          "text": "UK local or regional authorities",
+          "question_id": "2668",
+          "type": "radio"
+        },
+        {
+          "number": "10.1",
+          "title": "Did {{respondent.ru_name}} receive public financial support for innovation activities from the following levels of government?",
+          "text": "UK central government",
+          "question_id": "2669",
+          "type": "radio"
+        },
+        {
+          "number": "10.1",
+          "title": "Did {{respondent.ru_name}} receive public financial support for innovation activities from the following levels of government?",
+          "text": "European Union (EU) institutions or programmes",
+          "question_id": "2670",
+          "type": "radio"
+        },
+        {
+          "number": "10.2",
+          "title": "What kind of financial support was received by {{respondent.ru_name}} from UK central government? ",
+          "text": "Direct financial support",
+          "question_id": "2672",
+          "type": "radio"
+        },
+        {
+          "number": "10.2",
+          "title": "What kind of financial support was received by {{respondent.ru_name}} from UK central government? ",
+          "text": "Indirect financial support",
+          "question_id": "2673",
+          "type": "radio"
+        }
+      ]
+    },
+    {
+      "title": "Turnover and Exports",
+      "questions": [
+        {
+          "number": "11.1",
+          "title": "Please estimate {{respondent.ru_name}}\u2019s total turnover for the calendar year 2014 only, excluding VAT",
+          "text": "Total turnover for 2014, excluding VAT",
+          "question_id": "2410",
+          "type": "currency"
+        },
+        {
+          "number": "11.2",
+          "title": "Please estimate {{respondent.ru_name}}\u2019s total turnover for the calendar year 2016 only, excluding VAT",
+          "text": "Total turnover for 2016, excluding VAT",
+          "question_id": "2420",
+          "type": "currency"
+        },
+        {
+          "number": "11.3",
+          "title": "Please estimate {{respondent.ru_name}}\u2019s total value of exports for the calendar year 2016 only, excluding VAT",
+          "text": "Total value of exports for 2016",
+          "question_id": "2440",
+          "type": "currency"
+        }
+      ]
+    },
+    {
+      "title": "Significant changes to monthly pay",
+      "questions": [
+        {
+          "number": "5.0",
+          "title": "Please put a cross in the boxes to indicate significant changes to monthly paid employees.",
+          "text": "More/ less overtime",
+          "question_id": "1901",
+          "type": "checkbox"
+        },
+        {
+          "number": "5.0",
+          "title": "Please put a cross in the boxes to indicate significant changes to monthly paid employees.",
+          "text": "More/ fewer temps",
+          "question_id": "1902",
+          "type": "checkbox"
+        },
+        {
+          "number": "5.0",
+          "title": "Please put a cross in the boxes to indicate significant changes to monthly paid employees.",
+          "text": "Redundancies",
+          "question_id": "2633",
+          "type": "checkbox"
+        },
+        {
+          "number": "5.0",
+          "title": "Please put a cross in the boxes to indicate significant changes to monthly paid employees.",
+          "text": "Industrial action",
+          "question_id": "2634",
+          "type": "checkbox"
+        },
+        {
+          "number": "5.0",
+          "title": "Please put a cross in the boxes to indicate significant changes to monthly paid employees.",
+          "text": "New pay rates",
+          "question_id": "2635",
+          "type": "checkbox"
+        },
+        {
+          "number": "5.0",
+          "title": "Please put a cross in the boxes to indicate significant changes to monthly paid employees.",
+          "text": "Other change",
+          "question_id": "2636",
+          "type": "checkbox"
+        }
+      ]
+    },
+    {
+      "title": "Comments",
+      "questions": [
+        {
+          "number": "6.0",
+          "title": "If you put a cross for Other Changes in Questions 3 or 5 please give a reason below.",
+          "text": "Comments",
+          "question_id": "2700",
+          "type": "textarea"
+        }
+      ]
+    }
+  ]
+}
