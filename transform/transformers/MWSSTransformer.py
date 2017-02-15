@@ -315,7 +315,7 @@ class MWSSTransformer:
         else:
             self.log = self.bind_logger(log, self.ids)
 
-    def pack(self):
+    def pack(self, imgSeq=None):
         survey = self.load_survey(self.ids)
         manifest = []
         with tempfile.TemporaryDirectory(prefix="mwss_", dir="tmp") as locn:
@@ -339,7 +339,7 @@ class MWSSTransformer:
 
             # Create page images from PDF
             imgTfr = ImageTransformer(self.log, survey, self.response)
-            images = imgTfr.create_image_sequence(fP)
+            images = list(imgTfr.create_image_sequence(fP, numberSeq=imgSeq))
             for img in images:
                 fN = os.path.basename(img)
                 manifest.append(("EDC_QImages/Images", fN))
@@ -347,7 +347,7 @@ class MWSSTransformer:
             # Write image index
             index = imgTfr.create_image_index(images)
             if index is not None:
-                fN = os.path.basename(self.index)
+                fN = os.path.basename(index)
                 manifest.append(("EDC_QImages/Index", fN))
 
             return self.create_zip(locn, manifest)

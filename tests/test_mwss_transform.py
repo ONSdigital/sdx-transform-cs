@@ -1,5 +1,6 @@
 from collections import OrderedDict
 import datetime
+import itertools
 import json
 import unittest
 
@@ -269,6 +270,6 @@ class PackingTests(unittest.TestCase):
             )
         )
         try:
-            tfr.pack()
+            tfr.pack(imgSeq=itertools.count())
         except KeyError:
             self.fail("TODO: define pages of survey.")
