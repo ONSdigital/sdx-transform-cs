@@ -1008,67 +1008,123 @@
       ]
     },
     {
-      "title": "Public Financial Support for Innovation",
+      "title": "Significant Changes to Weekly Pay",
       "questions": [
         {
-          "number": "10.1",
-          "title": "Did {{respondent.ru_name}} receive public financial support for innovation activities from the following levels of government?",
-          "text": "UK local or regional authorities",
-          "question_id": "2668",
-          "type": "radio"
+          "number": "3",
+          "title": "Please put a cross in the boxes to indicate significant changes to weekly paid employees.",
+          "text": "More/ less overtime",
+          "question_id": "0901",
+          "type": "checkbox"
         },
         {
-          "number": "10.1",
-          "title": "Did {{respondent.ru_name}} receive public financial support for innovation activities from the following levels of government?",
-          "text": "UK central government",
-          "question_id": "2669",
-          "type": "radio"
+          "number": "3",
+          "title": "Please put a cross in the boxes to indicate significant changes to weekly paid employees.",
+          "text": "More/ fewer temps",
+          "question_id": "0902",
+          "type": "checkbox"
         },
         {
-          "number": "10.1",
-          "title": "Did {{respondent.ru_name}} receive public financial support for innovation activities from the following levels of government?",
-          "text": "European Union (EU) institutions or programmes",
-          "question_id": "2670",
-          "type": "radio"
+          "number": "3",
+          "title": "Please put a cross in the boxes to indicate significant changes to weekly paid employees.",
+          "text": "Redundancies",
+          "question_id": "0903",
+          "type": "checkbox"
         },
         {
-          "number": "10.2",
-          "title": "What kind of financial support was received by {{respondent.ru_name}} from UK central government? ",
-          "text": "Direct financial support",
-          "question_id": "2672",
-          "type": "radio"
+          "number": "3",
+          "title": "Please put a cross in the boxes to indicate significant changes to weekly paid employees.",
+          "text": "Industrial action",
+          "question_id": "0904",
+          "type": "checkbox"
         },
         {
-          "number": "10.2",
-          "title": "What kind of financial support was received by {{respondent.ru_name}} from UK central government? ",
-          "text": "Indirect financial support",
-          "question_id": "2673",
-          "type": "radio"
+          "number": "3",
+          "title": "Please put a cross in the boxes to indicate significant changes to weekly paid employees.",
+          "text": "New pay rates",
+          "question_id": "0905",
+          "type": "checkbox"
+        },
+        {
+          "number": "3",
+          "title": "Please put a cross in the boxes to indicate significant changes to weekly paid employees.",
+          "text": "Other change",
+          "question_id": "0906",
+          "type": "checkbox"
+        },
+        {
+          "number": "3",
+          "title": "For New Pay rates",
+          "text": "Percentage increase",
+          "question_id": "0100",
+          "type": "percentage"
+        },
+        {
+          "number": "3",
+          "title": "For New Pay rates",
+          "text": "If back dated, from when?",
+          "question_id": "0110",
+          "type": "date"
+        },
+        {
+          "number": "3",
+          "title": "For New Pay rates",
+          "text": "Who received it",
+          "question_id": "0120",
+          "type": "percentage"
         }
       ]
     },
     {
-      "title": "Turnover and Exports",
+      "title": "Monthly paid employees",
       "questions": [
         {
-          "number": "11.1",
-          "title": "Please estimate {{respondent.ru_name}}\u2019s total turnover for the calendar year 2014 only, excluding VAT",
-          "text": "Total turnover for 2014, excluding VAT",
-          "question_id": "2410",
+          "number": "4a",
+          "title": "Please put a cross in the boxes to indicate significant changes to monthly paid employees.",
+          "text": "More/ less overtime",
+          "question_id": "130",
+          "type": "checkbox"
+        },
+        {
+          "number": "4a",
+          "title": "Please put a cross in the boxes to indicate significant changes to monthly paid employees.",
+          "text": "More/ fewer temps",
+          "question_id": "131",
+          "type": "checkbox"
+        },
+        {
+          "number": "4a",
+          "title": "Please put a cross in the boxes to indicate significant changes to monthly paid employees.",
+          "text": "Redundancies",
+          "question_id": "132",
+          "type": "checkbox"
+        },
+        {
+          "number": "4b",
+          "title": "Number of monthly paid employees actually paid in the month",
+          "text": "Number of monthly paid employees actually paid in the month",
+          "question_id": "140",
+          "type": "percentage"
+        },
+        {
+          "number": "4c",
+          "title": "Total Gross pay paid to employees in the month",
+          "text": "calendar month",
+          "question_id": "151",
           "type": "currency"
         },
         {
-          "number": "11.2",
-          "title": "Please estimate {{respondent.ru_name}}\u2019s total turnover for the calendar year 2016 only, excluding VAT",
-          "text": "Total turnover for 2016, excluding VAT",
-          "question_id": "2420",
+          "number": "4d",
+          "title": "Total Gross pay paid to employees in the month",
+          "text": "four weekly",
+          "question_id": "152",
           "type": "currency"
         },
         {
-          "number": "11.3",
-          "title": "Please estimate {{respondent.ru_name}}\u2019s total value of exports for the calendar year 2016 only, excluding VAT",
-          "text": "Total value of exports for 2016",
-          "question_id": "2440",
+          "number": "4e",
+          "title": "Total Gross pay paid to employees in the month",
+          "text": "five weekly",
+          "question_id": "153",
           "type": "currency"
         }
       ]
@@ -1077,46 +1133,67 @@
       "title": "Significant changes to monthly pay",
       "questions": [
         {
-          "number": "5.0",
+          "number": "5",
           "title": "Please put a cross in the boxes to indicate significant changes to monthly paid employees.",
           "text": "More/ less overtime",
           "question_id": "1901",
           "type": "checkbox"
         },
         {
-          "number": "5.0",
+          "number": "5",
           "title": "Please put a cross in the boxes to indicate significant changes to monthly paid employees.",
           "text": "More/ fewer temps",
           "question_id": "1902",
           "type": "checkbox"
         },
         {
-          "number": "5.0",
+          "number": "5",
           "title": "Please put a cross in the boxes to indicate significant changes to monthly paid employees.",
           "text": "Redundancies",
-          "question_id": "2633",
+          "question_id": "1903",
           "type": "checkbox"
         },
         {
-          "number": "5.0",
+          "number": "5",
           "title": "Please put a cross in the boxes to indicate significant changes to monthly paid employees.",
           "text": "Industrial action",
-          "question_id": "2634",
+          "question_id": "1904",
           "type": "checkbox"
         },
         {
-          "number": "5.0",
+          "number": "5",
           "title": "Please put a cross in the boxes to indicate significant changes to monthly paid employees.",
           "text": "New pay rates",
-          "question_id": "2635",
+          "question_id": "1905",
           "type": "checkbox"
         },
         {
-          "number": "5.0",
+          "number": "5",
           "title": "Please put a cross in the boxes to indicate significant changes to monthly paid employees.",
           "text": "Other change",
-          "question_id": "2636",
+          "question_id": "1906",
           "type": "checkbox"
+        },
+        {
+          "number": "5",
+          "title": "For New Pay rates",
+          "text": "Percentage increase",
+          "question_id": "0200",
+          "type": "percentage"
+        },
+        {
+          "number": "5",
+          "title": "For New Pay rates",
+          "text": "If back dated, from when?",
+          "question_id": "0210",
+          "type": "date"
+        },
+        {
+          "number": "5",
+          "title": "For New Pay rates",
+          "text": "Who received it",
+          "question_id": "0220",
+          "type": "percentage"
         }
       ]
     },
