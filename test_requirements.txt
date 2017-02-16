@@ -1,0 +1,2 @@
+flake8==2.6.0
+pyflakes==1.2.3

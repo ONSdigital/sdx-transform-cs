@@ -9,7 +9,8 @@ class PCKTransformer(object):
         "0203": "RSI7B",
         "0205": "RSI9B",
         "0213": "RSI8B",
-        "0215": "RSI10B"
+        "0215": "RSI10B",
+        "0001": "QBS"
     }
 
     def __init__(self, survey, response_data):

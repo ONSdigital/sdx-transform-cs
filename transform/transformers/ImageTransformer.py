@@ -34,7 +34,7 @@ class ImageTransformer(object):
         '''
         Extract all pdf pages as jpegs
         '''
-        subprocess.run(["pdftoppm", "-jpeg", self.base_name, self.rootname], cwd=self.path)
+        subprocess.call(["pdftoppm", "-jpeg", self.base_name, self.rootname], cwd=self.path)
         self.images = glob.glob("%s/%s-*.jpg" % (self.path, self.rootname))
 
         return self.images
@@ -84,8 +84,9 @@ class ImageTransformer(object):
         submission_date = dateutil.parser.parse(self.response['submitted_at'])
         submission_date_str = format_date(submission_date, 'short')
 
-        template_output = template.render(SDX_FTP_IMAGES_PATH=settings.SDX_FTP_IMAGES_PATH,
-                                          images=self.images, response=self.response, creation_time=creation_time)
+        image_path = settings.FTP_HOST + settings.SDX_FTP_IMAGE_PATH + "\\Images"
+        template_output = template.render(SDX_FTP_IMAGES_PATH=image_path, images=self.images,
+                    response=self.response, creation_time=creation_time)
 
         self.index_file = "EDC_%s_%s_%04d.csv" % (self.survey['survey_id'], submission_date_str, self.sequence_no)
 
