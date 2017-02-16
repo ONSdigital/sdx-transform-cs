@@ -41,7 +41,7 @@ class OpTests(unittest.TestCase):
 
     def test_processor_diarydate(self):
         proc = Processor.diarydate
-        rv = proc("q", {"q": "11/07/2017"}, None)
+        rv = proc("q", {"q": "11/07/2017"}, datetime.date.today())
         self.assertEqual(datetime.date(2017, 7, 11), rv)
 
     def test_processor_match_type(self):
@@ -121,12 +121,23 @@ class TransformTests(unittest.TestCase):
         item = CSFormatter.pck_item("0050", rv["0050"])
         self.assertEqual(item, "0050 00000036852")
 
-    def test_onetwo_operation(self):
+    def test_digits_to_onetwo(self):
         digitsIngestedAsBools = [100, 120, 200, 220]
         for qNr in digitsIngestedAsBools:
             qId = "{0:04}".format(qNr)
             with self.subTest(qNr=qNr, qId=qId):
                 rv = MWSSTransformer.transform({qId: "64"})
+                self.assertIs(True, rv[qId])
+                self.assertEqual(1, CSFormatter.pck_value(qId, rv[qId]))
+                rv = MWSSTransformer.transform({qId: ""})
+                self.assertEqual(2, CSFormatter.pck_value(qId, rv[qId]))
+
+    def test_dates_to_onetwo(self):
+        datesIngestedAsBools = [110, 210]
+        for qNr in datesIngestedAsBools:
+            qId = "{0:04}".format(qNr)
+            with self.subTest(qNr=qNr, qId=qId):
+                rv = MWSSTransformer.transform({qId: "23/4/2017"})
                 self.assertIs(True, rv[qId])
                 self.assertEqual(1, CSFormatter.pck_value(qId, rv[qId]))
                 rv = MWSSTransformer.transform({qId: ""})

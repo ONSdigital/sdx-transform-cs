@@ -110,9 +110,14 @@ class Processor:
         try:
             rv = Survey.parse_timestamp(data[qId])
             if isinstance(rv, datetime.datetime):
-                return rv.date()
-            else:
+                rv = rv.date()
+
+            if default in (True, False):
+                return bool(rv)
+            elif isinstance(rv, type(default)):
                 return rv
+            else:
+                return type(default)(rv)
         except KeyError:
             return default
 
