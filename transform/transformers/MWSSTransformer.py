@@ -145,14 +145,21 @@ class Processor:
 
     @staticmethod
     def unsigned_integer(qId, data, default, *args, **kwargs):
-        rv = int(data.get(qId, default))
-        return type(default)(rv) if rv >= 0 else default
+        try:
+            rv = int(data.get(qId, default))
+        except ValueError:
+            return default
+        else:
+            return type(default)(rv) if rv >= 0 else default
 
     @staticmethod
     def percentage(qId, data, default, *args, **kwargs):
-        typ = type(default)
-        rv = int(data.get(qId, default))
-        return typ(rv) if 0 <= rv >= 100 else default
+        try:
+            rv = int(data.get(qId, default))
+        except ValueError:
+            return default
+        else:
+            return type(default)(rv) if 0 <= rv <= 100 else default
 
 
 class CSFormatter:
@@ -177,7 +184,7 @@ class CSFormatter:
         return "{0}:{1}{2}:{3}".format(formId, ruRef, ruChk, period)
 
     @staticmethod
-    def pck_value(qNr, val, surveyId=None):
+    def pck_value(qId, val, surveyId=None):
         if isinstance(val, bool):
             return 1 if val else 2
         elif isinstance(val, str):
@@ -215,16 +222,13 @@ class MWSSTransformer:
     defn = [
         (range(40, 90, 10), 0, Processor.unsigned_integer),
         (90, False, Processor.multiple),
-        (100, False, Processor.percentage),
+        (100, False, Processor.unsigned_integer),
         (110, False, Processor.diarydate),
         (120, False, Processor.percentage),
         (range(130, 133, 1), False, Processor.single),
         (140, 0, Processor.unsigned_integer),
-        # 150; how generated?
         (range(151, 154, 1), 0, Processor.unsigned_integer),
-        # 170; how generated?
         (range(171, 174, 1), 0, Processor.unsigned_integer),
-        # 180; how generated?
         (range(181, 184, 1), 0, Processor.unsigned_integer),
         (190, False, Processor.multiple),
         (200, False, Processor.percentage),

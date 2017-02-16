@@ -121,6 +121,17 @@ class TransformTests(unittest.TestCase):
         item = CSFormatter.pck_item("0050", rv["0050"])
         self.assertEqual(item, "0050 00000036852")
 
+    def test_onetwo_operation(self):
+        digitsIngestedAsBools = [100, 120, 200, 220]
+        for qNr in digitsIngestedAsBools:
+            qId = "{0:04}".format(qNr)
+            with self.subTest(qNr=qNr, qId=qId):
+                rv = MWSSTransformer.transform({qId: "64"})
+                self.assertIs(True, rv[qId])
+                self.assertEqual(1, CSFormatter.pck_value(qId, rv[qId]))
+                rv = MWSSTransformer.transform({qId: ""})
+                self.assertEqual(2, CSFormatter.pck_value(qId, rv[qId]))
+
 
 class BatchFileTests(unittest.TestCase):
 
