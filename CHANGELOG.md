@@ -1,4 +1,6 @@
 ### Unreleased
+
+### 1.4.0 2017-02-16
   - Add change log
   - Add license
   - Update python library '_requests_': `2.10.0` -> `2.12.4`
