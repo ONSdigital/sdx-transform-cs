@@ -4,110 +4,290 @@
   "form_type": "0001",
   "question_groups": [
     {
+      "title": "Pay Pattern",
+      "questions": [
+        {
+          "number": "1.1",
+          "title": "Please indicate how frequently employees are paid:",
+          "text": "Weekly",
+          "question_id": null,
+          "type": "checkbox"
+        },
+        {
+          "number": "1.1",
+          "title": "Please indicate how frequently employees are paid:",
+          "text": "Fortnightly",
+          "question_id": null,
+          "type": "checkbox"
+        },
+        {
+          "number": "1.1",
+          "title": "Please indicate how frequently employees are paid:",
+          "text": "Calendar monthly",
+          "question_id": "130",
+          "type": "checkbox"
+        },
+        {
+          "number": "1.1",
+          "title": "Please indicate how frequently employees are paid:",
+          "text": "Four weekly",
+          "question_id": "132",
+          "type": "checkbox"
+        },
+        {
+          "number": "1.1",
+          "title": "Please indicate how frequently employees are paid:",
+          "text": "Five weekly",
+          "question_id": null,
+          "type": "checkbox"
+        }
+      ]
+    },
+    {
       "title": "Weekly paid employees",
       "questions": [
         {
-          "number": "2a",
+          "number": "2.1",
           "title": "Number of weekly paid employees actually paid in the last week of the month",
           "text": "Number of weekly paid employees actually paid in the last week of the month",
           "question_id": "0040",
-          "type": "percentage"
+          "type": "positiveinteger"
         },
         {
-          "number": "2b",
+          "number": "2.2",
           "title": "Total Gross pay paid to employees in the last week of the month",
           "text": "Total Gross pay paid to employees in the last week of the month",
           "question_id": "0050",
           "type": "currency"
         },
         {
-          "number": "2c",
+          "number": "2.3",
           "title": "Advanced holiday pay included in Total Gross pay",
           "text": "Advanced holiday pay included in Total Gross pay",
           "question_id": "0060",
           "type": "currency"
         },
         {
-          "number": "2d",
-          "title": "Pay award arrears included in Total Gross pay",
-          "text": "Pay award arrears included in Total Gross pay",
-          "question_id": "0070",
+          "number": "2.3",
+          "title": "Of the {{answers.weekly_total_gross|format_currency}} paid to weekly paid employees in the last week of December 2016, what amount was:",
+          "text": "Arrears of pay owing to pay awards",
+          "question_id": "70",
           "type": "currency"
         },
         {
-          "number": "2e",
-          "title": "Bonus/ commission included in Total Gross pay",
-          "text": "Bonus/ commission included in Total Gross pay",
-          "question_id": "0080",
+          "number": "2.3",
+          "title": "Of the {{answers.weekly_total_gross|format_currency}} paid to weekly paid employees in the last week of December 2016, what amount was:",
+          "text": "Bonuses, commissions or annual profit from profit related pay schemes",
+          "question_id": "80",
           "type": "currency"
+        },
+        {
+          "number": "2.4",
+          "title": "Did any significant changes occur to the number of weekly paid employees?",
+          "text": "Did any significant changes occur to the number of weekly paid employees?",
+          "question_id": null,
+          "type": "radio"
+        },
+        {
+          "number": "2.5",
+          "title": "Did any significant changes occur to the number of redundancies among  weekly paid employees?",
+          "text": "Did any significant changes occur to the number of redundancies among  weekly paid employees?",
+          "question_id": "90",
+          "type": "radio"
+        },
+        {
+          "number": "2.6",
+          "title": "Did any significant changes occur to the number of temporary weekly paid employees?",
+          "text": "Did any significant changes occur to the number of temporary weekly paid employees?",
+          "question_id": "90",
+          "type": "radio"
+        },
+        {
+          "number": "2.7",
+          "title": "Did any significant changes occur to the total gross pay paid to  weekly paid employees?",
+          "text": "Did any significant changes occur to the total gross pay paid to  weekly paid employees?",
+          "question_id": null,
+          "type": "radio"
+        },
+        {
+          "number": "2.8",
+          "title": "Did any significant changes occur to the amount of overtime paid to weekly paid employees?",
+          "text": "Did any significant changes occur to the amount of overtime paid to weekly paid employees?",
+          "question_id": "0901",
+          "type": "radio"
+        },
+        {
+          "number": "2.9",
+          "title": "Did any significant changes occur to the pay rates of weekly paid employees?",
+          "text": "Did any significant changes occur to the pay rates of weekly paid employees?",
+          "question_id": "0902",
+          "type": "radio"
+        },
+        {
+          "number": "2.10",
+          "title": "Please enter the percentage increase of new pay rates, if possible:",
+          "text": "Percentage increase of new pay rates",
+          "question_id": "100",
+          "type": "percentage"
+        },
+        {
+          "number": "2.10",
+          "title": "Please enter the percentage increase of new pay rates, if possible:",
+          "text": "If your figures are back dated, from when:",
+          "question_id": "110",
+          "type": "date"
+        },
+        {
+          "number": "2.10",
+          "title": "Please enter the percentage increase of new pay rates, if possible:",
+          "text": "What was the percentage or number of weekly paid employees who received this new pay rate?",
+          "question_id": "120",
+          "type": "positiveinteger"
+        },
+        {
+          "number": "2.11",
+          "title": "Did industrial action significantly affect total gross pay paid to  weekly paid employees?",
+          "text": "Did industrial action significantly affect total gross pay paid to  weekly paid employees?",
+          "question_id": "0903",
+          "type": "radio"
+        },
+        {
+          "number": "2.12",
+          "title": "Did any other significant changes occur to the pay or number of weekly paid employees?",
+          "text": "Did any other significant changes occur to the pay or number of weekly paid employees?",
+          "question_id": "0904",
+          "type": "radio"
+        },
+        {
+          "number": "2.13",
+          "title": "Please specify any other significant changes to the pay or number of  weekly paid employees:",
+          "text": "Comments",
+          "question_id": "300",
+          "type": "textarea"
         }
       ]
     },
     {
-      "title": "Significant Changes to Weekly Pay",
+      "title": "Fortnightly Pay",
       "questions": [
         {
-          "number": "3",
-          "title": "Please put a cross in the boxes to indicate significant changes to weekly paid employees.",
-          "text": "More/ less overtime",
-          "question_id": "0901",
-          "type": "checkbox"
+          "number": "3.1",
+          "title": "What was the number of fortnightly paid employees paid in the last week of December 2016?",
+          "text": "Total number of fortnightly paid employees",
+          "question_id": null,
+          "type": "positiveinteger"
         },
         {
-          "number": "3",
-          "title": "Please put a cross in the boxes to indicate significant changes to weekly paid employees.",
-          "text": "More/ fewer temps",
-          "question_id": "0902",
-          "type": "checkbox"
+          "number": "3.2",
+          "title": "What was the total gross fortnightly pay paid to employees in the last week of December 2016?",
+          "text": "Total gross fortnightly pay including advanced holiday pay, pay award arrears, and bonuses or commissions",
+          "question_id": null,
+          "type": "currency"
         },
         {
-          "number": "3",
-          "title": "Please put a cross in the boxes to indicate significant changes to weekly paid employees.",
-          "text": "Redundancies",
-          "question_id": "0903",
-          "type": "checkbox"
+          "number": "3.3",
+          "title": "Of the {{answers.fortnightly_total_gross|format_currency}} paid to fortnightly paid employees in the last week of December 2016, what amount was:",
+          "text": "Holiday pay, paid in advance (estimate if necessary)",
+          "question_id": null,
+          "type": "currency"
         },
         {
-          "number": "3",
-          "title": "Please put a cross in the boxes to indicate significant changes to weekly paid employees.",
-          "text": "Industrial action",
-          "question_id": "0904",
-          "type": "checkbox"
+          "number": "3.3",
+          "title": "Of the {{answers.fortnightly_total_gross|format_currency}} paid to fortnightly paid employees in the last week of December 2016, what amount was:",
+          "text": "Arrears of pay owing to pay awards",
+          "question_id": null,
+          "type": "currency"
         },
         {
-          "number": "3",
-          "title": "Please put a cross in the boxes to indicate significant changes to weekly paid employees.",
-          "text": "New pay rates",
-          "question_id": "0905",
-          "type": "checkbox"
+          "number": "3.3",
+          "title": "Of the {{answers.fortnightly_total_gross|format_currency}} paid to fortnightly paid employees in the last week of December 2016, what amount was:",
+          "text": "Bonuses, commissions or annual profit from profit related pay schemes",
+          "question_id": null,
+          "type": "currency"
         },
         {
-          "number": "3",
-          "title": "Please put a cross in the boxes to indicate significant changes to weekly paid employees.",
-          "text": "Other change",
-          "question_id": "0906",
-          "type": "checkbox"
+          "number": "3.4",
+          "title": "Did any significant changes occur to the number of fortnightly paid employees?",
+          "text": "Did any significant changes occur to the number of fortnightly paid employees?",
+          "question_id": null,
+          "type": "radio"
         },
         {
-          "number": "3",
-          "title": "For New Pay rates",
-          "text": "Percentage increase",
-          "question_id": "0100",
+          "number": "3.5",
+          "title": "Did any significant changes occur to the number of redundancies among  fortnightly paid employees?",
+          "text": "Did any significant changes occur to the number of redundancies among  fortnightly paid employees?",
+          "question_id": null,
+          "type": "radio"
+        },
+        {
+          "number": "3.6",
+          "title": "Did any significant changes occur to the number of temporary fortnightly paid employees?",
+          "text": "Did any significant changes occur to the number of temporary fortnightly paid employees?",
+          "question_id": null,
+          "type": "radio"
+        },
+        {
+          "number": "3.7",
+          "title": "Did any significant changes occur to the total gross pay paid to  fortnightly paid employees?",
+          "text": "Did any significant changes occur to the total gross pay paid to  fortnightly paid employees?",
+          "question_id": null,
+          "type": "radio"
+        },
+        {
+          "number": "3.8",
+          "title": "Did any significant changes occur to the amount of overtime paid to fortnightly paid employees?",
+          "text": "Did any significant changes occur to the amount of overtime paid to fortnightly paid employees?",
+          "question_id": null,
+          "type": "radio"
+        },
+        {
+          "number": "3.9",
+          "title": "Did any significant changes occur to the pay rates of fortnightly  paid employees?",
+          "text": "Did any significant changes occur to the pay rates of fortnightly  paid employees?",
+          "question_id": null,
+          "type": "radio"
+        },
+        {
+          "number": "3.10",
+          "title": "Please enter the percentage increase of new pay rates if possible:",
+          "text": "Percentage increase of new pay rates",
+          "question_id": null,
           "type": "percentage"
         },
         {
-          "number": "3",
-          "title": "For New Pay rates",
-          "text": "If back dated, from when?",
-          "question_id": "0110",
+          "number": "3.10",
+          "title": "Please enter the percentage increase of new pay rates if possible:",
+          "text": "If your figures are back dated, from when:",
+          "question_id": null,
           "type": "date"
         },
         {
-          "number": "3",
-          "title": "For New Pay rates",
-          "text": "Who received it",
-          "question_id": "0120",
-          "type": "percentage"
+          "number": "3.10",
+          "title": "Please enter the percentage increase of new pay rates if possible:",
+          "text": "What was the percentage or  number of fortnightly paid employees who received this new pay rate?",
+          "question_id": null,
+          "type": "positiveinteger"
+        },
+        {
+          "number": "3.11",
+          "title": "Did industrial action significantly affect total gross pay paid to  fortnightly paid employees?",
+          "text": "Did industrial action significantly affect total gross pay paid to  fortnightly paid employees?",
+          "question_id": null,
+          "type": "radio"
+        },
+        {
+          "number": "3.12",
+          "title": "Did any other significant changes occur to the pay or number of fortnightly paid employees?",
+          "text": "Did any other significant changes occur to the pay or number of fortnightly paid employees?",
+          "question_id": "90",
+          "type": "radio"
+        },
+        {
+          "number": "3.13",
+          "title": "Please specify any other significant changes to the pay or number of fortnightly paid employees:",
+          "text": "Comments",
+          "question_id": null,
+          "type": "textarea"
         }
       ]
     },
