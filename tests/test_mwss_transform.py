@@ -1,5 +1,6 @@
 from collections import OrderedDict
 import datetime
+from functools import partial
 import itertools
 import json
 import unittest
@@ -161,7 +162,12 @@ class LogicTests(unittest.TestCase):
         Date of increase in Fortnightly pay (110f); aggregated with weekly (110).
 
         """
-        self.fail()
+        dflt, fn = MWSSTransformer.ops()["110"]
+        rv = fn(
+            "110", {"110": "2017-01-09", "110f": "2017-01-11"}, datetime.datetime.now(),
+            convert=datetime.datetime.strptime
+        )
+        self.assertEqual("2017", rv)
 
     def test_aggregate_fortnightly_increase_employees(self):
         """
@@ -173,21 +179,21 @@ class LogicTests(unittest.TestCase):
 
     def test_aggregate_fortnightly_changes(self):
         """
-        QIds 90f - 99f used for fortnightly changes questions; all aggregated as 90.
+        QIds 90f - 97f used for fortnightly changes questions; all aggregated as 90.
 
         """
         self.fail()
 
     def test_aggregate_weekly_changes(self):
         """
-        QIds 90w - 99w used for weekly changes questions; all aggregated as 90.
+        QIds 90w - 97w used for weekly changes questions; all aggregated as 90.
 
         """
         self.fail()
 
     def test_aggregate_fourweekly_changes(self):
         """
-        QIds 190w4 - 199w4 used for fourweekly changes questions; all aggregated as 90.
+        QIds 190w4 - 197w4 used for fourweekly changes questions; all aggregated as 90.
 
         """
         self.fail()
@@ -216,7 +222,7 @@ class LogicTests(unittest.TestCase):
 
     def test_aggregate_monthly_changes(self):
         """
-        QIds 190m - 199m used for monthly changes questions; all aggregated as 90.
+        QIds 190m - 197m used for monthly changes questions; all aggregated as 90.
 
         """
         self.fail()
@@ -237,7 +243,7 @@ class LogicTests(unittest.TestCase):
 
     def test_aggregate_fiveweekly_changes(self):
         """
-        QIds 190w5 - 199w5 used for fiveweekly changes questions; all aggregated as 90.
+        QIds 190w5 - 197w5 used for fiveweekly changes questions; all aggregated as 90.
 
         """
         self.fail()

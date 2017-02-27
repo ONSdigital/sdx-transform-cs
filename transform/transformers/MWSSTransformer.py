@@ -130,25 +130,25 @@ class Processor:
     """
 
     @staticmethod
-    def aggregate(qId, data, default, *args, subgroup=[], **kwargs):
+    def aggregate(qId, data, default, *args, weights=[], **kwargs):
         try:
             return type(default)(
                 Decimal(data.get(qId, 0)) +
-                sum(Decimal(scale) * Decimal(data.get(q, 0)) for q, scale in subgroup)
+                sum(Decimal(scale) * Decimal(data.get(q, 0)) for q, scale in weights)
             )
         except (InvalidOperation, ValueError):
             return default
 
     @staticmethod
-    def mean(qId, data, default, *args, subgroup=[], **kwargs):
+    def mean(qId, data, default, *args, group=[], convert=None, **kwargs):
         try:
+            ref = data.get(qId, 0)
+            typ = convert or type(ref)
             return type(default)(
-                sum(
-                    [Decimal(data.get(qId, 0))] +
-                    [Decimal(scale) * Decimal(data.get(q, 0)) for q, scale in subgroup]
-                ) / (len(subgroup) + 1)
+                typ(ref) + sum(typ(data.get(q, 0)) - ref for q in group) / (len(group) + 1)
             )
-        except (InvalidOperation, ValueError):
+        except (InvalidOperation, TypeError, ValueError) as e:
+            raise e
             return default
 
     @staticmethod
@@ -279,13 +279,13 @@ class MWSSTransformer:
 
     defn = [
         (40, 0, Processor.unsigned_integer),
-        (50, 0, partial(Processor.aggregate, subgroup=[("50f", 0.5)])),
-        (60, 0, partial(Processor.aggregate, subgroup=[("60f", 0.5)])),
-        (70, 0, partial(Processor.aggregate, subgroup=[("70f", 0.5)])),
-        (80, 0, partial(Processor.aggregate, subgroup=[("80f", 0.5)])),
+        (50, 0, partial(Processor.aggregate, weights=[("50f", 0.5)])),
+        (60, 0, partial(Processor.aggregate, weights=[("60f", 0.5)])),
+        (70, 0, partial(Processor.aggregate, weights=[("70f", 0.5)])),
+        (80, 0, partial(Processor.aggregate, weights=[("80f", 0.5)])),
         (90, False, Processor.multiple),
-        (100, False, partial(Processor.mean, subgroup=[("100f", 1)])),
-        (110, False, Processor.diarydate),
+        (100, False, partial(Processor.mean, group=["100f"], convert=Decimal)),
+        (110, False, partial(Processor.mean, group=["110f"], convert=Survey.parse_timestamp)),
         (120, False, Processor.percentage),
         (range(130, 133, 1), False, Processor.single),
         (140, 0, Processor.unsigned_integer),
