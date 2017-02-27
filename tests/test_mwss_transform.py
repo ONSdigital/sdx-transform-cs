@@ -104,7 +104,7 @@ class OpTests(unittest.TestCase):
             "submitted_at": "2017-04-12T13:01:26Z",
         }
         tfr = MWSSTransformer(response)
-        self.failUnless(tfr)
+        self.assertTrue(tfr)
 
 
 class TransformTests(unittest.TestCase):
