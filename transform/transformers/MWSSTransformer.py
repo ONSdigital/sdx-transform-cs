@@ -1,4 +1,4 @@
-from decimal import Decimal
+from decimal import Decimal, InvalidOperation
 from collections import namedtuple
 from collections import OrderedDict
 import datetime
@@ -136,7 +136,19 @@ class Processor:
                 Decimal(data.get(qId, 0)) +
                 sum(Decimal(scale) * Decimal(data.get(q, 0)) for q, scale in subgroup)
             )
-        except ValueError:
+        except (InvalidOperation, ValueError):
+            return default
+
+    @staticmethod
+    def mean(qId, data, default, *args, subgroup=[], **kwargs):
+        try:
+            return type(default)(
+                sum(
+                    [Decimal(data.get(qId, 0))] +
+                    [Decimal(scale) * Decimal(data.get(q, 0)) for q, scale in subgroup]
+                ) / (len(subgroup) + 1)
+            )
+        except (InvalidOperation, ValueError):
             return default
 
     @staticmethod
@@ -272,7 +284,7 @@ class MWSSTransformer:
         (70, 0, partial(Processor.aggregate, subgroup=[("70f", 0.5)])),
         (80, 0, partial(Processor.aggregate, subgroup=[("80f", 0.5)])),
         (90, False, Processor.multiple),
-        (100, False, Processor.unsigned_integer),
+        (100, False, partial(Processor.mean, subgroup=[("100f", 1)])),
         (110, False, Processor.diarydate),
         (120, False, Processor.percentage),
         (range(130, 133, 1), False, Processor.single),

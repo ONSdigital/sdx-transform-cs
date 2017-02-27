@@ -145,13 +145,16 @@ class LogicTests(unittest.TestCase):
         rv = fn("80", {"80": "15000", "80f": "5000"}, 0)
         self.assertEqual(17500, rv)
 
-
     def test_aggregate_fortnightly_increase(self):
         """
         Increase in Fortnightly pay (100f); aggregated with weekly increase (100).
 
         """
-        self.fail()
+        dflt, fn = MWSSTransformer.ops()["100"]
+        rv = fn("100", {"100f": "6.0"}, 0)
+        self.assertEqual(3, rv)  # Averaged with {100: 0}
+        rv = fn("100", {"100": "8.0", "100f": "6.0"}, 0)
+        self.assertEqual(7, rv)
 
     def test_aggregate_fortnightly_increase_date(self):
         """
