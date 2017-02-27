@@ -130,11 +130,11 @@ class Processor:
     """
 
     @staticmethod
-    def aggregate(qId, data, default, *args, subgroups=[], **kwargs):
+    def aggregate(qId, data, default, *args, subgroup=[], **kwargs):
         try:
             return type(default)(
                 Decimal(data.get(qId, 0)) +
-                sum(Decimal(scale) * Decimal(data.get(q, 0)) for q, scale in subgroups)
+                sum(Decimal(scale) * Decimal(data.get(q, 0)) for q, scale in subgroup)
             )
         except ValueError:
             return default
@@ -267,7 +267,7 @@ class MWSSTransformer:
 
     defn = [
         (range(40, 90, 10), 0, Processor.unsigned_integer),
-        (50, False, partial(Processor.aggregate, subgroups=[("50f", 0.5)])),
+        (50, 0, partial(Processor.aggregate, subgroup=[("50f", 0.5)])),
         (90, False, Processor.multiple),
         (100, False, Processor.unsigned_integer),
         (110, False, Processor.diarydate),

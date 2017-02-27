@@ -118,6 +118,8 @@ class LogicTests(unittest.TestCase):
         dflt, fn = MWSSTransformer.ops()["50"]
         rv = fn("50", {"50f": "1600"}, 0)
         self.assertEqual(800, rv)
+        rv = fn("50", {"50": "19200", "50f": "1600"}, 0)
+        self.assertEqual(20000, rv)
 
     def test_aggregate_fortnightly_bonuses(self):
         """
@@ -125,7 +127,12 @@ class LogicTests(unittest.TestCase):
         are divided by 2 and added to qIds 60, 70, 80 respectively.
 
         """
-        self.fail()
+        dflt, fn = MWSSTransformer.ops()["60"]
+        rv = fn("60", {"60f": "360"}, 0)
+        self.assertEqual(180, rv)
+        rv = fn("60", {"60": "4600", "60f": "360"}, 0)
+        self.assertEqual(4780, rv)
+
 
     def test_aggregate_fortnightly_increase(self):
         """
