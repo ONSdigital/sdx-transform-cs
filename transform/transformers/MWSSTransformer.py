@@ -2,6 +2,7 @@ from decimal import Decimal
 from collections import namedtuple
 from collections import OrderedDict
 import datetime
+from functools import partial
 import io
 import itertools
 import json
@@ -133,7 +134,7 @@ class Processor:
         try:
             return type(default)(
                 Decimal(data.get(qId, 0)) +
-                sum(scale * Decimal(data.get(q, 0)) for q, scale in subgroups)
+                sum(Decimal(scale) * Decimal(data.get(q, 0)) for q, scale in subgroups)
             )
         except ValueError:
             return default
@@ -266,7 +267,7 @@ class MWSSTransformer:
 
     defn = [
         (range(40, 90, 10), 0, Processor.unsigned_integer),
-        (50, False, Processor.aggregate),
+        (50, False, partial(Processor.aggregate, subgroups=[("50f", 0.5)])),
         (90, False, Processor.multiple),
         (100, False, Processor.unsigned_integer),
         (110, False, Processor.diarydate),
