@@ -111,11 +111,13 @@ class LogicTests(unittest.TestCase):
 
     def test_aggregate_fortnightly_gross_pay(self):
         """
-        Fortnightly gross pay is divided by 2 and added to
+        Fortnightly gross pay (50f) is divided by 2 and added to
         the value for qId 50.
 
         """
-        self.fail()
+        dflt, fn = MWSSTransformer.ops()["50"]
+        rv = fn("50", {"50f": "1600"}, 0)
+        self.assertEqual(800, rv)
 
     def test_aggregate_fortnightly_bonuses(self):
         """
@@ -244,21 +246,21 @@ class LogicTests(unittest.TestCase):
 class TransformTests(unittest.TestCase):
 
     def test_unsigned(self):
-        rv = MWSSTransformer.transform({"0040": "33"})
-        self.assertEqual(33, rv["0040"])
-        item = CSFormatter.pck_item("0040", rv["0040"])
+        rv = MWSSTransformer.transform({"40": "33"})
+        self.assertEqual(33, rv["40"])
+        item = CSFormatter.pck_item("40", rv["40"])
         self.assertEqual(item, "0040 00000000033")
 
     def test_currency(self):
-        rv = MWSSTransformer.transform({"0050": "36852"})
-        self.assertEqual(36852, rv["0050"])
-        item = CSFormatter.pck_item("0050", rv["0050"])
+        rv = MWSSTransformer.transform({"50": "36852"})
+        self.assertEqual(36852, rv["50"])
+        item = CSFormatter.pck_item("50", rv["50"])
         self.assertEqual(item, "0050 00000036852")
 
     def test_digits_to_onetwo(self):
         digitsIngestedAsBools = [100, 120, 200, 220]
         for qNr in digitsIngestedAsBools:
-            qId = "{0:04}".format(qNr)
+            qId = str(qNr)
             with self.subTest(qNr=qNr, qId=qId):
                 rv = MWSSTransformer.transform({qId: "64"})
                 self.assertIs(True, rv[qId])
@@ -269,7 +271,7 @@ class TransformTests(unittest.TestCase):
     def test_dates_to_onetwo(self):
         datesIngestedAsBools = [110, 210]
         for qNr in datesIngestedAsBools:
-            qId = "{0:04}".format(qNr)
+            qId = str(qNr)
             with self.subTest(qNr=qNr, qId=qId):
                 rv = MWSSTransformer.transform({qId: "23/4/2017"})
                 self.assertIs(True, rv[qId])

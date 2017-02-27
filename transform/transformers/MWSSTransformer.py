@@ -1,3 +1,4 @@
+from decimal import Decimal
 from collections import namedtuple
 from collections import OrderedDict
 import datetime
@@ -128,6 +129,16 @@ class Processor:
     """
 
     @staticmethod
+    def aggregate(qId, data, default, *args, subgroups=[], **kwargs):
+        try:
+            return type(default)(
+                Decimal(data.get(qId, 0)) +
+                sum(scale * Decimal(data.get(q, 0)) for q, scale in subgroups)
+            )
+        except ValueError:
+            return default
+
+    @staticmethod
     def comment(qId, data, default, *args, **kwargs):
         try:
             return type(default)(data.get(qId, default))
@@ -229,7 +240,7 @@ class CSFormatter:
     @staticmethod
     def pck_item(q, a):
         try:
-            return "{0} {1:011}".format(q, CSFormatter.pck_value(q, a))
+            return "{0:04} {1:011}".format(int(q), CSFormatter.pck_value(q, a))
         except TypeError:
             return "{0} ???????????".format(q)
 
@@ -255,6 +266,7 @@ class MWSSTransformer:
 
     defn = [
         (range(40, 90, 10), 0, Processor.unsigned_integer),
+        (50, False, Processor.aggregate),
         (90, False, Processor.multiple),
         (100, False, Processor.unsigned_integer),
         (110, False, Processor.diarydate),
@@ -297,7 +309,7 @@ class MWSSTransformer:
 
         """
         return OrderedDict([
-            ("{0:04}".format(qNr), (dflt, fn))
+            ("{0:02}".format(qNr), (dflt, fn))
             for rng, dflt, fn in cls.defn
             for qNr in (rng if isinstance(rng, range) else [rng])
         ])
