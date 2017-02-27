@@ -133,6 +133,18 @@ class LogicTests(unittest.TestCase):
         rv = fn("60", {"60": "4600", "60f": "360"}, 0)
         self.assertEqual(4780, rv)
 
+        dflt, fn = MWSSTransformer.ops()["70"]
+        rv = fn("70", {"70f": "1280"}, 0)
+        self.assertEqual(640, rv)
+        rv = fn("70", {"70": "7360", "70f": "1280"}, 0)
+        self.assertEqual(8000, rv)
+
+        dflt, fn = MWSSTransformer.ops()["80"]
+        rv = fn("80", {"80f": "5000"}, 0)
+        self.assertEqual(2500, rv)
+        rv = fn("80", {"80": "15000", "80f": "5000"}, 0)
+        self.assertEqual(17500, rv)
+
 
     def test_aggregate_fortnightly_increase(self):
         """
