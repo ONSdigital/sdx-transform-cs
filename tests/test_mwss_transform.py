@@ -107,6 +107,140 @@ class OpTests(unittest.TestCase):
         self.assertTrue(tfr)
 
 
+class LogicTests(unittest.TestCase):
+
+    def test_aggregate_fortnightly_gross_pay(self):
+        """
+        Fortnightly gross pay is divided by 2 and added to
+        the value for qId 50.
+
+        """
+        self.fail()
+
+    def test_aggregate_fortnightly_bonuses(self):
+        """
+        Fortnightly holiday pay (60f), arrears of pay (70f) and bonuses (80f)
+        are divided by 2 and added to qIds 60, 70, 80 respectively.
+
+        """
+        self.fail()
+
+    def test_aggregate_fortnightly_increase(self):
+        """
+        Increase in Fortnightly pay (100f); aggregated with weekly increase (100).
+
+        """
+        self.fail()
+
+    def test_aggregate_fortnightly_increase_date(self):
+        """
+        Date of increase in Fortnightly pay (110f); aggregated with weekly (110).
+
+        """
+        self.fail()
+
+    def test_aggregate_fortnightly_increase_employees(self):
+        """
+        Employees with increase in Fortnightly pay (120f);
+        aggregated with weekly increase (120).
+
+        """
+        self.fail()
+
+    def test_aggregate_fortnightly_changes(self):
+        """
+        QIds 90f - 99f used for fortnightly changes questions; all aggregated as 90.
+
+        """
+        self.fail()
+
+    def test_aggregate_weekly_changes(self):
+        """
+        QIds 90w - 99w used for weekly changes questions; all aggregated as 90.
+
+        """
+        self.fail()
+
+    def test_aggregate_fourweekly_changes(self):
+        """
+        QIds 190w4 - 199w4 used for fourweekly changes questions; all aggregated as 90.
+
+        """
+        self.fail()
+
+    def test_aggregate_fourweekly_increase(self):
+        """
+        Increase in fourweekly pay (200w4); aggregated with monthly increase (200).
+
+        """
+        self.fail()
+
+    def test_aggregate_fourweekly_increase_date(self):
+        """
+        Date of increase in fourweekly pay (210w4); aggregated with monthly (210).
+
+        """
+        self.fail()
+
+    def test_aggregate_fourweekly_increase_employees(self):
+        """
+        Employees with increase in fourweekly pay (220w4);
+        aggregated with monthly increase (220).
+
+        """
+        self.fail()
+
+    def test_aggregate_monthly_changes(self):
+        """
+        QIds 190m - 199m used for monthly changes questions; all aggregated as 90.
+
+        """
+        self.fail()
+
+    def test_aggregate_weekly_comments(self):
+        """
+        QIds 300w, 300f, 300m, 300w4 & 300w5; all aggregated as 300.
+
+        """
+        self.fail()
+
+    def test_aggregate_monthly_paid_employees(self):
+        """
+        QIds 140m, 140w4, 140w5 are added to give a value for monthly paid employees (140).
+
+        """
+        self.fail()
+
+    def test_aggregate_fiveweekly_changes(self):
+        """
+        QIds 190w5 - 199w5 used for fiveweekly changes questions; all aggregated as 90.
+
+        """
+        self.fail()
+
+    def test_aggregate_fiveweekly_increase(self):
+        """
+        Increase in fiveweekly pay (200w5); aggregated with monthly increase (200).
+
+        """
+        self.fail()
+
+    def test_aggregate_fiveweekly_increase_date(self):
+        """
+        Date of increase in fiveweekly pay (210w5); aggregated with monthly (210).
+
+        """
+        self.fail()
+
+    def test_aggregate_fiveweekly_increase_employees(self):
+        """
+        Employees with increase in fiveweekly pay (220w5);
+        aggregated with monthly increase (220).
+
+        """
+        self.fail()
+
+
 class TransformTests(unittest.TestCase):
 
     def test_unsigned(self):
