@@ -345,7 +345,12 @@ class MWSSTransformer:
         (range(151, 154, 1), 0, Processor.unsigned_integer),
         (range(171, 174, 1), 0, Processor.unsigned_integer),
         (range(181, 184, 1), 0, Processor.unsigned_integer),
-        (190, False, Processor.multiple),
+        (190, False, partial(
+            Processor.evaluate,
+            group=[
+                "190w4", "191w4", "192w4", "193w4", "194w4", "195w4", "196w4", "197w4",
+            ],
+            convert=re.compile("Yes").search)),
         (200, False, Processor.percentage),
         (210, [], partial(Processor.events, group=["210w4", "210w5"])),
         (220, False, Processor.percentage),

@@ -219,13 +219,18 @@ class LogicTests(unittest.TestCase):
                 rv = fn("90", {qId: "Yes"}, False)
                 self.assertTrue(rv)
 
-    @unittest.skip("noise")
     def test_aggregate_fourweekly_changes(self):
         """
-        QIds 190w4 - 197w4 used for fourweekly changes questions; all aggregated as 90.
+        QIds 190w4 - 197w4 used for fourweekly changes questions; all aggregated as 190.
 
         """
-        self.fail()
+        dflt, fn = MWSSTransformer.ops()["190"]
+        for qId in ("190w4", "191w4", "192w4", "193w4", "194w4", "195w4", "196w4", "197w4"):
+            with self.subTest(qId=qId):
+                rv = fn("190", {qId: "No"}, True)
+                self.assertFalse(rv)
+                rv = fn("190", {qId: "Yes"}, False)
+                self.assertTrue(rv)
 
     @unittest.skip("noise")
     def test_aggregate_fourweekly_increase(self):
@@ -255,7 +260,7 @@ class LogicTests(unittest.TestCase):
     @unittest.skip("noise")
     def test_aggregate_monthly_changes(self):
         """
-        QIds 190m - 197m used for monthly changes questions; all aggregated as 90.
+        QIds 190m - 197m used for monthly changes questions; all aggregated as 190.
 
         """
         self.fail()
@@ -279,7 +284,7 @@ class LogicTests(unittest.TestCase):
     @unittest.skip("noise")
     def test_aggregate_fiveweekly_changes(self):
         """
-        QIds 190w5 - 197w5 used for fiveweekly changes questions; all aggregated as 90.
+        QIds 190w5 - 197w5 used for fiveweekly changes questions; all aggregated as 190.
 
         """
         self.fail()
