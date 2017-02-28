@@ -110,6 +110,15 @@ class OpTests(unittest.TestCase):
 
 class LogicTests(unittest.TestCase):
 
+    def test_weekly_increase(self):
+        """
+        Increase in weekly pay (100).
+
+        """
+        dflt, fn = MWSSTransformer.ops()["100"]
+        rv = fn("100", {"100": "6.0"}, 0)
+        self.assertEqual(6, rv)
+
     def test_aggregate_fortnightly_gross_pay(self):
         """
         Fortnightly gross pay (50f) is divided by 2 and added to

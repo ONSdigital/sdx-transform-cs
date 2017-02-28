@@ -144,10 +144,14 @@ class Processor:
         try:
             ref = data.get(qId, 0)
             typ = convert or type(ref)
+            groupVals = [typ(ref)] + [typ(data.get(q, 0)) for q in group]
+            divisor = len([i for i in groupVals if i]) or 1
             return type(default)(
-                typ(ref) + sum(typ(data.get(q, 0)) - ref for q in group) / (len(group) + 1)
+                typ(ref) +
+                sum(val - typ(ref) for val in groupVals) / divisor
             )
         except (AttributeError, InvalidOperation, TypeError, ValueError):
+            raise
             return default
 
     @staticmethod
