@@ -173,8 +173,7 @@ class LogicTests(unittest.TestCase):
         """
         dflt, fn = MWSSTransformer.ops()["110"]
         rv = fn(
-            "110", {"110": "2017-01-09", "110f": "2017-01-11"}, datetime.datetime.now(),
-            convert=datetime.datetime.strptime
+            "110", {"110": "2017-01-09", "110f": "2017-01-11"}, datetime.date.today(),
         )
         self.assertEqual("2017", rv)
 
@@ -325,9 +324,10 @@ class TransformTests(unittest.TestCase):
             qId = str(qNr)
             with self.subTest(qNr=qNr, qId=qId):
                 rv = MWSSTransformer.transform({qId: "23/4/2017"})
-                self.assertIs(True, rv[qId])
+                self.assertEqual([datetime.date(2017, 4, 23)], rv[qId])
                 self.assertEqual(1, CSFormatter.pck_value(qId, rv[qId]))
                 rv = MWSSTransformer.transform({qId: ""})
+                self.assertIs(False, rv[qId])
                 self.assertEqual(2, CSFormatter.pck_value(qId, rv[qId]))
 
 

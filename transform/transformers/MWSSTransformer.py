@@ -156,19 +156,22 @@ class Processor:
             return default
 
     @staticmethod
-    def datespan(qId, data, default, *args, group=[], convert=None, **kwargs):
+    def events(qId, data, default, *args, group=[], **kwargs):
+        """
+        This function returns a sequence of events in time from values in a
+        declared question group.
+
+        """
         try:
-            ref = data.get(qId, 0)
-            typ = convert or type(ref)
-            groupVals = [typ(data.get(q, 0)) for q in group]
-            divisor = len([i for i in [typ(ref)] + groupVals if i]) or 1
-            rv = typ(ref) + sum(val - typ(ref) for val in groupVals if val) / divisor
-            print(rv)
-            return type(default)(
-                typ(ref) +
-                sum(val - typ(ref) for val in groupVals) / divisor
-            )
-        except (AttributeError, InvalidOperation, TypeError, ValueError):
+            groupVals = [data.get(qId, None)] + [data.get(q, None) for q in group]
+            data = sorted(filter(
+                None, (Survey.parse_timestamp(i) for i in groupVals if i is not None)
+            ))
+            if all(isinstance(i, type(default)) for i in data):
+                return data
+            else:
+                return type(default)(data)
+        except (AttributeError, TypeError, ValueError):
             return default
 
     @staticmethod
@@ -263,6 +266,9 @@ class CSFormatter:
 
     @staticmethod
     def pck_value(qId, val, surveyId=None):
+        if isinstance(val, list):
+            val = bool(val)
+
         if isinstance(val, bool):
             return 1 if val else 2
         elif isinstance(val, str):
@@ -304,8 +310,8 @@ class MWSSTransformer:
         (70, 0, partial(Processor.aggregate, weights=[("70f", 0.5)])),
         (80, 0, partial(Processor.aggregate, weights=[("80f", 0.5)])),
         (90, False, Processor.multiple),
-        (100, False, partial(Processor.mean, group=["100f"], convert=Decimal)),
-        (110, False, partial(Processor.datespan, group=["110f"], convert=Survey.parse_timestamp)),
+        (100, False, partial(Processor.mean, group=["100f"])),
+        (110, [], partial(Processor.events, group=["110f"])),
         (120, False, Processor.percentage),
         (range(130, 133, 1), False, Processor.single),
         (140, 0, Processor.unsigned_integer),
