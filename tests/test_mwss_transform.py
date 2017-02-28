@@ -175,7 +175,8 @@ class LogicTests(unittest.TestCase):
         rv = fn(
             "110", {"110": "2017-01-09", "110f": "2017-01-11"}, datetime.date.today(),
         )
-        self.assertEqual("2017", rv)
+        self.assertEqual(9, rv[0].day)
+        self.assertEqual(11, rv[1].day)
 
     @unittest.skip("noise")
     def test_aggregate_fortnightly_increase_employees(self):

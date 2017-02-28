@@ -320,7 +320,7 @@ class MWSSTransformer:
         (range(181, 184, 1), 0, Processor.unsigned_integer),
         (190, False, Processor.multiple),
         (200, False, Processor.percentage),
-        (210, False, Processor.diarydate),
+        (210, [], partial(Processor.events, group=["210w4", "210w5"])),
         (220, False, Processor.percentage),
         (300, False, Processor.comment),
     ]
