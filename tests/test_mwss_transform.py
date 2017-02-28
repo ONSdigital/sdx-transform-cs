@@ -245,14 +245,17 @@ class LogicTests(unittest.TestCase):
         rv = fn("200", {"200": "7.0", "200w4": "6.0"}, 0.0)
         self.assertEqual(6.5, rv)  # Float default
 
-
-    @unittest.skip("noise")
     def test_aggregate_fourweekly_increase_date(self):
         """
         Date of increase in fourweekly pay (210w4); aggregated with monthly (210).
 
         """
-        self.fail()
+        dflt, fn = MWSSTransformer.ops()["210"]
+        rv = fn(
+            "210", {"210": "2017-01-09", "210w4": "2017-01-11"}, datetime.date.today(),
+        )
+        self.assertEqual(9, rv[0].day)
+        self.assertEqual(11, rv[1].day)
 
     @unittest.skip("noise")
     def test_aggregate_fourweekly_increase_employees(self):
