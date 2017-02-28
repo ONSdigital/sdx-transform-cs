@@ -312,7 +312,7 @@ class MWSSTransformer:
         (90, False, Processor.multiple),
         (100, False, partial(Processor.mean, group=["100f"])),
         (110, [], partial(Processor.events, group=["110f"])),
-        (120, False, Processor.percentage),
+        (120, False, partial(Processor.mean, group=["120f"])),
         (range(130, 133, 1), False, Processor.single),
         (140, 0, Processor.unsigned_integer),
         (range(151, 154, 1), 0, Processor.unsigned_integer),

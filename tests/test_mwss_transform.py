@@ -163,8 +163,10 @@ class LogicTests(unittest.TestCase):
         dflt, fn = MWSSTransformer.ops()["100"]
         rv = fn("100", {"100f": "6.0"}, 0)
         self.assertEqual(6, rv)
-        rv = fn("100", {"100": "8.0", "100f": "6.0"}, 0)
-        self.assertEqual(7, rv)
+        rv = fn("100", {"100": "7.0", "100f": "6.0"}, 0)
+        self.assertEqual(6, rv)  # Integer default
+        rv = fn("100", {"100": "7.0", "100f": "6.0"}, 0.0)
+        self.assertEqual(6.5, rv)  # Float default
 
     def test_aggregate_fortnightly_increase_date(self):
         """
@@ -178,14 +180,19 @@ class LogicTests(unittest.TestCase):
         self.assertEqual(9, rv[0].day)
         self.assertEqual(11, rv[1].day)
 
-    @unittest.skip("noise")
     def test_aggregate_fortnightly_increase_employees(self):
         """
         Employees with increase in Fortnightly pay (120f);
         aggregated with weekly increase (120).
 
         """
-        self.fail()
+        dflt, fn = MWSSTransformer.ops()["120"]
+        rv = fn("120", {"120f": "60"}, 0)
+        self.assertEqual(60, rv)
+        rv = fn("120", {"120": "40", "120f": "41"}, 0)
+        self.assertEqual(40, rv)  # Integer default
+        rv = fn("120", {"120": "40", "120f": "41"}, 0.0)
+        self.assertEqual(40.5, rv)  # Float default
 
     @unittest.skip("noise")
     def test_aggregate_fortnightly_changes(self):
