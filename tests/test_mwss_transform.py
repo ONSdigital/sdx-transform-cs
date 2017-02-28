@@ -327,7 +327,7 @@ class TransformTests(unittest.TestCase):
                 self.assertEqual([datetime.date(2017, 4, 23)], rv[qId])
                 self.assertEqual(1, CSFormatter.pck_value(qId, rv[qId]))
                 rv = MWSSTransformer.transform({qId: ""})
-                self.assertIs(False, rv[qId])
+                self.assertEqual([], rv[qId])
                 self.assertEqual(2, CSFormatter.pck_value(qId, rv[qId]))
 
 
