@@ -3,11 +3,14 @@ from collections import namedtuple
 from collections import OrderedDict
 import datetime
 from functools import partial
+from functools import reduce
 import io
 import itertools
 import json
 import logging
+import operator
 import os
+import re
 import sys
 import tempfile
 import zipfile
@@ -40,7 +43,7 @@ qCodes = [
     "94f", "95f", # "96f",
     "97f", "98f", "99f",
     "100f", "110f", "120f",
-    "140m","140w4", "140w5",
+    "140m", "140w4", "140w5",
     "190m", "191m", "192m", # "193m",
     "194m", "195m",# "196m",
     "197m", "198m", "199m",
@@ -53,6 +56,7 @@ qCodes = [
     "197w5", "198w5", "199w5"
     "200w5", "210w5", "220w5",
 ]
+
 
 class Survey:
 
@@ -131,12 +135,29 @@ class Processor:
 
     @staticmethod
     def aggregate(qId, data, default, *args, weights=[], **kwargs):
+        """
+        Calculates the weighted sum of a question group.
+
+        """
         try:
             return type(default)(
                 Decimal(data.get(qId, 0)) +
                 sum(Decimal(scale) * Decimal(data.get(q, 0)) for q, scale in weights)
             )
         except (InvalidOperation, ValueError):
+            return default
+
+    @staticmethod
+    def evaluate(qId, data, default, *args, group=[], convert=bool, op=operator.or_, **kwargs):
+        """
+        Performs a map/reduce evaluation of a question group.
+
+        """
+        try:
+            groupVals = [data.get(qId, None)] + [data.get(q, None) for q in group]
+            data = [convert(i) for i in groupVals if i is not None]
+            return type(default)(reduce(op, data))
+        except (TypeError, ValueError):
             return default
 
     @staticmethod
@@ -309,7 +330,10 @@ class MWSSTransformer:
         (60, 0, partial(Processor.aggregate, weights=[("60f", 0.5)])),
         (70, 0, partial(Processor.aggregate, weights=[("70f", 0.5)])),
         (80, 0, partial(Processor.aggregate, weights=[("80f", 0.5)])),
-        (90, False, Processor.multiple),
+        (90, False, partial(
+            Processor.evaluate,
+            group=["90f", "91f", "92f", "93f", "94f", "95f", "96f", "97f"],
+            convert=re.compile("Yes").search)),
         (100, False, partial(Processor.mean, group=["100f"])),
         (110, [], partial(Processor.events, group=["110f"])),
         (120, False, partial(Processor.mean, group=["120f"])),

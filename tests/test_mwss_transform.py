@@ -1,6 +1,5 @@
 from collections import OrderedDict
 import datetime
-from functools import partial
 import itertools
 import json
 import unittest
@@ -194,13 +193,18 @@ class LogicTests(unittest.TestCase):
         rv = fn("120", {"120": "40", "120f": "41"}, 0.0)
         self.assertEqual(40.5, rv)  # Float default
 
-    @unittest.skip("noise")
     def test_aggregate_fortnightly_changes(self):
         """
         QIds 90f - 97f used for fortnightly changes questions; all aggregated as 90.
 
         """
-        self.fail()
+        dflt, fn = MWSSTransformer.ops()["90"]
+        for qId in ("90f", "91f", "92f", "93f", "94f", "95f", "96f", "97f"):
+            with self.subTest(qId=qId):
+                rv = fn("90", {qId: "No"}, True)
+                self.assertFalse(rv)
+                rv = fn("90", {qId: "Yes"}, False)
+                self.assertTrue(rv)
 
     @unittest.skip("noise")
     def test_aggregate_weekly_changes(self):
