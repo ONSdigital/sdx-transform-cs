@@ -140,18 +140,35 @@ class Processor:
             return default
 
     @staticmethod
-    def mean(qId, data, default, *args, group=[], convert=None, **kwargs):
+    def mean(qId, data, default, *args, group=[], **kwargs):
+        """
+        This function calculates the value of a field based on the mean
+        of all values in a declared question group.
+
+        """
+        try:
+            groupVals = [data.get(qId, None)] + [data.get(q, None) for q in group]
+            data = [Decimal(i) for i in groupVals if i is not None]
+            divisor = len(data) or 1
+            rv = sum(data) / divisor
+            return type(default)(rv)
+        except (AttributeError, InvalidOperation, TypeError, ValueError):
+            return default
+
+    @staticmethod
+    def datespan(qId, data, default, *args, group=[], convert=None, **kwargs):
         try:
             ref = data.get(qId, 0)
             typ = convert or type(ref)
-            groupVals = [typ(ref)] + [typ(data.get(q, 0)) for q in group]
-            divisor = len([i for i in groupVals if i]) or 1
+            groupVals = [typ(data.get(q, 0)) for q in group]
+            divisor = len([i for i in [typ(ref)] + groupVals if i]) or 1
+            rv = typ(ref) + sum(val - typ(ref) for val in groupVals if val) / divisor
+            print(rv)
             return type(default)(
                 typ(ref) +
                 sum(val - typ(ref) for val in groupVals) / divisor
             )
         except (AttributeError, InvalidOperation, TypeError, ValueError):
-            raise
             return default
 
     @staticmethod
@@ -288,7 +305,7 @@ class MWSSTransformer:
         (80, 0, partial(Processor.aggregate, weights=[("80f", 0.5)])),
         (90, False, Processor.multiple),
         (100, False, partial(Processor.mean, group=["100f"], convert=Decimal)),
-        (110, False, partial(Processor.mean, group=["110f"], convert=Survey.parse_timestamp)),
+        (110, False, partial(Processor.datespan, group=["110f"], convert=Survey.parse_timestamp)),
         (120, False, Processor.percentage),
         (range(130, 133, 1), False, Processor.single),
         (140, 0, Processor.unsigned_integer),

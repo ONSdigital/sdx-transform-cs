@@ -162,7 +162,7 @@ class LogicTests(unittest.TestCase):
         """
         dflt, fn = MWSSTransformer.ops()["100"]
         rv = fn("100", {"100f": "6.0"}, 0)
-        self.assertEqual(3, rv)  # Averaged with {100: 0}
+        self.assertEqual(6, rv)
         rv = fn("100", {"100": "8.0", "100f": "6.0"}, 0)
         self.assertEqual(7, rv)
 
