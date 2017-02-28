@@ -147,8 +147,7 @@ class Processor:
             return type(default)(
                 typ(ref) + sum(typ(data.get(q, 0)) - ref for q in group) / (len(group) + 1)
             )
-        except (InvalidOperation, TypeError, ValueError) as e:
-            raise e
+        except (AttributeError, InvalidOperation, TypeError, ValueError):
             return default
 
     @staticmethod
