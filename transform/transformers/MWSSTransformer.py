@@ -332,7 +332,10 @@ class MWSSTransformer:
         (80, 0, partial(Processor.aggregate, weights=[("80f", 0.5)])),
         (90, False, partial(
             Processor.evaluate,
-            group=["90f", "91f", "92f", "93f", "94f", "95f", "96f", "97f"],
+            group=[
+                "90w", "91w", "92w", "93w", "94w", "95w", "96w", "97w",
+                "90f", "91f", "92f", "93f", "94f", "95f", "96f", "97f",
+            ],
             convert=re.compile("Yes").search)),
         (100, False, partial(Processor.mean, group=["100f"])),
         (110, [], partial(Processor.events, group=["110f"])),
