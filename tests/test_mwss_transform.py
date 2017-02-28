@@ -232,13 +232,19 @@ class LogicTests(unittest.TestCase):
                 rv = fn("190", {qId: "Yes"}, False)
                 self.assertTrue(rv)
 
-    @unittest.skip("noise")
     def test_aggregate_fourweekly_increase(self):
         """
         Increase in fourweekly pay (200w4); aggregated with monthly increase (200).
 
         """
-        self.fail()
+        dflt, fn = MWSSTransformer.ops()["200"]
+        rv = fn("200", {"200w4": "6.0"}, 0)
+        self.assertEqual(6, rv)
+        rv = fn("200", {"200": "7.0", "200w4": "6.0"}, 0)
+        self.assertEqual(6, rv)  # Integer default
+        rv = fn("200", {"200": "7.0", "200w4": "6.0"}, 0.0)
+        self.assertEqual(6.5, rv)  # Float default
+
 
     @unittest.skip("noise")
     def test_aggregate_fourweekly_increase_date(self):

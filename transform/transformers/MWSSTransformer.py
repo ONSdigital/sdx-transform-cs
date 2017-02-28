@@ -351,7 +351,7 @@ class MWSSTransformer:
                 "190w4", "191w4", "192w4", "193w4", "194w4", "195w4", "196w4", "197w4",
             ],
             convert=re.compile("Yes").search)),
-        (200, False, Processor.percentage),
+        (200, False, partial(Processor.mean, group=["200w4"])),
         (210, [], partial(Processor.events, group=["210w4", "210w5"])),
         (220, False, Processor.percentage),
         (300, False, Processor.comment),
