@@ -320,13 +320,18 @@ class LogicTests(unittest.TestCase):
             rv = fn("140", {"140": "125000", qId: "25000"}, 0)
             self.assertEqual(150000, rv)
 
-    @unittest.skip("noise")
     def test_aggregate_fiveweekly_changes(self):
         """
         QIds 190w5 - 197w5 used for fiveweekly changes questions; all aggregated as 190.
 
         """
-        self.fail()
+        dflt, fn = MWSSTransformer.ops()["190"]
+        for qId in ("190w5", "191w5", "192w5", "193w5", "194w5", "195w5", "196w5", "197w5"):
+            with self.subTest(qId=qId):
+                rv = fn("190", {qId: "No"}, True)
+                self.assertFalse(rv)
+                rv = fn("190", {qId: "Yes"}, False)
+                self.assertTrue(rv)
 
     @unittest.skip("noise")
     def test_aggregate_fiveweekly_increase(self):
