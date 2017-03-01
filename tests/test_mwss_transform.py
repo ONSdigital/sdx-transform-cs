@@ -118,6 +118,17 @@ class LogicTests(unittest.TestCase):
         rv = fn("100", {"100": "6.0"}, 0)
         self.assertEqual(6, rv)
 
+    def test_aggregate_weekly_paid_employees(self):
+        """
+        QIds 40, 40f are added to give a value for weekly paid employees (40).
+
+        """
+        dflt, fn = MWSSTransformer.ops()["40"]
+        rv = fn("40", {"40": "125000"}, 0)
+        self.assertEqual(125000, rv)
+        rv = fn("40", {"40": "125000", "40f": "25000"}, 0)
+        self.assertEqual(150000, rv)
+
     def test_aggregate_fortnightly_gross_pay(self):
         """
         Fortnightly gross pay (50f) is divided by 2 and added to
