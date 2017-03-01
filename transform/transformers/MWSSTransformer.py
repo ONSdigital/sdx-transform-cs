@@ -341,7 +341,11 @@ class MWSSTransformer:
         (110, [], partial(Processor.events, group=["110f"])),
         (120, False, partial(Processor.mean, group=["120f"])),
         (range(130, 133, 1), False, Processor.single),
-        (140, 0, Processor.unsigned_integer),
+        (140, 0, partial(
+            Processor.aggregate,
+            weights=[
+                ("140m", 1), ("140w4", 1), ("140w5", 1)
+            ])),
         (range(151, 154, 1), 0, Processor.unsigned_integer),
         (range(171, 174, 1), 0, Processor.unsigned_integer),
         (range(181, 184, 1), 0, Processor.unsigned_integer),
