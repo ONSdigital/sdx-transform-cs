@@ -325,7 +325,7 @@ class CSFormatter:
 class MWSSTransformer:
 
     defn = [
-        (40, 0, Processor.unsigned_integer),
+        (40, 0, partial(Processor.aggregate, weights=[("40f", 1)])),
         (50, 0, partial(Processor.aggregate, weights=[("50f", 0.5)])),
         (60, 0, partial(Processor.aggregate, weights=[("60f", 0.5)])),
         (70, 0, partial(Processor.aggregate, weights=[("70f", 0.5)])),
