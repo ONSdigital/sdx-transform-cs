@@ -271,13 +271,18 @@ class LogicTests(unittest.TestCase):
         rv = fn("220", {"220": "40", "220w4": "41"}, 0.0)
         self.assertEqual(40.5, rv)  # Float default
 
-    @unittest.skip("noise")
     def test_aggregate_monthly_changes(self):
         """
         QIds 190m - 197m used for monthly changes questions; all aggregated as 190.
 
         """
-        self.fail()
+        dflt, fn = MWSSTransformer.ops()["190"]
+        for qId in ("190m", "191m", "192m", "193m", "194m", "195m", "196m", "197m"):
+            with self.subTest(qId=qId):
+                rv = fn("190", {qId: "No"}, True)
+                self.assertFalse(rv)
+                rv = fn("190", {qId: "Yes"}, False)
+                self.assertTrue(rv)
 
     @unittest.skip("noise")
     def test_aggregate_weekly_comments(self):
