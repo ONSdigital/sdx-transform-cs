@@ -284,13 +284,18 @@ class LogicTests(unittest.TestCase):
                 rv = fn("190", {qId: "Yes"}, False)
                 self.assertTrue(rv)
 
-    @unittest.skip("noise")
     def test_aggregate_weekly_comments(self):
         """
         QIds 300w, 300f, 300m, 300w4 & 300w5; all aggregated as 300.
 
         """
-        self.fail()
+        dflt, fn = MWSSTransformer.ops()["300"]
+        for qId in ("300w", "300f", "300m", "300w4", "300w5"):
+            with self.subTest(qId=qId):
+                rv = fn("300", {qId: "Single comment"}, "")
+                self.assertEqual("Single comment", rv)
+                rv = fn("300", {"300": "First comment", qId: "Second comment"}, "")
+                self.assertEqual(["First comment", "Second comment"], rv.splitlines())
 
     @unittest.skip("noise")
     def test_aggregate_monthly_paid_employees(self):

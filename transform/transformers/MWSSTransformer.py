@@ -349,12 +349,18 @@ class MWSSTransformer:
             Processor.evaluate,
             group=[
                 "190w4", "191w4", "192w4", "193w4", "194w4", "195w4", "196w4", "197w4",
+                "190m", "191m", "192m", "193m", "194m", "195m", "196m", "197m",
             ],
             convert=re.compile("Yes").search)),
         (200, False, partial(Processor.mean, group=["200w4"])),
         (210, [], partial(Processor.events, group=["210w4", "210w5"])),
         (220, False, partial(Processor.mean, group=["220w4"])),
-        (300, False, Processor.comment),
+        (300, False, partial(
+            Processor.evaluate,
+            group=[
+                "300w", "300w", "300w", "300w", "300w",
+            ],
+            convert=str, op=operator.add)),
     ]
 
     @staticmethod
