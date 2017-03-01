@@ -359,7 +359,7 @@ class MWSSTransformer:
             convert=re.compile("Yes").search)),
         (200, False, partial(Processor.mean, group=["200w4", "200w5"])),
         (210, [], partial(Processor.events, group=["210w4", "210w5"])),
-        (220, False, partial(Processor.mean, group=["220w4"])),
+        (220, False, partial(Processor.mean, group=["220w4", "220w5"])),
         (300, False, partial(
             Processor.evaluate,
             group=[
