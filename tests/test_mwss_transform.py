@@ -415,7 +415,7 @@ class BatchFileTests(unittest.TestCase):
             "survey_id": "134",
             "tx_id": "27923934-62de-475c-bc01-433c09fd38b8",
             "collection": {
-                "instrument_id": "0001",
+                "instrument_id": "0005",
                 "period": "201704"
             },
             "metadata": {
@@ -524,7 +524,7 @@ class PackingTests(unittest.TestCase):
             "survey_id": "134",
             "tx_id": "27923934-62de-475c-bc01-433c09fd38b8",
             "collection": {
-                "instrument_id": "0001",
+                "instrument_id": "0005",
                 "period": "201704"
             },
             "metadata": {
