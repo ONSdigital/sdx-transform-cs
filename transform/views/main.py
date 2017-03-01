@@ -3,7 +3,9 @@ from transform import settings
 import logging
 from structlog import wrap_logger
 from flask import request, make_response, send_file, jsonify
-from transform.transformers import PCKTransformer, PDFTransformer, ImageTransformer, CSTransformer
+from transform.transformers import PCKTransformer, PDFTransformer
+from transform.transformers import ImageTransformer, CSTransformer
+from transform.transformers import MWSSTransformer
 from jinja2 import Environment, PackageLoader
 
 import json
@@ -168,19 +170,25 @@ def common_software(sequence_no=1000, batch_number=False):
         sequence_no = int(sequence_no)
 
     survey = get_survey(survey_response)
-
     if not survey:
         return client_error("CS:Unsupported survey/instrument id")
 
-    ctransformer = CSTransformer(logger, survey, survey_response, batch_number, sequence_no)
-
-    ctransformer.create_formats()
-    ctransformer.prepare_archive()
-    zipfile = ctransformer.create_zip()
+    surveyId = survey_response.get("survey_id")
     try:
-        ctransformer.cleanup()
-    except IOError as e:
-        return client_error("CS:Could not create zip buffer: %s" % repr(e))
+        if surveyId == "134":
+            tfr = MWSSTransformer(survey_response, log=logger)
+            zipfile = tfr.pack()
+        else:
+            ctransformer = CSTransformer(
+                logger, survey, survey_response, batch_number, sequence_no)
+
+            ctransformer.create_formats()
+            ctransformer.prepare_archive()
+            zipfile = ctransformer.create_zip()
+            try:
+                ctransformer.cleanup()
+            except IOError as e:
+                return client_error("CS:Could not create zip buffer: %s" % repr(e))
     except Exception as e:
         return server_error(e)
 
