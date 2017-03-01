@@ -358,9 +358,9 @@ class MWSSTransformer:
         (300, False, partial(
             Processor.evaluate,
             group=[
-                "300w", "300w", "300w", "300w", "300w",
+                "300w", "300f", "300m", "300w4", "300w5",
             ],
-            convert=str, op=operator.add)),
+            convert=str, op=lambda x, y: x + "\n" + y)),
     ]
 
     @staticmethod
