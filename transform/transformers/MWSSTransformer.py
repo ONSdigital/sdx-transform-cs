@@ -354,6 +354,7 @@ class MWSSTransformer:
             group=[
                 "190w4", "191w4", "192w4", "193w4", "194w4", "195w4", "196w4", "197w4",
                 "190m", "191m", "192m", "193m", "194m", "195m", "196m", "197m",
+                "190w5", "191w5", "192w5", "193w5", "194w5", "195w5", "196w5", "197w5",
             ],
             convert=re.compile("Yes").search)),
         (200, False, partial(Processor.mean, group=["200w4"])),
