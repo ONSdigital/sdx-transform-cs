@@ -297,13 +297,17 @@ class LogicTests(unittest.TestCase):
                 rv = fn("300", {"300": "First comment", qId: "Second comment"}, "")
                 self.assertEqual(["First comment", "Second comment"], rv.splitlines())
 
-    @unittest.skip("noise")
     def test_aggregate_monthly_paid_employees(self):
         """
         QIds 140m, 140w4, 140w5 are added to give a value for monthly paid employees (140).
 
         """
-        self.fail()
+        dflt, fn = MWSSTransformer.ops()["140"]
+        rv = fn("140", {"140w4": "125000"}, 0)
+        self.assertEqual(125000, rv)
+        for qId in ("140m", "140w4", "140w5"):
+            rv = fn("140", {"140": "125000", qId: "25000"}, 0)
+            self.assertEqual(150000, rv)
 
     @unittest.skip("noise")
     def test_aggregate_fiveweekly_changes(self):
