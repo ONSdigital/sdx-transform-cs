@@ -28,35 +28,6 @@ python -m transform.transformers.MWSSTransformer \
 
 """
 
-qCodes = [
-    "133a", "134a",
-    "90w", "91w", "92w", # "93w",
-    "94w", "95w", # "96w",
-    "97w", "98w", "99w",
-    "300w", "300f", "300m", "300w4", "300w5"
-    "40f",
-    "50f",
-    "60f",
-    "70f",
-    "80f",
-    "90f", "91f", "92f", # "93f",
-    "94f", "95f", # "96f",
-    "97f", "98f", "99f",
-    "100f", "110f", "120f",
-    "140m", "140w4", "140w5",
-    "190m", "191m", "192m", # "193m",
-    "194m", "195m",# "196m",
-    "197m", "198m", "199m",
-    "190w4", "191w4", "192w4", # "193w4",
-    "194w4", "195w4", # "196w4",
-    "197w4",
-    "200w4", "210w4", "220w4", "198w4", "199w4",
-    "190w5", "191w5", "192w5", # "193w5",
-    "194w5", "195w5", # "196w5",
-    "197w5", "198w5", "199w5"
-    "200w5", "210w5", "220w5",
-]
-
 
 class Survey:
 
@@ -196,53 +167,18 @@ class Processor:
             return default
 
     @staticmethod
-    def comment(qId, data, default, *args, **kwargs):
-        try:
-            return type(default)(data.get(qId, default))
-        except ValueError:
-            return default
+    def survey_string(qId, data, default, *args, survey=None, **kwargs):
+        """
+        This function expects a string which matches one supplied by the survey
+        as an option for the question.
 
-    @staticmethod
-    def diarydate(qId, data, default, *args, **kwargs):
-        try:
-            rv = Survey.parse_timestamp(data[qId])
-            if isinstance(rv, datetime.datetime):
-                rv = rv.date()
-
-            if default in (True, False):
-                return bool(rv)
-            elif isinstance(rv, type(default)):
-                return rv
-            else:
-                return type(default)(rv)
-        except KeyError:
-            return default
-
-    @staticmethod
-    def match_type(qId, data, default, *args, **kwargs):
-        try:
-            return type(default)(data.get(qId, default))
-        except ValueError:
-            return default
-
-    @staticmethod
-    def single(qId, data, default, *args, survey=None, **kwargs):
-        if survey is not None:
-            # TODO: Look up valid option
-            pass
-        try:
-            return type(default)(data.get(qId, default))
-        except ValueError:
-            return default
-
-    @staticmethod
-    def multiple(qId, data, default, *args, survey=None, **kwargs):
+        """
         if survey is not None:
             # TODO: Look up valid options
             pass
         try:
-            return type(default)(data.get(qId, default))
-        except ValueError:
+            return type(default)(data[qId])
+        except (KeyError, ValueError):
             return default
 
     @staticmethod
@@ -340,7 +276,7 @@ class MWSSTransformer:
         (100, False, partial(Processor.mean, group=["100f"])),
         (110, [], partial(Processor.events, group=["110f"])),
         (120, False, partial(Processor.mean, group=["120f"])),
-        (range(130, 133, 1), False, Processor.single),
+        (range(130, 133, 1), False, Processor.survey_string),
         (140, 0, partial(
             Processor.aggregate,
             weights=[

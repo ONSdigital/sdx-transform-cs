@@ -39,23 +39,6 @@ class SurveyTests(unittest.TestCase):
 
 class OpTests(unittest.TestCase):
 
-    def test_processor_diarydate(self):
-        proc = Processor.diarydate
-        rv = proc("q", {"q": "11/07/2017"}, datetime.date.today())
-        self.assertEqual(datetime.date(2017, 7, 11), rv)
-
-    def test_processor_match_type(self):
-        proc = Processor.match_type
-
-        # ints and strings
-        self.assertEqual(1, proc("q", {"q": "1"}, 0))
-        self.assertEqual(0, proc("q", {"q": "NaN"}, 0))
-        self.assertEqual("1", proc("q", {"q": 1}, ""))
-
-        # bools and strings
-        self.assertEqual(True, proc("q", {"q": "1"}, False))
-        self.assertEqual(False, proc("q", {"q": ""}, True))
-
     def test_processor_unsigned(self):
         proc = Processor.unsigned_integer
 
