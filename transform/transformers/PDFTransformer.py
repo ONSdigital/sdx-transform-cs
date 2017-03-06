@@ -118,7 +118,10 @@ class PDFTransformer(object):
                         if question['question_id'] in response['data']:
                             answer = response['data'][question['question_id']]
 
-                        elements.append(Paragraph(question['text'], styleSSH))
+                        text = question.get("text", " ")
+                        if not text[0].isdigit():
+                            text = " ".join((question.get("number", ""), text))
+                        elements.append(Paragraph(text, styleSSH))
                         elements.append(Paragraph(answer, styleN))
 
         return elements
