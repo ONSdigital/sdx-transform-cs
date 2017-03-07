@@ -491,17 +491,15 @@ class BatchFileTests(unittest.TestCase):
         ], rv)
 
     def test_idbr_receipt(self):
-        # TODO: Get proper response data
-        src = pkg_resources.resource_string(__name__, "pck/023.0102.json")
+        src = pkg_resources.resource_string(__name__, "replies/eq-mwss.json")
         reply = json.loads(src.decode("utf-8"))
         reply["tx_id"] = "27923934-62de-475c-bc01-433c09fd38b8"
         ids = Survey.identifiers(reply, batchNr=3866)
         rv = CSFormatter.idbr_receipt(**ids._asdict())
-        self.assertEqual("12345678901:A:023:1604", rv)
+        self.assertEqual("12346789012:A:134:201605", rv)
 
     def test_identifiers(self):
-        # TODO: Get proper response data
-        src = pkg_resources.resource_string(__name__, "pck/023.0102.json")
+        src = pkg_resources.resource_string(__name__, "replies/eq-mwss.json")
         reply = json.loads(src.decode("utf-8"))
         reply["tx_id"] = "27923934-62de-475c-bc01-433c09fd38b8"
         reply["collection"]["period"] = "200911"
@@ -511,9 +509,9 @@ class BatchFileTests(unittest.TestCase):
         self.assertEqual(0, ids.seqNr)
         self.assertEqual(reply["tx_id"], ids.txId)
         self.assertEqual(datetime.date.today(), ids.ts.date())
-        self.assertEqual("023", ids.surveyId)
-        self.assertEqual("789473423", ids.userId)
-        self.assertEqual("12345678901", ids.ruRef)
+        self.assertEqual("134", ids.surveyId)
+        self.assertEqual("K5O86M2NU1", ids.userId)
+        self.assertEqual("12346789012", ids.ruRef)
         self.assertEqual("A", ids.ruChk)
         self.assertEqual("200911", ids.period)
 
