@@ -241,12 +241,11 @@ class CSFormatter:
             return "{0} ???????????".format(q)
 
     @staticmethod
-    def pck_lines(data, batchNr, ts, surveyId, ruRef, ruChk, period, **kwargs):
-        formId = CSFormatter.formIds[surveyId]
+    def pck_lines(data, batchNr, ts, surveyId, instId, ruRef, ruChk, period, **kwargs):
         return [
             CSFormatter.pck_batch_header(batchNr, ts),
             "FV",
-            CSFormatter.pck_form_header(formId, ruRef, ruChk, period),
+            CSFormatter.pck_form_header(instId, ruRef, ruChk, period),
         ] + [
             CSFormatter.pck_item(q, a) for q, a in data.items()
         ]

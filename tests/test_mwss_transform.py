@@ -425,12 +425,12 @@ class BatchFileTests(unittest.TestCase):
         self.assertEqual("FBFV00386629/12/09", rv)
 
     def test_pck_form_header(self):
-        formId = 4
+        formId = 5
         ruRef = 49900001225
         check = "C"
         period = "200911"
         rv = CSFormatter.pck_form_header(formId, ruRef, check, period)
-        self.assertEqual("0004:49900001225C:200911", rv)
+        self.assertEqual("0005:49900001225C:200911", rv)
 
     def test_load_survey(self):
         ids = Survey.identifiers({
@@ -467,7 +467,8 @@ class BatchFileTests(unittest.TestCase):
     def test_pck_lines(self):
         batchNr = 3866
         batchDate = datetime.date(2009, 12, 29)
-        instId = "134"
+        surveyId = "134"
+        instId = "0005"
         ruRef = 49900001225
         check = "C"
         period = "200911"
@@ -477,11 +478,13 @@ class BatchFileTests(unittest.TestCase):
             ("0151", 217222)
         ])
         self.assertTrue(isinstance(val, int) for val in data.values())
-        rv = CSFormatter.pck_lines(data, batchNr, batchDate, instId, ruRef, check, period)
+        rv = CSFormatter.pck_lines(
+            data, batchNr, batchDate, surveyId, instId, ruRef, check, period
+        )
         self.assertEqual([
             "FBFV00386629/12/09",
             "FV",
-            "0004:49900001225C:200911",
+            "0005:49900001225C:200911",
             "0001 00000000002",
             "0140 00000000124",
             "0151 00000217222",
@@ -515,8 +518,7 @@ class BatchFileTests(unittest.TestCase):
         self.assertEqual("200911", ids.period)
 
     def test_pck_from_transformed_data(self):
-        # TODO: Get proper response data
-        src = pkg_resources.resource_string(__name__, "pck/023.0102.json")
+        src = pkg_resources.resource_string(__name__, "replies/eq-mwss.json")
         reply = json.loads(src.decode("utf-8"))
         reply["tx_id"] = "27923934-62de-475c-bc01-433c09fd38b8"
         reply["survey_id"] = "134"
@@ -532,7 +534,7 @@ class BatchFileTests(unittest.TestCase):
         self.assertEqual([
             "FBFV003866{0}".format(datetime.date.today().strftime("%d/%m/%y")),
             "FV",
-            "0004:49900001225C:200911",
+            "0005:49900001225C:200911",
             "0001 00000000002",
             "0140 00000000124",
             "0151 00000217222",
