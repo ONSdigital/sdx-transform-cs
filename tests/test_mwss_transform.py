@@ -195,6 +195,8 @@ class LogicTests(unittest.TestCase):
         dflt, fn = MWSSTransformer.ops()["90"]
         for qId in ("90f", "91f", "92f", "93f", "94f", "95f", "96f", "97f"):
             with self.subTest(qId=qId):
+                rv = fn("90", {qId: ""}, True)
+                self.assertFalse(rv)
                 rv = fn("90", {qId: "No"}, True)
                 self.assertFalse(rv)
                 rv = fn("90", {qId: "Yes"}, False)
@@ -222,6 +224,8 @@ class LogicTests(unittest.TestCase):
         dflt, fn = MWSSTransformer.ops()["90"]
         for qId in ("92w", "94w", "92f", "94f"):
             with self.subTest(qId=qId):
+                rv = fn("90", {qId: ""}, True)
+                self.assertFalse(rv)
                 rv = fn("90", {qId: "No significant change"}, True)
                 self.assertFalse(rv)
                 rv = fn("90", {qId: "Any other string"}, False)
@@ -230,6 +234,8 @@ class LogicTests(unittest.TestCase):
         dflt, fn = MWSSTransformer.ops()["190"]
         for qId in ("192m", "194m", "192w4", "194w4", "192w5", "194w5"):
             with self.subTest(qId=qId):
+                rv = fn("190", {qId: ""}, True)
+                self.assertFalse(rv)
                 rv = fn("190", {qId: "No significant change"}, True)
                 self.assertFalse(rv)
                 rv = fn("190", {qId: "Any other string"}, False)
@@ -243,6 +249,8 @@ class LogicTests(unittest.TestCase):
         dflt, fn = MWSSTransformer.ops()["190"]
         for qId in ("190w4", "191w4", "192w4", "193w4", "194w4", "195w4", "196w4", "197w4"):
             with self.subTest(qId=qId):
+                rv = fn("190", {qId: ""}, True)
+                self.assertFalse(rv)
                 rv = fn("190", {qId: "No"}, True)
                 self.assertFalse(rv)
                 rv = fn("190", {qId: "Yes"}, False)
