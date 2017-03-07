@@ -377,9 +377,9 @@ class MWSSTransformer:
         zipBytes.seek(0)
         return zipBytes
 
-    def __init__(self, response, log=None):
+    def __init__(self, response, seqNr=0, log=None):
         self.response = response
-        self.ids = Survey.identifiers(response)
+        self.ids = Survey.identifiers(response, seqNr=seqNr)
 
         if self.ids is None:
             raise UserWarning("Missing identifiers")
