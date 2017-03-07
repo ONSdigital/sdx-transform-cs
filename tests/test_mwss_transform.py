@@ -490,7 +490,6 @@ class BatchFileTests(unittest.TestCase):
             data, batchNr, batchDate, surveyId, instId, ruRef, check, period
         )
         self.assertEqual([
-            "FBFV00386629/12/09",
             "FV",
             "0005:49900001225C:200911",
             "0001 00000000002",
@@ -538,7 +537,6 @@ class BatchFileTests(unittest.TestCase):
         ids = Survey.identifiers(reply, batchNr=3866)
         rv = CSFormatter.pck_lines(reply["data"], **ids._asdict())
         self.assertEqual([
-            "FBFV003866{0}".format(datetime.date.today().strftime("%d/%m/%y")),
             "FV",
             "0005:49900001225C:200911",
             "0001 00000000002",

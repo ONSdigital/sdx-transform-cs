@@ -243,7 +243,6 @@ class CSFormatter:
     @staticmethod
     def pck_lines(data, batchNr, ts, surveyId, instId, ruRef, ruChk, period, **kwargs):
         return [
-            CSFormatter.pck_batch_header(batchNr, ts),
             "FV",
             CSFormatter.pck_form_header(instId, ruRef, ruChk, period),
         ] + [
