@@ -118,16 +118,18 @@ class ImageTransformer(object):
         shutil.rmtree(os.path.join(self.path))
 
     def response_ok(self, res):
+        msg = "Returned from sdx-sequence"
+
         if res.status_code == 200:
-            self.logger.info("Returned from service", request_url=res.url, status=res.status_code)
+            self.logger.info("{}".format(msg), request_url=res.url, status=res.status_code)
             return True
         else:
-            self.logger.error("Returned from service", request_url=res.url, status=res.status_code)
+            self.logger.error("{}".format(msg), request_url=res.url, status=res.status_code)
             return False
 
     def remote_call(self, request_url, json=None):
         try:
-            self.logger.info("Calling service", request_url=request_url)
+            self.logger.info("Calling sdx-sequence", request_url=request_url)
 
             r = None
 
