@@ -57,7 +57,7 @@ class ImageTransformer(object):
             ["pdftoppm", "-jpeg", fileName, rootName],
             cwd=path
         )
-        return glob.glob("%s/%s-*.jpg" % (path, rootName))
+        return sorted(glob.glob("%s/%s-*.jpg" % (path, rootName)))
 
     def __init__(self, logger, survey, response_data, sequence_no=1000):
         self.logger = logger
