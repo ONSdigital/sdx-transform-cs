@@ -1,4 +1,5 @@
 ### Unreleased
+  - Changed status_code to status for SDX logging
 
 ### 1.4.0 2017-02-16
   - Add change log
