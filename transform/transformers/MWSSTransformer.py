@@ -32,7 +32,7 @@ python -m transform.transformers.MWSSTransformer \
 class Survey:
 
     Identifiers = namedtuple("Identifiers", [
-        "batchNr", "seqNr", "ts", "txId", "surveyId", "instId",
+        "batchNr", "seq_nr", "ts", "txId", "survey_id", "instId",
         "userTs", "userId", "ruRef", "ruChk", "period"
     ])
 
@@ -66,7 +66,7 @@ class Survey:
             return None
 
     @staticmethod
-    def identifiers(data, batchNr=0, seqNr=0, log=None):
+    def identifiers(data, batchNr=0, seq_nr=0, log=None):
         """
         Parse common metadata from the survey. Return a
         defined type which all code can use to access
@@ -77,7 +77,7 @@ class Survey:
         ruRef = data.get("metadata", {}).get("ru_ref", "")
         ts = datetime.datetime.now(datetime.timezone.utc)
         rv = Survey.Identifiers(
-            batchNr, seqNr, ts,
+            batchNr, seq_nr, ts,
             data.get("tx_id"),
             data.get("survey_id"),
             data.get("collection", {}).get("instrument_id"),
@@ -222,7 +222,7 @@ class CSFormatter:
         return "{0}:{1}{2}:{3}".format(formId, ruRef, ruChk, period)
 
     @staticmethod
-    def pck_value(qId, val, surveyId=None):
+    def pck_value(qId, val, survey_id=None):
         if isinstance(val, list):
             val = bool(val)
 
@@ -241,7 +241,7 @@ class CSFormatter:
             return "{0} ???????????".format(q)
 
     @staticmethod
-    def pck_lines(data, batchNr, ts, surveyId, instId, ruRef, ruChk, period, **kwargs):
+    def pck_lines(data, batchNr, ts, survey_id, instId, ruRef, ruChk, period, **kwargs):
         return [
             "FV",
             CSFormatter.pck_form_header(instId, ruRef, ruChk, period),
@@ -250,9 +250,9 @@ class CSFormatter:
         ]
 
     @staticmethod
-    def idbr_receipt(surveyId, ruRef, ruChk, period, **kwargs):
-        return "{ruRef}:{ruChk}:{surveyId:03}:{period}".format(
-            surveyId=int(surveyId), ruRef=ruRef, ruChk=ruChk, period=period
+    def idbr_receipt(survey_id, ruRef, ruChk, period, **kwargs):
+        return "{ruRef}:{ruChk}:{survey_id:03}:{period}".format(
+            survey_id=int(survey_id), ruRef=ruRef, ruChk=ruChk, period=period
         )
 
 
@@ -306,7 +306,7 @@ class MWSSTransformer:
     def load_survey(ids):
         try:
             content = pkg_resources.resource_string(
-                __name__, "../surveys/{surveyId}.{instId}.json".format(**ids._asdict())
+                __name__, "../surveys/{survey_id}.{instId}.json".format(**ids._asdict())
             )
         except FileNotFoundError:
             return None
@@ -346,39 +346,39 @@ class MWSSTransformer:
         )
 
     @staticmethod
-    def idbr_name(userTs, seqNr, **kwargs):
-        return "REC{0}_{1:04}.DAT".format(userTs.strftime("%d%m"), int(seqNr))
+    def idbr_name(userTs, seq_nr, **kwargs):
+        return "REC{0}_{1:04}.DAT".format(userTs.strftime("%d%m"), int(seq_nr))
 
     @staticmethod
-    def pck_name(surveyId, seqNr, **kwargs):
-        return "{0}_{1:04}".format(surveyId, int(seqNr))
+    def pck_name(survey_id, seq_nr, **kwargs):
+        return "{0}_{1:04}".format(survey_id, int(seq_nr))
 
     @staticmethod
-    def write_idbr(fObj, **kwargs):
+    def write_idbr(f_obj, **kwargs):
         output = CSFormatter.idbr_receipt(**kwargs)
-        fObj.write(output)
-        fObj.write("\n")
+        f_obj.write(output)
+        f_obj.write("\n")
 
     @staticmethod
-    def write_pck(fObj, data, **kwargs):
+    def write_pck(f_obj, data, **kwargs):
         output = CSFormatter.pck_lines(data, **kwargs)
-        fObj.write("\n".join(output))
-        fObj.write("\n")
+        f_obj.write("\n".join(output))
+        f_obj.write("\n")
 
     @staticmethod
     def create_zip(locn, manifest):
-        zipBytes = io.BytesIO()
+        zip_bytes = io.BytesIO()
 
-        with zipfile.ZipFile(zipBytes, "w", zipfile.ZIP_DEFLATED) as zipObj:
-            for dst, fN in manifest:
-                zipObj.write(os.path.join(locn, fN), arcname=os.path.join(dst, fN))
+        with zipfile.ZipFile(zip_bytes, "w", zipfile.ZIP_DEFLATED) as zipObj:
+            for dst, fn in manifest:
+                zipObj.write(os.path.join(locn, fn), arcname=os.path.join(dst, fn))
 
-        zipBytes.seek(0)
-        return zipBytes
+        zip_bytes.seek(0)
+        return zip_bytes
 
-    def __init__(self, response, seqNr=0, log=None):
+    def __init__(self, response, seq_nr=0, log=None):
         self.response = response
-        self.ids = Survey.identifiers(response, seqNr=seqNr)
+        self.ids = Survey.identifiers(response, seq_nr=seq_nr)
 
         if self.ids is None:
             raise UserWarning("Missing identifiers")
@@ -388,40 +388,40 @@ class MWSSTransformer:
         else:
             self.log = self.bind_logger(log, self.ids)
 
-    def pack(self, imgSeq=None):
+    def pack(self, img_seq=None):
         survey = self.load_survey(self.ids)
         manifest = []
         with tempfile.TemporaryDirectory(prefix="mwss_", dir="tmp") as locn:
             # Do transform and write PCK
             data = self.transform(self.response["data"], survey)
-            fN = self.pck_name(**self.ids._asdict())
-            with open(os.path.join(locn, fN), "w") as pck:
+            fn = self.pck_name(**self.ids._asdict())
+            with open(os.path.join(locn, fn), "w") as pck:
                 self.write_pck(pck, data, **self.ids._asdict())
-            manifest.append(("EDC_QData", fN))
+            manifest.append(("EDC_QData", fn))
 
             # Create IDBR file
-            fN = self.idbr_name(**self.ids._asdict())
-            with open(os.path.join(locn, fN), "w") as idbr:
+            fn = self.idbr_name(**self.ids._asdict())
+            with open(os.path.join(locn, fn), "w") as idbr:
                 self.write_idbr(idbr, **self.ids._asdict())
-            manifest.append(("EDC_QReceipts", fN))
+            manifest.append(("EDC_QReceipts", fn))
 
             # Build PDF
-            fP = os.path.join(locn, "pages.pdf")
-            doc = SimpleDocTemplate(fP, pagesize=A4)
+            fp = os.path.join(locn, "pages.pdf")
+            doc = SimpleDocTemplate(fp, pagesize=A4)
             doc.build(PDFTransformer.get_elements(survey, self.response))
 
             # Create page images from PDF
-            imgTfr = ImageTransformer(self.log, survey, self.response)
-            images = list(imgTfr.create_image_sequence(fP, numberSeq=imgSeq))
+            img_tfr = ImageTransformer(self.log, survey, self.response)
+            images = list(img_tfr.create_image_sequence(fp, numberSeq=img_seq))
             for img in images:
-                fN = os.path.basename(img)
-                manifest.append(("EDC_QImages/Images", fN))
+                fn = os.path.basename(img)
+                manifest.append(("EDC_QImages/Images", fn))
 
             # Write image index
-            index = imgTfr.create_image_index(images)
+            index = img_tfr.create_image_index(images)
             if index is not None:
-                fN = os.path.basename(index)
-                manifest.append(("EDC_QImages/Index", fN))
+                fn = os.path.basename(index)
+                manifest.append(("EDC_QImages/Index", fn))
 
             return self.create_zip(locn, manifest)
 
@@ -429,7 +429,7 @@ class MWSSTransformer:
 def run():
     reply = json.load(sys.stdin)
     tfr = MWSSTransformer(reply)
-    zipfile = tfr.pack(imgSeq=itertools.count())
+    zipfile = tfr.pack(img_seq=itertools.count())
     sys.stdout.buffer.write(zipfile.read())
     return 0
 

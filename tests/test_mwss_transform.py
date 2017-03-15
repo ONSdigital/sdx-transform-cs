@@ -481,7 +481,7 @@ class BatchFileTests(unittest.TestCase):
     def test_pck_lines(self):
         batchNr = 3866
         batchDate = datetime.date(2009, 12, 29)
-        surveyId = "134"
+        survey_id = "134"
         instId = "0005"
         ruRef = 49900001225
         check = "C"
@@ -493,7 +493,7 @@ class BatchFileTests(unittest.TestCase):
         ])
         self.assertTrue(isinstance(val, int) for val in data.values())
         rv = CSFormatter.pck_lines(
-            data, batchNr, batchDate, surveyId, instId, ruRef, check, period
+            data, batchNr, batchDate, survey_id, instId, ruRef, check, period
         )
         self.assertEqual([
             "FV",
@@ -519,10 +519,10 @@ class BatchFileTests(unittest.TestCase):
         ids = Survey.identifiers(reply)
         self.assertIsInstance(ids, Survey.Identifiers)
         self.assertEqual(0, ids.batchNr)
-        self.assertEqual(0, ids.seqNr)
+        self.assertEqual(0, ids.seq_nr)
         self.assertEqual(reply["tx_id"], ids.txId)
         self.assertEqual(datetime.date.today(), ids.ts.date())
-        self.assertEqual("134", ids.surveyId)
+        self.assertEqual("134", ids.survey_id)
         self.assertEqual("K5O86M2NU1", ids.userId)
         self.assertEqual("12346789012", ids.ruRef)
         self.assertEqual("A", ids.ruChk)
@@ -576,6 +576,6 @@ class PackingTests(unittest.TestCase):
             )
         )
         try:
-            tfr.pack(imgSeq=itertools.count())
+            tfr.pack(img_seq=itertools.count())
         except KeyError:
             self.fail("TODO: define pages of survey.")
