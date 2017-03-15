@@ -32,8 +32,8 @@ python -m transform.transformers.MWSSTransformer \
 class Survey:
 
     Identifiers = namedtuple("Identifiers", [
-        "batchNr", "seq_nr", "ts", "txId", "survey_id", "instId",
-        "userTs", "userId", "ruRef", "ruChk", "period"
+        "batch_nr", "seq_nr", "ts", "txId", "survey_id", "inst_id",
+        "user_ts", "userId", "ru_ref", "ru_check", "period"
     ])
 
     @staticmethod
@@ -66,7 +66,7 @@ class Survey:
             return None
 
     @staticmethod
-    def identifiers(data, batchNr=0, seq_nr=0, log=None):
+    def identifiers(data, batch_nr=0, seq_nr=0, log=None):
         """
         Parse common metadata from the survey. Return a
         defined type which all code can use to access
@@ -74,17 +74,17 @@ class Survey:
 
         """
         log = log or logging.getLogger(__name__)
-        ruRef = data.get("metadata", {}).get("ru_ref", "")
+        ru_ref = data.get("metadata", {}).get("ru_ref", "")
         ts = datetime.datetime.now(datetime.timezone.utc)
         rv = Survey.Identifiers(
-            batchNr, seq_nr, ts,
+            batch_nr, seq_nr, ts,
             data.get("tx_id"),
             data.get("survey_id"),
             data.get("collection", {}).get("instrument_id"),
             Survey.parse_timestamp(data.get("submitted_at", ts.isoformat())),
             data.get("metadata", {}).get("user_id"),
-            ''.join(i for i in ruRef if i.isdigit()),
-            ruRef[-1] if ruRef and ruRef[-1].isalpha() else "",
+            ''.join(i for i in ru_ref if i.isdigit()),
+            ru_ref[-1] if ru_ref and ru_ref[-1].isalpha() else "",
             data.get("collection", {}).get("period")
         )
         if any(i is None for i in rv):
@@ -105,41 +105,41 @@ class Processor:
     """
 
     @staticmethod
-    def aggregate(qId, data, default, *args, weights=[], **kwargs):
+    def aggregate(qid, data, default, *args, weights=[], **kwargs):
         """
         Calculates the weighted sum of a question group.
 
         """
         try:
             return type(default)(
-                Decimal(data.get(qId, 0)) +
+                Decimal(data.get(qid, 0)) +
                 sum(Decimal(scale) * Decimal(data.get(q, 0)) for q, scale in weights)
             )
         except (InvalidOperation, ValueError):
             return default
 
     @staticmethod
-    def evaluate(qId, data, default, *args, group=[], convert=bool, op=operator.or_, **kwargs):
+    def evaluate(qid, data, default, *args, group=[], convert=bool, op=operator.or_, **kwargs):
         """
         Performs a map/reduce evaluation of a question group.
 
         """
         try:
-            groupVals = [data.get(qId, None)] + [data.get(q, None) for q in group]
+            groupVals = [data.get(qid, None)] + [data.get(q, None) for q in group]
             data = [convert(i) for i in groupVals if i is not None]
             return type(default)(reduce(op, data))
         except (TypeError, ValueError):
             return default
 
     @staticmethod
-    def mean(qId, data, default, *args, group=[], **kwargs):
+    def mean(qid, data, default, *args, group=[], **kwargs):
         """
         This function calculates the value of a field based on the mean
         of all values in a declared question group.
 
         """
         try:
-            groupVals = [data.get(qId, None)] + [data.get(q, None) for q in group]
+            groupVals = [data.get(qid, None)] + [data.get(q, None) for q in group]
             data = [Decimal(i) for i in groupVals if i is not None]
             divisor = len(data) or 1
             rv = sum(data) / divisor
@@ -148,14 +148,14 @@ class Processor:
             return default
 
     @staticmethod
-    def events(qId, data, default, *args, group=[], **kwargs):
+    def events(qid, data, default, *args, group=[], **kwargs):
         """
         This function returns a sequence of events in time from values in a
         declared question group.
 
         """
         try:
-            groupVals = [data.get(qId, None)] + [data.get(q, None) for q in group]
+            groupVals = [data.get(qid, None)] + [data.get(q, None) for q in group]
             data = sorted(filter(
                 None, (Survey.parse_timestamp(i) for i in groupVals if i is not None)
             ))
@@ -167,7 +167,7 @@ class Processor:
             return default
 
     @staticmethod
-    def survey_string(qId, data, default, *args, survey=None, **kwargs):
+    def survey_string(qid, data, default, *args, survey=None, **kwargs):
         """
         This function expects a string which matches one supplied by the survey
         as an option for the question.
@@ -177,23 +177,23 @@ class Processor:
             # TODO: Look up valid options
             pass
         try:
-            return type(default)(data[qId])
+            return type(default)(data[qid])
         except (KeyError, ValueError):
             return default
 
     @staticmethod
-    def unsigned_integer(qId, data, default, *args, **kwargs):
+    def unsigned_integer(qid, data, default, *args, **kwargs):
         try:
-            rv = int(data.get(qId, default))
+            rv = int(data.get(qid, default))
         except ValueError:
             return default
         else:
             return type(default)(rv) if rv >= 0 else default
 
     @staticmethod
-    def percentage(qId, data, default, *args, **kwargs):
+    def percentage(qid, data, default, *args, **kwargs):
         try:
-            rv = int(data.get(qId, default))
+            rv = int(data.get(qid, default))
         except ValueError:
             return default
         else:
@@ -208,21 +208,21 @@ class CSFormatter:
 
     """
 
-    formIds = {
+    form_ids = {
         "134": "0004",
     }
 
     @staticmethod
-    def pck_batch_header(batchNr, ts):
-        return "{0}{1:06}{2}".format("FBFV", batchNr, ts.strftime("%d/%m/%y"))
+    def pck_batch_header(batch_nr, ts):
+        return "{0}{1:06}{2}".format("FBFV", batch_nr, ts.strftime("%d/%m/%y"))
 
     @staticmethod
-    def pck_form_header(formId, ruRef, ruChk, period):
-        formId = "{0:04}".format(formId) if isinstance(formId, int) else formId
-        return "{0}:{1}{2}:{3}".format(formId, ruRef, ruChk, period)
+    def pck_form_header(form_id, ru_ref, ru_check, period):
+        form_id = "{0:04}".format(form_id) if isinstance(form_id, int) else form_id
+        return "{0}:{1}{2}:{3}".format(form_id, ru_ref, ru_check, period)
 
     @staticmethod
-    def pck_value(qId, val, survey_id=None):
+    def pck_value(qid, val, survey_id=None):
         if isinstance(val, list):
             val = bool(val)
 
@@ -241,18 +241,18 @@ class CSFormatter:
             return "{0} ???????????".format(q)
 
     @staticmethod
-    def pck_lines(data, batchNr, ts, survey_id, instId, ruRef, ruChk, period, **kwargs):
+    def pck_lines(data, batch_nr, ts, survey_id, inst_id, ru_ref, ru_check, period, **kwargs):
         return [
             "FV",
-            CSFormatter.pck_form_header(instId, ruRef, ruChk, period),
+            CSFormatter.pck_form_header(inst_id, ru_ref, ru_check, period),
         ] + [
             CSFormatter.pck_item(q, a) for q, a in data.items()
         ]
 
     @staticmethod
-    def idbr_receipt(survey_id, ruRef, ruChk, period, **kwargs):
-        return "{ruRef}:{ruChk}:{survey_id:03}:{period}".format(
-            survey_id=int(survey_id), ruRef=ruRef, ruChk=ruChk, period=period
+    def idbr_receipt(survey_id, ru_ref, ru_check, period, **kwargs):
+        return "{ru_ref}:{ru_check}:{survey_id:03}:{period}".format(
+            survey_id=int(survey_id), ru_ref=ru_ref, ru_check=ru_check, period=period
         )
 
 
@@ -306,7 +306,7 @@ class MWSSTransformer:
     def load_survey(ids):
         try:
             content = pkg_resources.resource_string(
-                __name__, "../surveys/{survey_id}.{instId}.json".format(**ids._asdict())
+                __name__, "../surveys/{survey_id}.{inst_id}.json".format(**ids._asdict())
             )
         except FileNotFoundError:
             return None
@@ -316,7 +316,7 @@ class MWSSTransformer:
     @staticmethod
     def bind_logger(log, ids):
         return log.bind(
-            ru_ref=ids.ruRef,
+            ru_ref=ids.ru_ref,
             tx_id=ids.txId,
             user_id=ids.userId,
         )
@@ -341,13 +341,13 @@ class MWSSTransformer:
 
         """
         return OrderedDict(
-            (qId, fn(qId, data, dflt, survey))
-            for qId, (dflt, fn) in MWSSTransformer.ops().items()
+            (qid, fn(qid, data, dflt, survey))
+            for qid, (dflt, fn) in MWSSTransformer.ops().items()
         )
 
     @staticmethod
-    def idbr_name(userTs, seq_nr, **kwargs):
-        return "REC{0}_{1:04}.DAT".format(userTs.strftime("%d%m"), int(seq_nr))
+    def idbr_name(user_ts, seq_nr, **kwargs):
+        return "REC{0}_{1:04}.DAT".format(user_ts.strftime("%d%m"), int(seq_nr))
 
     @staticmethod
     def pck_name(survey_id, seq_nr, **kwargs):
