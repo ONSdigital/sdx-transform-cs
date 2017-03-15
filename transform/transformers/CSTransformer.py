@@ -1,11 +1,13 @@
-import zipfile
-import os
 from io import BytesIO
+import dateutil.parser
+import os
+import shutil
+import zipfile
+
+from jinja2 import Environment, PackageLoader
+
 from .ImageTransformer import ImageTransformer
 from .PCKTransformer import PCKTransformer
-from jinja2 import Environment, PackageLoader
-import dateutil.parser
-import shutil
 
 env = Environment(loader=PackageLoader('transform', 'templates'))
 
@@ -100,7 +102,6 @@ class CSTransformer(object):
 
         with zipfile.ZipFile(in_memory_zip, 'w', zipfile.ZIP_DEFLATED) as zipf:
             for dest, file in self.files_to_archive:
-                print(dest, file)
                 zipf.write(os.path.join(self.path, file), arcname="%s/%s" % (dest, file))
 
         # Return to beginning of file
