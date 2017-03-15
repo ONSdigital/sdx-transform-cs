@@ -571,7 +571,7 @@ class PackingTests(unittest.TestCase):
         tfr = MWSSTransformer(response)
         self.assertEqual(
             "REC1204_0000.DAT",
-            MWSSTransformer.idbr_name(
+            CSFormatter.idbr_name(
                 **tfr.ids._asdict()
             )
         )

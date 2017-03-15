@@ -49,7 +49,7 @@ class Survey:
         This method knows how to read them.
 
         """
- 
+
         cls = datetime.datetime
 
         if text.endswith("Z"):
@@ -114,10 +114,10 @@ class Processor:
 
     Principles for processor methods:
 
-    * method is responsible for range check according to own logic.
-    * parametrisation is possible; use functools.partial to bind arguments.
-    * return data of the same type as the supplied default.
-    * on any error, return the default.
+    * Method is responsible for range check according to own logic.
+    * Parametrisation is possible; use functools.partial to bind arguments.
+    * Return data of the same type as the supplied default.
+    * On any error, return the default.
 
     """
 
@@ -207,6 +207,7 @@ class CSFormatter:
     """Formatter for common software systems.
 
     Serialises standard data types to PCK format.
+    Creates a receipt in IDBR format.
 
     """
 
@@ -215,16 +216,24 @@ class CSFormatter:
     }
 
     @staticmethod
+    def pck_name(survey_id, seq_nr, **kwargs):
+        """Generate the name of a PCK file."""
+        return "{0}_{1:04}".format(survey_id, int(seq_nr))
+
+    @staticmethod
     def pck_batch_header(batch_nr, ts):
+        """Generate a batch header for a PCK file."""
         return "{0}{1:06}{2}".format("FBFV", batch_nr, ts.strftime("%d/%m/%y"))
 
     @staticmethod
     def pck_form_header(form_id, ru_ref, ru_check, period):
+        """Generate a form header for PCK data."""
         form_id = "{0:04}".format(form_id) if isinstance(form_id, int) else form_id
         return "{0}:{1}{2}:{3}".format(form_id, ru_ref, ru_check, period)
 
     @staticmethod
     def pck_value(qid, val, survey_id=None):
+        """Format a value as PCK data."""
         if isinstance(val, list):
             val = bool(val)
 
@@ -237,6 +246,7 @@ class CSFormatter:
 
     @staticmethod
     def pck_item(q, a):
+        """Return a PCK line item."""
         try:
             return "{0:04} {1:011}".format(int(q), CSFormatter.pck_value(q, a))
         except TypeError:
@@ -244,6 +254,7 @@ class CSFormatter:
 
     @staticmethod
     def pck_lines(data, batch_nr, ts, survey_id, inst_id, ru_ref, ru_check, period, **kwargs):
+        """Return a list of lines in a PCK file."""
         return [
             "FV",
             CSFormatter.pck_form_header(inst_id, ru_ref, ru_check, period),
@@ -252,13 +263,34 @@ class CSFormatter:
         ]
 
     @staticmethod
+    def write_pck(f_obj, data, **kwargs):
+        """Write a PCK file."""
+        output = CSFormatter.pck_lines(data, **kwargs)
+        f_obj.write("\n".join(output))
+        f_obj.write("\n")
+
+    @staticmethod
+    def idbr_name(user_ts, seq_nr, **kwargs):
+        """Generate the name of an IDBR file."""
+        return "REC{0}_{1:04}.DAT".format(user_ts.strftime("%d%m"), int(seq_nr))
+
+    @staticmethod
     def idbr_receipt(survey_id, ru_ref, ru_check, period, **kwargs):
+        """Format a receipt in IDBR format."""
         return "{ru_ref}:{ru_check}:{survey_id:03}:{period}".format(
             survey_id=int(survey_id), ru_ref=ru_ref, ru_check=ru_check, period=period
         )
 
+    @staticmethod
+    def write_idbr(f_obj, **kwargs):
+        """Write an IDBR file."""
+        output = CSFormatter.idbr_receipt(**kwargs)
+        f_obj.write(output)
+        f_obj.write("\n")
+
 
 class MWSSTransformer:
+    """Perform the transforms and formatting for the MWSS survey."""
 
     defn = [
         (40, 0, partial(Processor.aggregate, weights=[("40f", 1)])),
@@ -306,6 +338,7 @@ class MWSSTransformer:
 
     @staticmethod
     def load_survey(ids):
+        """Find the survey definition by id."""
         try:
             content = pkg_resources.resource_string(
                 __name__, "../surveys/{survey_id}.{inst_id}.json".format(**ids._asdict())
@@ -317,6 +350,7 @@ class MWSSTransformer:
 
     @staticmethod
     def bind_logger(log, ids):
+        """Bind a structured logger with survey metadata identifiers."""
         return log.bind(
             ru_ref=ids.ru_ref,
             tx_id=ids.tx_id,
@@ -325,8 +359,9 @@ class MWSSTransformer:
 
     @classmethod
     def ops(cls):
-        """
-        A mapping from question id to default value and operator.
+        """Publish the sequence of operations for the transform.
+
+        Return an ordered mapping from question id to default value and processing function.
 
         """
         return OrderedDict([
@@ -337,35 +372,11 @@ class MWSSTransformer:
 
     @staticmethod
     def transform(data, survey=None):
-        """
-        Normalise the document so that it contains all items required by downstream
-        systems. Validate those items and apply business logic.
-
-        """
+        """Perform a transform on survey data."""
         return OrderedDict(
             (qid, fn(qid, data, dflt, survey))
             for qid, (dflt, fn) in MWSSTransformer.ops().items()
         )
-
-    @staticmethod
-    def idbr_name(user_ts, seq_nr, **kwargs):
-        return "REC{0}_{1:04}.DAT".format(user_ts.strftime("%d%m"), int(seq_nr))
-
-    @staticmethod
-    def pck_name(survey_id, seq_nr, **kwargs):
-        return "{0}_{1:04}".format(survey_id, int(seq_nr))
-
-    @staticmethod
-    def write_idbr(f_obj, **kwargs):
-        output = CSFormatter.idbr_receipt(**kwargs)
-        f_obj.write(output)
-        f_obj.write("\n")
-
-    @staticmethod
-    def write_pck(f_obj, data, **kwargs):
-        output = CSFormatter.pck_lines(data, **kwargs)
-        f_obj.write("\n".join(output))
-        f_obj.write("\n")
 
     @staticmethod
     def create_zip(locn, manifest):
@@ -396,15 +407,15 @@ class MWSSTransformer:
         with tempfile.TemporaryDirectory(prefix="mwss_", dir="tmp") as locn:
             # Do transform and write PCK
             data = self.transform(self.response["data"], survey)
-            fn = self.pck_name(**self.ids._asdict())
+            fn = CSFormatter.pck_name(**self.ids._asdict())
             with open(os.path.join(locn, fn), "w") as pck:
-                self.write_pck(pck, data, **self.ids._asdict())
+                CSFormatter.write_pck(pck, data, **self.ids._asdict())
             manifest.append(("EDC_QData", fn))
 
             # Create IDBR file
-            fn = self.idbr_name(**self.ids._asdict())
+            fn = CSFormatter.idbr_name(**self.ids._asdict())
             with open(os.path.join(locn, fn), "w") as idbr:
-                self.write_idbr(idbr, **self.ids._asdict())
+                CSFormatter.write_idbr(idbr, **self.ids._asdict())
             manifest.append(("EDC_QReceipts", fn))
 
             # Build PDF
