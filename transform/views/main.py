@@ -53,7 +53,11 @@ def get_survey(survey_response):
     try:
         form_id = survey_response['collection']['instrument_id']
 
-        with open("./transform/surveys/%s.%s.json" % (survey_response['survey_id'], form_id)) as json_file:
+        fp = os.path.join(
+            ".", "transform", "surveys",
+            "{0}.{1}.json".format(survey_response['survey_id'], form_id)
+        )
+        with open(fp, 'r') as json_file:
             return json.load(json_file)
     except IOError:
         return False
