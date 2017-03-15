@@ -125,8 +125,8 @@ class Processor:
 
         """
         try:
-            groupVals = [data.get(qid, None)] + [data.get(q, None) for q in group]
-            data = [convert(i) for i in groupVals if i is not None]
+            group_vals = [data.get(qid, None)] + [data.get(q, None) for q in group]
+            data = [convert(i) for i in group_vals if i is not None]
             return type(default)(reduce(op, data))
         except (TypeError, ValueError):
             return default
@@ -139,8 +139,8 @@ class Processor:
 
         """
         try:
-            groupVals = [data.get(qid, None)] + [data.get(q, None) for q in group]
-            data = [Decimal(i) for i in groupVals if i is not None]
+            group_vals = [data.get(qid, None)] + [data.get(q, None) for q in group]
+            data = [Decimal(i) for i in group_vals if i is not None]
             divisor = len(data) or 1
             rv = sum(data) / divisor
             return type(default)(rv)
@@ -155,9 +155,9 @@ class Processor:
 
         """
         try:
-            groupVals = [data.get(qid, None)] + [data.get(q, None) for q in group]
+            group_vals = [data.get(qid, None)] + [data.get(q, None) for q in group]
             data = sorted(filter(
-                None, (Survey.parse_timestamp(i) for i in groupVals if i is not None)
+                None, (Survey.parse_timestamp(i) for i in group_vals if i is not None)
             ))
             if all(isinstance(i, type(default)) for i in data):
                 return data
@@ -412,7 +412,7 @@ class MWSSTransformer:
 
             # Create page images from PDF
             img_tfr = ImageTransformer(self.log, survey, self.response)
-            images = list(img_tfr.create_image_sequence(fp, numberSeq=img_seq))
+            images = list(img_tfr.create_image_sequence(fp, nmbr_seq=img_seq))
             for img in images:
                 fn = os.path.basename(img)
                 manifest.append(("EDC_QImages/Images", fn))

@@ -74,18 +74,18 @@ class ImageTransformer(object):
         self.logger.debug('Sequence numbers generated', sequence_numbers=sequence_numbers)
         return sequence_numbers
 
-    def create_image_sequence(self, path, numberSeq=None):
+    def create_image_sequence(self, path, nmbr_seq=None):
         '''
         Renumber the image sequence extracted from pdf
         '''
         locn, baseName = os.path.split(path)
         self.images = ImageTransformer.extract_pdf_images(locn, baseName)
-        numberSeq = numberSeq or self.get_image_sequence_numbers()
-        for imageFile, n in zip(self.images, numberSeq):
+        nmbr_seq = nmbr_seq or self.get_image_sequence_numbers()
+        for imageFile, n in zip(self.images, nmbr_seq):
             name = "S%09d.JPG" % n
-            fP = os.path.join(locn, name)
-            os.rename(imageFile, fP)
-            yield fP
+            fp = os.path.join(locn, name)
+            os.rename(imageFile, fp)
+            yield fp
 
     def create_image_index(self, images):
         '''
@@ -125,16 +125,16 @@ class ImageTransformer(object):
         in_memory_zip = BytesIO()
 
         with zipfile.ZipFile(in_memory_zip, 'w', zipfile.ZIP_DEFLATED) as zipf:
-            for fP in images:
-                fN = os.path.basename(fP)
+            for fp in images:
+                f_name = os.path.basename(fp)
                 try:
-                    zipf.write(fP, arcname=fN)
+                    zipf.write(fp, arcname=f_name)
                 except Exception as e:
                     self.logger.error(e)
 
             if index:
-                fN = os.path.basename(index)
-                zipf.write(index, arcname=fN)
+                f_name = os.path.basename(index)
+                zipf.write(index, arcname=f_name)
 
         # Return to beginning of file
         in_memory_zip.seek(0)
@@ -194,14 +194,14 @@ def parser(description=__doc__):
 
 def main(args):
     log = logging.getLogger("ImageTransformer")
-    fP = os.path.expanduser(os.path.abspath(args.survey))
-    with open(fP, "r") as fObj:
-        survey = json.load(fObj)
+    fp = os.path.expanduser(os.path.abspath(args.survey))
+    with open(fp, "r") as f_obj:
+        survey = json.load(f_obj)
 
     data = json.load(sys.stdin)
     tx = ImageTransformer(log, survey, data)
     path = tx.create_pdf(survey, data)
-    images = list(tx.create_image_sequence(path, numberSeq=itertools.count()))
+    images = list(tx.create_image_sequence(path, nmbr_seq=itertools.count()))
     index = tx.create_image_index(images)
     zipfile = tx.create_zip(images, index)
     sys.stdout.write(zipfile)
