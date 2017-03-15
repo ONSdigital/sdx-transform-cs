@@ -380,16 +380,22 @@ class MWSSTransformer:
 
     @staticmethod
     def create_zip(locn, manifest):
+        """Create a zip archive from a local directory and a manifest list.
+
+        Return the contents of the zip as bytes.
+
+        """
         zip_bytes = io.BytesIO()
 
-        with zipfile.ZipFile(zip_bytes, "w", zipfile.ZIP_DEFLATED) as zipObj:
-            for dst, fn in manifest:
-                zipObj.write(os.path.join(locn, fn), arcname=os.path.join(dst, fn))
+        with zipfile.ZipFile(zip_bytes, "w", zipfile.ZIP_DEFLATED) as zip_obj:
+            for dst, f_name in manifest:
+                zip_obj.write(os.path.join(locn, f_name), arcname=os.path.join(dst, f_name))
 
         zip_bytes.seek(0)
         return zip_bytes
 
     def __init__(self, response, seq_nr=0, log=None):
+        """Create a transformer object to process a survey response."""
         self.response = response
         self.ids = Survey.identifiers(response, seq_nr=seq_nr)
 
@@ -402,6 +408,12 @@ class MWSSTransformer:
             self.log = Survey.bind_logger(log, self.ids)
 
     def pack(self, img_seq=None):
+        """Perform transformation on the survey data and pack the output into a zip file.
+
+        Return the contents of the zip as bytes.
+        The object maintains a temporary directory while the output is generated.
+
+        """
         survey = Survey.load_survey(self.ids)
         manifest = []
         with tempfile.TemporaryDirectory(prefix="mwss_", dir="tmp") as locn:
@@ -444,7 +456,6 @@ def run():
     tfr = MWSSTransformer(reply)
     zipfile = tfr.pack(img_seq=itertools.count())
     sys.stdout.buffer.write(zipfile.read())
-    return 0
 
 if __name__ == "__main__":
     run()
