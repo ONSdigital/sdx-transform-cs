@@ -173,9 +173,9 @@ def common_software(sequence_no=1000, batch_number=False):
     if not survey:
         return client_error("CS:Unsupported survey/instrument id")
 
-    surveyId = survey_response.get("survey_id")
+    survey_id = survey_response.get("survey_id")
     try:
-        if surveyId == "134":
+        if survey_id == "134":
             tfr = MWSSTransformer(survey_response, sequence_no, log=logger)
             zipfile = tfr.pack()
         else:

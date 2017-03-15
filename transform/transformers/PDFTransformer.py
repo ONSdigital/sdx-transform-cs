@@ -67,15 +67,15 @@ class PDFTransformer(object):
         return pdf
 
     def render_to_file(self):
-        randomName = uuid.uuid4()
+        rndm_name = uuid.uuid4()
 
-        os.makedirs("./tmp/%s" % randomName)
+        os.makedirs("./tmp/%s" % rndm_name)
 
-        tmpName = "./tmp/%s/%s.pdf" % (randomName, randomName)
-        doc = SimpleDocTemplate(tmpName, pagesize=A4)
+        tmp_name = "./tmp/%s/%s.pdf" % (rndm_name, rndm_name)
+        doc = SimpleDocTemplate(tmp_name, pagesize=A4)
         doc.build(self.get_elements(self.survey, self.response))
 
-        return os.path.realpath(tmpName)
+        return os.path.realpath(tmp_name)
 
     @staticmethod
     def get_elements(survey, response):
@@ -142,9 +142,9 @@ def parser(description=__doc__):
 
 
 def main(args):
-    fP = os.path.expanduser(os.path.abspath(args.survey))
-    with open(fP, "r") as fObj:
-        survey = json.load(fObj)
+    fp = os.path.expanduser(os.path.abspath(args.survey))
+    with open(fp, "r") as fobj:
+        survey = json.load(fobj)
 
     data = json.load(sys.stdin)
     tx = PDFTransformer(survey, data)
