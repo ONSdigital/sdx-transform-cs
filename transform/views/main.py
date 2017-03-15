@@ -155,7 +155,7 @@ def render_images():
         zipfile = itransformer.create_zip(images, index)
         itransformer.cleanup(os.path.dirname(path))
     except IOError as e:
-        return client_error("IMAGES:Could not create zip buffer: %s" % repr(e))
+        return client_error("IMAGES:Could not create zip buffer: {0}".format(repr(e)))
 
     logger.info("IMAGES:SUCCESS")
 
@@ -193,7 +193,7 @@ def common_software(sequence_no=1000, batch_number=False):
             try:
                 ctransformer.cleanup()
             except IOError as e:
-                return client_error("CS:Could not create zip buffer: %s" % repr(e))
+                return client_error("CS:Could not create zip buffer: {0}".format(repr(e)))
     except Exception as e:
         return server_error(e)
 
