@@ -22,9 +22,13 @@ from reportlab.lib.pagesizes import A4
 from transform.transformers.ImageTransformer import ImageTransformer
 from transform.transformers.PDFTransformer import PDFTransformer
 
-__doc__ = """
+__doc__ = """Transform MWSS survey data into formats required downstream.
+
+The class API is used by the SDX transform service.
+Additionally this module will run as a script from the command line:
+
 python -m transform.transformers.MWSSTransformer \
-< tests/replies/eq-mwss-test-submission.json > test-output.zip
+< tests/replies/eq-mwss.json > test-output.zip
 
 """
 
@@ -102,21 +106,24 @@ class Survey:
 
 
 class Processor:
-    """
-    Principles for processors:
+    """Apply operations to data.
+
+    These methods are used to perform business logic on survey data.
+    They are mostly concerned with combining multiple fields into a
+    single field for output.
+
+    Principles for processor methods:
 
     * method is responsible for range check according to own logic.
-    * parametrisation is possible; use functools.partial
-    * returns data of the same type as the supplied default.
+    * parametrisation is possible; use functools.partial to bind arguments.
+    * return data of the same type as the supplied default.
+    * on any error, return the default.
 
     """
 
     @staticmethod
     def aggregate(qid, data, default, *args, weights=[], **kwargs):
-        """
-        Calculates the weighted sum of a question group.
-
-        """
+        """Calculate the weighted sum of a question group."""
         try:
             return type(default)(
                 Decimal(data.get(qid, 0)) +
@@ -127,10 +134,7 @@ class Processor:
 
     @staticmethod
     def evaluate(qid, data, default, *args, group=[], convert=bool, op=operator.or_, **kwargs):
-        """
-        Performs a map/reduce evaluation of a question group.
-
-        """
+        """Perform a map/reduce evaluation of a question group."""
         try:
             group_vals = [data.get(qid, None)] + [data.get(q, None) for q in group]
             data = [convert(i) for i in group_vals if i is not None]
@@ -140,11 +144,7 @@ class Processor:
 
     @staticmethod
     def mean(qid, data, default, *args, group=[], **kwargs):
-        """
-        This function calculates the value of a field based on the mean
-        of all values in a declared question group.
-
-        """
+        """Calculate the mean of all fields in a question group."""
         try:
             group_vals = [data.get(qid, None)] + [data.get(q, None) for q in group]
             data = [Decimal(i) for i in group_vals if i is not None]
@@ -156,11 +156,7 @@ class Processor:
 
     @staticmethod
     def events(qid, data, default, *args, group=[], **kwargs):
-        """
-        This function returns a sequence of events in time from values in a
-        declared question group.
-
-        """
+        """Return a sequence of time events from a question group."""
         try:
             group_vals = [data.get(qid, None)] + [data.get(q, None) for q in group]
             data = sorted(filter(
@@ -175,14 +171,12 @@ class Processor:
 
     @staticmethod
     def survey_string(qid, data, default, *args, survey=None, **kwargs):
-        """
-        This function expects a string which matches one supplied by the survey
-        as an option for the question.
+        """Accept a string as an option for a question.
+
+        This method provides an opportunity for validating the string against
+        the survey definition, though this has not been a requirement so far.
 
         """
-        if survey is not None:
-            # TODO: Look up valid options
-            pass
         try:
             return type(default)(data[qid])
         except (KeyError, ValueError):
@@ -190,6 +184,7 @@ class Processor:
 
     @staticmethod
     def unsigned_integer(qid, data, default, *args, **kwargs):
+        """Process a string as an unsigned integer."""
         try:
             rv = int(data.get(qid, default))
         except ValueError:
@@ -199,6 +194,7 @@ class Processor:
 
     @staticmethod
     def percentage(qid, data, default, *args, **kwargs):
+        """Process a string as a percentage."""
         try:
             rv = int(data.get(qid, default))
         except ValueError:
@@ -208,8 +204,7 @@ class Processor:
 
 
 class CSFormatter:
-    """
-    Formatter for common software systems.
+    """Formatter for common software systems.
 
     Serialises standard data types to PCK format.
 
