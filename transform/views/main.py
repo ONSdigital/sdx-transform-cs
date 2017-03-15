@@ -1,15 +1,16 @@
+import json
+import logging
+import os.path
+
+from flask import request, make_response, send_file, jsonify
+from jinja2 import Environment, PackageLoader
+from structlog import wrap_logger
+
 from transform import app
 from transform import settings
-import logging
-from structlog import wrap_logger
-from flask import request, make_response, send_file, jsonify
-from transform.transformers import PCKTransformer, PDFTransformer
 from transform.transformers import ImageTransformer, CSTransformer
 from transform.transformers import MWSSTransformer
-from jinja2 import Environment, PackageLoader
-
-import json
-import os.path
+from transform.transformers import PCKTransformer, PDFTransformer
 
 env = Environment(loader=PackageLoader('transform', 'templates'))
 
