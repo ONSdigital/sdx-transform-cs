@@ -4,12 +4,12 @@ import itertools
 import json
 import unittest
 
+import pkg_resources
+
 from transform.transformers.MWSSTransformer import CSFormatter
 from transform.transformers.MWSSTransformer import MWSSTransformer
 from transform.transformers.MWSSTransformer import Processor
 from transform.transformers.MWSSTransformer import Survey
-
-import pkg_resources
 
 
 class SurveyTests(unittest.TestCase):
@@ -520,10 +520,10 @@ class BatchFileTests(unittest.TestCase):
         self.assertIsInstance(ids, Survey.Identifiers)
         self.assertEqual(0, ids.batch_nr)
         self.assertEqual(0, ids.seq_nr)
-        self.assertEqual(reply["tx_id"], ids.txId)
+        self.assertEqual(reply["tx_id"], ids.tx_id)
         self.assertEqual(datetime.date.today(), ids.ts.date())
         self.assertEqual("134", ids.survey_id)
-        self.assertEqual("K5O86M2NU1", ids.userId)
+        self.assertEqual("K5O86M2NU1", ids.user_id)
         self.assertEqual("12346789012", ids.ru_ref)
         self.assertEqual("A", ids.ru_check)
         self.assertEqual("200911", ids.period)

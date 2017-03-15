@@ -30,14 +30,22 @@ python -m transform.transformers.MWSSTransformer \
 
 
 class Survey:
+    """Provide operations and accessors to survey data."""
 
     Identifiers = namedtuple("Identifiers", [
-        "batch_nr", "seq_nr", "ts", "txId", "survey_id", "inst_id",
-        "user_ts", "userId", "ru_ref", "ru_check", "period"
+        "batch_nr", "seq_nr", "ts", "tx_id", "survey_id", "inst_id",
+        "user_ts", "user_id", "ru_ref", "ru_check", "period"
     ])
 
     @staticmethod
     def parse_timestamp(text):
+        """Parse a text field for a date or timestamp.
+
+        Date and time formats vary across surveys.
+        This method knows how to read them.
+
+        """
+ 
         cls = datetime.datetime
 
         if text.endswith("Z"):
@@ -67,10 +75,9 @@ class Survey:
 
     @staticmethod
     def identifiers(data, batch_nr=0, seq_nr=0, log=None):
-        """
-        Parse common metadata from the survey. Return a
-        defined type which all code can use to access
-        ids.
+        """Parse common metadata from the survey.
+
+        Return a named tuple which code can use to access ids, etc.
 
         """
         log = log or logging.getLogger(__name__)
@@ -317,8 +324,8 @@ class MWSSTransformer:
     def bind_logger(log, ids):
         return log.bind(
             ru_ref=ids.ru_ref,
-            tx_id=ids.txId,
-            user_id=ids.userId,
+            tx_id=ids.tx_id,
+            user_id=ids.user_id,
         )
 
     @classmethod
