@@ -127,7 +127,7 @@ def render_pdf():
         rendered_pdf = pdf.render()
 
     except IOError as e:
-        return client_error("PDF:Could not render pdf buffer: %s" % repr(e))
+        return client_error("PDF:Could not render pdf buffer: {0}".format(repr(e)))
 
     response = make_response(rendered_pdf)
     response.mimetype = 'application/pdf'
