@@ -407,8 +407,8 @@ class TransformTests(unittest.TestCase):
         self.assertEqual(item, "0050 00000036852")
 
     def test_digits_to_onetwo(self):
-        digitsIngestedAsBools = [100, 120, 200, 220]
-        for qNr in digitsIngestedAsBools:
+        digits_ingested_as_bools = [100, 120, 200, 220]
+        for qNr in digits_ingested_as_bools:
             qid = str(qNr)
             with self.subTest(qNr=qNr, qid=qid):
                 rv = MWSSTransformer.transform({qid: "64"})
@@ -418,8 +418,8 @@ class TransformTests(unittest.TestCase):
                 self.assertEqual(2, CSFormatter.pck_value(qid, rv[qid]))
 
     def test_dates_to_onetwo(self):
-        datesIngestedAsBools = [110, 210]
-        for qNr in datesIngestedAsBools:
+        dates_ingested_as_bools = [110, 210]
+        for qNr in dates_ingested_as_bools:
             qid = str(qNr)
             with self.subTest(qNr=qNr, qid=qid):
                 rv = MWSSTransformer.transform({qid: "23/4/2017"})
@@ -434,8 +434,8 @@ class BatchFileTests(unittest.TestCase):
 
     def test_pck_batch_header(self):
         batch_nr = 3866
-        batchDate = datetime.date(2009, 12, 29)
-        rv = CSFormatter.pck_batch_header(batch_nr, batchDate)
+        batch_date = datetime.date(2009, 12, 29)
+        rv = CSFormatter.pck_batch_header(batch_nr, batch_date)
         self.assertEqual("FBFV00386629/12/09", rv)
 
     def test_pck_form_header(self):
@@ -480,7 +480,7 @@ class BatchFileTests(unittest.TestCase):
 
     def test_pck_lines(self):
         batch_nr = 3866
-        batchDate = datetime.date(2009, 12, 29)
+        batch_date = datetime.date(2009, 12, 29)
         survey_id = "134"
         inst_id = "0005"
         ru_ref = 49900001225
@@ -493,7 +493,7 @@ class BatchFileTests(unittest.TestCase):
         ])
         self.assertTrue(isinstance(val, int) for val in data.values())
         rv = CSFormatter.pck_lines(
-            data, batch_nr, batchDate, survey_id, inst_id, ru_ref, check, period
+            data, batch_nr, batch_date, survey_id, inst_id, ru_ref, check, period
         )
         self.assertEqual([
             "FV",

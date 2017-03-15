@@ -55,12 +55,12 @@ class CSTransformer(object):
         self.files_to_archive.append(("EDC_QReceipts", self.idbr_file))
 
         for image in self.images:
-            fN = os.path.basename(image)
-            self.files_to_archive.append(("EDC_QImages/Images", fN))
+            f_name = os.path.basename(image)
+            self.files_to_archive.append(("EDC_QImages/Images", f_name))
 
         if self.index is not None:
-            fN = os.path.basename(self.index)
-            self.files_to_archive.append(("EDC_QImages/Index", fN))
+            f_name = os.path.basename(self.index)
+            self.files_to_archive.append(("EDC_QImages/Index", f_name))
 
     def create_pck(self):
         template = env.get_template('pck.tmpl')

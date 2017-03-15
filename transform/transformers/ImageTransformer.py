@@ -48,13 +48,13 @@ class ImageTransformer(object):
         return pdf_transformer.render_to_file()
 
     @staticmethod
-    def extract_pdf_images(path, fileName):
+    def extract_pdf_images(path, f_name):
         '''
         Extract all pdf pages as jpegs
         '''
-        rootName, _ = os.path.splitext(fileName)
+        rootName, _ = os.path.splitext(f_name)
         subprocess.call(
-            ["pdftoppm", "-jpeg", fileName, rootName],
+            ["pdftoppm", "-jpeg", f_name, rootName],
             cwd=path
         )
         return sorted(glob.glob("%s/%s-*.jpg" % (path, rootName)))
