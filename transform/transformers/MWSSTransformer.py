@@ -42,6 +42,27 @@ class Survey:
     ])
 
     @staticmethod
+    def load_survey(ids):
+        """Find the survey definition by id."""
+        try:
+            content = pkg_resources.resource_string(
+                __name__, "../surveys/{survey_id}.{inst_id}.json".format(**ids._asdict())
+            )
+        except FileNotFoundError:
+            return None
+        else:
+            return json.loads(content.decode("utf-8"))
+
+    @staticmethod
+    def bind_logger(log, ids):
+        """Bind a structured logger with survey metadata identifiers."""
+        return log.bind(
+            ru_ref=ids.ru_ref,
+            tx_id=ids.tx_id,
+            user_id=ids.user_id,
+        )
+
+    @staticmethod
     def parse_timestamp(text):
         """Parse a text field for a date or timestamp.
 
@@ -336,27 +357,6 @@ class MWSSTransformer:
             convert=str, op=lambda x, y: x + "\n" + y)),
     ]
 
-    @staticmethod
-    def load_survey(ids):
-        """Find the survey definition by id."""
-        try:
-            content = pkg_resources.resource_string(
-                __name__, "../surveys/{survey_id}.{inst_id}.json".format(**ids._asdict())
-            )
-        except FileNotFoundError:
-            return None
-        else:
-            return json.loads(content.decode("utf-8"))
-
-    @staticmethod
-    def bind_logger(log, ids):
-        """Bind a structured logger with survey metadata identifiers."""
-        return log.bind(
-            ru_ref=ids.ru_ref,
-            tx_id=ids.tx_id,
-            user_id=ids.user_id,
-        )
-
     @classmethod
     def ops(cls):
         """Publish the sequence of operations for the transform.
@@ -399,24 +399,24 @@ class MWSSTransformer:
         if log is None:
             self.log = logging.getLogger(__name__)
         else:
-            self.log = self.bind_logger(log, self.ids)
+            self.log = Survey.bind_logger(log, self.ids)
 
     def pack(self, img_seq=None):
-        survey = self.load_survey(self.ids)
+        survey = Survey.load_survey(self.ids)
         manifest = []
         with tempfile.TemporaryDirectory(prefix="mwss_", dir="tmp") as locn:
             # Do transform and write PCK
             data = self.transform(self.response["data"], survey)
-            fn = CSFormatter.pck_name(**self.ids._asdict())
-            with open(os.path.join(locn, fn), "w") as pck:
+            f_name = CSFormatter.pck_name(**self.ids._asdict())
+            with open(os.path.join(locn, f_name), "w") as pck:
                 CSFormatter.write_pck(pck, data, **self.ids._asdict())
-            manifest.append(("EDC_QData", fn))
+            manifest.append(("EDC_QData", f_name))
 
             # Create IDBR file
-            fn = CSFormatter.idbr_name(**self.ids._asdict())
-            with open(os.path.join(locn, fn), "w") as idbr:
+            f_name = CSFormatter.idbr_name(**self.ids._asdict())
+            with open(os.path.join(locn, f_name), "w") as idbr:
                 CSFormatter.write_idbr(idbr, **self.ids._asdict())
-            manifest.append(("EDC_QReceipts", fn))
+            manifest.append(("EDC_QReceipts", f_name))
 
             # Build PDF
             fp = os.path.join(locn, "pages.pdf")
@@ -427,14 +427,14 @@ class MWSSTransformer:
             img_tfr = ImageTransformer(self.log, survey, self.response)
             images = list(img_tfr.create_image_sequence(fp, nmbr_seq=img_seq))
             for img in images:
-                fn = os.path.basename(img)
-                manifest.append(("EDC_QImages/Images", fn))
+                f_name = os.path.basename(img)
+                manifest.append(("EDC_QImages/Images", f_name))
 
             # Write image index
             index = img_tfr.create_image_index(images)
             if index is not None:
-                fn = os.path.basename(index)
-                manifest.append(("EDC_QImages/Index", fn))
+                f_name = os.path.basename(index)
+                manifest.append(("EDC_QImages/Index", f_name))
 
             return self.create_zip(locn, manifest)
 
