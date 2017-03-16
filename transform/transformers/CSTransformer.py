@@ -1,12 +1,12 @@
-import zipfile
-import os
 from io import BytesIO
 from transform import settings
 from .ImageTransformer import ImageTransformer
 from .PCKTransformer import PCKTransformer
 from jinja2 import Environment, PackageLoader
 import dateutil.parser
+import os
 import shutil
+import zipfile
 
 env = Environment(loader=PackageLoader('transform', 'templates'))
 
@@ -36,16 +36,17 @@ class CSTransformer(object):
     def create_formats(self):
         itransformer = ImageTransformer(self.logger, self.survey, self.response, sequence_no=self.sequence_no)
 
-        itransformer.create_pdf()
-        itransformer.create_image_sequence()
-        itransformer.create_image_index()
+        path = itransformer.create_pdf(self.survey, self.response)
+        self.images = list(itransformer.create_image_sequence(path))
+        self.index = itransformer.create_image_index(self.images)
 
-        self.path = itransformer.path
-        self.rootname = itransformer.rootname
+        self.path, baseName = os.path.split(path)
+        self.rootname, _ = os.path.splitext(baseName)
         self.itransformer = itransformer
 
         self.create_pck()
         self.create_idbr()
+        return path
 
     def prepare_archive(self):
         '''
@@ -59,18 +60,17 @@ class CSTransformer(object):
         self.logger.info("Added idbr file to archive",
                          file=settings.SDX_FTP_RECEIPT_PATH + self.idbr_file)
 
-        for image in self.itransformer.images:
-            self.files_to_archive.append((settings.SDX_FTP_IMAGE_PATH + "/Images", image))
-            self.logger.info("Added image file to archive",
-                             file=settings.SDX_FTP_IMAGE_PATH +
-                                  "/Images" +
-                                  image)
+        for image in self.images:
+            f_name = os.path.basename(image)
+            path = settings.SDX_FTP_IMAGE_PATH + "/Images"
+            self.files_to_archive.append((path, f_name))
+            self.logger.info("Added image file to archive", file=path + f_name)
 
-        self.files_to_archive.append((settings.SDX_FTP_IMAGE_PATH + "/Index", self.itransformer.index_file))
-        self.logger.info("Added index file to archive",
-                         file=settings.SDX_FTP_IMAGE_PATH +
-                         "/Index" +
-                         self.itransformer.index_file)
+        if self.index is not None:
+            f_name = os.path.basename(self.index)
+            path = settings.SDX_FTP_IMAGE_PATH + "/Index"
+            self.files_to_archive.append((settings.SDX_FTP_IMAGE_PATH + "/Index", f_name))
+            self.logger.info("Added index file to archive", file=path + f_name)
 
     def create_pck(self):
         template = env.get_template('pck.tmpl')
