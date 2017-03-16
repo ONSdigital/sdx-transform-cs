@@ -496,7 +496,7 @@ class BatchFileTests(unittest.TestCase):
             data, batch_nr, batch_date, survey_id, inst_id, ru_ref, check, period
         )
         self.assertEqual([
-            "FV",
+            "FV          ",
             "0005:49900001225C:200911",
             "0001 00000000002",
             "0140 00000000124",
@@ -543,7 +543,7 @@ class BatchFileTests(unittest.TestCase):
         ids = Survey.identifiers(reply, batch_nr=3866)
         rv = CSFormatter.pck_lines(reply["data"], **ids._asdict())
         self.assertEqual([
-            "FV",
+            "FV          ",
             "0005:49900001225C:200911",
             "0001 00000000002",
             "0140 00000000124",

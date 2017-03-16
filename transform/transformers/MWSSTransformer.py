@@ -277,7 +277,7 @@ class CSFormatter:
     def pck_lines(data, batch_nr, ts, survey_id, inst_id, ru_ref, ru_check, period, **kwargs):
         """Return a list of lines in a PCK file."""
         return [
-            "FV",
+            "FV" + " " * 10,
             CSFormatter.pck_form_header(inst_id, ru_ref, ru_check, period),
         ] + [
             CSFormatter.pck_item(q, a) for q, a in data.items()
