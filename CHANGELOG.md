@@ -1,4 +1,6 @@
 ### Unreleased
+
+### 2.0.0 2017-03-16
   - Add MWSS transform
   - Log image file paths
 
