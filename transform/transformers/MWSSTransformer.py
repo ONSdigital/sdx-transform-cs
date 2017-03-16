@@ -18,6 +18,7 @@ import zipfile
 import pkg_resources
 from reportlab.platypus import SimpleDocTemplate
 from reportlab.lib.pagesizes import A4
+from structlog import wrap_logger
 
 from transform.transformers.ImageTransformer import ImageTransformer
 from transform.transformers.PDFTransformer import PDFTransformer
@@ -403,7 +404,7 @@ class MWSSTransformer:
             raise UserWarning("Missing identifiers")
 
         if log is None:
-            self.log = logging.getLogger(__name__)
+            self.log = wrap_logger(logging.getLogger(__name__))
         else:
             self.log = Survey.bind_logger(log, self.ids)
 

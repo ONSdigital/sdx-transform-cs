@@ -113,7 +113,7 @@ class ImageTransformer(object):
         )
         
         msg = "Adding image to index"
-        [self.logger.info(msg, file=(image_path + os.path.basename(i))) for i in self.images]
+        [self.logger.info(msg, file=(image_path + os.path.basename(i))) for i in images]
 
         self.index_file = "EDC_%s_%s_%04d.csv" % (self.survey['survey_id'], submission_date_str, self.sequence_no)
 
