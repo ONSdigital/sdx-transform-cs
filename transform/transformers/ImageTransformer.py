@@ -104,12 +104,16 @@ class ImageTransformer(object):
         submission_date = dateutil.parser.parse(self.response['submitted_at'])
         submission_date_str = format_date(submission_date, 'short')
 
+        image_path = settings.FTP_HOST + settings.SDX_FTP_IMAGE_PATH + "\\Images"
         template_output = template.render(
-            SDX_FTP_IMAGES_PATH=settings.SDX_FTP_IMAGES_PATH,
+            SDX_FTP_IMAGES_PATH=image_path,
             images=[os.path.basename(i) for i in images],
             response=self.response,
             creation_time=creation_time
         )
+        
+        msg = "Adding image to index"
+        [self.logger.info(msg, file=(image_path + os.path.basename(i))) for i in self.images]
 
         self.index_file = "EDC_%s_%s_%04d.csv" % (self.survey['survey_id'], submission_date_str, self.sequence_no)
 
@@ -150,10 +154,10 @@ class ImageTransformer(object):
 
     def response_ok(self, res):
         if res.status_code == 200:
-            self.logger.info("Returned from service", request_url=res.url, status_code=res.status_code)
+            self.logger.info("Returned from service", request_url=res.url, status=res.status_code)
             return True
         else:
-            self.logger.error("Returned from service", request_url=res.url, status_code=res.status_code)
+            self.logger.error("Returned from service", request_url=res.url, status=res.status_code)
             return False
 
     def remote_call(self, request_url, json=None):

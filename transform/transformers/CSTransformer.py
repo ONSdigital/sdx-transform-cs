@@ -1,13 +1,12 @@
 from io import BytesIO
+from transform import settings
+from .ImageTransformer import ImageTransformer
+from .PCKTransformer import PCKTransformer
+from jinja2 import Environment, PackageLoader
 import dateutil.parser
 import os
 import shutil
 import zipfile
-
-from jinja2 import Environment, PackageLoader
-
-from .ImageTransformer import ImageTransformer
-from .PCKTransformer import PCKTransformer
 
 env = Environment(loader=PackageLoader('transform', 'templates'))
 
@@ -53,16 +52,25 @@ class CSTransformer(object):
         '''
         Prepare a list of files to save
         '''
-        self.files_to_archive.append(("EDC_QData", self.pck_file))
-        self.files_to_archive.append(("EDC_QReceipts", self.idbr_file))
+        self.files_to_archive.append((settings.SDX_FTP_DATA_PATH, self.pck_file))
+        self.logger.info("Added pck file to archive",
+                         file=settings.SDX_FTP_DATA_PATH + self.pck_file)
+
+        self.files_to_archive.append((settings.SDX_FTP_RECEIPT_PATH, self.idbr_file))
+        self.logger.info("Added idbr file to archive",
+                         file=settings.SDX_FTP_RECEIPT_PATH + self.idbr_file)
 
         for image in self.images:
             f_name = os.path.basename(image)
-            self.files_to_archive.append(("EDC_QImages/Images", f_name))
+            path = settings.SDX_FTP_IMAGE_PATH + "/Images"
+            self.files_to_archive.append((path, f_name))
+            self.logger.info("Added image file to archive", file=path + f_name)
 
         if self.index is not None:
             f_name = os.path.basename(self.index)
-            self.files_to_archive.append(("EDC_QImages/Index", f_name))
+            path = settings.SDX_FTP_IMAGE_PATH + "/Index"
+            self.files_to_archive.append((settings.SDX_FTP_IMAGE_PATH + "/Index", f_name))
+            self.logger.info("Added index file to archive", file=path + f_name)
 
     def create_pck(self):
         template = env.get_template('pck.tmpl')
