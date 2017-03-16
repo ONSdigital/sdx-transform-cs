@@ -88,7 +88,7 @@ class ImageTransformer(object):
         template_output = template.render(SDX_FTP_IMAGES_PATH=image_path, images=self.images,
                     response=self.response, creation_time=creation_time)
 
-        msg = "ADDING IMAGE TO INDEX"
+        msg = "Adding image to index"
         [self.logger.info(msg, file=(image_path + os.path.basename(i))) for i in self.images]
 
         self.index_file = "EDC_%s_%s_%04d.csv" % (self.survey['survey_id'], submission_date_str, self.sequence_no)
