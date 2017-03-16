@@ -52,18 +52,22 @@ class CSTransformer(object):
         Prepare a list of files to save
         '''
         self.files_to_archive.append((settings.SDX_FTP_DATA_PATH, self.pck_file))
-        self.logger.info("ADDED PCK FILE TO ARCHIVE", file=settings.SDX_FTP_DATA_PATH + self.pck_file)
+        self.logger.info("Added pck file to archive",
+                         file=settings.SDX_FTP_DATA_PATH + self.pck_file)
+
         self.files_to_archive.append((settings.SDX_FTP_RECEIPT_PATH, self.idbr_file))
+        self.logger.info("Added idbr file to archive",
+                         file=settings.SDX_FTP_RECEIPT_PATH + self.idbr_file)
 
         for image in self.itransformer.images:
             self.files_to_archive.append((settings.SDX_FTP_IMAGE_PATH + "/Images", image))
-            self.logger.info("ADDED IMAGE FILE TO ARCHIVE",
+            self.logger.info("Added image file to archive",
                              file=settings.SDX_FTP_IMAGE_PATH +
                                   "/Images" +
                                   image)
 
         self.files_to_archive.append((settings.SDX_FTP_IMAGE_PATH + "/Index", self.itransformer.index_file))
-        self.logger.info("ADDED INDEX FILE TO ARCHIVE",
+        self.logger.info("Added index file to archive",
                          file=settings.SDX_FTP_IMAGE_PATH +
                          "/Index" +
                          self.itransformer.index_file)
