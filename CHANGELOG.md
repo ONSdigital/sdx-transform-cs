@@ -1,5 +1,9 @@
 ### Unreleased
 
+### 2.0.1 2017-03-17
+  - Change env var read from `FTP_HOST` to `FTP_PATH`
+  - Change `Calling service` and `Returned from service` to add context
+
 ### 2.0.0 2017-03-16
   - Add MWSS transform
   - Log image file paths
