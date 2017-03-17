@@ -2,6 +2,7 @@
 
 ### 2.0.1 2017-03-17
   - Change env var read from `FTP_HOST` to `FTP_PATH`
+  - Change `Calling service` and `Returned from service` to add context
 
 ### 2.0.0 2017-03-16
   - Add MWSS transform
@@ -10,7 +11,6 @@
 ### 1.4.1 2017-03-15
   - Log version number on startup
   - Change `status_code` to `status` for SDX logging
-  - Change `Calling service` and `Returned from service` to add context
 
 ### 1.4.0 2017-02-16
   - Add change log
