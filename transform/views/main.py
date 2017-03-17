@@ -1,12 +1,16 @@
+import json
+import logging
+import os.path
+
+from flask import request, make_response, send_file, jsonify
+from jinja2 import Environment, PackageLoader
+from structlog import wrap_logger
+
 from transform import app
 from transform import settings
-import logging
-from structlog import wrap_logger
-from flask import request, make_response, send_file, jsonify
-from transform.transformers import PCKTransformer, PDFTransformer, ImageTransformer, CSTransformer
-from jinja2 import Environment, PackageLoader
-
-import json
+from transform.transformers import ImageTransformer, CSTransformer
+from transform.transformers import MWSSTransformer
+from transform.transformers import PCKTransformer, PDFTransformer
 
 env = Environment(loader=PackageLoader('transform', 'templates'))
 
@@ -49,7 +53,11 @@ def get_survey(survey_response):
     try:
         form_id = survey_response['collection']['instrument_id']
 
-        with open("./transform/surveys/%s.%s.json" % (survey_response['survey_id'], form_id)) as json_file:
+        fp = os.path.join(
+            ".", "transform", "surveys",
+            "{0}.{1}.json".format(survey_response['survey_id'], form_id)
+        )
+        with open(fp, 'r') as json_file:
             return json.load(json_file)
     except IOError:
         return False
@@ -119,7 +127,7 @@ def render_pdf():
         rendered_pdf = pdf.render()
 
     except IOError as e:
-        return client_error("PDF:Could not render pdf buffer: %s" % repr(e))
+        return client_error("PDF:Could not render pdf buffer: {0}".format(repr(e)))
 
     response = make_response(rendered_pdf)
     response.mimetype = 'application/pdf'
@@ -141,13 +149,13 @@ def render_images():
     itransformer = ImageTransformer(logger, survey, survey_response)
 
     try:
-        itransformer.create_pdf()
-        itransformer.create_image_sequence()
-        itransformer.create_image_index()
-        zipfile = itransformer.create_zip()
-        itransformer.cleanup()
+        path = itransformer.create_pdf(survey, survey_response)
+        images = list(itransformer.create_image_sequence(path))
+        index = itransformer.create_image_index(images)
+        zipfile = itransformer.create_zip(images, index)
+        itransformer.cleanup(os.path.dirname(path))
     except IOError as e:
-        return client_error("IMAGES:Could not create zip buffer: %s" % repr(e))
+        return client_error("IMAGES:Could not create zip buffer: {0}".format(repr(e)))
 
     logger.info("IMAGES:SUCCESS")
 
@@ -167,19 +175,25 @@ def common_software(sequence_no=1000, batch_number=False):
         sequence_no = int(sequence_no)
 
     survey = get_survey(survey_response)
-
     if not survey:
         return client_error("CS:Unsupported survey/instrument id")
 
-    ctransformer = CSTransformer(logger, survey, survey_response, batch_number, sequence_no)
-
+    survey_id = survey_response.get("survey_id")
     try:
-        ctransformer.create_formats()
-        ctransformer.prepare_archive()
-        zipfile = ctransformer.create_zip()
-        ctransformer.cleanup()
-    except IOError as e:
-        return client_error("CS:Could not create zip buffer: %s" % repr(e))
+        if survey_id == "134":
+            tfr = MWSSTransformer(survey_response, sequence_no, log=logger)
+            zipfile = tfr.pack()
+        else:
+            ctransformer = CSTransformer(
+                logger, survey, survey_response, batch_number, sequence_no)
+
+            ctransformer.create_formats()
+            ctransformer.prepare_archive()
+            zipfile = ctransformer.create_zip()
+            try:
+                ctransformer.cleanup()
+            except IOError as e:
+                return client_error("CS:Could not create zip buffer: {0}".format(repr(e)))
     except Exception as e:
         return server_error(e)
 
