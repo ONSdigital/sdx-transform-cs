@@ -1,12 +1,14 @@
-from io import BytesIO
-from transform import settings
-from .ImageTransformer import ImageTransformer
-from .PCKTransformer import PCKTransformer
-from jinja2 import Environment, PackageLoader
 import dateutil.parser
+from io import BytesIO
 import os
 import shutil
 import zipfile
+
+from jinja2 import Environment, PackageLoader
+
+from .ImageTransformer import ImageTransformer
+from .PCKTransformer import PCKTransformer
+from transform import settings
 
 env = Environment(loader=PackageLoader('transform', 'templates'))
 
