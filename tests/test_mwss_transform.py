@@ -459,7 +459,7 @@ class BatchFileTests(unittest.TestCase):
                 "ru_ref": "12345678901A"
             }
         })
-        rv = Survey.load_survey(ids)
+        rv = Survey.load_survey(ids, MWSSTransformer.package, MWSSTransformer.pattern)
         self.assertIsNotNone(rv)
 
     def test_load_survey_miss(self):
@@ -475,7 +475,7 @@ class BatchFileTests(unittest.TestCase):
                 "ru_ref": "12345678901A"
             }
         })
-        rv = Survey.load_survey(ids)
+        rv = Survey.load_survey(ids, MWSSTransformer.package, MWSSTransformer.pattern)
         self.assertIsNone(rv)
 
     def test_pck_lines(self):
