@@ -7,87 +7,8 @@ import unittest
 import pkg_resources
 
 from sdx.common.formats.cs_formatter import CSFormatter
-from sdx.common.processor import Processor
 from sdx.common.survey import Survey
 from transform.transformers.MWSSTransformer import MWSSTransformer
-
-
-class SurveyTests(unittest.TestCase):
-
-    def test_datetime_ms_with_colon_in_timezone(self):
-        rv = Survey.parse_timestamp("2017-01-11T17:18:53.020222+00:00")
-        self.assertIsInstance(rv, datetime.datetime)
-
-    def test_datetime_ms_with_timezone(self):
-        rv = Survey.parse_timestamp("2017-01-11T17:18:53.020222+0000")
-        self.assertIsInstance(rv, datetime.datetime)
-
-    def test_datetime_zulu(self):
-        rv = Survey.parse_timestamp("2017-01-11T17:18:53Z")
-        self.assertIsInstance(rv, datetime.datetime)
-
-    def test_date_iso(self):
-        rv = Survey.parse_timestamp("2017-01-11")
-        self.assertNotIsInstance(rv, datetime.datetime)
-        self.assertIsInstance(rv, datetime.date)
-
-    def test_date_diary(self):
-        rv = Survey.parse_timestamp("11/07/2017")
-        self.assertNotIsInstance(rv, datetime.datetime)
-        self.assertIsInstance(rv, datetime.date)
-
-
-class OpTests(unittest.TestCase):
-
-    def test_processor_unsigned(self):
-        proc = Processor.unsigned_integer
-
-        # Supply int default for range checking
-        self.assertEqual(0, proc("q", {"q": -1}, 0))
-        self.assertEqual(0, proc("q", {"q": 0}, 0))
-        self.assertEqual(1, proc("q", {"q": 1}, 0))
-        self.assertEqual(100, proc("q", {"q": 1E2}, 0))
-        self.assertEqual(1000000000, proc("q", {"q": 1E9}, 0))
-
-        # Supply bool default for range checking and type coercion
-        self.assertIs(False, proc("q", {"q": -1}, False))
-        self.assertIs(False, proc("q", {"q": 0}, False))
-        self.assertIs(True, proc("q", {"q": 1}, False))
-        self.assertIs(True, proc("q", {"q": 1E2}, False))
-        self.assertIs(True, proc("q", {"q": 1E9}, False))
-        self.assertIs(False, proc("q", {"q": 0}, False))
-
-    def test_processor_percentage(self):
-        proc = Processor.percentage
-
-        # Supply int default for range checking
-        self.assertEqual(0, proc("q", {"q": -1}, 0))
-        self.assertEqual(0, proc("q", {"q": 0}, 0))
-        self.assertEqual(100, proc("q", {"q": 100}, 0))
-        self.assertEqual(0, proc("q", {"q": 0}, 0))
-
-        # Supply bool default for range checking and type coercion
-        self.assertIs(False, proc("q", {"q": -1}, False))
-        self.assertIs(False, proc("q", {"q": 0}, False))
-        self.assertIs(True, proc("q", {"q": 100}, False))
-        self.assertIs(False, proc("q", {"q": 0}, False))
-
-    def test_ops(self):
-        response = {
-            "survey_id": "134",
-            "tx_id": "27923934-62de-475c-bc01-433c09fd38b8",
-            "collection": {
-                "instrument_id": "0001",
-                "period": "201704"
-            },
-            "metadata": {
-                "user_id": "123456789",
-                "ru_ref": "12345678901A"
-            },
-            "submitted_at": "2017-04-12T13:01:26Z",
-        }
-        tfr = MWSSTransformer(response)
-        self.assertTrue(tfr)
 
 
 class LogicTests(unittest.TestCase):
