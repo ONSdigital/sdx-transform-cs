@@ -1,28 +1,10 @@
-from decimal import Decimal, InvalidOperation
-from collections import namedtuple
-from collections import OrderedDict
-import datetime
 from functools import partial
-from functools import reduce
-import io
 import itertools
 import json
-import logging
-import operator
-import os
 import re
 import sys
-import tempfile
-import zipfile
 
-import pkg_resources
-from reportlab.platypus import SimpleDocTemplate
-from reportlab.lib.pagesizes import A4
-from structlog import wrap_logger
-
-from sdx.common.formats.cs_formatter import CSFormatter
 from sdx.common.processor import Processor
-from sdx.common.survey import Survey
 from sdx.common.transformer import Transformer
 
 __doc__ = """Transform MWSS survey data into formats required downstream.

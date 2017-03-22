@@ -6,10 +6,10 @@ import unittest
 
 import pkg_resources
 
-from transform.transformers.MWSSTransformer import CSFormatter
+from sdx.common.formats.cs_formatter import CSFormatter
+from sdx.common.processor import Processor
+from sdx.common.survey import Survey
 from transform.transformers.MWSSTransformer import MWSSTransformer
-from transform.transformers.MWSSTransformer import Processor
-from transform.transformers.MWSSTransformer import Survey
 
 
 class SurveyTests(unittest.TestCase):
