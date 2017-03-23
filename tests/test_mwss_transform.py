@@ -8,6 +8,7 @@ import pkg_resources
 
 from sdx.common.formats.cs_formatter import CSFormatter
 from sdx.common.survey import Survey
+from sdx.common.test.test_transformer import PackingTests as TransformerTests
 from transform.transformers.MWSSTransformer import MWSSTransformer
 
 
@@ -475,6 +476,10 @@ class BatchFileTests(unittest.TestCase):
 class PackingTests(unittest.TestCase):
 
     def test_tempdir(self):
+        settings = TransformerTests.Settings(
+            "\\\\NP3RVWAPXX370\\SDX_preprod",
+            "EDC_QImages"
+        )
         response = {
             "survey_id": "134",
             "tx_id": "27923934-62de-475c-bc01-433c09fd38b8",
@@ -496,7 +501,4 @@ class PackingTests(unittest.TestCase):
                 **tfr.ids._asdict()
             )
         )
-        try:
-            tfr.pack(img_seq=itertools.count())
-        except KeyError:
-            self.fail("TODO: define pages of survey.")
+        tfr.pack(settings=settings, img_seq=itertools.count())
