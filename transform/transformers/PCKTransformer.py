@@ -1,9 +1,12 @@
 from datetime import datetime
 import dateutil.parser
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 class PCKTransformer(object):
-    form_ids = {
+    form_types = {
         "023": {
             "0102": "RSI5B",
             "0112": "RSI6B",
@@ -12,7 +15,9 @@ class PCKTransformer(object):
             "0213": "RSI8B",
             "0215": "RSI10B",
         },
-        "0001": "Q01B",
+        "139": {
+            "0001": "Q01B",
+        }
     }
 
     def __init__(self, survey, response_data):
@@ -41,7 +46,20 @@ class PCKTransformer(object):
 
     def get_cs_form_id(self):
         instrument_id = self.response['collection']['instrument_id']
-        return self.form_ids[self.survey['survey_id']][instrument_id]
+
+        try:
+            form_type = self.form_types[self.survey['survey_id']]
+        except KeyError:
+            logger.error("Invalid survey id '{}'".format(self.survey['survey_id']))
+            return 'XXXXXX'
+
+        try:
+            form_id = form_type[instrument_id]
+        except KeyError:
+            logger.error("Invalid instrument id '{}'".format(instrument_id))
+            return 'XXXXXX'
+
+        return form_id
 
     def get_subdate_str(self):
         submission_date = dateutil.parser.parse(self.response['submitted_at'])
