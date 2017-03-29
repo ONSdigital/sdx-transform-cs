@@ -51,13 +51,13 @@ class PCKTransformer(object):
             form_type = self.form_types[self.survey['survey_id']]
         except KeyError:
             logger.error("Invalid survey id '{}'".format(self.survey['survey_id']))
-            return 'XXXXXX'
+            return None
 
         try:
             form_id = form_type[instrument_id]
         except KeyError:
             logger.error("Invalid instrument id '{}'".format(instrument_id))
-            return 'XXXXXX'
+            return None
 
         return form_id
 
