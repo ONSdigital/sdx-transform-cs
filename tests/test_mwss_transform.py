@@ -2,7 +2,9 @@ from collections import OrderedDict
 import datetime
 import itertools
 import json
+import os.path
 import unittest
+import zipfile
 
 import pkg_resources
 
@@ -579,3 +581,25 @@ class PackingTests(unittest.TestCase):
             tfr.pack(img_seq=itertools.count())
         except KeyError:
             self.fail("TODO: define pages of survey.")
+
+    def test_image_sequence_number(self):
+        response = {
+            "survey_id": "134",
+            "tx_id": "27923934-62de-475c-bc01-433c09fd38b8",
+            "collection": {
+                "instrument_id": "0005",
+                "period": "201704"
+            },
+            "metadata": {
+                "user_id": "123456789",
+                "ru_ref": "12345678901A"
+            },
+            "submitted_at": "2017-04-12T13:01:26Z",
+            "data": {}
+        }
+        tfr = MWSSTransformer(response)
+        seq_nr = 12345
+        zf = zipfile.ZipFile(tfr.pack(img_seq=itertools.repeat(seq_nr)))
+        fn = next(i for i in zf.namelist() if os.path.splitext(i)[1] == ".csv")
+        bits = os.path.splitext(fn)[0].split("_")
+        self.assertEqual(seq_nr, int(bits[-1]))
