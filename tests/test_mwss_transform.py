@@ -597,9 +597,9 @@ class PackingTests(unittest.TestCase):
             "submitted_at": "2017-04-12T13:01:26Z",
             "data": {}
         }
-        tfr = MWSSTransformer(response)
         seq_nr = 12345
-        zf = zipfile.ZipFile(tfr.pack(img_seq=itertools.repeat(seq_nr)))
+        tfr = MWSSTransformer(response, seq_nr=seq_nr)
+        zf = zipfile.ZipFile(tfr.pack(img_seq=itertools.count()))
         fn = next(i for i in zf.namelist() if os.path.splitext(i)[1] == ".csv")
         bits = os.path.splitext(fn)[0].split("_")
         self.assertEqual(seq_nr, int(bits[-1]))
