@@ -5,7 +5,6 @@ from transform.transformers import PCKTransformer
 
 class TestPckTransformer(unittest.TestCase):
 
-
     def test_get_cs_form_id_passes(self):
         survey = {'survey_id': '023'}
         response = {'collection': {'instrument_id': '0102'}}
@@ -44,4 +43,3 @@ class TestPckTransformer(unittest.TestCase):
 
             msg = "ERROR:transform.transformers.PCKTransformer:Invalid instrument id '000'"
             self.assertEqual(msg, cm.output[0])
-
