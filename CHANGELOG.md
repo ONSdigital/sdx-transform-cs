@@ -1,5 +1,9 @@
 ### Unreleased
 
+### 2.1.0 2017-04-03
+  - Support non-unique survey ids
+  - Fix sequence number bug in MWSS survey
+
 ### 2.0.1 2017-03-17
   - Change env var read from `FTP_HOST` to `FTP_PATH`
   - Change `Calling service` and `Returned from service` to add context

@@ -2,7 +2,9 @@ from collections import OrderedDict
 import datetime
 import itertools
 import json
+import os.path
 import unittest
+import zipfile
 
 import pkg_resources
 
@@ -86,7 +88,7 @@ class OpTests(unittest.TestCase):
             },
             "submitted_at": "2017-04-12T13:01:26Z",
         }
-        tfr = MWSSTransformer(response)
+        tfr = MWSSTransformer(response, 0, 0)
         self.assertTrue(tfr)
 
 
@@ -458,7 +460,7 @@ class BatchFileTests(unittest.TestCase):
                 "user_id": "123456789",
                 "ru_ref": "12345678901A"
             }
-        })
+        }, batch_nr=0, seq_nr=0)
         rv = Survey.load_survey(ids)
         self.assertIsNotNone(rv)
 
@@ -474,7 +476,7 @@ class BatchFileTests(unittest.TestCase):
                 "user_id": "123456789",
                 "ru_ref": "12345678901A"
             }
-        })
+        }, batch_nr=0, seq_nr=0)
         rv = Survey.load_survey(ids)
         self.assertIsNone(rv)
 
@@ -507,7 +509,7 @@ class BatchFileTests(unittest.TestCase):
         src = pkg_resources.resource_string(__name__, "replies/eq-mwss.json")
         reply = json.loads(src.decode("utf-8"))
         reply["tx_id"] = "27923934-62de-475c-bc01-433c09fd38b8"
-        ids = Survey.identifiers(reply, batch_nr=3866)
+        ids = Survey.identifiers(reply, batch_nr=3866, seq_nr=0)
         rv = CSFormatter.idbr_receipt(**ids._asdict())
         self.assertEqual("12346789012:A:134:201605", rv)
 
@@ -516,7 +518,7 @@ class BatchFileTests(unittest.TestCase):
         reply = json.loads(src.decode("utf-8"))
         reply["tx_id"] = "27923934-62de-475c-bc01-433c09fd38b8"
         reply["collection"]["period"] = "200911"
-        ids = Survey.identifiers(reply)
+        ids = Survey.identifiers(reply, batch_nr=0, seq_nr=0)
         self.assertIsInstance(ids, Survey.Identifiers)
         self.assertEqual(0, ids.batch_nr)
         self.assertEqual(0, ids.seq_nr)
@@ -540,7 +542,7 @@ class BatchFileTests(unittest.TestCase):
             ("0140", 124),
             ("0151", 217222)
         ])
-        ids = Survey.identifiers(reply, batch_nr=3866)
+        ids = Survey.identifiers(reply, batch_nr=3866, seq_nr=0)
         rv = CSFormatter.pck_lines(reply["data"], **ids._asdict())
         self.assertEqual([
             "FV          ",
@@ -552,6 +554,22 @@ class BatchFileTests(unittest.TestCase):
 
 
 class PackingTests(unittest.TestCase):
+
+    def test_requires_batch_nr(self):
+        self.assertRaises(
+            TypeError,
+            MWSSTransformer,
+            {},
+            seq_nr=0
+        )
+
+    def test_requires_seq_nr(self):
+        self.assertRaises(
+            TypeError,
+            MWSSTransformer,
+            {},
+            batch_nr=0
+        )
 
     def test_tempdir(self):
         response = {
@@ -568,7 +586,7 @@ class PackingTests(unittest.TestCase):
             "submitted_at": "2017-04-12T13:01:26Z",
             "data": {}
         }
-        tfr = MWSSTransformer(response)
+        tfr = MWSSTransformer(response, 0, 0)
         self.assertEqual(
             "REC1204_0000.DAT",
             CSFormatter.idbr_name(
@@ -579,3 +597,25 @@ class PackingTests(unittest.TestCase):
             tfr.pack(img_seq=itertools.count())
         except KeyError:
             self.fail("TODO: define pages of survey.")
+
+    def test_image_sequence_number(self):
+        response = {
+            "survey_id": "134",
+            "tx_id": "27923934-62de-475c-bc01-433c09fd38b8",
+            "collection": {
+                "instrument_id": "0005",
+                "period": "201704"
+            },
+            "metadata": {
+                "user_id": "123456789",
+                "ru_ref": "12345678901A"
+            },
+            "submitted_at": "2017-04-12T13:01:26Z",
+            "data": {}
+        }
+        seq_nr = 12345
+        tfr = MWSSTransformer(response, 0, seq_nr=seq_nr)
+        zf = zipfile.ZipFile(tfr.pack(img_seq=itertools.count()))
+        fn = next(i for i in zf.namelist() if os.path.splitext(i)[1] == ".csv")
+        bits = os.path.splitext(fn)[0].split("_")
+        self.assertEqual(seq_nr, int(bits[-1]))
