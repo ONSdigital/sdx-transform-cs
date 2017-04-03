@@ -111,7 +111,7 @@ class ImageTransformer(object):
             response=self.response,
             creation_time=creation_time
         )
-        
+
         msg = "Adding image to index"
         [self.logger.info(msg, file=(image_path + os.path.basename(i))) for i in images]
 
