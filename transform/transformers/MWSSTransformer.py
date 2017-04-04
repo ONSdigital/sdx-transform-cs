@@ -1,9 +1,11 @@
+from collections import namedtuple
 from functools import partial
 import itertools
 import json
 import re
 import sys
 
+import sdx.common.cli
 from sdx.common.processor import Processor
 from sdx.common.transformer import Transformer
 
@@ -69,11 +71,29 @@ class MWSSTransformer(Transformer):
     pattern = "../surveys/{survey_id}.{inst_id}.json"
 
 
+def main(args):
+    Settings = namedtuple(
+        "Settings",
+        [
+            "FTP_HOST",
+            "SDX_FTP_IMAGE_PATH",
+        ]
+    )
+
+    reply = json.load(args.input)
+    tfr = MWSSTransformer(reply, seq_nr=args.seq_nr)
+    zipfile = tfr.pack(
+        settings=Settings("", ""),
+        img_seq=itertools.count(args.img_nr)
+    )
+    args.output.write(zipfile.read())
+
+
 def run():
-    reply = json.load(sys.stdin)
-    tfr = MWSSTransformer(reply)
-    zipfile = tfr.pack(img_seq=itertools.count())
-    sys.stdout.buffer.write(zipfile.read())
+    parser = sdx.common.cli.transformer_cli(__doc__)
+    args = parser.parse_args()
+    rv = main(args)
+    sys.exit(rv)
 
 if __name__ == "__main__":
     run()
