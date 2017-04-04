@@ -100,7 +100,7 @@ class Survey:
             return None
 
     @staticmethod
-    def identifiers(data, batch_nr=0, seq_nr=0, log=None):
+    def identifiers(data, batch_nr, seq_nr, log=None):
         """Parse common metadata from the survey.
 
         Return a named tuple which code can use to access ids, etc.
@@ -395,10 +395,10 @@ class MWSSTransformer:
         zip_bytes.seek(0)
         return zip_bytes
 
-    def __init__(self, response, seq_nr=0, log=None):
+    def __init__(self, response, batch_nr, seq_nr, log=None):
         """Create a transformer object to process a survey response."""
         self.response = response
-        self.ids = Survey.identifiers(response, seq_nr=seq_nr)
+        self.ids = Survey.identifiers(response, batch_nr=batch_nr, seq_nr=seq_nr)
 
         if self.ids is None:
             raise UserWarning("Missing identifiers")
@@ -437,7 +437,7 @@ class MWSSTransformer:
             doc.build(PDFTransformer.get_elements(survey, self.response))
 
             # Create page images from PDF
-            img_tfr = ImageTransformer(self.log, survey, self.response)
+            img_tfr = ImageTransformer(self.log, survey, self.response, self.ids.seq_nr)
             images = list(img_tfr.create_image_sequence(fp, nmbr_seq=img_seq))
             for img in images:
                 f_name = os.path.basename(img)
@@ -454,7 +454,7 @@ class MWSSTransformer:
 
 def run():
     reply = json.load(sys.stdin)
-    tfr = MWSSTransformer(reply)
+    tfr = MWSSTransformer(reply, 0, 0)
     zipfile = tfr.pack(img_seq=itertools.count())
     sys.stdout.buffer.write(zipfile.read())
 
