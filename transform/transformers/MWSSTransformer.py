@@ -84,7 +84,8 @@ def main(args):
     tfr = MWSSTransformer(reply, seq_nr=args.seq_nr)
     zipfile = tfr.pack(
         settings=Settings("", ""),
-        img_seq=itertools.count(args.img_nr)
+        img_seq=itertools.count(args.img_nr),
+        tmp=args.work
     )
     args.output.write(zipfile.read())
 
