@@ -182,7 +182,7 @@ def common_software(sequence_no=1000, batch_number=False):
     try:
         if survey_id == "134":
             tfr = MWSSTransformer(survey_response, sequence_no, log=logger)
-            zipfile = tfr.pack()
+            zipfile = tfr.pack(settings=settings)
         else:
             ctransformer = CSTransformer(
                 logger, survey, survey_response, batch_number, sequence_no)
