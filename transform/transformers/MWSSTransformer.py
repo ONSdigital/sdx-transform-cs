@@ -95,7 +95,7 @@ def main(args):
     reply = json.load(args.input)
     tfr = MWSSTransformer(reply, seq_nr=args.seq_nr)
     zipfile = tfr.pack(
-        settings=Settings("", ""),
+        settings=Settings("\\\\NP3RVWAPXX370\\SDX_Prod\\", "EDC_QImages"),
         img_seq=itertools.count(args.img_nr),
         tmp=args.work
     )
