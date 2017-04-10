@@ -2,6 +2,7 @@
 
 ### 2.1.0 2017-04-03
   - Support non-unique survey ids
+  - Add environment variables to README
   - Fix sequence number bug in MWSS survey
 
 ### 2.0.1 2017-03-17
