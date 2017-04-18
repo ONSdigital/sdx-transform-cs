@@ -165,7 +165,7 @@ def render_images():
 @app.route('/common-software', methods=['POST'])
 @app.route('/common-software/<sequence_no>', methods=['POST'])
 @app.route('/common-software/<sequence_no>/<batch_number>', methods=['POST'])
-def common_software(sequence_no=1000, batch_number=False):
+def common_software(sequence_no=1000, batch_number=0):
     survey_response = request.get_json(force=True)
 
     if batch_number:

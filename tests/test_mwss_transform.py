@@ -2,14 +2,95 @@ from collections import OrderedDict
 import datetime
 import itertools
 import json
+import os.path
 import unittest
+import zipfile
 
 import pkg_resources
 
 from sdx.common.formats.cs_formatter import CSFormatter
+from sdx.common.processor import Processor
 from sdx.common.survey import Survey
 from sdx.common.test.test_transformer import PackingTests as TransformerTests
 from transform.transformers.MWSSTransformer import MWSSTransformer
+
+
+class SurveyTests(unittest.TestCase):
+
+    def test_datetime_ms_with_colon_in_timezone(self):
+        rv = Survey.parse_timestamp("2017-01-11T17:18:53.020222+00:00")
+        self.assertIsInstance(rv, datetime.datetime)
+
+    def test_datetime_ms_with_timezone(self):
+        rv = Survey.parse_timestamp("2017-01-11T17:18:53.020222+0000")
+        self.assertIsInstance(rv, datetime.datetime)
+
+    def test_datetime_zulu(self):
+        rv = Survey.parse_timestamp("2017-01-11T17:18:53Z")
+        self.assertIsInstance(rv, datetime.datetime)
+
+    def test_date_iso(self):
+        rv = Survey.parse_timestamp("2017-01-11")
+        self.assertNotIsInstance(rv, datetime.datetime)
+        self.assertIsInstance(rv, datetime.date)
+
+    def test_date_diary(self):
+        rv = Survey.parse_timestamp("11/07/2017")
+        self.assertNotIsInstance(rv, datetime.datetime)
+        self.assertIsInstance(rv, datetime.date)
+
+
+class OpTests(unittest.TestCase):
+
+    def test_processor_unsigned(self):
+        proc = Processor.unsigned_integer
+
+        # Supply int default for range checking
+        self.assertEqual(0, proc("q", {"q": -1}, 0))
+        self.assertEqual(0, proc("q", {"q": 0}, 0))
+        self.assertEqual(1, proc("q", {"q": 1}, 0))
+        self.assertEqual(100, proc("q", {"q": 1E2}, 0))
+        self.assertEqual(1000000000, proc("q", {"q": 1E9}, 0))
+
+        # Supply bool default for range checking and type coercion
+        self.assertIs(False, proc("q", {"q": -1}, False))
+        self.assertIs(False, proc("q", {"q": 0}, False))
+        self.assertIs(True, proc("q", {"q": 1}, False))
+        self.assertIs(True, proc("q", {"q": 1E2}, False))
+        self.assertIs(True, proc("q", {"q": 1E9}, False))
+        self.assertIs(False, proc("q", {"q": 0}, False))
+
+    def test_processor_percentage(self):
+        proc = Processor.percentage
+
+        # Supply int default for range checking
+        self.assertEqual(0, proc("q", {"q": -1}, 0))
+        self.assertEqual(0, proc("q", {"q": 0}, 0))
+        self.assertEqual(100, proc("q", {"q": 100}, 0))
+        self.assertEqual(0, proc("q", {"q": 0}, 0))
+
+        # Supply bool default for range checking and type coercion
+        self.assertIs(False, proc("q", {"q": -1}, False))
+        self.assertIs(False, proc("q", {"q": 0}, False))
+        self.assertIs(True, proc("q", {"q": 100}, False))
+        self.assertIs(False, proc("q", {"q": 0}, False))
+
+    def test_ops(self):
+        response = {
+            "survey_id": "134",
+            "tx_id": "27923934-62de-475c-bc01-433c09fd38b8",
+            "collection": {
+                "instrument_id": "0001",
+                "period": "201704"
+            },
+            "metadata": {
+                "user_id": "123456789",
+                "ru_ref": "12345678901A"
+            },
+            "submitted_at": "2017-04-12T13:01:26Z",
+        }
+        tfr = MWSSTransformer(response, 0)
+        self.assertTrue(tfr)
 
 
 class LogicTests(unittest.TestCase):
@@ -380,7 +461,7 @@ class BatchFileTests(unittest.TestCase):
                 "user_id": "123456789",
                 "ru_ref": "12345678901A"
             }
-        })
+        }, batch_nr=0, seq_nr=0)
         rv = Survey.load_survey(ids, MWSSTransformer.package, MWSSTransformer.pattern)
         self.assertIsNotNone(rv)
 
@@ -396,7 +477,7 @@ class BatchFileTests(unittest.TestCase):
                 "user_id": "123456789",
                 "ru_ref": "12345678901A"
             }
-        })
+        }, batch_nr=0, seq_nr=0)
         rv = Survey.load_survey(ids, MWSSTransformer.package, MWSSTransformer.pattern)
         self.assertIsNone(rv)
 
@@ -429,7 +510,7 @@ class BatchFileTests(unittest.TestCase):
         src = pkg_resources.resource_string(__name__, "replies/eq-mwss.json")
         reply = json.loads(src.decode("utf-8"))
         reply["tx_id"] = "27923934-62de-475c-bc01-433c09fd38b8"
-        ids = Survey.identifiers(reply, batch_nr=3866)
+        ids = Survey.identifiers(reply, batch_nr=3866, seq_nr=0)
         rv = CSFormatter.idbr_receipt(**ids._asdict())
         self.assertEqual("12346789012:A:134:201605", rv)
 
@@ -438,7 +519,7 @@ class BatchFileTests(unittest.TestCase):
         reply = json.loads(src.decode("utf-8"))
         reply["tx_id"] = "27923934-62de-475c-bc01-433c09fd38b8"
         reply["collection"]["period"] = "200911"
-        ids = Survey.identifiers(reply)
+        ids = Survey.identifiers(reply, batch_nr=0, seq_nr=0)
         self.assertIsInstance(ids, Survey.Identifiers)
         self.assertEqual(0, ids.batch_nr)
         self.assertEqual(0, ids.seq_nr)
@@ -462,7 +543,7 @@ class BatchFileTests(unittest.TestCase):
             ("0140", 124),
             ("0151", 217222)
         ])
-        ids = Survey.identifiers(reply, batch_nr=3866)
+        ids = Survey.identifiers(reply, batch_nr=3866, seq_nr=0)
         rv = CSFormatter.pck_lines(reply["data"], **ids._asdict())
         self.assertEqual([
             "FV          ",
@@ -494,7 +575,7 @@ class PackingTests(unittest.TestCase):
             "submitted_at": "2017-04-12T13:01:26Z",
             "data": {}
         }
-        tfr = MWSSTransformer(response)
+        tfr = MWSSTransformer(response, 0)
         self.assertEqual(
             "REC1204_0000.DAT",
             CSFormatter.idbr_name(
@@ -502,3 +583,30 @@ class PackingTests(unittest.TestCase):
             )
         )
         tfr.pack(settings=settings, img_seq=itertools.count())
+
+    def test_image_sequence_number(self):
+        response = {
+            "survey_id": "134",
+            "tx_id": "27923934-62de-475c-bc01-433c09fd38b8",
+            "collection": {
+                "instrument_id": "0005",
+                "period": "201704"
+            },
+            "metadata": {
+                "user_id": "123456789",
+                "ru_ref": "12345678901A"
+            },
+            "submitted_at": "2017-04-12T13:01:26Z",
+            "data": {}
+        }
+        seq_nr = 12345
+        tfr = MWSSTransformer(response, seq_nr=seq_nr)
+        zf = zipfile.ZipFile(
+            tfr.pack(
+                img_seq=itertools.count(),
+                settings=TransformerTests.Settings("", ""),
+            )
+        )
+        fn = next(i for i in zf.namelist() if os.path.splitext(i)[1] == ".csv")
+        bits = os.path.splitext(fn)[0].split("_")
+        self.assertEqual(seq_nr, int(bits[-1]))

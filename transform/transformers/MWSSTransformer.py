@@ -72,18 +72,6 @@ class MWSSTransformer(Transformer):
 
 
 def main(args):
-    """
-    n=1;
-    scan=22737;
-    for in_ in *; do \
-    out_=`echo $in_ | sed 's/\.json//g'`".zip"
-    cmd="/opt/mwss/bin/python MWSSTransformer.py --work=/tmp --img_nr=$scan --seq_nr=$n $in_ $out_"
-    echo $cmd
-    let n=$n+1; \
-    let scan=$scan+9; \
-    done
-
-    """
     Settings = namedtuple(
         "Settings",
         [
