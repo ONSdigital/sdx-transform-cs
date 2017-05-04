@@ -7,12 +7,12 @@ from requests.adapters import HTTPAdapter
 LOGGING_FORMAT = "%(asctime)s|%(levelname)s: sdx-transform-cs: %(message)s"
 LOGGING_LEVEL = logging.getLevelName(os.getenv('LOGGING_LEVEL', 'DEBUG'))
 
-SDX_SEQUENCE_URL = os.getenv("SDX_SEQUENCE_URL", "http://sdx-sequence:5000")
+SDX_SEQUENCE_URL = os.getenv("SDX_SEQUENCE_URL")
 
-FTP_HOST = os.getenv("FTP_PATH", "\\\\NP3RVWAPXX370\\SDX_preprod\\")
-SDX_FTP_IMAGE_PATH = os.getenv("SDX_FTP_IMAGES_PATH", "EDC_QImages")
-SDX_FTP_DATA_PATH = os.getenv("SDX_FTP_DATA_PATH", "EDC_QData")
-SDX_FTP_RECEIPT_PATH = os.getenv("SDX_FTP_RECEIPT_PATH", "EDC_QReceipts")
+FTP_HOST = os.getenv("FTP_PATH")
+SDX_FTP_IMAGE_PATH = os.getenv("SDX_FTP_IMAGES_PATH")
+SDX_FTP_DATA_PATH = os.getenv("SDX_FTP_DATA_PATH")
+SDX_FTP_RECEIPT_PATH = os.getenv("SDX_FTP_RECEIPT_PATH")
 
 # Configure the number of retries attempted before failing call
 session = requests.Session()

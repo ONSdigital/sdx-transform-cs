@@ -4,11 +4,19 @@ import unittest
 import io
 import zipfile
 from unittest.mock import patch
+from transform import settings
 
 
 class TestCSTransformService(unittest.TestCase):
+    
 
     transform_cs_endpoint = "/common-software"
+
+    settings.SDX_FTP_DATA_PATH = "EDC_QData"
+    settings.SDX_FTP_IMAGE_PATH = "EDC_QImages"
+    settings.FTP_HOST = "\\\\NP3RVWAPXX370\\SDX_preprod\\"
+    settings.SDX_FTP_RECEIPT_PATH = "EDC_QReceipts"
+    settings.SDX_SEQUENCE_URL = "http://sdx-sequence:5000"
 
     def setUp(self):
 
