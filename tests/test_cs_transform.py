@@ -8,7 +8,6 @@ from transform import settings
 
 
 class TestCSTransformService(unittest.TestCase):
-    
 
     transform_cs_endpoint = "/common-software"
 
