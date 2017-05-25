@@ -16,11 +16,14 @@ class PCKTransformer(object):
             "0205": "RSI9B",
             "0213": "RSI8B",
             "0215": "RSI10B",
-            "mci": "refresh",
         },
         "139": {
             "0001": "Q01B",
+        },
+        "mci": {
+            "refresh": "RSI10B", # TODO remove this once EQ ready for switch
         }
+
     }
 
     def __init__(self, survey, response_data):
@@ -104,13 +107,9 @@ class PCKTransformer(object):
         147 or any 146x indicates a special comment type that should not be shown
         in pck, but in image. Additionally should set 146 if unset.
         '''
-        print("preprocess comments")
         for key in COMMENTS_QUESTIONS:
-            print("key " + key)
             if key in self.data:
-                print("Here")
                 del self.data[key]
-                print("deleted")
                 if '146' not in self.data:
                     self.data['146'] = 1
 

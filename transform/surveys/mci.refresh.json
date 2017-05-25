@@ -1,7 +1,7 @@
 {
   "title": "Monthly Business Survey - Retail Sales Index",
-  "survey_id": "023",
-  "form_type": "0215",
+  "survey_id": "mci",
+  "form_type": "refresh",
   "comments": "true",
   "question_groups": [
     {
