@@ -52,11 +52,13 @@ def server_error(error=None):
 def get_survey(survey_response):
     try:
         form_id = survey_response['collection']['instrument_id']
+        logger.info("Loading survey {0}-{1}.json".format(survey_response['survey_id'], form_id))
 
         fp = os.path.join(
             ".", "transform", "surveys",
             "{0}.{1}.json".format(survey_response['survey_id'], form_id)
         )
+        logger.info("Opening file {0}".format(fp))
         with open(fp, 'r') as json_file:
             return json.load(json_file)
     except IOError:
@@ -128,6 +130,9 @@ def render_pdf():
 
     except IOError as e:
         return client_error("PDF:Could not render pdf buffer: {0}".format(repr(e)))
+    except Exception as e:
+        logger.exception("PDF generation failed")
+        raise e
 
     response = make_response(rendered_pdf)
     response.mimetype = 'application/pdf'
@@ -195,6 +200,7 @@ def common_software(sequence_no=1000, batch_number=0):
             except IOError as e:
                 return client_error("CS:Could not create zip buffer: {0}".format(repr(e)))
     except Exception as e:
+        logger.exception("commono software method error")
         return server_error(e)
 
     logger.info("CS:SUCCESS")

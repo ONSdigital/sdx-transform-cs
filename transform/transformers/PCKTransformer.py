@@ -2,6 +2,8 @@ from datetime import datetime
 import dateutil.parser
 import logging
 
+COMMENTS_QUESTIONS = ['147', '146a', '146b', '146c', '146d', '146e', '146f', '146g', '146h']
+
 logger = logging.getLogger(__name__)
 
 
@@ -14,6 +16,7 @@ class PCKTransformer(object):
             "0205": "RSI9B",
             "0213": "RSI8B",
             "0215": "RSI10B",
+            "mci": "refresh",
         },
         "139": {
             "0001": "Q01B",
@@ -37,7 +40,7 @@ class PCKTransformer(object):
         for question_group in self.survey['question_groups']:
             for answer in question_group['questions']:
                 question_id = answer['question_id']
-                if int(question_id) is not 147:
+                if question_id not in COMMENTS_QUESTIONS:
                     questions.append(int(answer['question_id']))
                     if 'type' in answer:
                         question_types[question_id] = answer['type']
@@ -98,13 +101,18 @@ class PCKTransformer(object):
 
     def preprocess_comments(self):
         '''
-        147 indicates a special comment type that should not be shown
+        147 or any 146x indicates a special comment type that should not be shown
         in pck, but in image. Additionally should set 146 if unset.
         '''
-        if '147' in self.data:
-            del self.data['147']
-            if '146' not in self.data:
-                self.data['146'] = 1
+        print("preprocess comments")
+        for key in COMMENTS_QUESTIONS:
+            print("key " + key)
+            if key in self.data:
+                print("Here")
+                del self.data[key]
+                print("deleted")
+                if '146' not in self.data:
+                    self.data['146'] = 1
 
         return self.data
 
