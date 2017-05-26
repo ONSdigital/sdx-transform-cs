@@ -397,10 +397,15 @@ class LogicTests(unittest.TestCase):
 
 class TransformTests(unittest.TestCase):
 
-    def test_no_defaults(self):
+    def test_no_defaults_empty(self):
         rv = MWSSTransformer.transform({})
         self.assertIsInstance(rv, OrderedDict)
         self.assertFalse(rv)
+
+    def test_no_defaults_nonempty(self):
+        rv = MWSSTransformer.transform({"40": 0})
+        self.assertEqual(0, rv["40"])
+        self.assertEqual(1, len(rv))
 
     def test_unsigned(self):
         rv = MWSSTransformer.transform({"40": "33"})
@@ -554,6 +559,30 @@ class BatchFileTests(unittest.TestCase):
             "FV          ",
             "0005:49900001225C:200911",
             "0001 00000000002",
+            "0140 00000000124",
+            "0151 00000217222",
+        ], rv)
+
+    def test_pck_no_defaults(self):
+        src = pkg_resources.resource_string(__name__, "replies/eq-mwss.json")
+        reply = json.loads(src.decode("utf-8"))
+        reply["tx_id"] = "27923934-62de-475c-bc01-433c09fd38b8"
+        reply["survey_id"] = "134"
+        reply["collection"]["period"] = "200911"
+        reply["metadata"]["ru_ref"] = "49900001225C"
+        ids = Survey.identifiers(reply, batch_nr=3866, seq_nr=0)
+        data = MWSSTransformer.transform(
+            OrderedDict([
+                ("40", 2),
+                ("140", 124),
+                ("151", 217222)
+            ])
+        )
+        rv = CSFormatter.pck_lines(data, **ids._asdict())
+        self.assertEqual([
+            "FV          ",
+            "0005:49900001225C:200911",
+            "0040 00000000002",
             "0140 00000000124",
             "0151 00000217222",
         ], rv)
