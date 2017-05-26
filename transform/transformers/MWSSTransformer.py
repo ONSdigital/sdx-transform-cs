@@ -377,6 +377,7 @@ class MWSSTransformer:
         return OrderedDict(
             (qid, fn(qid, data, dflt, survey))
             for qid, (dflt, fn) in MWSSTransformer.ops().items()
+            if qid in data
         )
 
     @staticmethod
