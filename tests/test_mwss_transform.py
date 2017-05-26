@@ -396,6 +396,11 @@ class LogicTests(unittest.TestCase):
 
 class TransformTests(unittest.TestCase):
 
+    def test_no_defaults(self):
+        rv = MWSSTransformer.transform({})
+        self.assertIsInstance(rv, OrderedDict)
+        self.assertFalse(rv)
+
     def test_unsigned(self):
         rv = MWSSTransformer.transform({"40": "33"})
         self.assertEqual(33, rv["40"])
