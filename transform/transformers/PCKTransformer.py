@@ -2,12 +2,13 @@ from datetime import datetime
 import dateutil.parser
 import logging
 
-COMMENTS_QUESTIONS = ['147', '146a', '146b', '146c', '146d', '146e', '146f', '146g', '146h']
 
 logger = logging.getLogger(__name__)
 
 
 class PCKTransformer(object):
+    comments_questions = ['147', '146a', '146b', '146c', '146d', '146e', '146f', '146g', '146h']
+
     form_types = {
         "023": {
             "0102": "RSI5B",
@@ -37,16 +38,34 @@ class PCKTransformer(object):
         Return the questions (list) and question types (dict
         lookup to question type)
         '''
+        # questions = []
+        # question_types = {}
+        #
+        # for question_group in self.survey['question_groups']:
+        #     for answer in question_group['questions']:
+        #         question_id = answer['question_id']
+        #         if question_id not in self.comments_questions:
+        #             questions.append(int(answer['question_id']))
+        #             if 'type' in answer:
+        #                 question_types[question_id] = answer['type']
+        #
+        # return questions, question_types
+
         questions = []
         question_types = {}
 
-        for question_group in self.survey['question_groups']:
-            for answer in question_group['questions']:
-                question_id = answer['question_id']
-                if question_id not in COMMENTS_QUESTIONS:
-                    questions.append(int(answer['question_id']))
-                    if 'type' in answer:
-                        question_types[question_id] = answer['type']
+        answers = [
+            answer for question_group in self.survey['question_groups']
+            for answer in question_group['questions']
+            if answer['question_id'] not in self.comments_questions
+        ]
+
+        for answer in answers:
+            questions.append(int(answer['question_id']))
+            try:
+                question_types[answer['question_id']] = answer['type']
+            except KeyError:
+                logger.info("No type in answer.")
 
         return questions, question_types
 
@@ -107,12 +126,11 @@ class PCKTransformer(object):
         147 or any 146x indicates a special comment type that should not be shown
         in pck, but in image. Additionally should set 146 if unset.
         '''
-        for key in COMMENTS_QUESTIONS:
-            if key in self.data:
-                del self.data[key]
-                if '146' not in self.data:
-                    self.data['146'] = 1
+        if set(self.comments_questions) <= set(self.data.keys()) and '146' not in self.data.keys():
+                self.data['146'] = 1
 
+        data = {k: v for k, v in self.data.items() if k not in self.comments_questions}
+        self.data = data
         return self.data
 
     def derive_answers(self):
