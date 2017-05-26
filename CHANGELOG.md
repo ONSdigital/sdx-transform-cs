@@ -1,4 +1,5 @@
 ### Unreleased
+  - Updated to support the refreshed MCI
   - Correct license attribution
   - Remove generation of defaults for unanswered questions
 
