@@ -1,4 +1,6 @@
 ### Unreleased
+  - Correct license attribution
+  - Remove generation of defaults for unanswered questions
 
 ### 2.1.0 2017-04-03
   - Support non-unique survey ids
