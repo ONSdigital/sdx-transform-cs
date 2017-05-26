@@ -38,19 +38,6 @@ class PCKTransformer(object):
         Return the questions (list) and question types (dict
         lookup to question type)
         '''
-        # questions = []
-        # question_types = {}
-        #
-        # for question_group in self.survey['question_groups']:
-        #     for answer in question_group['questions']:
-        #         question_id = answer['question_id']
-        #         if question_id not in self.comments_questions:
-        #             questions.append(int(answer['question_id']))
-        #             if 'type' in answer:
-        #                 question_types[question_id] = answer['type']
-        #
-        # return questions, question_types
-
         questions = []
         question_types = {}
 

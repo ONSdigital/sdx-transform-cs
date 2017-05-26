@@ -64,7 +64,7 @@ def get_survey(survey_response):
         with open(fp, 'r') as json_file:
             return json.load(json_file)
     except IOError:
-        logger.exception("Error opening file")
+        logger.exception("Error opening file", file=fp, tx_id=tx_id)
         return False
 
 
