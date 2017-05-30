@@ -1,4 +1,5 @@
 from collections import namedtuple
+from collections import OrderedDict
 from functools import partial
 import itertools
 import json
@@ -69,6 +70,15 @@ class MWSSTransformer(Transformer):
 
     package = __name__
     pattern = "../surveys/{survey_id}.{inst_id}.json"
+
+    @classmethod
+    def transform(cls, data, survey=None):
+        """Perform a transform on survey data."""
+        return OrderedDict(
+            (qid, fn(qid, data, dflt, survey))
+            for qid, (dflt, fn) in cls.ops().items()
+            if qid in data
+        )
 
 
 def main(args):
