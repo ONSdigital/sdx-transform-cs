@@ -402,9 +402,10 @@ class TransformTests(unittest.TestCase):
         self.assertIsInstance(rv, OrderedDict)
         self.assertFalse(rv)
 
-    def test_no_defaults_nonempty(self):
-        rv = MWSSTransformer.transform({"40": 0})
-        self.assertEqual(0, rv["40"])
+    def test_no_defaults_with_data(self):
+        rv = MWSSTransformer.transform({"40": "33"})
+        self.assertIsInstance(rv, OrderedDict)
+        self.assertEquals(33, rv["40"])
         self.assertEqual(1, len(rv))
 
     def test_unsigned(self):
