@@ -1,0 +1,173 @@
+{
+  "title": "Monthly Business Survey - Retail Sales Index",
+  "survey_id": "mci",
+  "form_type": "refresh",
+  "comments": "true",
+  "question_groups": [
+    {
+        "title": "Changes in total retail turnover",
+        "questions": [
+          {
+            "text": "Did any significant changes occur to the total retail turnover?",
+            "question_id": "146a",
+            "type": "radio",
+            "options": [
+              "Yes",
+              "No"
+            ]
+          },
+          {
+            "text": "Please describe the changes in total retail turnover for in more detail",
+            "question_id": "146",
+            "type": "contains"
+          }
+        ]
+    },
+    {
+        "title": "Please indicate the reasons for any changes in the total retail turnover",
+        "questions": [
+          {
+            "text": "Select all that apply",
+            "question_id": "146b",
+            "type": "checkbox",
+            "options": [
+              "In-store / online promotions"
+            ]
+          },
+          {
+            "text": "Select all that apply",
+            "question_id": "146c",
+            "type": "checkbox",
+            "options": [
+              "Special events (e.g. sporting events)"
+            ]
+          },
+          {
+            "text": "Select all that apply",
+            "question_id": "146d",
+            "type": "checkbox",
+            "options": [
+              "Calendar events (e.g. Christmas, Easter, Bank Holiday)"
+            ]
+          },
+          {
+            "text": "Select all that apply",
+            "question_id": "146e",
+            "type": "checkbox",
+            "options": [
+              "Weather"
+            ]
+          },
+          {
+            "text": "Select all that apply",
+            "question_id": "146f",
+            "type": "checkbox",
+            "options": [
+              "Store closures"
+            ]
+          },
+          {
+            "text": "Select all that apply",
+            "question_id": "146g",
+            "type": "checkbox",
+            "options": [
+              "Store openings"
+            ]
+          },
+          {
+            "text": "Select all that apply",
+            "question_id": "146h",
+            "type": "checkbox",
+            "options": [
+              "Other"
+            ]
+          }
+        ]
+    },
+    {
+      "title": "1. Employees",
+      "questions": [
+        {
+          "text": "Male employees working more than 30 hours per week?",
+          "question_id": "51"
+        }, {
+          "text": "Male employees working less than 30 hours per week?",
+          "question_id": "52"
+        }, {
+          "text": "Female employees working more than 30 hours per week?",
+          "question_id": "53"
+        }, {
+          "text": "Female employees working less than 30 hours per week?",
+          "question_id": "54"
+        }, {
+          "text": "Total employees",
+          "question_id": "50"
+      }]
+    },
+    {
+      "title": "2. Period",
+      "questions": [
+        {
+          "text": "From",
+          "question_id": "11",
+          "type": "date"
+        },
+        {
+          "text": "To",
+          "question_id": "12",
+          "type": "date"
+        }
+      ]
+    },
+    {
+      "title": "3. Commodoties - Retail Turnover",
+      "meta": "(£)",
+      "questions": [
+        {
+          "text": "Food",
+          "question_id": "22"
+        },
+        {
+          "text": "Alcohol, Confectionary and Tobacco",
+          "question_id": "23"
+        },
+        {
+          "text": "Clothing and Footwear",
+          "question_id": "24"
+        },
+        {
+          "text": "Household goods",
+          "question_id": "25"
+        },
+        {
+          "text": "Other Goods",
+          "question_id": "26"
+        },
+        {
+          "text": "Total Retail Sales",
+          "question_id": "20"
+        }
+      ]
+    },
+    {
+      "title": "4.",
+      "questions": [{
+          "text": "Of these figures, how much were from internet sales?",
+          "question_id": "21"
+      }]
+    },
+    {
+      "title": "5.",
+      "questions": [{
+          "text": "Automotive Fuel",
+          "question_id": "27"
+      }]
+    },
+    {
+      "questions": [{
+        "question_id": "1",
+        "type": "contains"
+      }]
+    }
+  ]
+}
