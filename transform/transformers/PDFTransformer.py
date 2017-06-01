@@ -2,7 +2,6 @@
 #   coding: UTF-8
 
 import argparse
-from copy import copy
 from io import BytesIO
 import json
 import os
@@ -12,7 +11,7 @@ import uuid
 import arrow
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
-from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph
 from reportlab.platypus.flowables import HRFlowable
 from reportlab.lib.enums import TA_LEFT, TA_CENTER
@@ -26,7 +25,6 @@ python transform/transformers/PDFTransformer.py --survey transform/surveys/144.0
 < tests/replies/ukis-01.json > output.pdf
 
 """
-
 styles = getSampleStyleSheet()
 
 # Basic text style
@@ -43,12 +41,12 @@ style_ssh = styles["Heading3"]
 style_ssh.alignment = TA_LEFT
 
 # Main heading style
-styleH = styles['Heading1']
-styleH.alignment = TA_CENTER
+style_h = styles['Heading1']
+style_h.alignment = TA_CENTER
 
 
 # Answer Style
-style_answer = copy(styles["BodyText"])
+style_answer = ParagraphStyle(name='BodyText', parent=styles['Normal'], spaceBefore=6)
 style_answer.alignment = TA_LEFT
 style_answer.fontName = "Helvetica-Bold"
 style_answer.textColor = colors.red
@@ -109,7 +107,7 @@ class PDFTransformer(object):
 
         localised_date_str = PDFTransformer.get_localised_date(self.response['submitted_at'])
 
-        heading_data = [[Paragraph(self.survey['title'], styleH)]]
+        heading_data = [[Paragraph(self.survey['title'], style_h)]]
         heading_data.append(['Form Type', self.response['collection']['instrument_id']])
         heading_data.append(['Respondent', self.response['metadata']['ru_ref']])
         heading_data.append(['Submitted At', localised_date_str])
