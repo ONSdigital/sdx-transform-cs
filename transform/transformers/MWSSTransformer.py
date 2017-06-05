@@ -435,7 +435,7 @@ class MWSSTransformer:
             # Build PDF
             fp = os.path.join(locn, "pages.pdf")
             doc = SimpleDocTemplate(fp, pagesize=A4)
-            doc.build(PDFTransformer.get_elements(survey, self.response))
+            doc.build(PDFTransformer(survey, self.response).get_elements())
 
             # Create page images from PDF
             img_tfr = ImageTransformer(self.log, survey, self.response, self.ids.seq_nr)
