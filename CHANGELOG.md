@@ -3,6 +3,7 @@
   - Correct license attribution
   - Remove generation of defaults for unanswered questions
   - Reformat image to make answers more prominent
+  - Add codacy badge
 
 ### 2.1.0 2017-04-03
   - Support non-unique survey ids
