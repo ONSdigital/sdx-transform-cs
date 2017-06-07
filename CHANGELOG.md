@@ -1,4 +1,6 @@
 ### Unreleased
+  - Timestamp all logs as UTC
+  - Add common library logging
   - Updated to support the refreshed MCI
   - Correct license attribution
   - Remove generation of defaults for unanswered questions
