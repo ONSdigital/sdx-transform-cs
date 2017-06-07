@@ -6,13 +6,29 @@ The sde-transform-cs app is used within the Office National of Statistics (ONS) 
 
 ## Installation
 
-Using virtualenv and pip, create a new environment and install within using:
-
-    $ pip install -r requirements.txt
-
 The service has a dependency on the pdf2ppm commandline tool bundled in the poppler package. You can install this on a mac using:
 
     $ brew install poppler
+
+*It is recommended that this service is installed inside a virtualenv.*
+
+To install, use:
+
+```bash
+make build
+```
+
+To install using local sdx-common repo (requires SDX_HOME environment variable), use:
+
+```bash
+make dev
+```
+
+To run the test suite, use:
+
+```bash
+make test
+```
 
 It's also possible to build sdx-transform-cs within a container using docker. From the sdx-transform-cs directory:
 
