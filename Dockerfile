@@ -20,6 +20,6 @@ WORKDIR /app/
 
 EXPOSE 5000
 
-RUN pip3 install --no-cache-dir -U -I -r /app/requirements.txt
+RUN pip3 install --no-cache-dir -U -r /app/requirements.txt
 
 ENTRYPOINT ./startup.sh
