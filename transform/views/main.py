@@ -5,6 +5,7 @@ import os.path
 from flask import request, make_response, send_file, jsonify
 from jinja2 import Environment, PackageLoader
 from structlog import wrap_logger
+from sdx.common.logger_config import logger_initial_config
 
 from transform import app
 from transform import settings
@@ -14,7 +15,8 @@ from transform.transformers import PCKTransformer, PDFTransformer
 
 env = Environment(loader=PackageLoader('transform', 'templates'))
 
-logging.basicConfig(level=settings.LOGGING_LEVEL, format=settings.LOGGING_FORMAT)
+logger_initial_config(service_name='sdx-transform-cs',
+                      log_level=settings.LOGGING_LEVEL)
 logger = wrap_logger(logging.getLogger(__name__))
 
 
