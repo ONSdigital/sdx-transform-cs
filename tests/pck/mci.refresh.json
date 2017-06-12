@@ -1,7 +1,7 @@
 {
   "collection": {
     "exercise_sid": "hfjdskf",
-    "instrument_id": "refresh",
+    "instrument_id": "0215",
     "period": "1604"
   },
   "data": {
@@ -37,7 +37,7 @@
   },
   "origin": "uk.gov.ons.edc.eq",
   "submitted_at": "2016-03-12T10:39:40Z",
-  "survey_id": "mci",
+  "survey_id": "023",
   "tx_id": "1f1c338f-10c2-4107-aba4-385b1d903b23",
   "type": "uk.gov.ons.edc.eq:surveyresponse",
   "version": "0.0.1"
