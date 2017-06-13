@@ -449,9 +449,12 @@ class TransformTests(unittest.TestCase):
         """
         for qid in ("190w4", "191w4", "192w4", "193w4", "194w4", "195w4", "196w4", "197w4"):
             with self.subTest(qid=qid):
-                rv = MWSSTransformer.transform({qid: "25"})
-                self.assertEqual(25, rv["190"])
-                self.assertEqual(1, len(rv))
+                rv = MWSSTransformer.transform({qid: ""})
+                self.assertIs(False, rv["190"])
+                rv = MWSSTransformer.transform({qid: "No"})
+                self.assertIs(False, rv["190"])
+                rv = MWSSTransformer.transform({qid: "Yes"})
+                self.assertIs(True, rv["190"])
 
     def test_aggregate_fourweekly_increase(self):
         """
@@ -459,15 +462,17 @@ class TransformTests(unittest.TestCase):
 
         """
         rv = MWSSTransformer.transform({"200w4": "25"})
-        self.assertEqual(25, rv["200"])
+        self.assertIs(True, rv["200"])
 
     def test_aggregate_fourweekly_increase_date(self):
         """
         Date of increase in fourweekly pay (210w4); aggregated with monthly (210).
 
         """
-        rv = MWSSTransformer.transform({"210w4": "25"})
-        self.assertEqual(25, rv["210"])
+        rv = MWSSTransformer.transform({"210w4": "2017-01-11"})
+        self.assertEqual(1, len(rv["210"]))
+        self.assertEqual(11, rv["210"][0].day)
+        self.assertEqual(1, rv["210"][0].month)
 
     def test_aggregate_fourweekly_increase_employees(self):
         """
@@ -476,7 +481,7 @@ class TransformTests(unittest.TestCase):
 
         """
         rv = MWSSTransformer.transform({"220w4": "25"})
-        self.assertEqual(25, rv["220"])
+        self.assertIs(True, rv["220"])
 
     def test_aggregate_monthly_changes(self):
         """
@@ -485,9 +490,12 @@ class TransformTests(unittest.TestCase):
         """
         for qid in ("190m", "191m", "192m", "193m", "194m", "195m", "196m", "197m"):
             with self.subTest(qid=qid):
-                rv = MWSSTransformer.transform({qid: "25"})
-                self.assertEqual(25, rv["190"])
-                self.assertEqual(1, len(rv))
+                rv = MWSSTransformer.transform({qid: ""})
+                self.assertFalse(rv["190"])
+                rv = MWSSTransformer.transform({qid: "No"})
+                self.assertFalse(rv["190"])
+                rv = MWSSTransformer.transform({qid: "Yes"})
+                self.assertTrue(rv["190"])
 
     def test_aggregate_weekly_comments(self):
         """
@@ -518,9 +526,12 @@ class TransformTests(unittest.TestCase):
         """
         for qid in ("190w5", "191w5", "192w5", "193w5", "194w5", "195w5", "196w5", "197w5"):
             with self.subTest(qid=qid):
-                rv = MWSSTransformer.transform({qid: "25"})
-                self.assertEqual(25, rv["190"])
-                self.assertEqual(1, len(rv))
+                rv = MWSSTransformer.transform({qid: ""})
+                self.assertFalse(rv["190"])
+                rv = MWSSTransformer.transform({qid: "No"})
+                self.assertFalse(rv["190"])
+                rv = MWSSTransformer.transform({qid: "Yes"})
+                self.assertTrue(rv["190"])
 
     def test_aggregate_fiveweekly_increase(self):
         """
@@ -528,15 +539,17 @@ class TransformTests(unittest.TestCase):
 
         """
         rv = MWSSTransformer.transform({"200w5": "25"})
-        self.assertEqual(25, rv["200"])
+        self.assertIs(True, rv["200"])
 
     def test_aggregate_fiveweekly_increase_date(self):
         """
         Date of increase in fiveweekly pay (210w5); aggregated with monthly (210).
 
         """
-        rv = MWSSTransformer.transform({"210w5": "25"})
-        self.assertEqual(25, rv["210"])
+        rv = MWSSTransformer.transform({"210w5": "2017-01-11"})
+        self.assertEqual(1, len(rv["210"]))
+        self.assertEqual(11, rv["210"][0].day)
+        self.assertEqual(1, rv["210"][0].month)
 
     def test_aggregate_fiveweekly_increase_employees(self):
         """
@@ -545,7 +558,7 @@ class TransformTests(unittest.TestCase):
 
         """
         rv = MWSSTransformer.transform({"220w5": "25"})
-        self.assertEqual(25, rv["220"])
+        self.assertIs(True, rv["220"])
 
 
 class BatchFileTests(unittest.TestCase):
