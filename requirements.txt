@@ -10,7 +10,6 @@ pycodestyle==2.0.0
 python-dateutil==2.5.3
 reportlab==3.3.0
 requests==2.12.4
-sdx-common==0.4.0
 six==1.10.0
 sdx-common>=0.5.1
 voluptuous==0.8.11
