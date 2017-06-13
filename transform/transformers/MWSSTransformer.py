@@ -379,7 +379,7 @@ class MWSSTransformer:
         We will not receive any value for an aggregate total.
 
         """
-        pattern = re.compile("\d+")
+        pattern = re.compile("[0-9]+")
 
         # Taking the qid for each supplied answer, and then also
         # rounding down the first numeric component of each answered qid
