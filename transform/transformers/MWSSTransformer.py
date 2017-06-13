@@ -115,6 +115,7 @@ def main(args):
         tmp=args.work
     )
     args.output.write(zipfile.read())
+    return 0
 
 
 def run():
