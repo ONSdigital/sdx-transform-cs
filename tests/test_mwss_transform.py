@@ -442,6 +442,111 @@ class TransformTests(unittest.TestCase):
                 self.assertEqual([], rv[qid])
                 self.assertEqual(2, CSFormatter.pck_value(qid, rv[qid]))
 
+    def test_aggregate_fourweekly_changes(self):
+        """
+        QIds 190w4 - 197w4 used for fourweekly changes questions; all aggregated as 190.
+
+        """
+        for qid in ("190w4", "191w4", "192w4", "193w4", "194w4", "195w4", "196w4", "197w4"):
+            with self.subTest(qid=qid):
+                rv = MWSSTransformer.transform({qid: "25"})
+                self.assertEqual(25, rv["190"])
+                self.assertEqual(1, len(rv))
+
+    def test_aggregate_fourweekly_increase(self):
+        """
+        Increase in fourweekly pay (200w4); aggregated with monthly increase (200).
+
+        """
+        rv = MWSSTransformer.transform({"200w4": "25"})
+        self.assertEqual(25, rv["200"])
+
+    def test_aggregate_fourweekly_increase_date(self):
+        """
+        Date of increase in fourweekly pay (210w4); aggregated with monthly (210).
+
+        """
+        rv = MWSSTransformer.transform({"210w4": "25"})
+        self.assertEqual(25, rv["210"])
+
+    def test_aggregate_fourweekly_increase_employees(self):
+        """
+        Employees with increase in fourweekly pay (220w4);
+        aggregated with monthly increase (220).
+
+        """
+        rv = MWSSTransformer.transform({"220w4": "25"})
+        self.assertEqual(25, rv["220"])
+
+    def test_aggregate_monthly_changes(self):
+        """
+        QIds 190m - 197m used for monthly changes questions; all aggregated as 190.
+
+        """
+        for qid in ("190m", "191m", "192m", "193m", "194m", "195m", "196m", "197m"):
+            with self.subTest(qid=qid):
+                rv = MWSSTransformer.transform({qid: "25"})
+                self.assertEqual(25, rv["190"])
+                self.assertEqual(1, len(rv))
+
+    def test_aggregate_weekly_comments(self):
+        """
+        QIds 300w, 300f, 300m, 300w4 & 300w5; all aggregated as 300.
+
+        """
+        for qid in ("300w", "300f", "300m", "300w4", "300w5"):
+            with self.subTest(qid=qid):
+                rv = MWSSTransformer.transform({qid: "This is a comment"})
+                self.assertEqual(True, rv["300"])
+                self.assertEqual(1, len(rv))
+
+    def test_aggregate_monthly_paid_employees(self):
+        """
+        QIds 140m, 140w4, 140w5 are added to give a value for monthly paid employees (140).
+
+        """
+        for qid in ("140m", "140w4", "140w5"):
+            with self.subTest(qid=qid):
+                rv = MWSSTransformer.transform({qid: "25"})
+                self.assertEqual(25, rv["140"])
+                self.assertEqual(1, len(rv))
+
+    def test_aggregate_fiveweekly_changes(self):
+        """
+        QIds 190w5 - 197w5 used for fiveweekly changes questions; all aggregated as 190.
+
+        """
+        for qid in ("190w5", "191w5", "192w5", "193w5", "194w5", "195w5", "196w5", "197w5"):
+            with self.subTest(qid=qid):
+                rv = MWSSTransformer.transform({qid: "25"})
+                self.assertEqual(25, rv["190"])
+                self.assertEqual(1, len(rv))
+
+    def test_aggregate_fiveweekly_increase(self):
+        """
+        Increase in fiveweekly pay (200w5); aggregated with monthly increase (200).
+
+        """
+        rv = MWSSTransformer.transform({"200w5": "25"})
+        self.assertEqual(25, rv["200"])
+
+    def test_aggregate_fiveweekly_increase_date(self):
+        """
+        Date of increase in fiveweekly pay (210w5); aggregated with monthly (210).
+
+        """
+        rv = MWSSTransformer.transform({"210w5": "25"})
+        self.assertEqual(25, rv["210"])
+
+    def test_aggregate_fiveweekly_increase_employees(self):
+        """
+        Employees with increase in fiveweekly pay (220w5);
+        aggregated with monthly increase (220).
+
+        """
+        rv = MWSSTransformer.transform({"220w5": "25"})
+        self.assertEqual(25, rv["220"])
+
 
 class BatchFileTests(unittest.TestCase):
 
