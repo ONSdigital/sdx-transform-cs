@@ -405,7 +405,7 @@ class TransformTests(unittest.TestCase):
     def test_no_defaults_with_data(self):
         rv = MWSSTransformer.transform({"40": "33"})
         self.assertIsInstance(rv, OrderedDict)
-        self.assertEquals(33, rv["40"])
+        self.assertEqual(33, rv["40"])
         self.assertEqual(1, len(rv))
 
     def test_unsigned(self):

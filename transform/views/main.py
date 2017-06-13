@@ -5,6 +5,7 @@ import os.path
 from flask import request, make_response, send_file, jsonify
 from jinja2 import Environment, PackageLoader
 from structlog import wrap_logger
+from sdx.common.logger_config import logger_initial_config
 
 from transform import app
 from transform import settings
@@ -14,7 +15,8 @@ from transform.transformers import PCKTransformer, PDFTransformer
 
 env = Environment(loader=PackageLoader('transform', 'templates'))
 
-logging.basicConfig(level=settings.LOGGING_LEVEL, format=settings.LOGGING_FORMAT)
+logger_initial_config(service_name='sdx-transform-cs',
+                      log_level=settings.LOGGING_LEVEL)
 logger = wrap_logger(logging.getLogger(__name__))
 
 
@@ -52,14 +54,19 @@ def server_error(error=None):
 def get_survey(survey_response):
     try:
         form_id = survey_response['collection']['instrument_id']
+        survey_id = survey_response.get("survey_id", "N/A")
+        tx_id = survey_response.get("tx_id", "N/A")
+        logger.info("Loading survey", survey="{0}-{1}.json".format(survey_id, form_id), tx_id=tx_id)
 
         fp = os.path.join(
             ".", "transform", "surveys",
             "{0}.{1}.json".format(survey_response['survey_id'], form_id)
         )
+        logger.info("Opening file", file=fp, tx_id=tx_id)
         with open(fp, 'r') as json_file:
             return json.load(json_file)
     except IOError:
+        logger.exception("Error opening file", file=fp, tx_id=tx_id)
         return False
 
 
@@ -128,6 +135,11 @@ def render_pdf():
 
     except IOError as e:
         return client_error("PDF:Could not render pdf buffer: {0}".format(repr(e)))
+    except Exception as e:
+        survey_id = survey_response.get("survey_id")
+        tx_id = survey_response.get("tx_id")
+        logger.exception("PDF:Generation failed", survey_id=survey_id, tx_id=tx_id)
+        raise e
 
     response = make_response(rendered_pdf)
     response.mimetype = 'application/pdf'
@@ -195,6 +207,8 @@ def common_software(sequence_no=1000, batch_number=0):
             except IOError as e:
                 return client_error("CS:Could not create zip buffer: {0}".format(repr(e)))
     except Exception as e:
+        tx_id = survey_response.get("tx_id")
+        logger.exception("CS:could not create files for survey", survey_id=survey_id, tx_id=tx_id)
         return server_error(e)
 
     logger.info("CS:SUCCESS")

@@ -1,5 +1,12 @@
 ### Unreleased
+  - Timestamp all logs as UTC
+  - Add common library logging
+  - Updated to support the refreshed MCI
   - Correct license attribution
+  - Remove generation of defaults for unanswered questions
+  - Reformat image to make answers more prominent
+  - Add codacy badge
+  - MCI refresh 
 
 ### 2.1.0 2017-04-03
   - Support non-unique survey ids
@@ -45,3 +52,4 @@
 
 ### 1.0.0 2016-08-17
   - Initial release
+

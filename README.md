@@ -1,18 +1,34 @@
 # sdx-transform-cs
 
-[![Build Status](https://travis-ci.org/ONSdigital/sdx-transform-cs.svg?branch=master)](https://travis-ci.org/ONSdigital/sdx-transform-cs)
+[![Build Status](https://travis-ci.org/ONSdigital/sdx-transform-cs.svg?branch=master)](https://travis-ci.org/ONSdigital/sdx-transform-cs) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/0d8f1899b0054322b9d0ec8f2bd62d86)](https://www.codacy.com/app/ons-sdc/sdx-transform-cs?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ONSdigital/sdx-transform-cs&amp;utm_campaign=Badge_Grade)
 
 The sde-transform-cs app is used within the Office National of Statistics (ONS) for transforming Survey Data Exchange (SDX) Surveys to formats in use in Common Software.
 
 ## Installation
 
-Using virtualenv and pip, create a new environment and install within using:
-
-    $ pip install -r requirements.txt
-
 The service has a dependency on the pdf2ppm commandline tool bundled in the poppler package. You can install this on a mac using:
 
     $ brew install poppler
+
+*It is recommended that this service is installed inside a virtualenv.*
+
+To install, use:
+
+```bash
+make build
+```
+
+To install using local sdx-common repo (requires SDX_HOME environment variable), use:
+
+```bash
+make dev
+```
+
+To run the test suite, use:
+
+```bash
+make test
+```
 
 It's also possible to build sdx-transform-cs within a container using docker. From the sdx-transform-cs directory:
 
