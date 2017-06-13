@@ -71,13 +71,18 @@ class MWSSTransformer(Transformer):
     package = __name__
     pattern = "../surveys/{survey_id}.{inst_id}.json"
 
-    @classmethod
-    def transform(cls, data, survey=None):
-        """Perform a transform on survey data."""
+    @staticmethod
+    def transform(data, survey=None):
+        """Perform a transform on survey data.
+
+        Defaults are not generated for missing values.
+        We will not receive any value for an aggregate total.
+
+        """
+        supplied = {i[:3] for i in data}
         return OrderedDict(
             (qid, fn(qid, data, dflt, survey))
-            for qid, (dflt, fn) in cls.ops().items()
-            if qid in data
+            for qid, (dflt, fn) in MWSSTransformer.ops().items()
         )
 
 
