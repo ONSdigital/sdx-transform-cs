@@ -20,11 +20,7 @@ class PCKTransformer(object):
         },
         "139": {
             "0001": "Q01B",
-        },
-        "mci": {
-            "refresh": "RSI10B", # TODO remove this once EQ ready for switch
         }
-
     }
 
     def __init__(self, survey, response_data):
