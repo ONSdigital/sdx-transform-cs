@@ -1,7 +1,7 @@
-from decimal import Decimal, InvalidOperation
 from collections import namedtuple
 from collections import OrderedDict
 import datetime
+from decimal import Decimal, InvalidOperation, ROUND_DOWN
 from functools import partial
 from functools import reduce
 import io
@@ -373,11 +373,27 @@ class MWSSTransformer:
 
     @staticmethod
     def transform(data, survey=None):
-        """Perform a transform on survey data."""
+        """Perform a transform on survey data.
+
+        We don't generate defaults for missing values.
+        We will not receive any value for an aggregate total.
+
+        """
+        pattern = re.compile("[0-9]+")
+
+        # Taking the qid for each supplied answer, and then also
+        # rounding down the first numeric component of each answered qid
+        # gives us the set of downstream questions we have data for.
+        supplied = set(itertools.chain.from_iterable((
+            Decimal(i.group(0)),
+            (Decimal(i.group(0)) / 10).quantize(Decimal(1), rounding=ROUND_DOWN) * 10)
+            for i in (pattern.match(key) for key in data)
+            if i is not None
+        ))
         return OrderedDict(
             (qid, fn(qid, data, dflt, survey))
             for qid, (dflt, fn) in MWSSTransformer.ops().items()
-            if qid in data
+            if Decimal(qid) in supplied
         )
 
     @staticmethod
