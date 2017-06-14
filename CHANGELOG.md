@@ -1,5 +1,8 @@
 ### Unreleased
 
+### 2.2.1 2017-06-14
+  - Incident 0049895 MWSS fix for aggregate question code
+
 ### 2.2.0 2017-06-12
   - Correct license attribution
   - Remove generation of defaults for unanswered questions
