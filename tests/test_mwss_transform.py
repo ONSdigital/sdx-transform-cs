@@ -8,10 +8,11 @@ import zipfile
 
 import pkg_resources
 
-from transform.transformers.MWSSTransformer import CSFormatter
+from sdx.common.formats.cs_formatter import CSFormatter
+from sdx.common.processor import Processor
+from sdx.common.survey import Survey
+from sdx.common.test.test_transformer import PackingTests as TransformerTests
 from transform.transformers.MWSSTransformer import MWSSTransformer
-from transform.transformers.MWSSTransformer import Processor
-from transform.transformers.MWSSTransformer import Survey
 
 
 class SurveyTests(unittest.TestCase):
@@ -88,7 +89,7 @@ class OpTests(unittest.TestCase):
             },
             "submitted_at": "2017-04-12T13:01:26Z",
         }
-        tfr = MWSSTransformer(response, 0, 0)
+        tfr = MWSSTransformer(response, 0)
         self.assertTrue(tfr)
 
 
@@ -590,7 +591,7 @@ class BatchFileTests(unittest.TestCase):
                 "ru_ref": "12345678901A"
             }
         }, batch_nr=0, seq_nr=0)
-        rv = Survey.load_survey(ids)
+        rv = Survey.load_survey(ids, MWSSTransformer.package, MWSSTransformer.pattern)
         self.assertIsNotNone(rv)
 
     def test_load_survey_miss(self):
@@ -606,7 +607,7 @@ class BatchFileTests(unittest.TestCase):
                 "ru_ref": "12345678901A"
             }
         }, batch_nr=0, seq_nr=0)
-        rv = Survey.load_survey(ids)
+        rv = Survey.load_survey(ids, MWSSTransformer.package, MWSSTransformer.pattern)
         self.assertIsNone(rv)
 
     def test_pck_lines(self):
@@ -708,23 +709,11 @@ class BatchFileTests(unittest.TestCase):
 
 class PackingTests(unittest.TestCase):
 
-    def test_requires_batch_nr(self):
-        self.assertRaises(
-            TypeError,
-            MWSSTransformer,
-            {},
-            seq_nr=0
-        )
-
-    def test_requires_seq_nr(self):
-        self.assertRaises(
-            TypeError,
-            MWSSTransformer,
-            {},
-            batch_nr=0
-        )
-
     def test_tempdir(self):
+        settings = TransformerTests.Settings(
+            "\\\\NP3RVWAPXX370\\SDX_preprod",
+            "EDC_QImages"
+        )
         response = {
             "survey_id": "134",
             "tx_id": "27923934-62de-475c-bc01-433c09fd38b8",
@@ -739,17 +728,14 @@ class PackingTests(unittest.TestCase):
             "submitted_at": "2017-04-12T13:01:26Z",
             "data": {}
         }
-        tfr = MWSSTransformer(response, 0, 0)
+        tfr = MWSSTransformer(response, 0)
         self.assertEqual(
             "REC1204_0000.DAT",
             CSFormatter.idbr_name(
                 **tfr.ids._asdict()
             )
         )
-        try:
-            tfr.pack(img_seq=itertools.count())
-        except KeyError:
-            self.fail("TODO: define pages of survey.")
+        tfr.pack(settings=settings, img_seq=itertools.count())
 
     def test_image_sequence_number(self):
         response = {
@@ -767,8 +753,13 @@ class PackingTests(unittest.TestCase):
             "data": {}
         }
         seq_nr = 12345
-        tfr = MWSSTransformer(response, 0, seq_nr=seq_nr)
-        zf = zipfile.ZipFile(tfr.pack(img_seq=itertools.count()))
+        tfr = MWSSTransformer(response, seq_nr=seq_nr)
+        zf = zipfile.ZipFile(
+            tfr.pack(
+                img_seq=itertools.count(),
+                settings=TransformerTests.Settings("", ""),
+            )
+        )
         fn = next(i for i in zf.namelist() if os.path.splitext(i)[1] == ".csv")
         bits = os.path.splitext(fn)[0].split("_")
         self.assertEqual(seq_nr, int(bits[-1]))
