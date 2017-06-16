@@ -8,10 +8,11 @@ import zipfile
 
 import pkg_resources
 
-from transform.transformers.MWSSTransformer import CSFormatter
+from sdx.common.formats.cs_formatter import CSFormatter
+from sdx.common.processor import Processor
+from sdx.common.survey import Survey
+from sdx.common.test.test_transformer import PackingTests as TransformerTests
 from transform.transformers.MWSSTransformer import MWSSTransformer
-from transform.transformers.MWSSTransformer import Processor
-from transform.transformers.MWSSTransformer import Survey
 
 
 class SurveyTests(unittest.TestCase):
@@ -88,7 +89,7 @@ class OpTests(unittest.TestCase):
             },
             "submitted_at": "2017-04-12T13:01:26Z",
         }
-        tfr = MWSSTransformer(response, 0, 0)
+        tfr = MWSSTransformer(response, 0)
         self.assertTrue(tfr)
 
 
@@ -404,7 +405,7 @@ class TransformTests(unittest.TestCase):
     def test_no_defaults_with_data(self):
         rv = MWSSTransformer.transform({"40": "33"})
         self.assertIsInstance(rv, OrderedDict)
-        self.assertEquals(33, rv["40"])
+        self.assertEqual(33, rv["40"])
         self.assertEqual(1, len(rv))
 
     def test_unsigned(self):
@@ -442,6 +443,124 @@ class TransformTests(unittest.TestCase):
                 self.assertEqual([], rv[qid])
                 self.assertEqual(2, CSFormatter.pck_value(qid, rv[qid]))
 
+    def test_aggregate_fourweekly_changes(self):
+        """
+        QIds 190w4 - 197w4 used for fourweekly changes questions; all aggregated as 190.
+
+        """
+        for qid in ("190w4", "191w4", "192w4", "193w4", "194w4", "195w4", "196w4", "197w4"):
+            with self.subTest(qid=qid):
+                rv = MWSSTransformer.transform({qid: ""})
+                self.assertIs(False, rv["190"])
+                rv = MWSSTransformer.transform({qid: "No"})
+                self.assertIs(False, rv["190"])
+                rv = MWSSTransformer.transform({qid: "Yes"})
+                self.assertIs(True, rv["190"])
+
+    def test_aggregate_fourweekly_increase(self):
+        """
+        Increase in fourweekly pay (200w4); aggregated with monthly increase (200).
+
+        """
+        rv = MWSSTransformer.transform({"200w4": "25"})
+        self.assertIs(True, rv["200"])
+
+    def test_aggregate_fourweekly_increase_date(self):
+        """
+        Date of increase in fourweekly pay (210w4); aggregated with monthly (210).
+
+        """
+        rv = MWSSTransformer.transform({"210w4": "2017-01-11"})
+        self.assertEqual(1, len(rv["210"]))
+        self.assertEqual(11, rv["210"][0].day)
+        self.assertEqual(1, rv["210"][0].month)
+
+    def test_aggregate_fourweekly_increase_employees(self):
+        """
+        Employees with increase in fourweekly pay (220w4);
+        aggregated with monthly increase (220).
+
+        """
+        rv = MWSSTransformer.transform({"220w4": "25"})
+        self.assertIs(True, rv["220"])
+
+    def test_aggregate_monthly_changes(self):
+        """
+        QIds 190m - 197m used for monthly changes questions; all aggregated as 190.
+
+        """
+        for qid in ("190m", "191m", "192m", "193m", "194m", "195m", "196m", "197m"):
+            with self.subTest(qid=qid):
+                rv = MWSSTransformer.transform({qid: ""})
+                self.assertFalse(rv["190"])
+                rv = MWSSTransformer.transform({qid: "No"})
+                self.assertFalse(rv["190"])
+                rv = MWSSTransformer.transform({qid: "Yes"})
+                self.assertTrue(rv["190"])
+
+    def test_aggregate_weekly_comments(self):
+        """
+        QIds 300w, 300f, 300m, 300w4 & 300w5; all aggregated as 300.
+
+        """
+        for qid in ("300w", "300f", "300m", "300w4", "300w5"):
+            with self.subTest(qid=qid):
+                rv = MWSSTransformer.transform({qid: "This is a comment"})
+                self.assertEqual(True, rv["300"])
+                self.assertEqual(1, len(rv))
+
+    def test_aggregate_monthly_paid_employees(self):
+        """
+        QIds 140m, 140w4, 140w5 are added to give a value for monthly paid employees (140).
+
+        """
+        for qid in ("140m", "140w4", "140w5"):
+            with self.subTest(qid=qid):
+                rv = MWSSTransformer.transform({qid: "25"})
+                self.assertEqual(25, rv["140"])
+                self.assertEqual(1, len(rv))
+
+    def test_aggregate_fiveweekly_changes(self):
+        """
+        QIds 190w5 - 197w5 used for fiveweekly changes questions; all aggregated as 190.
+
+        """
+        for qid in ("190w5", "191w5", "192w5", "193w5", "194w5", "195w5", "196w5", "197w5"):
+            with self.subTest(qid=qid):
+                rv = MWSSTransformer.transform({qid: ""})
+                self.assertFalse(rv["190"])
+                rv = MWSSTransformer.transform({qid: "No"})
+                self.assertFalse(rv["190"])
+                rv = MWSSTransformer.transform({qid: "Yes"})
+                self.assertTrue(rv["190"])
+
+    def test_aggregate_fiveweekly_increase(self):
+        """
+        Increase in fiveweekly pay (200w5); aggregated with monthly increase (200).
+
+        """
+        rv = MWSSTransformer.transform({"200w5": "25"})
+        self.assertIs(True, rv["200"])
+
+    def test_aggregate_fiveweekly_increase_date(self):
+        """
+        Date of increase in fiveweekly pay (210w5); aggregated with monthly (210).
+
+        """
+        rv = MWSSTransformer.transform({"210w5": "2017-01-11"})
+        self.assertEqual(1, len(rv["210"]))
+        self.assertEqual(11, rv["210"][0].day)
+        self.assertEqual(1, rv["210"][0].month)
+
+    def test_aggregate_fiveweekly_increase_employees(self):
+        """
+        Employees with increase in fiveweekly pay (220w5);
+        aggregated with monthly increase (220).
+
+        """
+        rv = MWSSTransformer.transform({"220w5": "25"})
+        self.assertIs(True, rv["220"])
+
 
 class BatchFileTests(unittest.TestCase):
 
@@ -472,7 +591,7 @@ class BatchFileTests(unittest.TestCase):
                 "ru_ref": "12345678901A"
             }
         }, batch_nr=0, seq_nr=0)
-        rv = Survey.load_survey(ids)
+        rv = Survey.load_survey(ids, MWSSTransformer.package, MWSSTransformer.pattern)
         self.assertIsNotNone(rv)
 
     def test_load_survey_miss(self):
@@ -488,7 +607,7 @@ class BatchFileTests(unittest.TestCase):
                 "ru_ref": "12345678901A"
             }
         }, batch_nr=0, seq_nr=0)
-        rv = Survey.load_survey(ids)
+        rv = Survey.load_survey(ids, MWSSTransformer.package, MWSSTransformer.pattern)
         self.assertIsNone(rv)
 
     def test_pck_lines(self):
@@ -590,23 +709,11 @@ class BatchFileTests(unittest.TestCase):
 
 class PackingTests(unittest.TestCase):
 
-    def test_requires_batch_nr(self):
-        self.assertRaises(
-            TypeError,
-            MWSSTransformer,
-            {},
-            seq_nr=0
-        )
-
-    def test_requires_seq_nr(self):
-        self.assertRaises(
-            TypeError,
-            MWSSTransformer,
-            {},
-            batch_nr=0
-        )
-
     def test_tempdir(self):
+        settings = TransformerTests.Settings(
+            "\\\\NP3RVWAPXX370\\SDX_preprod",
+            "EDC_QImages"
+        )
         response = {
             "survey_id": "134",
             "tx_id": "27923934-62de-475c-bc01-433c09fd38b8",
@@ -621,17 +728,14 @@ class PackingTests(unittest.TestCase):
             "submitted_at": "2017-04-12T13:01:26Z",
             "data": {}
         }
-        tfr = MWSSTransformer(response, 0, 0)
+        tfr = MWSSTransformer(response, 0)
         self.assertEqual(
             "REC1204_0000.DAT",
             CSFormatter.idbr_name(
                 **tfr.ids._asdict()
             )
         )
-        try:
-            tfr.pack(img_seq=itertools.count())
-        except KeyError:
-            self.fail("TODO: define pages of survey.")
+        tfr.pack(settings=settings, img_seq=itertools.count())
 
     def test_image_sequence_number(self):
         response = {
@@ -649,8 +753,13 @@ class PackingTests(unittest.TestCase):
             "data": {}
         }
         seq_nr = 12345
-        tfr = MWSSTransformer(response, 0, seq_nr=seq_nr)
-        zf = zipfile.ZipFile(tfr.pack(img_seq=itertools.count()))
+        tfr = MWSSTransformer(response, seq_nr=seq_nr)
+        zf = zipfile.ZipFile(
+            tfr.pack(
+                img_seq=itertools.count(),
+                settings=TransformerTests.Settings("", ""),
+            )
+        )
         fn = next(i for i in zf.namelist() if os.path.splitext(i)[1] == ".csv")
         bits = os.path.splitext(fn)[0].split("_")
         self.assertEqual(seq_nr, int(bits[-1]))
