@@ -12,4 +12,5 @@ bin/
 include/
 lib/
 pip-selfcheck.json
-
+coverage.xml
+.coverage

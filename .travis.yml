@@ -8,5 +8,11 @@ before_install:
   - sudo apt-get install -y poppler-utils
   - git clone https://github.com/ONSdigital/sdx-common.git
   - pip3 install ./sdx-common
-install: make build
-script: make test
+install:
+  - make build
+  - pip install codecov
+script:
+  - make test
+  - coverage run -m unittest tests/*.py
+after_success:
+  - codecov
