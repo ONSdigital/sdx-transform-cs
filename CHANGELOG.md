@@ -7,6 +7,7 @@
   - Reformat image to make answers more prominent
   - Add codacy badge
   - MCI refresh 
+  - Add support for codecov to see unit test coverage
 
 ### 2.1.0 2017-04-03
   - Support non-unique survey ids
@@ -52,4 +53,3 @@
 
 ### 1.0.0 2016-08-17
   - Initial release
-
