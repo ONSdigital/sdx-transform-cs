@@ -1,4 +1,6 @@
 ### Unreleased
+
+### 2.3.0 2017-06-19
   - Timestamp all logs as UTC
   - Add common library logging
   - Updated to support the refreshed MCI
@@ -8,6 +10,13 @@
   - Add codacy badge
   - MCI refresh 
   - Add support for codecov to see unit test coverage
+
+### 2.2.1 2017-06-14
+  - Incident 0049895 MWSS fix for aggregate question code
+
+### 2.2.0 2017-06-12
+  - Correct license attribution
+  - Remove generation of defaults for unanswered questions
 
 ### 2.1.0 2017-04-03
   - Support non-unique survey ids

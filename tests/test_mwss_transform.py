@@ -709,6 +709,25 @@ class BatchFileTests(unittest.TestCase):
 
 class PackingTests(unittest.TestCase):
 
+    def test_requires_batch_nr(self):
+        self.assertRaises(
+            TypeError,
+            MWSSTransformer,
+            {},
+            seq_nr=0
+        )
+        rv = CSFormatter.pck_lines(data, **ids._asdict())
+        self.assertEqual([
+            "FV          ",
+            "0005:49900001225C:200911",
+            "0040 00000000002",
+            "0140 00000000124",
+            "0151 00000217222",
+        ], rv)
+
+
+class PackingTests(unittest.TestCase):
+
     def test_tempdir(self):
         settings = TransformerTests.Settings(
             "\\\\NP3RVWAPXX370\\SDX_preprod",
