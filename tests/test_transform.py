@@ -108,10 +108,14 @@ class TestTransformService(unittest.TestCase):
             print("Loading scenario %s " % scenario_filename)
             payload = get_file_as_string(scenario_filename)
             expected_response = get_expected_output(scenario_filename, 'pck')
+            print("Expected response")
+            print(expected_response)
 
             r = self.app.post(self.transform_pck_endpoint, data=payload)
 
             actual_response = r.data.decode('UTF8')
+            print("Actual response")
+            print(actual_response)
 
             self.assertEqual(actual_response, expected_response)
 

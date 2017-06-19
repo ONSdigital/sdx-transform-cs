@@ -6,5 +6,13 @@ sudo: required
 before_install:
   - sudo apt-get update
   - sudo apt-get install -y poppler-utils
-install: make
-script: make test
+  - git clone https://github.com/ONSdigital/sdx-common.git
+  - pip3 install ./sdx-common
+install:
+  - make build
+  - pip install codecov
+script:
+  - make test
+  - coverage run -m unittest tests/*.py
+after_success:
+  - codecov

@@ -1,18 +1,34 @@
 # sdx-transform-cs
 
-[![Build Status](https://travis-ci.org/ONSdigital/sdx-transform-cs.svg?branch=master)](https://travis-ci.org/ONSdigital/sdx-transform-cs)
+[![Build Status](https://travis-ci.org/ONSdigital/sdx-transform-cs.svg?branch=master)](https://travis-ci.org/ONSdigital/sdx-transform-cs) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/0d8f1899b0054322b9d0ec8f2bd62d86)](https://www.codacy.com/app/ons-sdc/sdx-transform-cs?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=ONSdigital/sdx-transform-cs&amp;utm_campaign=Badge_Grade) [![codecov](https://codecov.io/gh/ONSdigital/sdx-transform-cs/branch/master/graph/badge.svg)](https://codecov.io/gh/ONSdigital/sdx-transform-cs)
 
 The sde-transform-cs app is used within the Office National of Statistics (ONS) for transforming Survey Data Exchange (SDX) Surveys to formats in use in Common Software.
 
 ## Installation
 
-Using virtualenv and pip, create a new environment and install within using:
-
-    $ pip install -r requirements.txt
-
 The service has a dependency on the pdf2ppm commandline tool bundled in the poppler package. You can install this on a mac using:
 
     $ brew install poppler
+
+*It is recommended that this service is installed inside a virtualenv.*
+
+To install, use:
+
+```bash
+make build
+```
+
+To install using local sdx-common repo (requires SDX_HOME environment variable), use:
+
+```bash
+make dev
+```
+
+To run the test suite, use:
+
+```bash
+make test
+```
 
 It's also possible to build sdx-transform-cs within a container using docker. From the sdx-transform-cs directory:
 
@@ -74,10 +90,28 @@ data_to_transform = '''{
 
 r = requests.post('http://127.0.0.1:5000/pck', data=data_to_transform)
 
-r.data = 
+r.data =
 
 '''FBFV03000012/03/16
 FV          
 RSI7B:12345678901A:0216'''
 
 ```
+
+## Configuration
+
+Some of important environment variables available for configuration are listed below:
+
+| Environment Variable    | Default                               | Description
+|-------------------------|---------------------------------------|----------------
+| SDX_SEQUENCE_URL        | `http://sdx-sequence:5000`            | URL of the ``sdx-sequence`` service
+| FTP_HOST                | `\\\\NP3-------370\\SDX_preprod\\`    | FTP host
+| SDX_FTP_IMAGE_PATH      | `EDC_QImages`                         | Location of EDC Images
+| SDX_FTP DATA_PATH       | `EDC_QData`                           | Location of EDC data
+| SDX_FTP_RECEIPT_PATH    | `EDC_QReceipts`                       | Location of EDC receipts
+
+### License
+
+Copyright © 2016, Office for National Statistics (https://www.ons.gov.uk)
+
+Released under MIT license, see [LICENSE](LICENSE) for details.
