@@ -1,4 +1,6 @@
 ### Unreleased
+
+### 2.3.0 2017-06-19
   - Timestamp all logs as UTC
   - Add common library logging
   - Updated to support the refreshed MCI
