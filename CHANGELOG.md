@@ -1,4 +1,5 @@
 ### Unreleased
+  - Update and pin version of sdx-common to 0.7.0
 
 ### 2.3.0 2017-06-19
   - Timestamp all logs as UTC
@@ -8,7 +9,7 @@
   - Remove generation of defaults for unanswered questions
   - Reformat image to make answers more prominent
   - Add codacy badge
-  - MCI refresh 
+  - MCI refresh
   - Add support for codecov to see unit test coverage
 
 ### 2.2.1 2017-06-14
