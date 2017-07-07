@@ -29,3 +29,10 @@ class TestPDFTransformer(unittest.TestCase):
             actual_date = pdf_transformer.get_localised_date(response['submitted_at'], timezone='Europe/Moscow')
 
             self.assertEqual(expected_date, actual_date)
+
+    def test_new_survey(self):
+        with open("./transform/surveys/023.0102.json") as survey:
+            response = json.loads(test_message)
+            pdf_transformer = PDFTransformer(survey, response)
+
+            self.assertEqual(pdf_transformer.response['metadata'], response['metadata'])
