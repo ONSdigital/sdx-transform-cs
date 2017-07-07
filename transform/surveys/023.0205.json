@@ -5,15 +5,87 @@
   "comments": "true",
   "question_groups": [
     {
-      "title": "Comments",
-      "questions": [{
-        "text": "Please explain any movements in your data e.g. sale held, branches opened or sold, extreme weather, or temporary closure of shop",
-        "question_id": "146",
-        "type": "contains"
-      }]
+        "title": "Changes in total retail turnover",
+        "questions": [
+          {
+            "text": "Did any significant changes occur to the total retail turnover?",
+            "question_id": "146a",
+            "type": "radio",
+            "options": [
+              "Yes",
+              "No"
+            ]
+          },
+          {
+            "text": "Please describe the changes in total retail turnover for in more detail",
+            "question_id": "146",
+            "type": "contains"
+          }
+        ]
     },
     {
-      "title": "1. Period",
+        "title": "Please indicate the reasons for any changes in the total retail turnover",
+        "questions": [
+          {
+            "text": "Select all that apply",
+            "question_id": "146b",
+            "type": "checkbox",
+            "options": [
+              "In-store / online promotions"
+            ]
+          },
+          {
+            "text": "Select all that apply",
+            "question_id": "146c",
+            "type": "checkbox",
+            "options": [
+              "Special events (e.g. sporting events)"
+            ]
+          },
+          {
+            "text": "Select all that apply",
+            "question_id": "146d",
+            "type": "checkbox",
+            "options": [
+              "Calendar events (e.g. Christmas, Easter, Bank Holiday)"
+            ]
+          },
+          {
+            "text": "Select all that apply",
+            "question_id": "146e",
+            "type": "checkbox",
+            "options": [
+              "Weather"
+            ]
+          },
+          {
+            "text": "Select all that apply",
+            "question_id": "146f",
+            "type": "checkbox",
+            "options": [
+              "Store closures"
+            ]
+          },
+          {
+            "text": "Select all that apply",
+            "question_id": "146g",
+            "type": "checkbox",
+            "options": [
+              "Store openings"
+            ]
+          },
+          {
+            "text": "Select all that apply",
+            "question_id": "146h",
+            "type": "checkbox",
+            "options": [
+              "Other"
+            ]
+          }
+        ]
+    },
+    {
+      "title": "2. Period",
       "questions": [
         {
           "text": "From",
@@ -28,7 +100,7 @@
       ]
     },
     {
-      "title": "2. Commodoties - Retail Turnover",
+      "title": "3. Commodoties - Retail Turnover",
       "meta": "(£)",
       "questions": [
         {
@@ -58,14 +130,14 @@
       ]
     },
     {
-      "title": "3.",
+      "title": "4.",
       "questions": [{
           "text": "Of these figures, how much were from internet sales?",
           "question_id": "21"
       }]
     },
     {
-      "title": "4.",
+      "title": "5.",
       "questions": [{
           "text": "Automotive Fuel",
           "question_id": "27"

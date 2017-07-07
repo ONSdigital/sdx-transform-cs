@@ -1,5 +1,6 @@
 ### Unreleased
   - Update and pin version of sdx-common to 0.7.0
+  - EQ Survey Refresh
 
 ### 2.3.0 2017-06-19
   - Timestamp all logs as UTC
