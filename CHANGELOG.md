@@ -1,5 +1,6 @@
 ### Unreleased
   - Update and pin version of sdx-common to 0.7.0
+  - Remove use of SDX_HOME in makefile
 
 ### 2.3.0 2017-06-19
   - Timestamp all logs as UTC
