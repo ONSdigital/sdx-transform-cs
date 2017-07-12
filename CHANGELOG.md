@@ -3,6 +3,7 @@
 
 ### 2.4.0 2017-07-10
   - Update and pin version of sdx-common to 0.7.0
+  - EQ MCI Survey Refresh
 
 ### 2.3.0 2017-06-19
   - Timestamp all logs as UTC
