@@ -1,5 +1,4 @@
 ### Unreleased
-  - Remove use of SDX_HOME in makefile
   - EQ MCI Survey Refresh
 
 ### 2.4.0 2017-07-10
