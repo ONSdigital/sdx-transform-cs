@@ -84,7 +84,7 @@
         ]
     },
     {
-      "title": "2. Period",
+      "title": "1. Period",
       "questions": [
         {
           "text": "From",
@@ -95,36 +95,6 @@
           "text": "To",
           "question_id": "12",
           "type": "date"
-        }
-      ]
-    },
-    {
-      "title": "3. Commodoties - Retail Turnover",
-      "meta": "(£)",
-      "questions": [
-        {
-          "text": "Food",
-          "question_id": "22"
-        },
-        {
-          "text": "Alcohol, Confectionary and Tobacco",
-          "question_id": "23"
-        },
-        {
-          "text": "Clothing and Footwear",
-          "question_id": "24"
-        },
-        {
-          "text": "Household goods",
-          "question_id": "25"
-        },
-        {
-          "text": "Other Goods",
-          "question_id": "26"
-        },
-        {
-          "text": "Total Retail Sales",
-          "question_id": "20"
         }
       ]
     },
