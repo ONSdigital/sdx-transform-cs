@@ -84,26 +84,6 @@
         ]
     },
     {
-      "title": "1. Employees",
-      "questions": [
-        {
-          "text": "Male employees working more than 30 hours per week?",
-          "question_id": "51"
-        }, {
-          "text": "Male employees working less than 30 hours per week?",
-          "question_id": "52"
-        }, {
-          "text": "Female employees working more than 30 hours per week?",
-          "question_id": "53"
-        }, {
-          "text": "Female employees working less than 30 hours per week?",
-          "question_id": "54"
-        }, {
-          "text": "Total employees",
-          "question_id": "50"
-      }]
-    },
-    {
       "title": "2. Period",
       "questions": [
         {
@@ -153,6 +133,26 @@
       "questions": [{
           "text": "Of these figures, how much were from internet sales?",
           "question_id": "21"
+      }]
+    },
+    {
+      "title": "Employees",
+      "questions": [
+        {
+          "text": "Male employees working more than 30 hours per week?",
+          "question_id": "51"
+        }, {
+          "text": "Male employees working less than 30 hours per week?",
+          "question_id": "52"
+        }, {
+          "text": "Female employees working more than 30 hours per week?",
+          "question_id": "53"
+        }, {
+          "text": "Female employees working less than 30 hours per week?",
+          "question_id": "54"
+        }, {
+          "text": "Total employees",
+          "question_id": "50"
       }]
     },
     {

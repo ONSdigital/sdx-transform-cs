@@ -84,7 +84,7 @@
         ]
     },
     {
-      "title": "1. Period",
+      "title": "3. Period",
       "questions": [
         {
           "text": "From",
@@ -99,7 +99,7 @@
       ]
     },
     {
-      "title": "4.",
+      "title": "5.",
       "questions": [{
           "text": "Of these figures, how much were from internet sales?",
           "question_id": "21"
