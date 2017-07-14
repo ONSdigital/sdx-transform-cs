@@ -1,6 +1,6 @@
 PDFTOPPM := $(shell command -v pdftoppm 2> /dev/null)
 
-dev: check-env check-dependencies
+dev: check-dependencies
 	if pip list | grep sdx-common; \
 	then \
 		cd .. && pip3 uninstall -y sdx-common && pip3 install -I ./sdx-common; \
@@ -11,9 +11,11 @@ dev: check-env check-dependencies
 	pip3 install -r requirements.txt
 
 build: check-dependencies
+	git clone --branch 0.7.0 https://github.com/ONSdigital/sdx-common.git
+	pip3 install ./sdx-common
 	pip3 install -r requirements.txt
 
-test: build
+test: 
 	pip3 install -r test_requirements.txt
 	python3 -m unittest tests/*.py
 
@@ -25,9 +27,4 @@ ifndef PDFTOPPM
 	$(error Missing dependency 'pdftoppm')
 else
 	@ echo "Dependencies OK"
-endif
-
-check-env:
-ifeq ($(SDX_HOME),)
-	$(error SDX_HOME is not set)
 endif

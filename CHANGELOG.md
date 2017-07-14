@@ -1,8 +1,10 @@
 ### Unreleased
   - Change all instances of ADD to COPY in Dockerfile
+  - Remove use of SDX_HOME in makefile and add release tag to sdx-common clone
 
 ### 2.4.0 2017-07-10
   - Update and pin version of sdx-common to 0.7.0
+
 
 ### 2.3.0 2017-06-19
   - Timestamp all logs as UTC
