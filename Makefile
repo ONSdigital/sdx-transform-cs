@@ -15,7 +15,7 @@ build: check-dependencies
 	pip3 install ./sdx-common
 	pip3 install -r requirements.txt
 
-test: build
+test: 
 	pip3 install -r test_requirements.txt
 	python3 -m unittest tests/*.py
 
