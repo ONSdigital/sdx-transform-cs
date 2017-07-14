@@ -2,11 +2,11 @@ FROM python:3.5
 
 RUN apt-get update && apt-get install -y poppler-utils
 
-ADD requirements.txt /app/requirements.txt
+COPY requirements.txt /app/requirements.txt
 
-ADD server.py /app/server.py
-ADD transform /app/transform
-ADD startup.sh /app/startup.sh
+COPY server.py /app/server.py
+COPY transform /app/transform
+COPY startup.sh /app/startup.sh
 
 RUN mkdir -p /app/tmp
 RUN apt-get update -y

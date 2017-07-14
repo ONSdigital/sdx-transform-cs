@@ -1,4 +1,5 @@
 ### Unreleased
+  - Change all instances of ADD to COPY in Dockerfile
 
 ### 2.4.0 2017-07-10
   - Update and pin version of sdx-common to 0.7.0
