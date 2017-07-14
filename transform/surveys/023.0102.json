@@ -99,6 +99,16 @@
       ]
     },
     {
+      "title": "4. Retail Turnover",
+      "meta": "(£)",
+      "questions": [
+        {
+          "text": "Total Retail Sales",
+          "question_id": "20"
+        }
+      ]
+    },
+    {
       "title": "5.",
       "questions": [{
           "text": "Of these figures, how much were from internet sales?",

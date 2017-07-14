@@ -19,6 +19,11 @@
             "text": "Please describe the changes in total retail turnover for in more detail",
             "question_id": "146",
             "type": "contains"
+          },
+          {
+              "text": "Explain any significant changes in the number of employees",
+              "question_id": "147",
+              "type": "contains"
           }
         ]
     },
