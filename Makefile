@@ -1,24 +1,15 @@
 PDFTOPPM := $(shell command -v pdftoppm 2> /dev/null)
 
-dev: check-dependencies
-	if pip list | grep sdx-common; \
-	then \
-		cd .. && pip3 uninstall -y sdx-common && pip3 install -I ./sdx-common; \
-	else \
-		cd .. && pip3 install -I ./sdx-common; \
-	fi;
-
+build:
+	git clone -b 0.7.0 https://github.com/ONSdigital/sdx-common.git
+	pip install ./sdx-common
 	pip3 install -r requirements.txt
+	rm -rf sdx-common
 
-build: check-dependencies
-	pip3 install -r requirements.txt
-
-test: build
+test:
 	pip3 install -r test_requirements.txt
+	flake8 --exclude ./lib/*
 	python3 -m unittest tests/*.py
-
-start:
-	./startup.sh
 
 check-dependencies:
 ifndef PDFTOPPM
@@ -26,3 +17,6 @@ ifndef PDFTOPPM
 else
 	@ echo "Dependencies OK"
 endif
+
+clean:
+	rm -rf sdx-common
