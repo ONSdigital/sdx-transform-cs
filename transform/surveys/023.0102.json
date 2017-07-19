@@ -4,12 +4,84 @@
   "form_type": "0102",
   "question_groups": [
     {
-      "title": "Comments",
-      "questions": [{
-        "text": "Please indicate the reasons for any changes in the business's total retail turnover",
-        "question_id": "146",
-        "type": "contains"
-      }]
+        "title": "Changes in total retail turnover",
+        "questions": [
+          {
+            "text": "Did any significant changes occur to the total retail turnover?",
+            "question_id": "146a",
+            "type": "radio",
+            "options": [
+              "Yes",
+              "No"
+            ]
+          },
+          {
+            "text": "Please describe the changes in total retail turnover for in more detail",
+            "question_id": "146",
+            "type": "contains"
+          }
+        ]
+    },
+    {
+        "title": "Please indicate the reasons for any changes in the total retail turnover",
+        "questions": [
+          {
+            "text": "Select all that apply",
+            "question_id": "146b",
+            "type": "checkbox",
+            "options": [
+              "In-store / online promotions"
+            ]
+          },
+          {
+            "text": "Select all that apply",
+            "question_id": "146c",
+            "type": "checkbox",
+            "options": [
+              "Special events (e.g. sporting events)"
+            ]
+          },
+          {
+            "text": "Select all that apply",
+            "question_id": "146d",
+            "type": "checkbox",
+            "options": [
+              "Calendar events (e.g. Christmas, Easter, Bank Holiday)"
+            ]
+          },
+          {
+            "text": "Select all that apply",
+            "question_id": "146e",
+            "type": "checkbox",
+            "options": [
+              "Weather"
+            ]
+          },
+          {
+            "text": "Select all that apply",
+            "question_id": "146f",
+            "type": "checkbox",
+            "options": [
+              "Store closures"
+            ]
+          },
+          {
+            "text": "Select all that apply",
+            "question_id": "146g",
+            "type": "checkbox",
+            "options": [
+              "Store openings"
+            ]
+          },
+          {
+            "text": "Select all that apply",
+            "question_id": "146h",
+            "type": "checkbox",
+            "options": [
+              "Other"
+            ]
+          }
+        ]
     },
     {
       "title": "3. Period",
@@ -39,7 +111,7 @@
     {
       "title": "5.",
       "questions": [{
-          "text": "Of your total retail turnover, what was the value of internet sales?",
+          "text": "Of these figures, how much were from internet sales?",
           "question_id": "21"
       }]
     },
