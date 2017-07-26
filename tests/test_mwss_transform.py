@@ -718,7 +718,7 @@ class BatchFileTests(unittest.TestCase):
 
 class PackingTests(unittest.TestCase):
 
-    def test_requires_seq_nr(self):
+    def test_requires_ids(self):
         self.assertRaises(
             UserWarning,
             MWSSTransformer,
