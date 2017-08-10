@@ -1,4 +1,5 @@
 ### Unreleased
+  - Add hashes to requirements file
 
 ### 2.5.0 2017-07-25
   - EQ MCI Survey Refresh
