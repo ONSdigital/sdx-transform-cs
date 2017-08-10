@@ -3,7 +3,7 @@ PDFTOPPM := $(shell command -v pdftoppm 2> /dev/null)
 build:
 	git clone -b 0.7.0 https://github.com/ONSdigital/sdx-common.git
 	pip install ./sdx-common
-	pip3 install -r requirements.txt
+	pip3 install --require-hashes -r requirements.txt
 	rm -rf sdx-common
 
 test:
