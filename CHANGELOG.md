@@ -1,4 +1,6 @@
 ### Unreleased
+
+### 2.5.0 2017-07-25
   - EQ MCI Survey Refresh
   - Change all instances of ADD to COPY in Dockerfile
   - Remove use of SDX_HOME variable in makefile

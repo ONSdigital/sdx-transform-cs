@@ -414,6 +414,15 @@ class TransformTests(unittest.TestCase):
         item = CSFormatter.pck_item("40", rv["40"])
         self.assertEqual(item, "0040 00000000033")
 
+    def test_unsigned_decimals(self):
+        digits_ingested_as_bools = [100, 200]
+        for qNr in digits_ingested_as_bools:
+            qid = str(qNr)
+            with self.subTest(qNr=qNr, qid=qid):
+                rv = MWSSTransformer.transform({qid: "64.0"})
+                self.assertIs(True, rv[qid])
+                self.assertEqual(1, CSFormatter.pck_value(qid, rv[qid]))
+
     def test_currency(self):
         rv = MWSSTransformer.transform({"50": "36852"})
         self.assertEqual(36852, rv["50"])
@@ -707,26 +716,15 @@ class BatchFileTests(unittest.TestCase):
         ], rv)
 
 
-# class PackingTests(unittest.TestCase):
-
-#     def test_requires_batch_nr(self):
-#         self.assertRaises(
-#             TypeError,
-#             MWSSTransformer,
-#             {},
-#             seq_nr=0
-#         )
-#         rv = CSFormatter.pck_lines(data, **ids._asdict())
-#         self.assertEqual([
-#             "FV          ",
-#             "0005:49900001225C:200911",
-#             "0040 00000000002",
-#             "0140 00000000124",
-#             "0151 00000217222",
-#         ], rv)
-
-
 class PackingTests(unittest.TestCase):
+
+    def test_requires_ids(self):
+        self.assertRaises(
+            UserWarning,
+            MWSSTransformer,
+            {},
+            seq_nr=0
+        )
 
     def test_tempdir(self):
         settings = TransformerTests.Settings(
