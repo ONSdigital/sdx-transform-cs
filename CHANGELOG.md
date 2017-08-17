@@ -1,12 +1,13 @@
 ### Unreleased
+  - Ensure integrity and version of library dependencies
 
 ### 2.5.0 2017-07-25
   - EQ MCI Survey Refresh
   - Change all instances of ADD to COPY in Dockerfile
-  - Remove use of SDX_HOME variable in makefile
 
 ### 2.4.0 2017-07-10
   - Update and pin version of sdx-common to 0.7.0
+  - Remove use of SDX_HOME in makefile
 
 ### 2.3.0 2017-06-19
   - Timestamp all logs as UTC
