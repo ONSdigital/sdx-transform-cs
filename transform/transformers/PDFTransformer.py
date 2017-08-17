@@ -123,7 +123,7 @@ class PDFTransformer(object):
             for question in filter(lambda x: 'text' in x, question_group['questions']):
                 if question['question_id'] in self.response['data']:
                     try:
-                        answer = self.response['data'][question['question_id']]
+                        answer = str(self.response['data'][question['question_id']])
                     except KeyError:
                         answer = ''
 
@@ -176,6 +176,7 @@ def run():
     args = p.parse_args()
     rv = main(args)
     sys.exit(rv)
+
 
 if __name__ == "__main__":
     run()
