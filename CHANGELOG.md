@@ -1,4 +1,5 @@
 ### Unreleased
+  - Update sdx-common version
   - Ensure integrity and version of library dependencies
 
 ### 2.5.0 2017-07-25
