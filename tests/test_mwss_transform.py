@@ -400,7 +400,7 @@ class TransformTests(unittest.TestCase):
     def test_no_defaults_empty(self):
         rv = MWSSTransformer.transform({})
         self.assertIsInstance(rv, OrderedDict)
-        self.assertFalse(rv)
+        self.assertEqual([130, 131, 132], list(rv.keys()))
 
     def test_no_defaults_with_data(self):
         rv = MWSSTransformer.transform({"40": "33"})
