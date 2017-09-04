@@ -406,7 +406,7 @@ class TransformTests(unittest.TestCase):
         rv = MWSSTransformer.transform({"40": "33"})
         self.assertIsInstance(rv, OrderedDict)
         self.assertEqual(33, rv["40"])
-        self.assertEqual(1, len(rv))
+        self.assertEqual(4, len(rv))
 
     def test_unsigned(self):
         rv = MWSSTransformer.transform({"40": "33"})
@@ -435,6 +435,21 @@ class TransformTests(unittest.TestCase):
             qid = str(qNr)
             with self.subTest(qNr=qNr, qid=qid):
                 rv = MWSSTransformer.transform({qid: "64"})
+                self.assertIs(True, rv[qid])
+                self.assertEqual(1, CSFormatter.pck_value(qid, rv[qid]))
+                rv = MWSSTransformer.transform({qid: ""})
+                self.assertEqual(2, CSFormatter.pck_value(qid, rv[qid]))
+
+    def test_pay_frequency_as_bool(self):
+        pay_frequencies = {
+            130: "Calendar monthly",
+            131: "Four weekly",
+            132: "Five weekly",
+        }
+        for q, val in pay_frequencies.items():
+            qid = str(q)
+            with self.subTest(qid=qid, val=val):
+                rv = MWSSTransformer.transform({qid: val})
                 self.assertIs(True, rv[qid])
                 self.assertEqual(1, CSFormatter.pck_value(qid, rv[qid]))
                 rv = MWSSTransformer.transform({qid: ""})
