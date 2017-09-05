@@ -77,7 +77,7 @@ class MWSSTransformer(Transformer):
     def transform(data, survey=None):
         """Perform a transform on survey data.
 
-        We don't generate defaults for missing values.
+        We generate defaults only for certain mandatory values.
         We will not receive any value for an aggregate total.
 
         """

@@ -535,7 +535,7 @@ class TransformTests(unittest.TestCase):
             with self.subTest(qid=qid):
                 rv = MWSSTransformer.transform({qid: "This is a comment"})
                 self.assertEqual(True, rv["300"])
-                self.assertEqual(1, len(rv))
+                self.assertEqual(4, len(rv))
 
     def test_aggregate_monthly_paid_employees(self):
         """
@@ -546,7 +546,7 @@ class TransformTests(unittest.TestCase):
             with self.subTest(qid=qid):
                 rv = MWSSTransformer.transform({qid: "25"})
                 self.assertEqual(25, rv["140"])
-                self.assertEqual(1, len(rv))
+                self.assertEqual(4, len(rv))
 
     def test_aggregate_fiveweekly_changes(self):
         """
