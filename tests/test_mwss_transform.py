@@ -455,7 +455,7 @@ class TransformTests(unittest.TestCase):
                 rv = MWSSTransformer.transform({qid: ""})
                 self.assertIs(False, rv[qid])
                 self.assertEqual(2, CSFormatter.pck_value(qid, rv[qid]))
-                rv = MWSSTransformer.transform({qid: "Any other string"})
+                rv = MWSSTransformer.transform({})
                 self.assertIs(False, rv[qid])
                 self.assertEqual(2, CSFormatter.pck_value(qid, rv[qid]))
 

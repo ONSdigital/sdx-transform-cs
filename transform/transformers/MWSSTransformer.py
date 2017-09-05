@@ -92,10 +92,11 @@ class MWSSTransformer(Transformer):
             for i in (pattern.match(key) for key in data)
             if i is not None
         ))
+        mandatory = set([Decimal("130"), Decimal("131"), Decimal("132")])
         return OrderedDict(
             (qid, fn(qid, data, dflt, survey))
             for qid, (dflt, fn) in MWSSTransformer.ops().items()
-            if Decimal(qid) in supplied
+            if Decimal(qid) in supplied.union(mandatory)
         )
 
 
