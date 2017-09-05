@@ -688,7 +688,7 @@ class BatchFileTests(unittest.TestCase):
         self.assertEqual("A", ids.ru_check)
         self.assertEqual("200911", ids.period)
 
-    def test_pck_from_transformed_data(self):
+    def test_pck_from_untransformed_data(self):
         src = pkg_resources.resource_string(__name__, "replies/eq-mwss.json")
         reply = json.loads(src.decode("utf-8"))
         reply["tx_id"] = "27923934-62de-475c-bc01-433c09fd38b8"
@@ -710,7 +710,7 @@ class BatchFileTests(unittest.TestCase):
             "0151 00000217222",
         ], rv)
 
-    def test_pck_no_defaults(self):
+    def test_pck_from_transformed_data(self):
         src = pkg_resources.resource_string(__name__, "replies/eq-mwss.json")
         reply = json.loads(src.decode("utf-8"))
         reply["tx_id"] = "27923934-62de-475c-bc01-433c09fd38b8"
@@ -730,6 +730,9 @@ class BatchFileTests(unittest.TestCase):
             "FV          ",
             "0005:49900001225C:200911",
             "0040 00000000002",
+            "0130 00000000002",
+            "0131 00000000002",
+            "0132 00000000002",
             "0140 00000000124",
             "0151 00000217222",
         ], rv)
