@@ -397,12 +397,12 @@ class LogicTests(unittest.TestCase):
 
 class TransformTests(unittest.TestCase):
 
-    def test_no_defaults_empty(self):
+    def test_defaults_empty(self):
         rv = MWSSTransformer.transform({})
         self.assertIsInstance(rv, OrderedDict)
-        self.assertEqual([130, 131, 132], list(rv.keys()))
+        self.assertEqual([str(i) for i in (130, 131, 132)], list(rv.keys()))
 
-    def test_no_defaults_with_data(self):
+    def test_defaults_with_data(self):
         rv = MWSSTransformer.transform({"40": "33"})
         self.assertIsInstance(rv, OrderedDict)
         self.assertEqual(33, rv["40"])
@@ -453,6 +453,10 @@ class TransformTests(unittest.TestCase):
                 self.assertIs(True, rv[qid])
                 self.assertEqual(1, CSFormatter.pck_value(qid, rv[qid]))
                 rv = MWSSTransformer.transform({qid: ""})
+                self.assertIs(False, rv[qid])
+                self.assertEqual(2, CSFormatter.pck_value(qid, rv[qid]))
+                rv = MWSSTransformer.transform({qid: "Any other string"})
+                self.assertIs(False, rv[qid])
                 self.assertEqual(2, CSFormatter.pck_value(qid, rv[qid]))
 
     def test_dates_to_onetwo(self):
