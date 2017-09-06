@@ -1,5 +1,5 @@
 ### Unreleased
-  - Restored defaults for qids 130, 131, 132.
+  - Restore defaults for qids 130, 131, 132.
 
 ### 2.6.0 2017-08-23
   - Update sdx-common version
