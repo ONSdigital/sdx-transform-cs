@@ -397,16 +397,16 @@ class LogicTests(unittest.TestCase):
 
 class TransformTests(unittest.TestCase):
 
-    def test_no_defaults_empty(self):
+    def test_defaults_empty(self):
         rv = MWSSTransformer.transform({})
         self.assertIsInstance(rv, OrderedDict)
-        self.assertFalse(rv)
+        self.assertEqual([str(i) for i in (130, 131, 132)], list(rv.keys()))
 
-    def test_no_defaults_with_data(self):
+    def test_defaults_with_data(self):
         rv = MWSSTransformer.transform({"40": "33"})
         self.assertIsInstance(rv, OrderedDict)
         self.assertEqual(33, rv["40"])
-        self.assertEqual(1, len(rv))
+        self.assertEqual(4, len(rv))
 
     def test_unsigned(self):
         rv = MWSSTransformer.transform({"40": "33"})
@@ -438,6 +438,25 @@ class TransformTests(unittest.TestCase):
                 self.assertIs(True, rv[qid])
                 self.assertEqual(1, CSFormatter.pck_value(qid, rv[qid]))
                 rv = MWSSTransformer.transform({qid: ""})
+                self.assertEqual(2, CSFormatter.pck_value(qid, rv[qid]))
+
+    def test_pay_frequency_as_bool(self):
+        pay_frequencies = {
+            130: "Calendar monthly",
+            131: "Four weekly",
+            132: "Five weekly",
+        }
+        for q, val in pay_frequencies.items():
+            qid = str(q)
+            with self.subTest(qid=qid, val=val):
+                rv = MWSSTransformer.transform({qid: val})
+                self.assertIs(True, rv[qid])
+                self.assertEqual(1, CSFormatter.pck_value(qid, rv[qid]))
+                rv = MWSSTransformer.transform({qid: ""})
+                self.assertIs(False, rv[qid])
+                self.assertEqual(2, CSFormatter.pck_value(qid, rv[qid]))
+                rv = MWSSTransformer.transform({})
+                self.assertIs(False, rv[qid])
                 self.assertEqual(2, CSFormatter.pck_value(qid, rv[qid]))
 
     def test_dates_to_onetwo(self):
@@ -516,7 +535,7 @@ class TransformTests(unittest.TestCase):
             with self.subTest(qid=qid):
                 rv = MWSSTransformer.transform({qid: "This is a comment"})
                 self.assertEqual(True, rv["300"])
-                self.assertEqual(1, len(rv))
+                self.assertEqual(4, len(rv))
 
     def test_aggregate_monthly_paid_employees(self):
         """
@@ -527,7 +546,7 @@ class TransformTests(unittest.TestCase):
             with self.subTest(qid=qid):
                 rv = MWSSTransformer.transform({qid: "25"})
                 self.assertEqual(25, rv["140"])
-                self.assertEqual(1, len(rv))
+                self.assertEqual(4, len(rv))
 
     def test_aggregate_fiveweekly_changes(self):
         """
@@ -669,7 +688,7 @@ class BatchFileTests(unittest.TestCase):
         self.assertEqual("A", ids.ru_check)
         self.assertEqual("200911", ids.period)
 
-    def test_pck_from_transformed_data(self):
+    def test_pck_from_untransformed_data(self):
         src = pkg_resources.resource_string(__name__, "replies/eq-mwss.json")
         reply = json.loads(src.decode("utf-8"))
         reply["tx_id"] = "27923934-62de-475c-bc01-433c09fd38b8"
@@ -691,7 +710,7 @@ class BatchFileTests(unittest.TestCase):
             "0151 00000217222",
         ], rv)
 
-    def test_pck_no_defaults(self):
+    def test_pck_from_transformed_data(self):
         src = pkg_resources.resource_string(__name__, "replies/eq-mwss.json")
         reply = json.loads(src.decode("utf-8"))
         reply["tx_id"] = "27923934-62de-475c-bc01-433c09fd38b8"
@@ -711,6 +730,9 @@ class BatchFileTests(unittest.TestCase):
             "FV          ",
             "0005:49900001225C:200911",
             "0040 00000000002",
+            "0130 00000000002",
+            "0131 00000000002",
+            "0132 00000000002",
             "0140 00000000124",
             "0151 00000217222",
         ], rv)
