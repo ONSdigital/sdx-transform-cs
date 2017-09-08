@@ -1,5 +1,6 @@
 ### Unreleased
   - Restore defaults for qids 130, 131, 132.
+  - Remove pip `--require-hashes` requirement
 
 ### 2.6.0 2017-08-23
   - Update sdx-common version
