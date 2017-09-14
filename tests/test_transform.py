@@ -189,10 +189,9 @@ class TestTransformService(unittest.TestCase):
         self.assertEqual(r.status_code, 400)
 
     def test_cleanup(self):
-        locn = os.path.dirname("./tmp/")
-        ImageTransformer.cleanup(os.path.dirname("./tmp/"), locn)
         for dirpath, dirnames, files in os.walk('./tmp'):
-            if files:
-                self.assertFalse()
-            if not files:
-                self.assertTrue()
+            if dirnames:
+                ImageTransformer.cleanup(self, './tmp')
+            if not dirnames:
+                self.assertEqual(dirpath, './tmp')
+                self.assertEqual(dirnames, [])
