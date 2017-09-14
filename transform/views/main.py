@@ -162,12 +162,15 @@ def render_images():
 
     try:
         path = itransformer.create_pdf(survey, survey_response)
+        locn = os.path.dirname(path)
         images = list(itransformer.create_image_sequence(path))
         index = itransformer.create_image_index(images)
         zipfile = itransformer.create_zip(images, index)
-        itransformer.cleanup(os.path.dirname(path))
     except IOError as e:
+        logger.error(e)
         return client_error("IMAGES:Could not create zip buffer: {0}".format(repr(e)))
+    finally:
+        itransformer.cleanup(locn)
 
     logger.info("IMAGES:SUCCESS")
 
@@ -199,13 +202,15 @@ def common_software(sequence_no=1000, batch_number=0):
             ctransformer = CSTransformer(
                 logger, survey, survey_response, batch_number, sequence_no)
 
-            ctransformer.create_formats()
-            ctransformer.prepare_archive()
-            zipfile = ctransformer.create_zip()
             try:
-                ctransformer.cleanup()
+                ctransformer.create_formats()
+                ctransformer.prepare_archive()
+                zipfile = ctransformer.create_zip()
             except IOError as e:
                 return client_error("CS:Could not create zip buffer: {0}".format(repr(e)))
+            finally:
+                ctransformer.cleanup()
+
     except Exception as e:
         tx_id = survey_response.get("tx_id")
         logger.exception("CS:could not create files for survey", survey_id=survey_id, tx_id=tx_id)
