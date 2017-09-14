@@ -1,4 +1,5 @@
 ### Unreleased
+  - Removed SDX common clone in docker
   - Restore defaults for qids 130, 131, 132.
   - Remove pip `--require-hashes` requirement
 
