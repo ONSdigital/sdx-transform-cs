@@ -167,7 +167,6 @@ def render_images():
         index = itransformer.create_image_index(images)
         zipfile = itransformer.create_zip(images, index)
     except IOError as e:
-        logger.error(e)
         return client_error("IMAGES:Could not create zip buffer: {0}".format(repr(e)))
     finally:
         itransformer.cleanup(locn)
