@@ -195,3 +195,4 @@ class TestTransformService(unittest.TestCase):
             if not dirnames:
                 self.assertEqual(dirpath, './tmp')
                 self.assertEqual(dirnames, [])
+                self.assertEqual(files, [])
