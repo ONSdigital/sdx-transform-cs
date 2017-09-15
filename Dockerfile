@@ -8,6 +8,7 @@ COPY server.py /app/server.py
 COPY transform /app/transform
 COPY startup.sh /app/startup.sh
 COPY requirements.txt /app/requirements.txt
+COPY Makefile /app/Makefile
 
 RUN mkdir -p /app/tmp
 RUN apt-get update -y
@@ -18,7 +19,7 @@ RUN apt-get install -yq git gcc make build-essential python3-dev python3-reportl
 WORKDIR /app/
 
 RUN apt-get install build-essential libssl-dev libffi-dev -y
-RUN pip3 install --no-cache-dir -U -r /app/requirements.txt
+RUN make build
 
 EXPOSE 5000
 
