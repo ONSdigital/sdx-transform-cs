@@ -2,8 +2,6 @@ FROM onsdigital/flask-crypto-queue
 
 RUN apt-get update && apt-get install -y poppler-utils
 
-COPY requirements.txt /app/requirements.txt
-
 COPY server.py /app/server.py
 COPY transform /app/transform
 COPY startup.sh /app/startup.sh
