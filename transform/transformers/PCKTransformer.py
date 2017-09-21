@@ -112,9 +112,11 @@ class PCKTransformer(object):
         form_id = self.get_cs_form_id()
         if self.survey['survey_id'] == '023':
             if '11' not in self.data:
-                self.data['11'] = self.response['metadata']['ref_period_start_date']
+                start_date = datetime.strptime(self.response['metadata']['ref_period_start_date'], "%Y-%m-%d")
+                self.data['11'] = start_date.strftime("%d/%m/%y")
             if '12' not in self.data:
-                self.data['12'] = self.response['metadata']['ref_period_end_date']
+                end_date = datetime.strptime(self.response['metadata']['ref_period_end_date'], "%Y-%m-%d")
+                self.data['12'] = end_date.strftime("%d/%m/%y")
 
     def preprocess_comments(self):
         '''
