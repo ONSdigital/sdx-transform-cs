@@ -109,8 +109,8 @@ class PCKTransformer(object):
         If questions 11 or 12 don't appear in the survey data, then populate
         them with the period start and end date found in the metadata
         '''
-        form_type = self.form_types[self.survey['survey_id']]
-        if self.survey['survey_id'] == '023' and form_type in self.form_types['023']:
+        form_id = self.get_cs_form_id()
+        if self.survey['survey_id'] == '023':
             if '11' not in self.data:
                 self.data['11'] = self.response['metadata']['ref_period_start_date']
             if '12' not in self.data:
