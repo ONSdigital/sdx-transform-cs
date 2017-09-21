@@ -1,12 +1,12 @@
 import csv
+from datetime import datetime
 import glob
 import io
 import json
 import os
 import unittest
-import zipfile
-from datetime import datetime
 from unittest.mock import patch
+import zipfile
 
 import dateutil
 
