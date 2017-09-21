@@ -135,7 +135,10 @@ class PCKTransformer(object):
         in a request and derives values to use in response
         '''
         derived = []
-        self.populate_period_data()
+        try:
+            self.populate_period_data()
+        except KeyError:
+            logger.info("Missing metadata")
         answers = self.preprocess_comments()
 
         self.form_questions, self.form_question_types = self.get_form_questions()
