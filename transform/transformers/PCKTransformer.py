@@ -104,6 +104,18 @@ class PCKTransformer(object):
 
         return required
 
+    def populate_period_data(self):
+        '''
+        If questions 11 or 12 don't appear in the survey data, then populate
+        them with the period start and end date found in the metadata
+        '''
+        form_type = self.form_types[self.survey['survey_id']]
+        if self.survey['survey_id'] == '023' and form_type in self.form_types['023']:
+            if '11' not in self.data:
+                self.data['11'] = self.response['metadata']['ref_period_start_date']
+            if '12' not in self.data:
+                self.data['12'] = self.response['metadata']['ref_period_end_date']
+
     def preprocess_comments(self):
         '''
         147 or any 146x indicates a special comment type that should not be shown
@@ -122,6 +134,7 @@ class PCKTransformer(object):
         in a request and derives values to use in response
         '''
         derived = []
+        self.populate_period_data()
         answers = self.preprocess_comments()
 
         self.form_questions, self.form_question_types = self.get_form_questions()
