@@ -30,6 +30,9 @@ To run the test suite, use:
 make test
 ```
 
+NOTE: .pck and .nobatch test files are required to not have a newline character at the end of the file.
+A simple way to remove it is to do the following command `perl -pi -e 'chomp if eof' filename`
+
 It's also possible to build sdx-transform-cs within a container using docker. From the sdx-transform-cs directory:
 
     $ docker build -t sdx-transform-cs .

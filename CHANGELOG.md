@@ -3,6 +3,7 @@
   - Restore defaults for qids 130, 131, 132.
   - Remove pip `--require-hashes` requirement
   - Make use of sequence list endpoint
+  - Populate default dates on certain surveys from metadata
   - Add fix for cryptography install in docker
 
 ### 2.6.0 2017-08-23
