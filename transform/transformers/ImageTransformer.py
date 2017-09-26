@@ -174,7 +174,7 @@ class ImageTransformer(object):
             self.logger.error("Max retries exceeded (5)", request_url=request_url)
 
     def get_image_sequence_list(self, n):
-        sequence_url = "{0}/image-sequence?n={1}".format(self.settings.SDX_SEQUENCE_URL, n)
+        sequence_url = "{0}/image-sequence?n={1}".format(settings.SDX_SEQUENCE_URL, n)
 
         r = self.remote_call(sequence_url)
 
