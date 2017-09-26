@@ -66,10 +66,7 @@ class ImageTransformer(object):
         self.sequence_no = sequence_no
 
     def get_image_sequence_numbers(self):
-        sequence_numbers = []
-        for image in self.images:
-            sequence_number = self.get_image_sequence_no()
-            sequence_numbers.append(sequence_number)
+        sequence_numbers = self.get_image_sequence_list(len(self.images))
 
         self.logger.debug('Sequence numbers generated', sequence_numbers=sequence_numbers)
         return sequence_numbers
@@ -176,8 +173,8 @@ class ImageTransformer(object):
         except MaxRetryError:
             self.logger.error("Max retries exceeded (5)", request_url=request_url)
 
-    def get_image_sequence_no(self):
-        sequence_url = settings.SDX_SEQUENCE_URL + "/image-sequence"
+    def get_image_sequence_list(self, n):
+        sequence_url = "{0}/image-sequence?n={1}".format(settings.SDX_SEQUENCE_URL, n)
 
         r = self.remote_call(sequence_url)
 
@@ -185,7 +182,7 @@ class ImageTransformer(object):
             return False
 
         result = r.json()
-        return result['sequence_no']
+        return result['sequence_list']
 
 
 def parser(description=__doc__):
