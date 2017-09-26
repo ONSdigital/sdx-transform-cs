@@ -1,4 +1,5 @@
 ### Unreleased
+  - Update deleting tmp files
 
 ### 2.7.0 2017-09-25
   - Removed SDX common clone in docker
