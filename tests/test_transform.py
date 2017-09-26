@@ -1,16 +1,18 @@
-from transform import app
-
-import unittest
-import glob
-import os
-import io
-import zipfile
-from datetime import datetime
-import dateutil
 import csv
+from datetime import datetime
+import glob
+import io
 import json
-from transform.views.image_filters import format_date
+import os
+import unittest
 from unittest.mock import patch
+import zipfile
+
+import dateutil
+
+from transform import app
+from transform.transformers.ImageTransformer import ImageTransformer
+from transform.views.image_filters import format_date
 
 
 def get_file_as_string(filename):
@@ -186,3 +188,12 @@ class TestTransformService(unittest.TestCase):
         r = self.app.post(self.transform_pck_endpoint, data=payload)
 
         self.assertEqual(r.status_code, 400)
+
+    def test_cleanup(self):
+        for dirpath, dirnames, files in os.walk('./tmp'):
+            if dirnames:
+                ImageTransformer.cleanup(self, './tmp')
+            if not dirnames:
+                self.assertEqual(dirpath, './tmp')
+                self.assertEqual(dirnames, [])
+                self.assertEqual(files, [])
