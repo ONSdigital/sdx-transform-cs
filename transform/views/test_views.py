@@ -1,4 +1,3 @@
-from transform.transformers import PDFTransformer, ImageTransformer, CSTransformer
 from transform import app
 from jinja2 import Environment, PackageLoader
 
@@ -7,6 +6,8 @@ import logging
 from structlog import wrap_logger
 import json
 import os.path
+
+from sdx.common.transformer import Transformer, ImageTransformer, PDFTransformer
 
 logger = wrap_logger(logging.getLogger(__name__))
 
@@ -105,7 +106,7 @@ def cs_test():
     with open("./transform/surveys/%s.%s.json" % (survey_response['survey_id'], form_id)) as json_file:
         survey = json.load(json_file)
 
-        ctransformer = CSTransformer(logger, survey, survey_response)
+        ctransformer = Transformer(logger, survey, survey_response)
 
         ctransformer.create_formats()
         ctransformer.prepare_archive()
