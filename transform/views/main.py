@@ -171,6 +171,11 @@ def render_images():
     except IOError as e:
         return client_error("IMAGES:Could not create zip buffer: {0}".format(repr(e)))
 
+    try:
+        itransformer.cleanup(locn)
+    except Exception as e:
+        return client_error("IMAGES:Could not delete tmp files: {0}".format(repr(e)))
+
     logger.info("IMAGES:SUCCESS")
 
     return send_file(zipfile, mimetype='application/zip', add_etags=False)
@@ -205,6 +210,7 @@ def common_software(sequence_no=1000, batch_number=0):
                 cleanup(path)
             except Exception as e:
                 return client_error("CS:Could not delete tmp files: {0}".format(repr(e)))
+
     except Exception as e:
         tx_id = survey_response.get("tx_id")
         logger.exception("CS:could not create files for survey", survey_id=survey_id, tx_id=tx_id)

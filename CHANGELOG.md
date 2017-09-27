@@ -1,7 +1,11 @@
 ### Unreleased
+  - Update deleting tmp files
+
+### 2.7.0 2017-09-25
   - Removed SDX common clone in docker
   - Restore defaults for qids 130, 131, 132.
   - Remove pip `--require-hashes` requirement
+  - Make use of sequence list endpoint
   - Populate default dates on certain surveys from metadata
   - Add fix for cryptography install in docker
 
