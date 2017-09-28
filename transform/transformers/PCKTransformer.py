@@ -1,6 +1,7 @@
 from datetime import datetime
 import dateutil.parser
 import logging
+from decimal import Decimal
 
 
 logger = logging.getLogger(__name__)
@@ -117,6 +118,16 @@ class PCKTransformer(object):
                 end_date = datetime.strptime(self.response['metadata']['ref_period_end_date'], "%Y-%m-%d")
                 self.data['12'] = end_date.strftime("%d/%m/%Y")
 
+    def round_currency_values(self):
+        '''
+        For RSI Surveys, round the values of the currency fields
+        '''
+        if self.survey['survey_id'] == '023':
+            for question in range(20, 27):
+                str_question = str(question)
+                if str_question in self.data:
+                    self.data[str_question] = str(round(Decimal(self.data[str_question])))
+
     def preprocess_comments(self):
         '''
         147 or any 146x indicates a special comment type that should not be shown
@@ -139,6 +150,7 @@ class PCKTransformer(object):
             self.populate_period_data()
         except KeyError:
             logger.info("Missing metadata")
+        self.round_currency_values()
         answers = self.preprocess_comments()
 
         self.form_questions, self.form_question_types = self.get_form_questions()
