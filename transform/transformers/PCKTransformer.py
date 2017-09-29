@@ -9,6 +9,7 @@ logger = logging.getLogger(__name__)
 
 class PCKTransformer(object):
     comments_questions = ['147', '146a', '146b', '146c', '146d', '146e', '146f', '146g', '146h']
+    rsi_currency_questions = ["20", "21", "22", "23", "24", "25", "26", "27"]
 
     form_types = {
         "023": {
@@ -23,6 +24,8 @@ class PCKTransformer(object):
             "0001": "Q01B",
         }
     }
+
+    rsi_survey_id = "023"
 
     def __init__(self, survey, response_data):
         self.survey = survey
@@ -106,7 +109,7 @@ class PCKTransformer(object):
         """If questions 11 or 12 don't appear in the survey data, then populate
         them with the period start and end date found in the metadata
         """
-        if self.survey['survey_id'] == '023':
+        if self.survey['survey_id'] == self.rsi_survey_id:
             if '11' not in self.data:
                 start_date = datetime.strptime(self.response['metadata']['ref_period_start_date'], "%Y-%m-%d")
                 self.data['11'] = start_date.strftime("%d/%m/%Y")
@@ -118,11 +121,10 @@ class PCKTransformer(object):
         """For RSI Surveys, round the values of the currency fields.
         Rounds up if the value is .5
         """
-        if self.survey['survey_id'] == '023':
-            questions = ["20", "21", "22", "23", "24", "25", "26", "27"]
-            self.data.update(
-                {k: str(int(Decimal(self.data[k]).quantize(Decimal('1.'), ROUND_HALF_UP))) for k in questions if k in self.data}
-            )
+        if self.survey['survey_id'] == self.rsi_survey_id:
+            self.data.update({k: str(int(Decimal(v).quantize(Decimal('1.'), ROUND_HALF_UP)))
+                for k, v in self.data.items()  # noqa
+                    if k in self.rsi_currency_questions})  # noqa
 
     def preprocess_comments(self):
         """147 or any 146x indicates a special comment type that should not be shown
