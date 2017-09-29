@@ -1,7 +1,7 @@
 from datetime import datetime
 import dateutil.parser
-import logging
 from decimal import Decimal
+import logging
 
 
 logger = logging.getLogger(__name__)
@@ -31,10 +31,9 @@ class PCKTransformer(object):
         self.data = response_data['data'] if 'data' in response_data else {}
 
     def get_form_questions(self):
-        '''
-        Return the questions (list) and question types (dict
+        """Return the questions (list) and question types (dict
         lookup to question type)
-        '''
+        """
         questions = []
         question_types = {}
 
@@ -76,11 +75,10 @@ class PCKTransformer(object):
         return submission_date.strftime("%d/%m/%y")
 
     def get_derived_value(self, question_id, value=None):
-        '''
-        Returns a derived value to be used in pck response based on the
+        """Returns a derived value to be used in pck response based on the
         question id. Takes a lookup of question types parsed in
         get_form_questions
-        '''
+        """
         if question_id in self.form_question_types:
             form_question_type = self.form_question_types[question_id]
             if form_question_type == 'contains':
@@ -93,10 +91,9 @@ class PCKTransformer(object):
         return value.zfill(11)
 
     def get_required_answers(self, required_answers):
-        '''
-        Determines if default answers need to be added where
+        """Determines if default answers need to be added where
         missing data is in the json payload
-        '''
+        """
         required = []
 
         for answer in required_answers:
@@ -106,10 +103,9 @@ class PCKTransformer(object):
         return required
 
     def populate_period_data(self):
-        '''
-        If questions 11 or 12 don't appear in the survey data, then populate
+        """If questions 11 or 12 don't appear in the survey data, then populate
         them with the period start and end date found in the metadata
-        '''
+        """
         if self.survey['survey_id'] == '023':
             if '11' not in self.data:
                 start_date = datetime.strptime(self.response['metadata']['ref_period_start_date'], "%Y-%m-%d")
@@ -119,20 +115,14 @@ class PCKTransformer(object):
                 self.data['12'] = end_date.strftime("%d/%m/%Y")
 
     def round_currency_values(self):
-        '''
-        For RSI Surveys, round the values of the currency fields
-        '''
+        """For RSI Surveys, round the values of the currency fields"""
         if self.survey['survey_id'] == '023':
-            for question in range(20, 27):
-                str_question = str(question)
-                if str_question in self.data:
-                    self.data[str_question] = str(round(Decimal(self.data[str_question])))
+            self.data.update({k: str(round(Decimal(v))) for k, v in self.data.items() if int(k) in range(20, 27)})
 
     def preprocess_comments(self):
-        '''
-        147 or any 146x indicates a special comment type that should not be shown
+        """147 or any 146x indicates a special comment type that should not be shown
         in pck, but in image. Additionally should set 146 if unset.
-        '''
+        """
         if set(self.comments_questions) <= set(self.data.keys()) and '146' not in self.data.keys():
                 self.data['146'] = 1
 
