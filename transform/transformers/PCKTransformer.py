@@ -1,6 +1,6 @@
 from datetime import datetime
 import dateutil.parser
-from decimal import Decimal
+from decimal import Decimal, ROUND_HALF_UP
 import logging
 
 
@@ -117,7 +117,12 @@ class PCKTransformer(object):
     def round_currency_values(self):
         """For RSI Surveys, round the values of the currency fields"""
         if self.survey['survey_id'] == '023':
-            self.data.update({k: str(round(Decimal(v))) for k, v in self.data.items() if int(k) in range(20, 27)})
+            self.data.update(
+                {k: str(int(Decimal(self.data[k]).quantize(Decimal('1.'), rounding=ROUND_HALF_UP)))
+                    for k in ["20", "21", "22", "23", "24", "25", "26", "27"]
+                    if k in self.data
+                }
+            )
 
     def preprocess_comments(self):
         """147 or any 146x indicates a special comment type that should not be shown
