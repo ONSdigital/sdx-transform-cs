@@ -1,0 +1,30 @@
+{
+  "type": "uk.gov.ons.edc.eq:surveyresponse",
+  "version": "0.0.1",
+  "origin": "uk.gov.ons.edc.eq",
+  "survey_id": "023",
+  "collection": {
+    "exercise_sid": "hfjdskf",
+    "instrument_id": "0203",
+    "period": "1604"
+  },
+  "submitted_at": "2016-03-22T13:01:26Z",
+  "metadata": {
+    "user_id": "789473423",
+    "ru_ref": "12345678901A",
+    "ref_period_start_date": "2016-04-01",
+    "ref_period_end_date": "2016-10-31"
+  },
+  "data": {
+    "11": "1/4/2016",
+    "12": "31/10/2016",
+    "20": "1799999.5",
+    "21": "60000.1",
+    "22": "705000.25",
+    "23": "900.8",
+    "24": "74.51",
+    "25": "50.49",
+    "26": "100.1",
+    "146": "some comment"
+  }
+}
