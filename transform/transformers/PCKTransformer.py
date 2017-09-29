@@ -121,8 +121,8 @@ class PCKTransformer(object):
         """For RSI Surveys, round the values of the currency fields.
         Rounds up if the value is .5
         """
-        if self.survey['survey_id'] == self.rsi_survey_id:
-            self.data.update({k: str(int(Decimal(v).quantize(Decimal('1.'), ROUND_HALF_UP)))
+        if self.survey.get('survey_id') == self.rsi_survey_id:
+            self.data.update({k: str(Decimal(v).quantize(Decimal('1.'), ROUND_HALF_UP))
                 for k, v in self.data.items()  # noqa
                     if k in self.rsi_currency_questions})  # noqa
 
