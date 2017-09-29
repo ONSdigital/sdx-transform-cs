@@ -115,13 +115,13 @@ class PCKTransformer(object):
                 self.data['12'] = end_date.strftime("%d/%m/%Y")
 
     def round_currency_values(self):
-        """For RSI Surveys, round the values of the currency fields"""
+        """For RSI Surveys, round the values of the currency fields.
+        Rounds up if the value is .5
+        """
         if self.survey['survey_id'] == '023':
+            questions = ["20", "21", "22", "23", "24", "25", "26", "27"]
             self.data.update(
-                {k: str(int(Decimal(self.data[k]).quantize(Decimal('1.'), rounding=ROUND_HALF_UP)))
-                    for k in ["20", "21", "22", "23", "24", "25", "26", "27"]
-                    if k in self.data
-                }
+                {k: str(int(Decimal(self.data[k]).quantize(Decimal('1.'), ROUND_HALF_UP))) for k in questions if k in self.data}
             )
 
     def preprocess_comments(self):
@@ -136,10 +136,9 @@ class PCKTransformer(object):
         return self.data
 
     def derive_answers(self):
-        '''
-        Takes a loaded dict structure of survey data and answers sent
+        """Takes a loaded dict structure of survey data and answers sent
         in a request and derives values to use in response
-        '''
+        """
         derived = []
         try:
             self.populate_period_data()
