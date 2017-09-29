@@ -1,9 +1,8 @@
 import json
 import logging
 import os.path
-import shutil
 
-from flask import request, make_response, send_file, jsonify
+from flask import request, send_file, jsonify
 from jinja2 import Environment, PackageLoader
 from structlog import wrap_logger
 from sdx.common.logger_config import logger_initial_config
@@ -14,7 +13,6 @@ from transform.transformers import MWSSTransformer
 from transform.transformers import PCKTransformer
 
 from sdx.common.transformer import Transformer
-from sdx.common.transformer import ImageTransformer, PDFTransformer
 
 env = Environment(loader=PackageLoader('transform', 'templates'))
 
@@ -123,64 +121,6 @@ def render_html():
     return template.render(response=response, survey=survey)
 
 
-@app.route('/pdf', methods=['POST'])
-def render_pdf():
-    survey_response = request.get_json(force=True)
-
-    survey = get_survey(survey_response)
-
-    if not survey:
-        return client_error("PDF:Unsupported survey/instrument id")
-
-    try:
-        rendered_pdf = PDFTransformer.render(survey, survey_response)
-
-    except IOError as e:
-        return client_error("PDF:Could not render pdf buffer: {0}".format(repr(e)))
-    except Exception as e:
-        survey_id = survey_response.get("survey_id")
-        tx_id = survey_response.get("tx_id")
-        logger.exception("PDF:Generation failed", survey_id=survey_id, tx_id=tx_id)
-        raise e
-
-    response = make_response(rendered_pdf)
-    response.mimetype = 'application/pdf'
-
-    logger.info("PDF:SUCCESS")
-
-    return response
-
-
-@app.route('/images', methods=['POST'])
-def render_images():
-    survey_response = request.get_json(force=True)
-
-    survey = get_survey(survey_response)
-
-    if not survey:
-        return client_error("IMAGES:Unsupported survey/instrument id")
-
-    itransformer = ImageTransformer(logger, survey, survey_response)
-
-    try:
-        path = PDFTransformer.render_to_file(survey, survey_response)
-        images = list(itransformer.create_image_sequence(path))
-        index = itransformer.create_image_index(images)
-        zipfile = itransformer.create_zip(images, index)
-        cleanup(os.path.dirname(path))
-    except IOError as e:
-        return client_error("IMAGES:Could not create zip buffer: {0}".format(repr(e)))
-
-    try:
-        itransformer.cleanup(locn)
-    except Exception as e:
-        return client_error("IMAGES:Could not delete tmp files: {0}".format(repr(e)))
-
-    logger.info("IMAGES:SUCCESS")
-
-    return send_file(zipfile, mimetype='application/zip', add_etags=False)
-
-
 @app.route('/common-software', methods=['POST'])
 @app.route('/common-software/<sequence_no>', methods=['POST'])
 @app.route('/common-software/<sequence_no>/<batch_number>', methods=['POST'])
@@ -205,11 +145,6 @@ def common_software(sequence_no=1000, batch_number=0):
         else:
             tfr = Transformer(survey_response, sequence_no, log=logger)
             zipfile = tfr.pack(settings=settings)
-            try:
-                path = PDFTransformer.render_to_file(survey, survey_response)
-                cleanup(path)
-            except Exception as e:
-                return client_error("CS:Could not delete tmp files: {0}".format(repr(e)))
 
     except Exception as e:
         tx_id = survey_response.get("tx_id")
@@ -224,7 +159,3 @@ def common_software(sequence_no=1000, batch_number=0):
 @app.route('/healthcheck', methods=['GET'])
 def healthcheck():
     return jsonify({'status': 'OK'})
-
-
-def cleanup(path):
-    shutil.rmtree(os.path.join(path))
