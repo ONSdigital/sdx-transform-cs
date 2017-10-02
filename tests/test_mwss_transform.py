@@ -16,7 +16,6 @@ from transform.transformers.MWSSTransformer import MWSSTransformer
 
 
 class SurveyTests(unittest.TestCase):
-
     def test_datetime_ms_with_colon_in_timezone(self):
         rv = Survey.parse_timestamp("2017-01-11T17:18:53.020222+00:00")
         self.assertIsInstance(rv, datetime.datetime)
@@ -41,7 +40,6 @@ class SurveyTests(unittest.TestCase):
 
 
 class OpTests(unittest.TestCase):
-
     def test_processor_unsigned(self):
         proc = Processor.unsigned_integer
 
@@ -94,7 +92,6 @@ class OpTests(unittest.TestCase):
 
 
 class LogicTests(unittest.TestCase):
-
     def test_weekly_increase(self):
         """
         Increase in weekly pay (100).
@@ -396,7 +393,6 @@ class LogicTests(unittest.TestCase):
 
 
 class TransformTests(unittest.TestCase):
-
     def test_defaults_empty(self):
         rv = MWSSTransformer.transform({})
         self.assertIsInstance(rv, OrderedDict)
@@ -591,7 +587,6 @@ class TransformTests(unittest.TestCase):
 
 
 class BatchFileTests(unittest.TestCase):
-
     def test_pck_batch_header(self):
         batch_nr = 3866
         batch_date = datetime.date(2009, 12, 29)
@@ -739,7 +734,6 @@ class BatchFileTests(unittest.TestCase):
 
 
 class PackingTests(unittest.TestCase):
-
     def test_requires_ids(self):
         self.assertRaises(
             UserWarning,
@@ -774,7 +768,7 @@ class PackingTests(unittest.TestCase):
                 **tfr.ids._asdict()
             )
         )
-        tfr.pack(settings=settings, img_seq=itertools.count())
+        tfr.pack(settings=settings, img_seq=itertools.count(), tmp=None)
 
     def test_image_sequence_number(self):
         response = {
@@ -793,12 +787,7 @@ class PackingTests(unittest.TestCase):
         }
         seq_nr = 12345
         tfr = MWSSTransformer(response, seq_nr=seq_nr)
-        zf = zipfile.ZipFile(
-            tfr.pack(
-                img_seq=itertools.count(),
-                settings=TransformerTests.Settings("", ""),
-            )
-        )
+        zf = zipfile.ZipFile(tfr.pack(img_seq=itertools.count(), settings=TransformerTests.Settings("", ""), tmp=None))
         fn = next(i for i in zf.namelist() if os.path.splitext(i)[1] == ".csv")
         bits = os.path.splitext(fn)[0].split("_")
         self.assertEqual(seq_nr, int(bits[-1]))
