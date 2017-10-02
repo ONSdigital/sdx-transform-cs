@@ -1,5 +1,6 @@
 from datetime import datetime
 import dateutil.parser
+from decimal import Decimal, ROUND_HALF_UP
 import logging
 
 
@@ -8,6 +9,7 @@ logger = logging.getLogger(__name__)
 
 class PCKTransformer(object):
     comments_questions = ['147', '146a', '146b', '146c', '146d', '146e', '146f', '146g', '146h']
+    rsi_currency_questions = ["20", "21", "22", "23", "24", "25", "26", "27"]
 
     form_types = {
         "023": {
@@ -23,6 +25,8 @@ class PCKTransformer(object):
         }
     }
 
+    rsi_survey_id = "023"
+
     def __init__(self, survey, response_data):
         self.survey = survey
         self.response = response_data
@@ -30,10 +34,9 @@ class PCKTransformer(object):
         self.data = response_data['data'] if 'data' in response_data else {}
 
     def get_form_questions(self):
-        '''
-        Return the questions (list) and question types (dict
+        """Return the questions (list) and question types (dict
         lookup to question type)
-        '''
+        """
         questions = []
         question_types = {}
 
@@ -75,11 +78,10 @@ class PCKTransformer(object):
         return submission_date.strftime("%d/%m/%y")
 
     def get_derived_value(self, question_id, value=None):
-        '''
-        Returns a derived value to be used in pck response based on the
+        """Returns a derived value to be used in pck response based on the
         question id. Takes a lookup of question types parsed in
         get_form_questions
-        '''
+        """
         if question_id in self.form_question_types:
             form_question_type = self.form_question_types[question_id]
             if form_question_type == 'contains':
@@ -92,10 +94,9 @@ class PCKTransformer(object):
         return value.zfill(11)
 
     def get_required_answers(self, required_answers):
-        '''
-        Determines if default answers need to be added where
+        """Determines if default answers need to be added where
         missing data is in the json payload
-        '''
+        """
         required = []
 
         for answer in required_answers:
@@ -105,11 +106,10 @@ class PCKTransformer(object):
         return required
 
     def populate_period_data(self):
-        '''
-        If questions 11 or 12 don't appear in the survey data, then populate
+        """If questions 11 or 12 don't appear in the survey data, then populate
         them with the period start and end date found in the metadata
-        '''
-        if self.survey['survey_id'] == '023':
+        """
+        if self.survey['survey_id'] == self.rsi_survey_id:
             if '11' not in self.data:
                 start_date = datetime.strptime(self.response['metadata']['ref_period_start_date'], "%Y-%m-%d")
                 self.data['11'] = start_date.strftime("%d/%m/%Y")
@@ -117,11 +117,19 @@ class PCKTransformer(object):
                 end_date = datetime.strptime(self.response['metadata']['ref_period_end_date'], "%Y-%m-%d")
                 self.data['12'] = end_date.strftime("%d/%m/%Y")
 
+    def round_currency_values(self):
+        """For RSI Surveys, round the values of the currency fields.
+        Rounds up if the value is .5
+        """
+        if self.survey.get('survey_id') == self.rsi_survey_id:
+            self.data.update({k: str(Decimal(v).quantize(Decimal('1.'), ROUND_HALF_UP))
+                for k, v in self.data.items()  # noqa
+                    if k in self.rsi_currency_questions})  # noqa
+
     def preprocess_comments(self):
-        '''
-        147 or any 146x indicates a special comment type that should not be shown
+        """147 or any 146x indicates a special comment type that should not be shown
         in pck, but in image. Additionally should set 146 if unset.
-        '''
+        """
         if set(self.comments_questions) <= set(self.data.keys()) and '146' not in self.data.keys():
                 self.data['146'] = 1
 
@@ -130,15 +138,15 @@ class PCKTransformer(object):
         return self.data
 
     def derive_answers(self):
-        '''
-        Takes a loaded dict structure of survey data and answers sent
+        """Takes a loaded dict structure of survey data and answers sent
         in a request and derives values to use in response
-        '''
+        """
         derived = []
         try:
             self.populate_period_data()
         except KeyError:
             logger.info("Missing metadata")
+        self.round_currency_values()
         answers = self.preprocess_comments()
 
         self.form_questions, self.form_question_types = self.get_form_questions()

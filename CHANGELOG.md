@@ -1,4 +1,5 @@
 ### Unreleased
+  - Round decimal values in RSI surveys ( survey_id 023 )
   - Update deleting tmp files
 
 ### 2.7.0 2017-09-25
