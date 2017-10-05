@@ -1,15 +1,17 @@
-from transform import app
-from jinja2 import Environment, PackageLoader
-
-from flask import send_file
-import logging
-from structlog import wrap_logger
 import json
+import logging
 import os.path
 import unittest
 
+from flask import send_file
+from jinja2 import Environment
+from jinja2 import PackageLoader
+from sdx.common.transformer import ImageTransformer
+from sdx.common.transformer import PDFTransformer
+from structlog import wrap_logger
+
+from transform import app
 from transform import settings
-from sdx.common.transformer import ImageTransformer, PDFTransformer
 
 logger = wrap_logger(logging.getLogger(__name__))
 
