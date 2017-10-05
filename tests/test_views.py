@@ -1,4 +1,3 @@
-from transform import app
 from jinja2 import Environment, PackageLoader
 
 from flask import send_file
@@ -8,6 +7,7 @@ import json
 import os.path
 import unittest
 
+from transform import app
 from transform import settings
 from sdx.common.transformer import ImageTransformer, PDFTransformer
 
