@@ -123,6 +123,14 @@ class LogicTests(unittest.TestCase):
         self.assertEqual(800, rv)
         rv = fn("50", {"50": "19200", "50f": "1600"}, 0)
         self.assertEqual(20000, rv)
+        rv = fn("50", {"50": "19200.5"}, 0)
+        self.assertEqual(19201, rv)
+        rv = fn("50", {"50": "19200.5", "50f": "1600.5"}, 0)
+        self.assertEqual(20001, rv)
+        rv = fn("50", {"50": "19200.49"}, 0)
+        self.assertEqual(19200, rv)
+        rv = fn("50", {"50": "19200.02", "50f": "1600.02"}, 0)
+        self.assertEqual(20000, rv)
 
     def test_aggregate_fortnightly_bonuses(self):
         """
@@ -135,18 +143,42 @@ class LogicTests(unittest.TestCase):
         self.assertEqual(180, rv)
         rv = fn("60", {"60": "4600", "60f": "360"}, 0)
         self.assertEqual(4780, rv)
+        rv = fn("60", {"60": "19200.5"}, 0)
+        self.assertEqual(19201, rv)
+        rv = fn("60", {"60": "19200.5", "60f": "1600.5"}, 0)
+        self.assertEqual(20001, rv)
+        rv = fn("60", {"60": "19200.49"}, 0)
+        self.assertEqual(19200, rv)
+        rv = fn("60", {"60": "19200.02", "60f": "1600.02"}, 0)
+        self.assertEqual(20000, rv)
 
         dflt, fn = MWSSTransformer.ops()["70"]
         rv = fn("70", {"70f": "1280"}, 0)
         self.assertEqual(640, rv)
         rv = fn("70", {"70": "7360", "70f": "1280"}, 0)
         self.assertEqual(8000, rv)
+        rv = fn("70", {"70": "19200.5"}, 0)
+        self.assertEqual(19201, rv)
+        rv = fn("70", {"70": "19200.5", "70f": "1600.5"}, 0)
+        self.assertEqual(20001, rv)
+        rv = fn("70", {"70": "19200.49"}, 0)
+        self.assertEqual(19200, rv)
+        rv = fn("70", {"70": "19200.02", "70f": "1600.02"}, 0)
+        self.assertEqual(20000, rv)
 
         dflt, fn = MWSSTransformer.ops()["80"]
         rv = fn("80", {"80f": "5000"}, 0)
         self.assertEqual(2500, rv)
         rv = fn("80", {"80": "15000", "80f": "5000"}, 0)
         self.assertEqual(17500, rv)
+        rv = fn("80", {"80": "19200.5"}, 0)
+        self.assertEqual(19201, rv)
+        rv = fn("80", {"80": "19200.5", "80f": "1600.5"}, 0)
+        self.assertEqual(20001, rv)
+        rv = fn("80", {"80": "19200.49"}, 0)
+        self.assertEqual(19200, rv)
+        rv = fn("80", {"80": "19200.02", "80f": "1600.02"}, 0)
+        self.assertEqual(20000, rv)
 
     def test_aggregate_fortnightly_increase(self):
         """
@@ -160,6 +192,14 @@ class LogicTests(unittest.TestCase):
         self.assertEqual(6, rv)  # Integer default
         rv = fn("100", {"100": "7.0", "100f": "6.0"}, 0.0)
         self.assertEqual(6.5, rv)  # Float default
+        rv = fn("80", {"80": "19200.5"}, 0)
+        self.assertEqual(19201, rv)
+        rv = fn("80", {"80": "19200.5", "80f": "1600.5"}, 0)
+        self.assertEqual(20001, rv)
+        rv = fn("80", {"80": "19200.49"}, 0)
+        self.assertEqual(19200, rv)
+        rv = fn("80", {"80": "19200.02", "80f": "1600.02"}, 0)
+        self.assertEqual(20000, rv)
 
     def test_aggregate_fortnightly_increase_date(self):
         """
