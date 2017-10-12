@@ -1,7 +1,6 @@
 from collections import namedtuple
 from collections import OrderedDict
-
-from decimal import Decimal, ROUND_DOWN
+from decimal import Decimal, ROUND_DOWN, ROUND_HALF_UP
 from functools import partial
 import itertools
 import json
@@ -28,10 +27,18 @@ class MWSSTransformer(Transformer):
 
     defn = [
         (40, 0, partial(Processor.aggregate, weights=[("40f", 1)])),
-        (50, 0, partial(Processor.aggregate, weights=[("50f", 0.5)])),
-        (60, 0, partial(Processor.aggregate, weights=[("60f", 0.5)])),
-        (70, 0, partial(Processor.aggregate, weights=[("70f", 0.5)])),
-        (80, 0, partial(Processor.aggregate, weights=[("80f", 0.5)])),
+        (50, 0, partial(Processor.aggregate, weights=[("50f", 0.5)],
+                        precision='1.',
+                        rounding_direction=ROUND_HALF_UP)),
+        (60, 0, partial(Processor.aggregate, weights=[("60f", 0.5)],
+                        precision='1.',
+                        rounding_direction=ROUND_HALF_UP)),
+        (70, 0, partial(Processor.aggregate, weights=[("70f", 0.5)],
+                        precision='1.',
+                        rounding_direction=ROUND_HALF_UP)),
+        (80, 0, partial(Processor.aggregate, weights=[("80f", 0.5)],
+                        precision='1.',
+                        rounding_direction=ROUND_HALF_UP)),
         (90, False, partial(
             Processor.evaluate,
             group=[
@@ -48,9 +55,15 @@ class MWSSTransformer(Transformer):
             weights=[
                 ("140m", 1), ("140w4", 1), ("140w5", 1)
             ])),
-        (range(151, 154, 1), 0, Processor.unsigned_integer),
-        (range(171, 174, 1), 0, Processor.unsigned_integer),
-        (range(181, 184, 1), 0, Processor.unsigned_integer),
+        (range(151, 154, 1), 0, partial(Processor.unsigned_integer,
+                                        precision='1.',
+                                        rounding_direction=ROUND_HALF_UP)),
+        (range(171, 174, 1), 0, partial(Processor.unsigned_integer,
+                                        precision='1.',
+                                        rounding_direction=ROUND_HALF_UP)),
+        (range(181, 184, 1), 0, partial(Processor.unsigned_integer,
+                                        precision='1.',
+                                        rounding_direction=ROUND_HALF_UP)),
         (190, False, partial(
             Processor.evaluate,
             group=[
@@ -59,7 +72,7 @@ class MWSSTransformer(Transformer):
                 "190w5", "191w5", "192w5", "193w5", "194w5", "195w5", "196w5", "197w5",
             ],
             convert=re.compile("^((?!No).)+$").search, op=lambda x, y: x or y)),
-        (200, False, partial(Processor.mean, group=["200w4", "200w5"])),
+        (200, False, partial(Processor.boolean, group=["200w4", "200w5"])),
         (210, [], partial(Processor.events, group=["210w4", "210w5"])),
         (220, False, partial(Processor.mean, group=["220w4", "220w5"])),
         (300, False, partial(
