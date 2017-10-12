@@ -1,5 +1,6 @@
 ### Unreleased
   - Modify to use common transform formatters
+  - Refactored variable names for MWSS transformer
   
 ### 2.8.0 2017-10-02
   - Round decimal values in RSI surveys ( survey_id 023 )
