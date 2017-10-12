@@ -24,7 +24,15 @@ python -m transform.transformers.MWSSTransformer \
 
 
 class MWSSTransformer(Transformer):
-    """Perform the transforms and formatting for the MWSS survey."""
+    """Perform the transforms and formatting for the MWSS survey.
+
+    Weights = A sequence of 2-tuples giving the weight value for each question in the group.
+    The weight of a question is dependant on the type so 40f is a fortnightly question
+    so it will have a different weighting when it's transformed.
+
+    Group = A sequence of question ids.
+
+    """
 
     defn = [
         (40, 0, partial(Processor.aggregate, weights=[("40f", 1)])),
@@ -83,8 +91,8 @@ class MWSSTransformer(Transformer):
         """
         pattern = re.compile("[0-9]+")
 
-        # Taking the qid for each supplied answer, and then also
-        # rounding down the first numeric component of each answered qid
+        # Taking the question_id for each supplied answer, and then also
+        # rounding down the first numeric component of each answered question_id
         # gives us the set of downstream questions we have data for.
         supplied = set(itertools.chain.from_iterable((
             Decimal(i.group(0)),
@@ -94,9 +102,9 @@ class MWSSTransformer(Transformer):
         ))
         mandatory = set([Decimal("130"), Decimal("131"), Decimal("132")])
         return OrderedDict(
-            (qid, fn(qid, data, dflt, survey))
-            for qid, (dflt, fn) in MWSSTransformer.ops().items()
-            if Decimal(qid) in supplied.union(mandatory)
+            (question_id, fn(question_id, data, default, survey))
+            for question_id, (default, fn) in MWSSTransformer.ops().items()
+            if Decimal(question_id) in supplied.union(mandatory)
         )
 
 
@@ -110,8 +118,8 @@ def main(args):
     )
 
     reply = json.load(args.input)
-    tfr = MWSSTransformer(reply, seq_nr=args.seq_nr)
-    zipfile = tfr.pack(
+    transformer = MWSSTransformer(reply, seq_nr=args.seq_nr)
+    zipfile = transformer.pack(
         settings=Settings("\\\\NP3RVWAPXX370\\SDX_Prod\\", "EDC_QImages"),
         img_seq=itertools.count(args.img_nr),
         tmp=args.work
@@ -123,8 +131,8 @@ def main(args):
 def run():
     parser = sdx.common.cli.transformer_cli(__doc__)
     args = parser.parse_args()
-    rv = main(args)
-    sys.exit(rv)
+    val = main(args)
+    sys.exit(val)
 
 
 if __name__ == "__main__":

@@ -17,26 +17,26 @@ from transform.transformers.MWSSTransformer import MWSSTransformer
 
 class SurveyTests(unittest.TestCase):
     def test_datetime_ms_with_colon_in_timezone(self):
-        rv = Survey.parse_timestamp("2017-01-11T17:18:53.020222+00:00")
-        self.assertIsInstance(rv, datetime.datetime)
+        val = Survey.parse_timestamp("2017-01-11T17:18:53.020222+00:00")
+        self.assertIsInstance(val, datetime.datetime)
 
     def test_datetime_ms_with_timezone(self):
-        rv = Survey.parse_timestamp("2017-01-11T17:18:53.020222+0000")
-        self.assertIsInstance(rv, datetime.datetime)
+        val = Survey.parse_timestamp("2017-01-11T17:18:53.020222+0000")
+        self.assertIsInstance(val, datetime.datetime)
 
     def test_datetime_zulu(self):
-        rv = Survey.parse_timestamp("2017-01-11T17:18:53Z")
-        self.assertIsInstance(rv, datetime.datetime)
+        val = Survey.parse_timestamp("2017-01-11T17:18:53Z")
+        self.assertIsInstance(val, datetime.datetime)
 
     def test_date_iso(self):
-        rv = Survey.parse_timestamp("2017-01-11")
-        self.assertNotIsInstance(rv, datetime.datetime)
-        self.assertIsInstance(rv, datetime.date)
+        val = Survey.parse_timestamp("2017-01-11")
+        self.assertNotIsInstance(val, datetime.datetime)
+        self.assertIsInstance(val, datetime.date)
 
     def test_date_diary(self):
-        rv = Survey.parse_timestamp("11/07/2017")
-        self.assertNotIsInstance(rv, datetime.datetime)
-        self.assertIsInstance(rv, datetime.date)
+        val = Survey.parse_timestamp("11/07/2017")
+        self.assertNotIsInstance(val, datetime.datetime)
+        self.assertIsInstance(val, datetime.date)
 
 
 class OpTests(unittest.TestCase):
@@ -87,8 +87,8 @@ class OpTests(unittest.TestCase):
             },
             "submitted_at": "2017-04-12T13:01:26Z",
         }
-        tfr = MWSSTransformer(response, 0)
-        self.assertTrue(tfr)
+        transformer = MWSSTransformer(response, 0)
+        self.assertTrue(transformer)
 
 
 class LogicTests(unittest.TestCase):
@@ -97,32 +97,32 @@ class LogicTests(unittest.TestCase):
         Increase in weekly pay (100).
 
         """
-        dflt, fn = MWSSTransformer.ops()["100"]
-        rv = fn("100", {"100": "6.0"}, 0)
-        self.assertEqual(6, rv)
+        default, fn = MWSSTransformer.ops()["100"]
+        val = fn("100", {"100": "6.0"}, 0)
+        self.assertEqual(6, val)
 
     def test_aggregate_weekly_paid_employees(self):
         """
         QIds 40, 40f are added to give a value for weekly paid employees (40).
 
         """
-        dflt, fn = MWSSTransformer.ops()["40"]
-        rv = fn("40", {"40": "125000"}, 0)
-        self.assertEqual(125000, rv)
-        rv = fn("40", {"40": "125000", "40f": "25000"}, 0)
-        self.assertEqual(150000, rv)
+        default, fn = MWSSTransformer.ops()["40"]
+        val = fn("40", {"40": "125000"}, 0)
+        self.assertEqual(125000, val)
+        val = fn("40", {"40": "125000", "40f": "25000"}, 0)
+        self.assertEqual(150000, val)
 
     def test_aggregate_fortnightly_gross_pay(self):
         """
         Fortnightly gross pay (50f) is divided by 2 and added to
-        the value for qid 50.
+        the value for question_id 50.
 
         """
-        dflt, fn = MWSSTransformer.ops()["50"]
-        rv = fn("50", {"50f": "1600"}, 0)
-        self.assertEqual(800, rv)
-        rv = fn("50", {"50": "19200", "50f": "1600"}, 0)
-        self.assertEqual(20000, rv)
+        default, fn = MWSSTransformer.ops()["50"]
+        val = fn("50", {"50f": "1600"}, 0)
+        self.assertEqual(800, val)
+        val = fn("50", {"50": "19200", "50f": "1600"}, 0)
+        self.assertEqual(20000, val)
 
     def test_aggregate_fortnightly_bonuses(self):
         """
@@ -130,48 +130,48 @@ class LogicTests(unittest.TestCase):
         are divided by 2 and added to qids 60, 70, 80 respectively.
 
         """
-        dflt, fn = MWSSTransformer.ops()["60"]
-        rv = fn("60", {"60f": "360"}, 0)
-        self.assertEqual(180, rv)
-        rv = fn("60", {"60": "4600", "60f": "360"}, 0)
-        self.assertEqual(4780, rv)
+        default, fn = MWSSTransformer.ops()["60"]
+        val = fn("60", {"60f": "360"}, 0)
+        self.assertEqual(180, val)
+        val = fn("60", {"60": "4600", "60f": "360"}, 0)
+        self.assertEqual(4780, val)
 
-        dflt, fn = MWSSTransformer.ops()["70"]
-        rv = fn("70", {"70f": "1280"}, 0)
-        self.assertEqual(640, rv)
-        rv = fn("70", {"70": "7360", "70f": "1280"}, 0)
-        self.assertEqual(8000, rv)
+        default, fn = MWSSTransformer.ops()["70"]
+        val = fn("70", {"70f": "1280"}, 0)
+        self.assertEqual(640, val)
+        val = fn("70", {"70": "7360", "70f": "1280"}, 0)
+        self.assertEqual(8000, val)
 
-        dflt, fn = MWSSTransformer.ops()["80"]
-        rv = fn("80", {"80f": "5000"}, 0)
-        self.assertEqual(2500, rv)
-        rv = fn("80", {"80": "15000", "80f": "5000"}, 0)
-        self.assertEqual(17500, rv)
+        default, fn = MWSSTransformer.ops()["80"]
+        val = fn("80", {"80f": "5000"}, 0)
+        self.assertEqual(2500, val)
+        val = fn("80", {"80": "15000", "80f": "5000"}, 0)
+        self.assertEqual(17500, val)
 
     def test_aggregate_fortnightly_increase(self):
         """
         Increase in Fortnightly pay (100f); aggregated with weekly increase (100).
 
         """
-        dflt, fn = MWSSTransformer.ops()["100"]
-        rv = fn("100", {"100f": "6.0"}, 0)
-        self.assertEqual(6, rv)
-        rv = fn("100", {"100": "7.0", "100f": "6.0"}, 0)
-        self.assertEqual(6, rv)  # Integer default
-        rv = fn("100", {"100": "7.0", "100f": "6.0"}, 0.0)
-        self.assertEqual(6.5, rv)  # Float default
+        default, fn = MWSSTransformer.ops()["100"]
+        val = fn("100", {"100f": "6.0"}, 0)
+        self.assertEqual(6, val)
+        val = fn("100", {"100": "7.0", "100f": "6.0"}, 0)
+        self.assertEqual(6, val)  # Integer default
+        val = fn("100", {"100": "7.0", "100f": "6.0"}, 0.0)
+        self.assertEqual(6.5, val)  # Float default
 
     def test_aggregate_fortnightly_increase_date(self):
         """
         Date of increase in Fortnightly pay (110f); aggregated with weekly (110).
 
         """
-        dflt, fn = MWSSTransformer.ops()["110"]
-        rv = fn(
+        default, fn = MWSSTransformer.ops()["110"]
+        val = fn(
             "110", {"110": "2017-01-09", "110f": "2017-01-11"}, datetime.date.today(),
         )
-        self.assertEqual(9, rv[0].day)
-        self.assertEqual(11, rv[1].day)
+        self.assertEqual(9, val[0].day)
+        self.assertEqual(11, val[1].day)
 
     def test_aggregate_fortnightly_increase_employees(self):
         """
@@ -179,43 +179,43 @@ class LogicTests(unittest.TestCase):
         aggregated with weekly increase (120).
 
         """
-        dflt, fn = MWSSTransformer.ops()["120"]
-        rv = fn("120", {"120f": "60"}, 0)
-        self.assertEqual(60, rv)
-        rv = fn("120", {"120": "40", "120f": "41"}, 0)
-        self.assertEqual(40, rv)  # Integer default
-        rv = fn("120", {"120": "40", "120f": "41"}, 0.0)
-        self.assertEqual(40.5, rv)  # Float default
+        default, fn = MWSSTransformer.ops()["120"]
+        val = fn("120", {"120f": "60"}, 0)
+        self.assertEqual(60, val)
+        val = fn("120", {"120": "40", "120f": "41"}, 0)
+        self.assertEqual(40, val)  # Integer default
+        val = fn("120", {"120": "40", "120f": "41"}, 0.0)
+        self.assertEqual(40.5, val)  # Float default
 
     def test_aggregate_fortnightly_changes(self):
         """
         QIds 90f - 97f used for fortnightly changes questions; all aggregated as 90.
 
         """
-        dflt, fn = MWSSTransformer.ops()["90"]
-        for qid in ("90f", "91f", "92f", "93f", "94f", "95f", "96f", "97f"):
-            with self.subTest(qid=qid):
-                rv = fn("90", {qid: ""}, True)
-                self.assertFalse(rv)
-                rv = fn("90", {qid: "No"}, True)
-                self.assertFalse(rv)
-                rv = fn("90", {qid: "Yes"}, False)
-                self.assertTrue(rv)
+        default, fn = MWSSTransformer.ops()["90"]
+        for question_id in ("90f", "91f", "92f", "93f", "94f", "95f", "96f", "97f"):
+            with self.subTest(question_id=question_id):
+                val = fn("90", {question_id: ""}, True)
+                self.assertFalse(val)
+                val = fn("90", {question_id: "No"}, True)
+                self.assertFalse(val)
+                val = fn("90", {question_id: "Yes"}, False)
+                self.assertTrue(val)
 
     def test_aggregate_weekly_changes(self):
         """
         QIds 90w - 97w used for weekly changes questions; all aggregated as 90.
 
         """
-        dflt, fn = MWSSTransformer.ops()["90"]
-        for qid in ("90w", "91w", "92w", "93w", "94w", "95w", "96w", "97w"):
-            with self.subTest(qid=qid):
-                rv = fn("90", {qid: ""}, True)
-                self.assertFalse(rv)
-                rv = fn("90", {qid: "No"}, True)
-                self.assertFalse(rv)
-                rv = fn("90", {qid: "Yes"}, False)
-                self.assertTrue(rv)
+        default, fn = MWSSTransformer.ops()["90"]
+        for question_id in ("90w", "91w", "92w", "93w", "94w", "95w", "96w", "97w"):
+            with self.subTest(question_id=question_id):
+                val = fn("90", {question_id: ""}, True)
+                self.assertFalse(val)
+                val = fn("90", {question_id: "No"}, True)
+                self.assertFalse(val)
+                val = fn("90", {question_id: "Yes"}, False)
+                self.assertTrue(val)
 
     def test_radio_button_logic(self):
         """
@@ -223,65 +223,65 @@ class LogicTests(unittest.TestCase):
         have answers other than Yes/No.
 
         """
-        dflt, fn = MWSSTransformer.ops()["90"]
-        for qid in ("92w", "94w", "92f", "94f"):
-            with self.subTest(qid=qid):
-                rv = fn("90", {qid: ""}, True)
-                self.assertFalse(rv)
-                rv = fn("90", {qid: "No significant change"}, True)
-                self.assertFalse(rv)
-                rv = fn("90", {qid: "Any other string"}, False)
-                self.assertTrue(rv)
+        default, fn = MWSSTransformer.ops()["90"]
+        for question_id in ("92w", "94w", "92f", "94f"):
+            with self.subTest(question_id=question_id):
+                val = fn("90", {question_id: ""}, True)
+                self.assertFalse(val)
+                val = fn("90", {question_id: "No significant change"}, True)
+                self.assertFalse(val)
+                val = fn("90", {question_id: "Any other string"}, False)
+                self.assertTrue(val)
 
-        dflt, fn = MWSSTransformer.ops()["190"]
-        for qid in ("192m", "194m", "192w4", "194w4", "192w5", "194w5"):
-            with self.subTest(qid=qid):
-                rv = fn("190", {qid: ""}, True)
-                self.assertFalse(rv)
-                rv = fn("190", {qid: "No significant change"}, True)
-                self.assertFalse(rv)
-                rv = fn("190", {qid: "Any other string"}, False)
-                self.assertTrue(rv)
+        default, fn = MWSSTransformer.ops()["190"]
+        for question_id in ("192m", "194m", "192w4", "194w4", "192w5", "194w5"):
+            with self.subTest(question_id=question_id):
+                val = fn("190", {question_id: ""}, True)
+                self.assertFalse(val)
+                val = fn("190", {question_id: "No significant change"}, True)
+                self.assertFalse(val)
+                val = fn("190", {question_id: "Any other string"}, False)
+                self.assertTrue(val)
 
     def test_aggregate_fourweekly_changes(self):
         """
         QIds 190w4 - 197w4 used for fourweekly changes questions; all aggregated as 190.
 
         """
-        dflt, fn = MWSSTransformer.ops()["190"]
-        for qid in ("190w4", "191w4", "192w4", "193w4", "194w4", "195w4", "196w4", "197w4"):
-            with self.subTest(qid=qid):
-                rv = fn("190", {qid: ""}, True)
-                self.assertFalse(rv)
-                rv = fn("190", {qid: "No"}, True)
-                self.assertFalse(rv)
-                rv = fn("190", {qid: "Yes"}, False)
-                self.assertTrue(rv)
+        default, fn = MWSSTransformer.ops()["190"]
+        for question_id in ("190w4", "191w4", "192w4", "193w4", "194w4", "195w4", "196w4", "197w4"):
+            with self.subTest(question_id=question_id):
+                val = fn("190", {question_id: ""}, True)
+                self.assertFalse(val)
+                val = fn("190", {question_id: "No"}, True)
+                self.assertFalse(val)
+                val = fn("190", {question_id: "Yes"}, False)
+                self.assertTrue(val)
 
     def test_aggregate_fourweekly_increase(self):
         """
         Increase in fourweekly pay (200w4); aggregated with monthly increase (200).
 
         """
-        dflt, fn = MWSSTransformer.ops()["200"]
-        rv = fn("200", {"200w4": "6.0"}, 0)
-        self.assertEqual(6, rv)
-        rv = fn("200", {"200": "7.0", "200w4": "6.0"}, 0)
-        self.assertEqual(6, rv)  # Integer default
-        rv = fn("200", {"200": "7.0", "200w4": "6.0"}, 0.0)
-        self.assertEqual(6.5, rv)  # Float default
+        default, fn = MWSSTransformer.ops()["200"]
+        val = fn("200", {"200w4": "6.0"}, 0)
+        self.assertEqual(6, val)
+        val = fn("200", {"200": "7.0", "200w4": "6.0"}, 0)
+        self.assertEqual(6, val)  # Integer default
+        val = fn("200", {"200": "7.0", "200w4": "6.0"}, 0.0)
+        self.assertEqual(6.5, val)  # Float default
 
     def test_aggregate_fourweekly_increase_date(self):
         """
         Date of increase in fourweekly pay (210w4); aggregated with monthly (210).
 
         """
-        dflt, fn = MWSSTransformer.ops()["210"]
-        rv = fn(
+        default, fn = MWSSTransformer.ops()["210"]
+        val = fn(
             "210", {"210": "2017-01-09", "210w4": "2017-01-11"}, datetime.date.today(),
         )
-        self.assertEqual(9, rv[0].day)
-        self.assertEqual(11, rv[1].day)
+        self.assertEqual(9, val[0].day)
+        self.assertEqual(11, val[1].day)
 
     def test_aggregate_fourweekly_increase_employees(self):
         """
@@ -289,93 +289,93 @@ class LogicTests(unittest.TestCase):
         aggregated with monthly increase (220).
 
         """
-        dflt, fn = MWSSTransformer.ops()["220"]
-        rv = fn("220", {"220w4": "60"}, 0)
-        self.assertEqual(60, rv)
-        rv = fn("220", {"220": "40", "220w4": "41"}, 0)
-        self.assertEqual(40, rv)  # Integer default
-        rv = fn("220", {"220": "40", "220w4": "41"}, 0.0)
-        self.assertEqual(40.5, rv)  # Float default
+        default, fn = MWSSTransformer.ops()["220"]
+        val = fn("220", {"220w4": "60"}, 0)
+        self.assertEqual(60, val)
+        val = fn("220", {"220": "40", "220w4": "41"}, 0)
+        self.assertEqual(40, val)  # Integer default
+        val = fn("220", {"220": "40", "220w4": "41"}, 0.0)
+        self.assertEqual(40.5, val)  # Float default
 
     def test_aggregate_monthly_changes(self):
         """
         QIds 190m - 197m used for monthly changes questions; all aggregated as 190.
 
         """
-        dflt, fn = MWSSTransformer.ops()["190"]
-        for qid in ("190m", "191m", "192m", "193m", "194m", "195m", "196m", "197m"):
-            with self.subTest(qid=qid):
-                rv = fn("190", {qid: ""}, True)
-                self.assertFalse(rv)
-                rv = fn("190", {qid: "No"}, True)
-                self.assertFalse(rv)
-                rv = fn("190", {qid: "Yes"}, False)
-                self.assertTrue(rv)
+        default, fn = MWSSTransformer.ops()["190"]
+        for question_id in ("190m", "191m", "192m", "193m", "194m", "195m", "196m", "197m"):
+            with self.subTest(question_id=question_id):
+                val = fn("190", {question_id: ""}, True)
+                self.assertFalse(val)
+                val = fn("190", {question_id: "No"}, True)
+                self.assertFalse(val)
+                val = fn("190", {question_id: "Yes"}, False)
+                self.assertTrue(val)
 
     def test_aggregate_weekly_comments(self):
         """
         QIds 300w, 300f, 300m, 300w4 & 300w5; all aggregated as 300.
 
         """
-        dflt, fn = MWSSTransformer.ops()["300"]
-        for qid in ("300w", "300f", "300m", "300w4", "300w5"):
-            with self.subTest(qid=qid):
-                rv = fn("300", {qid: "Single comment"}, "")
-                self.assertEqual("Single comment", rv)
-                rv = fn("300", {"300": "First comment", qid: "Second comment"}, "")
-                self.assertEqual(["First comment", "Second comment"], rv.splitlines())
+        default, fn = MWSSTransformer.ops()["300"]
+        for question_id in ("300w", "300f", "300m", "300w4", "300w5"):
+            with self.subTest(question_id=question_id):
+                val = fn("300", {question_id: "Single comment"}, "")
+                self.assertEqual("Single comment", val)
+                val = fn("300", {"300": "First comment", question_id: "Second comment"}, "")
+                self.assertEqual(["First comment", "Second comment"], val.splitlines())
 
     def test_aggregate_monthly_paid_employees(self):
         """
         QIds 140m, 140w4, 140w5 are added to give a value for monthly paid employees (140).
 
         """
-        dflt, fn = MWSSTransformer.ops()["140"]
-        rv = fn("140", {"140w4": "125000"}, 0)
-        self.assertEqual(125000, rv)
-        for qid in ("140m", "140w4", "140w5"):
-            rv = fn("140", {"140": "125000", qid: "25000"}, 0)
-            self.assertEqual(150000, rv)
+        default, fn = MWSSTransformer.ops()["140"]
+        val = fn("140", {"140w4": "125000"}, 0)
+        self.assertEqual(125000, val)
+        for question_id in ("140m", "140w4", "140w5"):
+            val = fn("140", {"140": "125000", question_id: "25000"}, 0)
+            self.assertEqual(150000, val)
 
     def test_aggregate_fiveweekly_changes(self):
         """
         QIds 190w5 - 197w5 used for fiveweekly changes questions; all aggregated as 190.
 
         """
-        dflt, fn = MWSSTransformer.ops()["190"]
-        for qid in ("190w5", "191w5", "192w5", "193w5", "194w5", "195w5", "196w5", "197w5"):
-            with self.subTest(qid=qid):
-                rv = fn("190", {qid: ""}, True)
-                self.assertFalse(rv)
-                rv = fn("190", {qid: "No"}, True)
-                self.assertFalse(rv)
-                rv = fn("190", {qid: "Yes"}, False)
-                self.assertTrue(rv)
+        default, fn = MWSSTransformer.ops()["190"]
+        for question_id in ("190w5", "191w5", "192w5", "193w5", "194w5", "195w5", "196w5", "197w5"):
+            with self.subTest(question_id=question_id):
+                val = fn("190", {question_id: ""}, True)
+                self.assertFalse(val)
+                val = fn("190", {question_id: "No"}, True)
+                self.assertFalse(val)
+                val = fn("190", {question_id: "Yes"}, False)
+                self.assertTrue(val)
 
     def test_aggregate_fiveweekly_increase(self):
         """
         Increase in fiveweekly pay (200w5); aggregated with monthly increase (200).
 
         """
-        dflt, fn = MWSSTransformer.ops()["200"]
-        rv = fn("200", {"200w5": "6.0"}, 0)
-        self.assertEqual(6, rv)
-        rv = fn("200", {"200": "7.0", "200w5": "6.0"}, 0)
-        self.assertEqual(6, rv)  # Integer default
-        rv = fn("200", {"200": "7.0", "200w5": "6.0"}, 0.0)
-        self.assertEqual(6.5, rv)  # Float default
+        default, fn = MWSSTransformer.ops()["200"]
+        val = fn("200", {"200w5": "6.0"}, 0)
+        self.assertEqual(6, val)
+        val = fn("200", {"200": "7.0", "200w5": "6.0"}, 0)
+        self.assertEqual(6, val)  # Integer default
+        val = fn("200", {"200": "7.0", "200w5": "6.0"}, 0.0)
+        self.assertEqual(6.5, val)  # Float default
 
     def test_aggregate_fiveweekly_increase_date(self):
         """
         Date of increase in fiveweekly pay (210w5); aggregated with monthly (210).
 
         """
-        dflt, fn = MWSSTransformer.ops()["210"]
-        rv = fn(
+        default, fn = MWSSTransformer.ops()["210"]
+        val = fn(
             "210", {"210": "2017-01-09", "210w5": "2017-01-11"}, datetime.date.today(),
         )
-        self.assertEqual(9, rv[0].day)
-        self.assertEqual(11, rv[1].day)
+        self.assertEqual(9, val[0].day)
+        self.assertEqual(11, val[1].day)
 
     def test_aggregate_fiveweekly_increase_employees(self):
         """
@@ -383,58 +383,58 @@ class LogicTests(unittest.TestCase):
         aggregated with monthly increase (220).
 
         """
-        dflt, fn = MWSSTransformer.ops()["220"]
-        rv = fn("220", {"220w5": "60"}, 0)
-        self.assertEqual(60, rv)
-        rv = fn("220", {"220": "40", "220w5": "41"}, 0)
-        self.assertEqual(40, rv)  # Integer default
-        rv = fn("220", {"220": "40", "220w5": "41"}, 0.0)
-        self.assertEqual(40.5, rv)  # Float default
+        default, fn = MWSSTransformer.ops()["220"]
+        val = fn("220", {"220w5": "60"}, 0)
+        self.assertEqual(60, val)
+        val = fn("220", {"220": "40", "220w5": "41"}, 0)
+        self.assertEqual(40, val)  # Integer default
+        val = fn("220", {"220": "40", "220w5": "41"}, 0.0)
+        self.assertEqual(40.5, val)  # Float default
 
 
 class TransformTests(unittest.TestCase):
     def test_defaults_empty(self):
-        rv = MWSSTransformer.transform({})
-        self.assertIsInstance(rv, OrderedDict)
-        self.assertEqual([str(i) for i in (130, 131, 132)], list(rv.keys()))
+        val = MWSSTransformer.transform({})
+        self.assertIsInstance(val, OrderedDict)
+        self.assertEqual([str(i) for i in (130, 131, 132)], list(val.keys()))
 
     def test_defaults_with_data(self):
-        rv = MWSSTransformer.transform({"40": "33"})
-        self.assertIsInstance(rv, OrderedDict)
-        self.assertEqual(33, rv["40"])
-        self.assertEqual(4, len(rv))
+        val = MWSSTransformer.transform({"40": "33"})
+        self.assertIsInstance(val, OrderedDict)
+        self.assertEqual(33, val["40"])
+        self.assertEqual(4, len(val))
 
     def test_unsigned(self):
-        rv = MWSSTransformer.transform({"40": "33"})
-        self.assertEqual(33, rv["40"])
-        item = CSFormatter.pck_item("40", rv["40"])
+        val = MWSSTransformer.transform({"40": "33"})
+        self.assertEqual(33, val["40"])
+        item = CSFormatter.pck_item("40", val["40"])
         self.assertEqual(item, "0040 00000000033")
 
     def test_unsigned_decimals(self):
         digits_ingested_as_bools = [100, 200]
         for qNr in digits_ingested_as_bools:
-            qid = str(qNr)
-            with self.subTest(qNr=qNr, qid=qid):
-                rv = MWSSTransformer.transform({qid: "64.0"})
-                self.assertIs(True, rv[qid])
-                self.assertEqual(1, CSFormatter.pck_value(qid, rv[qid]))
+            question_id = str(qNr)
+            with self.subTest(qNr=qNr, question_id=question_id):
+                val = MWSSTransformer.transform({question_id: "64.0"})
+                self.assertIs(True, val[question_id])
+                self.assertEqual(1, CSFormatter.pck_value(question_id, val[question_id]))
 
     def test_currency(self):
-        rv = MWSSTransformer.transform({"50": "36852"})
-        self.assertEqual(36852, rv["50"])
-        item = CSFormatter.pck_item("50", rv["50"])
+        val = MWSSTransformer.transform({"50": "36852"})
+        self.assertEqual(36852, val["50"])
+        item = CSFormatter.pck_item("50", val["50"])
         self.assertEqual(item, "0050 00000036852")
 
     def test_digits_to_onetwo(self):
         digits_ingested_as_bools = [100, 120, 200, 220]
         for qNr in digits_ingested_as_bools:
-            qid = str(qNr)
-            with self.subTest(qNr=qNr, qid=qid):
-                rv = MWSSTransformer.transform({qid: "64"})
-                self.assertIs(True, rv[qid])
-                self.assertEqual(1, CSFormatter.pck_value(qid, rv[qid]))
-                rv = MWSSTransformer.transform({qid: ""})
-                self.assertEqual(2, CSFormatter.pck_value(qid, rv[qid]))
+            question_id = str(qNr)
+            with self.subTest(qNr=qNr, question_id=question_id):
+                val = MWSSTransformer.transform({question_id: "64"})
+                self.assertIs(True, val[question_id])
+                self.assertEqual(1, CSFormatter.pck_value(question_id, val[question_id]))
+                val = MWSSTransformer.transform({question_id: ""})
+                self.assertEqual(2, CSFormatter.pck_value(question_id, val[question_id]))
 
     def test_pay_frequency_as_bool(self):
         pay_frequencies = {
@@ -443,61 +443,61 @@ class TransformTests(unittest.TestCase):
             132: "Five weekly",
         }
         for q, val in pay_frequencies.items():
-            qid = str(q)
-            with self.subTest(qid=qid, val=val):
-                rv = MWSSTransformer.transform({qid: val})
-                self.assertIs(True, rv[qid])
-                self.assertEqual(1, CSFormatter.pck_value(qid, rv[qid]))
-                rv = MWSSTransformer.transform({qid: ""})
-                self.assertIs(False, rv[qid])
-                self.assertEqual(2, CSFormatter.pck_value(qid, rv[qid]))
-                rv = MWSSTransformer.transform({})
-                self.assertIs(False, rv[qid])
-                self.assertEqual(2, CSFormatter.pck_value(qid, rv[qid]))
+            question_id = str(q)
+            with self.subTest(question_id=question_id, val=val):
+                val = MWSSTransformer.transform({question_id: val})
+                self.assertIs(True, val[question_id])
+                self.assertEqual(1, CSFormatter.pck_value(question_id, val[question_id]))
+                val = MWSSTransformer.transform({question_id: ""})
+                self.assertIs(False, val[question_id])
+                self.assertEqual(2, CSFormatter.pck_value(question_id, val[question_id]))
+                val = MWSSTransformer.transform({})
+                self.assertIs(False, val[question_id])
+                self.assertEqual(2, CSFormatter.pck_value(question_id, val[question_id]))
 
     def test_dates_to_onetwo(self):
         dates_ingested_as_bools = [110, 210]
         for qNr in dates_ingested_as_bools:
-            qid = str(qNr)
-            with self.subTest(qNr=qNr, qid=qid):
-                rv = MWSSTransformer.transform({qid: "23/4/2017"})
-                self.assertEqual([datetime.date(2017, 4, 23)], rv[qid])
-                self.assertEqual(1, CSFormatter.pck_value(qid, rv[qid]))
-                rv = MWSSTransformer.transform({qid: ""})
-                self.assertEqual([], rv[qid])
-                self.assertEqual(2, CSFormatter.pck_value(qid, rv[qid]))
+            question_id = str(qNr)
+            with self.subTest(qNr=qNr, question_id=question_id):
+                val = MWSSTransformer.transform({question_id: "23/4/2017"})
+                self.assertEqual([datetime.date(2017, 4, 23)], val[question_id])
+                self.assertEqual(1, CSFormatter.pck_value(question_id, val[question_id]))
+                val = MWSSTransformer.transform({question_id: ""})
+                self.assertEqual([], val[question_id])
+                self.assertEqual(2, CSFormatter.pck_value(question_id, val[question_id]))
 
     def test_aggregate_fourweekly_changes(self):
         """
         QIds 190w4 - 197w4 used for fourweekly changes questions; all aggregated as 190.
 
         """
-        for qid in ("190w4", "191w4", "192w4", "193w4", "194w4", "195w4", "196w4", "197w4"):
-            with self.subTest(qid=qid):
-                rv = MWSSTransformer.transform({qid: ""})
-                self.assertIs(False, rv["190"])
-                rv = MWSSTransformer.transform({qid: "No"})
-                self.assertIs(False, rv["190"])
-                rv = MWSSTransformer.transform({qid: "Yes"})
-                self.assertIs(True, rv["190"])
+        for question_id in ("190w4", "191w4", "192w4", "193w4", "194w4", "195w4", "196w4", "197w4"):
+            with self.subTest(question_id=question_id):
+                val = MWSSTransformer.transform({question_id: ""})
+                self.assertIs(False, val["190"])
+                val = MWSSTransformer.transform({question_id: "No"})
+                self.assertIs(False, val["190"])
+                val = MWSSTransformer.transform({question_id: "Yes"})
+                self.assertIs(True, val["190"])
 
     def test_aggregate_fourweekly_increase(self):
         """
         Increase in fourweekly pay (200w4); aggregated with monthly increase (200).
 
         """
-        rv = MWSSTransformer.transform({"200w4": "25"})
-        self.assertIs(True, rv["200"])
+        val = MWSSTransformer.transform({"200w4": "25"})
+        self.assertIs(True, val["200"])
 
     def test_aggregate_fourweekly_increase_date(self):
         """
         Date of increase in fourweekly pay (210w4); aggregated with monthly (210).
 
         """
-        rv = MWSSTransformer.transform({"210w4": "2017-01-11"})
-        self.assertEqual(1, len(rv["210"]))
-        self.assertEqual(11, rv["210"][0].day)
-        self.assertEqual(1, rv["210"][0].month)
+        val = MWSSTransformer.transform({"210w4": "2017-01-11"})
+        self.assertEqual(1, len(val["210"]))
+        self.assertEqual(11, val["210"][0].day)
+        self.assertEqual(1, val["210"][0].month)
 
     def test_aggregate_fourweekly_increase_employees(self):
         """
@@ -505,76 +505,76 @@ class TransformTests(unittest.TestCase):
         aggregated with monthly increase (220).
 
         """
-        rv = MWSSTransformer.transform({"220w4": "25"})
-        self.assertIs(True, rv["220"])
+        val = MWSSTransformer.transform({"220w4": "25"})
+        self.assertIs(True, val["220"])
 
     def test_aggregate_monthly_changes(self):
         """
         QIds 190m - 197m used for monthly changes questions; all aggregated as 190.
 
         """
-        for qid in ("190m", "191m", "192m", "193m", "194m", "195m", "196m", "197m"):
-            with self.subTest(qid=qid):
-                rv = MWSSTransformer.transform({qid: ""})
-                self.assertFalse(rv["190"])
-                rv = MWSSTransformer.transform({qid: "No"})
-                self.assertFalse(rv["190"])
-                rv = MWSSTransformer.transform({qid: "Yes"})
-                self.assertTrue(rv["190"])
+        for question_id in ("190m", "191m", "192m", "193m", "194m", "195m", "196m", "197m"):
+            with self.subTest(question_id=question_id):
+                val = MWSSTransformer.transform({question_id: ""})
+                self.assertFalse(val["190"])
+                val = MWSSTransformer.transform({question_id: "No"})
+                self.assertFalse(val["190"])
+                val = MWSSTransformer.transform({question_id: "Yes"})
+                self.assertTrue(val["190"])
 
     def test_aggregate_weekly_comments(self):
         """
         QIds 300w, 300f, 300m, 300w4 & 300w5; all aggregated as 300.
 
         """
-        for qid in ("300w", "300f", "300m", "300w4", "300w5"):
-            with self.subTest(qid=qid):
-                rv = MWSSTransformer.transform({qid: "This is a comment"})
-                self.assertEqual(True, rv["300"])
-                self.assertEqual(4, len(rv))
+        for question_id in ("300w", "300f", "300m", "300w4", "300w5"):
+            with self.subTest(question_id=question_id):
+                val = MWSSTransformer.transform({question_id: "This is a comment"})
+                self.assertEqual(True, val["300"])
+                self.assertEqual(4, len(val))
 
     def test_aggregate_monthly_paid_employees(self):
         """
         QIds 140m, 140w4, 140w5 are added to give a value for monthly paid employees (140).
 
         """
-        for qid in ("140m", "140w4", "140w5"):
-            with self.subTest(qid=qid):
-                rv = MWSSTransformer.transform({qid: "25"})
-                self.assertEqual(25, rv["140"])
-                self.assertEqual(4, len(rv))
+        for question_id in ("140m", "140w4", "140w5"):
+            with self.subTest(question_id=question_id):
+                val = MWSSTransformer.transform({question_id: "25"})
+                self.assertEqual(25, val["140"])
+                self.assertEqual(4, len(val))
 
     def test_aggregate_fiveweekly_changes(self):
         """
         QIds 190w5 - 197w5 used for fiveweekly changes questions; all aggregated as 190.
 
         """
-        for qid in ("190w5", "191w5", "192w5", "193w5", "194w5", "195w5", "196w5", "197w5"):
-            with self.subTest(qid=qid):
-                rv = MWSSTransformer.transform({qid: ""})
-                self.assertFalse(rv["190"])
-                rv = MWSSTransformer.transform({qid: "No"})
-                self.assertFalse(rv["190"])
-                rv = MWSSTransformer.transform({qid: "Yes"})
-                self.assertTrue(rv["190"])
+        for question_id in ("190w5", "191w5", "192w5", "193w5", "194w5", "195w5", "196w5", "197w5"):
+            with self.subTest(question_id=question_id):
+                val = MWSSTransformer.transform({question_id: ""})
+                self.assertFalse(val["190"])
+                val = MWSSTransformer.transform({question_id: "No"})
+                self.assertFalse(val["190"])
+                val = MWSSTransformer.transform({question_id: "Yes"})
+                self.assertTrue(val["190"])
 
     def test_aggregate_fiveweekly_increase(self):
         """
         Increase in fiveweekly pay (200w5); aggregated with monthly increase (200).
 
         """
-        rv = MWSSTransformer.transform({"200w5": "25"})
-        self.assertIs(True, rv["200"])
+        val = MWSSTransformer.transform({"200w5": "25"})
+        self.assertIs(True, val["200"])
 
     def test_aggregate_fiveweekly_increase_date(self):
         """
         Date of increase in fiveweekly pay (210w5); aggregated with monthly (210).
 
         """
-        rv = MWSSTransformer.transform({"210w5": "2017-01-11"})
-        self.assertEqual(1, len(rv["210"]))
-        self.assertEqual(11, rv["210"][0].day)
-        self.assertEqual(1, rv["210"][0].month)
+        val = MWSSTransformer.transform({"210w5": "2017-01-11"})
+        self.assertEqual(1, len(val["210"]))
+        self.assertEqual(11, val["210"][0].day)
+        self.assertEqual(1, val["210"][0].month)
 
     def test_aggregate_fiveweekly_increase_employees(self):
         """
@@ -582,24 +582,24 @@ class TransformTests(unittest.TestCase):
         aggregated with monthly increase (220).
 
         """
-        rv = MWSSTransformer.transform({"220w5": "25"})
-        self.assertIs(True, rv["220"])
+        val = MWSSTransformer.transform({"220w5": "25"})
+        self.assertIs(True, val["220"])
 
 
 class BatchFileTests(unittest.TestCase):
     def test_pck_batch_header(self):
         batch_nr = 3866
         batch_date = datetime.date(2009, 12, 29)
-        rv = CSFormatter.pck_batch_header(batch_nr, batch_date)
-        self.assertEqual("FBFV00386629/12/09", rv)
+        val = CSFormatter.pck_batch_header(batch_nr, batch_date)
+        self.assertEqual("FBFV00386629/12/09", val)
 
     def test_pck_form_header(self):
         form_id = 5
         ru_ref = 49900001225
         check = "C"
         period = "200911"
-        rv = CSFormatter.pck_form_header(form_id, ru_ref, check, period)
-        self.assertEqual("0005:49900001225C:200911", rv)
+        val = CSFormatter.pck_form_header(form_id, ru_ref, check, period)
+        self.assertEqual("0005:49900001225C:200911", val)
 
     def test_load_survey(self):
         ids = Survey.identifiers({
@@ -614,8 +614,8 @@ class BatchFileTests(unittest.TestCase):
                 "ru_ref": "12345678901A"
             }
         }, batch_nr=0, seq_nr=0)
-        rv = Survey.load_survey(ids, MWSSTransformer.package, MWSSTransformer.pattern)
-        self.assertIsNotNone(rv)
+        val = Survey.load_survey(ids, MWSSTransformer.package, MWSSTransformer.pattern)
+        self.assertIsNotNone(val)
 
     def test_load_survey_miss(self):
         ids = Survey.identifiers({
@@ -630,8 +630,8 @@ class BatchFileTests(unittest.TestCase):
                 "ru_ref": "12345678901A"
             }
         }, batch_nr=0, seq_nr=0)
-        rv = Survey.load_survey(ids, MWSSTransformer.package, MWSSTransformer.pattern)
-        self.assertIsNone(rv)
+        val = Survey.load_survey(ids, MWSSTransformer.package, MWSSTransformer.pattern)
+        self.assertIsNone(val)
 
     def test_pck_lines(self):
         batch_nr = 3866
@@ -647,7 +647,7 @@ class BatchFileTests(unittest.TestCase):
             ("0151", 217222)
         ])
         self.assertTrue(isinstance(val, int) for val in data.values())
-        rv = CSFormatter.pck_lines(
+        val = CSFormatter.pck_lines(
             data, batch_nr, batch_date, survey_id, inst_id, ru_ref, check, period
         )
         self.assertEqual([
@@ -656,15 +656,15 @@ class BatchFileTests(unittest.TestCase):
             "0001 00000000002",
             "0140 00000000124",
             "0151 00000217222",
-        ], rv)
+        ], val)
 
     def test_idbr_receipt(self):
         src = pkg_resources.resource_string(__name__, "replies/eq-mwss.json")
         reply = json.loads(src.decode("utf-8"))
         reply["tx_id"] = "27923934-62de-475c-bc01-433c09fd38b8"
         ids = Survey.identifiers(reply, batch_nr=3866, seq_nr=0)
-        rv = CSFormatter.idbr_receipt(**ids._asdict())
-        self.assertEqual("12346789012:A:134:201605", rv)
+        val = CSFormatter.idbr_receipt(**ids._asdict())
+        self.assertEqual("12346789012:A:134:201605", val)
 
     def test_identifiers(self):
         src = pkg_resources.resource_string(__name__, "replies/eq-mwss.json")
@@ -696,14 +696,14 @@ class BatchFileTests(unittest.TestCase):
             ("0151", 217222)
         ])
         ids = Survey.identifiers(reply, batch_nr=3866, seq_nr=0)
-        rv = CSFormatter.pck_lines(reply["data"], **ids._asdict())
+        val = CSFormatter.pck_lines(reply["data"], **ids._asdict())
         self.assertEqual([
             "FV          ",
             "0005:49900001225C:200911",
             "0001 00000000002",
             "0140 00000000124",
             "0151 00000217222",
-        ], rv)
+        ], val)
 
     def test_pck_from_transformed_data(self):
         src = pkg_resources.resource_string(__name__, "replies/eq-mwss.json")
@@ -720,7 +720,7 @@ class BatchFileTests(unittest.TestCase):
                 ("151", 217222)
             ])
         )
-        rv = CSFormatter.pck_lines(data, **ids._asdict())
+        val = CSFormatter.pck_lines(data, **ids._asdict())
         self.assertEqual([
             "FV          ",
             "0005:49900001225C:200911",
@@ -730,7 +730,7 @@ class BatchFileTests(unittest.TestCase):
             "0132 00000000002",
             "0140 00000000124",
             "0151 00000217222",
-        ], rv)
+        ], val)
 
 
 class PackingTests(unittest.TestCase):
@@ -761,14 +761,14 @@ class PackingTests(unittest.TestCase):
             "submitted_at": "2017-04-12T13:01:26Z",
             "data": {}
         }
-        tfr = MWSSTransformer(response, 0)
+        transformer = MWSSTransformer(response, 0)
         self.assertEqual(
             "REC1204_0000.DAT",
             CSFormatter.idbr_name(
-                **tfr.ids._asdict()
+                **transformer.ids._asdict()
             )
         )
-        tfr.pack(settings=settings, img_seq=itertools.count(), tmp=None)
+        transformer.pack(settings=settings, img_seq=itertools.count(), tmp=None)
 
     def test_image_sequence_number(self):
         response = {
@@ -786,8 +786,8 @@ class PackingTests(unittest.TestCase):
             "data": {}
         }
         seq_nr = 12345
-        tfr = MWSSTransformer(response, seq_nr=seq_nr)
-        zf = zipfile.ZipFile(tfr.pack(img_seq=itertools.count(), settings=TransformerTests.Settings("", ""), tmp=None))
+        transformer = MWSSTransformer(response, seq_nr=seq_nr)
+        zf = zipfile.ZipFile(transformer.pack(img_seq=itertools.count(), settings=TransformerTests.Settings("", ""), tmp=None))
         fn = next(i for i in zf.namelist() if os.path.splitext(i)[1] == ".csv")
         bits = os.path.splitext(fn)[0].split("_")
         self.assertEqual(seq_nr, int(bits[-1]))
