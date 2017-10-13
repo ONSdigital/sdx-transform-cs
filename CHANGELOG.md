@@ -1,4 +1,6 @@
 ### Unreleased
+  - Modify to use common transform formatters
+  - Support decimal values in MWSS Surveys ( survey_id 005 )
 
 ### 2.8.0 2017-10-02
   - Round decimal values in RSI surveys ( survey_id 023 )

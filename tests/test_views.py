@@ -1,12 +1,17 @@
-from transform.transformers import PDFTransformer, ImageTransformer, CSTransformer
-from transform import app
-from jinja2 import Environment, PackageLoader
-
-from flask import make_response, send_file
-import logging
-from structlog import wrap_logger
 import json
+import logging
 import os.path
+import unittest
+
+from flask import send_file
+from jinja2 import Environment
+from jinja2 import PackageLoader
+from sdx.common.transformer import ImageTransformer
+from sdx.common.transformer import PDFTransformer
+from structlog import wrap_logger
+
+from transform import app
+from transform import settings
 
 logger = wrap_logger(logging.getLogger(__name__))
 
@@ -56,9 +61,9 @@ def images_test():
     with open("./transform/surveys/%s.%s.json" % (survey_response['survey_id'], form_id)) as json_file:
         survey = json.load(json_file)
 
-        itransformer = ImageTransformer(logger, survey, survey_response)
+        itransformer = ImageTransformer(logger, settings, survey, survey_response)
 
-        path = itransformer.create_pdf(survey, survey_response)
+        path = PDFTransformer.render_to_file(survey, survey_response)
         locn = os.path.dirname(path)
         images = list(itransformer.create_image_sequence(path))
         index = itransformer.create_image_index(images)
@@ -67,23 +72,6 @@ def images_test():
         itransformer.cleanup(locn)
 
         return send_file(zipfile, mimetype='application/zip')
-
-
-@app.route('/pdf-test', methods=['GET'])
-def pdf_test():
-    survey_response = json.loads(test_message)
-    form_id = survey_response['collection']['instrument_id']
-
-    with open("./transform/surveys/%s.%s.json" % (survey_response['survey_id'], form_id)) as json_file:
-        survey = json.load(json_file)
-
-        pdf = PDFTransformer(survey, survey_response)
-        rendered_pdf = pdf.render()
-
-        response = make_response(rendered_pdf)
-        response.mimetype = 'application/pdf'
-
-        return response
 
 
 @app.route('/html-test', methods=['GET'])
@@ -98,19 +86,19 @@ def html_test():
         return template.render(response=response, survey=survey)
 
 
-@app.route('/cs-test', methods=['GET'])
-def cs_test():
-    survey_response = json.loads(test_message)
-    form_id = survey_response['collection']['instrument_id']
+class TestCSTransformService(unittest.TestCase):
 
-    with open("./transform/surveys/%s.%s.json" % (survey_response['survey_id'], form_id)) as json_file:
-        survey = json.load(json_file)
+    transform_cs_endpoint = "/common-software"
 
-        ctransformer = CSTransformer(logger, survey, survey_response)
+    def setUp(self):
 
-        ctransformer.create_formats()
-        ctransformer.prepare_archive()
-        zipfile = ctransformer.create_zip()
-        ctransformer.cleanup()
+        # creates a test client
+        self.app = app.test_client()
 
-        return send_file(zipfile, mimetype='application/zip')
+        # propagate the exceptions to the test client
+        self.app.testing = True
+
+    def test_invalid_data(self):
+        r = self.app.post(self.transform_cs_endpoint, data="rubbish")
+
+        self.assertEqual(r.status_code, 400)
