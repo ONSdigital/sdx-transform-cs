@@ -15,4 +15,3 @@ pip-selfcheck.json
 coverage.xml
 .coverage
 .idea
-*.sublime*
