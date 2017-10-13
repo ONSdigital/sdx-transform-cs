@@ -115,8 +115,8 @@ class MWSSTransformer(Transformer):
         ))
         mandatory = set([Decimal("130"), Decimal("131"), Decimal("132")])
         return OrderedDict(
-            (question_id, fn(question_id, data, default, survey))
-            for question_id, (default, fn) in MWSSTransformer.ops().items()
+            (question_id, funct(question_id, data, default, survey))
+            for question_id, (default, funct) in MWSSTransformer.ops().items()
             if Decimal(question_id) in supplied.union(mandatory)
         )
 
@@ -144,8 +144,8 @@ def main(args):
 def run():
     parser = sdx.common.cli.transformer_cli(__doc__)
     args = parser.parse_args()
-    result = main(args)
-    sys.exit(result)
+    return_value = main(args)
+    sys.exit(return_value)
 
 
 if __name__ == "__main__":
