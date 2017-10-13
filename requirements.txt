@@ -83,9 +83,9 @@ requests==2.12.4 \
 six==1.10.0 \
     --hash=sha256:0ff78c403d9bccf5a425a6d31a12aa6b47f1c21ca4dc2573a7e2f32a97335eb1 \
     --hash=sha256:105f8d68616f8248e24bf0e9372ef04d3cc10104f1980f54d57b2ce73a5ad56a
-sdx-common==0.9.1 \
-    --hash=sha256:f426bb7d0f7ec21dc998a53e79276209d61adc5f8278c1323e7a257ca416d000 \
-    --hash=sha256:f74e9e16a26f18c592a42de1a325333a355f53ddc2b345e2b5a466f9457c9490
+sdx-common==0.8.0 \
+    --hash=sha256:cb1dadaa4b100c787c274cf9e254eca7f819d732164f52e7aae8c2f5a6e7da6b \
+    --hash=sha256:5253595ca7e189c4e4b1a1c908f3a7257562868d8b123dd80363e49d34e23e78
 voluptuous==0.8.11 \
     --hash=sha256:39e1d5cb3187bb49fdbe6f4efe50dc8ddbc17cd50cfe06cdf47a23d35d5b574c
 Werkzeug==0.11.9 \
