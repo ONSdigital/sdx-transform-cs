@@ -100,7 +100,7 @@ class LogicTests(unittest.TestCase):
         Increase in weekly pay (100).
 
         """
-        dflt, fn = MWSSTransformer.ops()["100"]
+        _, fn = MWSSTransformer.ops()["100"]
         result = fn("100", {"100": "6.0"}, 0)
         self.assertEqual(6, result)
 
@@ -109,7 +109,7 @@ class LogicTests(unittest.TestCase):
         QIds 40, 40f are added to give a value for weekly paid employees (40).
 
         """
-        dflt, fn = MWSSTransformer.ops()["40"]
+        _, fn = MWSSTransformer.ops()["40"]
         result = fn("40", {"40": "125000"}, 0)
         self.assertEqual(125000, result)
         result = fn("40", {"40": "125000", "40f": "25000"}, 0)
@@ -121,7 +121,7 @@ class LogicTests(unittest.TestCase):
         the value for qid 50.
 
         """
-        dflt, fn = MWSSTransformer.ops()["50"]
+        _, fn = MWSSTransformer.ops()["50"]
         result = fn("50", {"50f": "1600"}, 0)
         self.assertEqual(800, result)
         result = fn("50", {"50": "19200", "50f": "1600"}, 0)
@@ -141,7 +141,7 @@ class LogicTests(unittest.TestCase):
         are divided by 2 and added to qids 60, 70, 80 respectively.
 
         """
-        dflt, fn = MWSSTransformer.ops()["60"]
+        _, fn = MWSSTransformer.ops()["60"]
         result = fn("60", {"60f": "360"}, 0)
         self.assertEqual(180, result)
         result = fn("60", {"60": "4600", "60f": "360"}, 0)
@@ -155,7 +155,7 @@ class LogicTests(unittest.TestCase):
         result = fn("60", {"60": "19200.02", "60f": "1600.02"}, 0)
         self.assertEqual(20000, result)
 
-        dflt, fn = MWSSTransformer.ops()["70"]
+        _, fn = MWSSTransformer.ops()["70"]
         result = fn("70", {"70f": "1280"}, 0)
         self.assertEqual(640, result)
         result = fn("70", {"70": "7360", "70f": "1280"}, 0)
@@ -169,7 +169,7 @@ class LogicTests(unittest.TestCase):
         result = fn("70", {"70": "19200.02", "70f": "1600.02"}, 0)
         self.assertEqual(20000, result)
 
-        dflt, fn = MWSSTransformer.ops()["80"]
+        _, fn = MWSSTransformer.ops()["80"]
         result = fn("80", {"80f": "5000"}, 0)
         self.assertEqual(2500, result)
         result = fn("80", {"80": "15000", "80f": "5000"}, 0)
@@ -188,7 +188,7 @@ class LogicTests(unittest.TestCase):
         Increase in Fortnightly pay (100f); aggregated with weekly increase (100).
 
         """
-        dflt, fn = MWSSTransformer.ops()["100"]
+        _, fn = MWSSTransformer.ops()["100"]
         result = fn("100", {"100f": "6.0"}, 0)
         self.assertEqual(6, result)
         result = fn("100", {"100": "7.0", "100f": "6.0"}, 0)
@@ -201,7 +201,7 @@ class LogicTests(unittest.TestCase):
         Date of increase in Fortnightly pay (110f); aggregated with weekly (110).
 
         """
-        dflt, fn = MWSSTransformer.ops()["110"]
+        _, fn = MWSSTransformer.ops()["110"]
         result = fn(
             "110", {"110": "2017-01-09", "110f": "2017-01-11"}, datetime.date.today(),
         )
@@ -214,7 +214,7 @@ class LogicTests(unittest.TestCase):
         aggregated with weekly increase (120).
 
         """
-        dflt, fn = MWSSTransformer.ops()["120"]
+        _, fn = MWSSTransformer.ops()["120"]
         result = fn("120", {"120f": "60"}, 0)
         self.assertEqual(60, result)
         result = fn("120", {"120": "40", "120f": "41"}, 0)
@@ -227,7 +227,7 @@ class LogicTests(unittest.TestCase):
         QIds 90f - 97f used for fortnightly changes questions; all aggregated as 90.
 
         """
-        dflt, fn = MWSSTransformer.ops()["90"]
+        _, fn = MWSSTransformer.ops()["90"]
         for qid in ("90f", "91f", "92f", "93f", "94f", "95f", "96f", "97f"):
             with self.subTest(qid=qid):
                 result = fn("90", {qid: ""}, True)
@@ -242,7 +242,7 @@ class LogicTests(unittest.TestCase):
         QIds 90w - 97w used for weekly changes questions; all aggregated as 90.
 
         """
-        dflt, fn = MWSSTransformer.ops()["90"]
+        _, fn = MWSSTransformer.ops()["90"]
         for qid in ("90w", "91w", "92w", "93w", "94w", "95w", "96w", "97w"):
             with self.subTest(qid=qid):
                 result = fn("90", {qid: ""}, True)
@@ -258,7 +258,7 @@ class LogicTests(unittest.TestCase):
         have answers other than Yes/No.
 
         """
-        dflt, fn = MWSSTransformer.ops()["90"]
+        _, fn = MWSSTransformer.ops()["90"]
         for qid in ("92w", "94w", "92f", "94f"):
             with self.subTest(qid=qid):
                 result = fn("90", {qid: ""}, True)
@@ -268,7 +268,7 @@ class LogicTests(unittest.TestCase):
                 result = fn("90", {qid: "Any other string"}, False)
                 self.assertTrue(result)
 
-        dflt, fn = MWSSTransformer.ops()["190"]
+        _, fn = MWSSTransformer.ops()["190"]
         for qid in ("192m", "194m", "192w4", "194w4", "192w5", "194w5"):
             with self.subTest(qid=qid):
                 result = fn("190", {qid: ""}, True)
@@ -283,7 +283,7 @@ class LogicTests(unittest.TestCase):
         QIds 190w4 - 197w4 used for fourweekly changes questions; all aggregated as 190.
 
         """
-        dflt, fn = MWSSTransformer.ops()["190"]
+        _, fn = MWSSTransformer.ops()["190"]
         for qid in ("190w4", "191w4", "192w4", "193w4", "194w4", "195w4", "196w4", "197w4"):
             with self.subTest(qid=qid):
                 result = fn("190", {qid: ""}, True)
@@ -298,7 +298,7 @@ class LogicTests(unittest.TestCase):
         Increase in fourweekly pay (200w4); aggregated with monthly increase (200).
 
         """
-        dflt, fn = MWSSTransformer.ops()["200"]
+        _, fn = MWSSTransformer.ops()["200"]
         result = fn("200", {"200w4": "6.0"}, 0)
         self.assertEqual(True, result)
         result = fn("200", {"200": "7.0", "200w4": "6.0"}, 0)
@@ -311,7 +311,7 @@ class LogicTests(unittest.TestCase):
         Date of increase in fourweekly pay (210w4); aggregated with monthly (210).
 
         """
-        dflt, fn = MWSSTransformer.ops()["210"]
+        _, fn = MWSSTransformer.ops()["210"]
         result = fn(
             "210", {"210": "2017-01-09", "210w4": "2017-01-11"}, datetime.date.today(),
         )
@@ -324,7 +324,7 @@ class LogicTests(unittest.TestCase):
         aggregated with monthly increase (220).
 
         """
-        dflt, fn = MWSSTransformer.ops()["220"]
+        _, fn = MWSSTransformer.ops()["220"]
         result = fn("220", {"220w4": "60"}, 0)
         self.assertEqual(60, result)
         result = fn("220", {"220": "40", "220w4": "41"}, 0)
@@ -337,7 +337,7 @@ class LogicTests(unittest.TestCase):
         QIds 190m - 197m used for monthly changes questions; all aggregated as 190.
 
         """
-        dflt, fn = MWSSTransformer.ops()["190"]
+        _, fn = MWSSTransformer.ops()["190"]
         for qid in ("190m", "191m", "192m", "193m", "194m", "195m", "196m", "197m"):
             with self.subTest(qid=qid):
                 result = fn("190", {qid: ""}, True)
@@ -352,7 +352,7 @@ class LogicTests(unittest.TestCase):
         QIds 300w, 300f, 300m, 300w4 & 300w5; all aggregated as 300.
 
         """
-        dflt, fn = MWSSTransformer.ops()["300"]
+        _, fn = MWSSTransformer.ops()["300"]
         for qid in ("300w", "300f", "300m", "300w4", "300w5"):
             with self.subTest(qid=qid):
                 result = fn("300", {qid: "Single comment"}, "")
@@ -365,7 +365,7 @@ class LogicTests(unittest.TestCase):
         QIds 140m, 140w4, 140w5 are added to give a value for monthly paid employees (140).
 
         """
-        dflt, fn = MWSSTransformer.ops()["140"]
+        _, fn = MWSSTransformer.ops()["140"]
         result = fn("140", {"140w4": "125000"}, 0)
         self.assertEqual(125000, result)
         for qid in ("140m", "140w4", "140w5"):
@@ -377,7 +377,7 @@ class LogicTests(unittest.TestCase):
         QIds 190w5 - 197w5 used for fiveweekly changes questions; all aggregated as 190.
 
         """
-        dflt, fn = MWSSTransformer.ops()["190"]
+        _, fn = MWSSTransformer.ops()["190"]
         for qid in ("190w5", "191w5", "192w5", "193w5", "194w5", "195w5", "196w5", "197w5"):
             with self.subTest(qid=qid):
                 result = fn("190", {qid: ""}, True)
@@ -392,7 +392,7 @@ class LogicTests(unittest.TestCase):
         Increase in fiveweekly pay (200w5); aggregated with monthly increase (200).
 
         """
-        dflt, fn = MWSSTransformer.ops()["200"]
+        _, fn = MWSSTransformer.ops()["200"]
         result = fn("200", {"200w5": "6.0"}, 0)
         self.assertEqual(True, result)
         result = fn("200", {"200w4": "7.0"}, 0)
@@ -407,7 +407,7 @@ class LogicTests(unittest.TestCase):
         Date of increase in fiveweekly pay (210w5); aggregated with monthly (210).
 
         """
-        dflt, fn = MWSSTransformer.ops()["210"]
+        _, fn = MWSSTransformer.ops()["210"]
         result = fn(
             "210", {"210": "2017-01-09", "210w5": "2017-01-11"}, datetime.date.today(),
         )
@@ -420,7 +420,7 @@ class LogicTests(unittest.TestCase):
         aggregated with monthly increase (220).
 
         """
-        dflt, fn = MWSSTransformer.ops()["220"]
+        _, fn = MWSSTransformer.ops()["220"]
         result = fn("220", {"220w5": "60"}, 0)
         self.assertEqual(60, result)
         result = fn("220", {"220": "40", "220w5": "41"}, 0)
@@ -433,7 +433,7 @@ class LogicTests(unittest.TestCase):
         Total gross calendar monthly pay
 
         """
-        dflt, fn = MWSSTransformer.ops()["151"]
+        _, fn = MWSSTransformer.ops()["151"]
         result = fn("151", {"151": "1600"}, 0)
         self.assertEqual(1600, result)
         result = fn("151", {"151": "19200.49"}, 0)
@@ -443,7 +443,7 @@ class LogicTests(unittest.TestCase):
         result = fn("151", {"151": "-19200.49"}, 0)
         self.assertEqual(0, result)
 
-        dflt, fn = MWSSTransformer.ops()["152"]
+        _, fn = MWSSTransformer.ops()["152"]
         result = fn("152", {"152": "1600"}, 0)
         self.assertEqual(1600, result)
         result = fn("152", {"152": "19200.49"}, 0)
@@ -453,7 +453,7 @@ class LogicTests(unittest.TestCase):
         result = fn("152", {"152": "-19200.49"}, 0)
         self.assertEqual(0, result)
 
-        dflt, fn = MWSSTransformer.ops()["153"]
+        _, fn = MWSSTransformer.ops()["153"]
         result = fn("153", {"153": "1600"}, 0)
         self.assertEqual(1600, result)
         result = fn("153", {"153": "19200.49"}, 0)
