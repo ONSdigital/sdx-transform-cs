@@ -1,5 +1,4 @@
 ### Unreleased
-  - Modify to use common transform formatters
   - Support decimal values in MWSS Surveys ( survey_id 005 )
   - Refactored variable names for MWSS transformer
 
