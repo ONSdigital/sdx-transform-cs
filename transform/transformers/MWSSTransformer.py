@@ -7,9 +7,9 @@ import json
 import re
 import sys
 
-import sdx.common.cli
-from sdx.common.processor import Processor
-from sdx.common.transformer import Transformer
+import transform.transformers.cli
+from transform.transformers.processor import Processor
+from transform.transformers.transformer import Transformer
 
 __doc__ = """Transform MWSS survey data into formats required downstream.
 
@@ -142,7 +142,7 @@ def main(args):
 
 
 def run():
-    parser = sdx.common.cli.transformer_cli(__doc__)
+    parser = transform.transformers.cli.transformer_cli(__doc__)
     args = parser.parse_args()
     return_value = main(args)
     sys.exit(return_value)
