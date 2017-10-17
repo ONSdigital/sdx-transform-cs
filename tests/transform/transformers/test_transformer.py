@@ -6,7 +6,6 @@ import re
 import unittest
 import zipfile
 from collections import OrderedDict
-from collections import namedtuple
 from functools import partial
 
 import pkg_resources
@@ -68,7 +67,8 @@ class TestTransformer(Transformer):
             convert=str, op=lambda x, y: x + "\n" + y)),
     ]
 
-    package = "sdx.common.test"
+    # package = "sdx.common.test"
+    package = __name__
     pattern = "data/{survey_id}.{inst_id}.json"
 
 
@@ -558,18 +558,10 @@ class BatchFileTests(unittest.TestCase):
 
 class PackingTests(unittest.TestCase):
 
-    Settings = namedtuple(
-        "Settings",
-        [
-            "FTP_HOST",
-            "SDX_FTP_IMAGE_PATH",
-        ]
-    )
-
     def test_mwss_pack(self):
-        settings = PackingTests.Settings("\\NFS", "SDX")
-        src = pkg_resources.resource_string("sdx.common.test", "data/eq-mwss.json")
-        reply = json.loads(src.decode("utf-8"))
+        with open("tests/data/eq-mwss.json", "r") as fb:
+            src = fb.read()
+        reply = json.loads(src)
         tfr = TestTransformer(reply)
         self.assertEqual(
             "REC0103_0000.DAT",
@@ -577,7 +569,7 @@ class PackingTests(unittest.TestCase):
                 **tfr.ids._asdict()
             )
         )
-        zip_data = tfr.pack(settings=settings, img_seq=itertools.count(), tmp=None)
+        zip_data = tfr.pack(img_seq=itertools.count(), tmp=None)
 
         with zipfile.ZipFile(zip_data) as zip_file:
             actual = zip_file.namelist()
@@ -613,7 +605,7 @@ class PackingTests(unittest.TestCase):
                 "user_id": "123456789",
                 "ru_ref": "12345678901A"
             },
-            "submitted_at": "2017-04-12T13:01:26Z",
+            "submitted_at": "2017-04-12                                                 T13:01:26Z",
             "data": {}
         }
         seq_nr = 12345

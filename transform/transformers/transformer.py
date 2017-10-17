@@ -109,7 +109,7 @@ class Transformer:
             if not hasattr(self.__class__, attr):
                 raise UserWarning("Missing class attribute: {0}".format(attr))
 
-    def pack(self, settings=None, img_seq=None, tmp="tmp"):
+    def pack(self, img_seq=None, tmp="tmp"):
         """Perform transformation on the survey data and pack the output into a zip file.
 
         Return the contents of the zip as bytes.
@@ -135,11 +135,12 @@ class Transformer:
             # Build PDF
             fp = os.path.join(locn, "pages.pdf")
             doc = SimpleDocTemplate(fp, pagesize=A4)
-            doc.build(PDFTransformer.get_elements(survey, self.response))
+            pdf_transformer = PDFTransformer(survey, self.response)
+            doc.build(pdf_transformer.get_elements())
 
             # Create page images from PDF
             img_tfr = ImageTransformer(
-                self.log, settings, survey, self.response, self.ids.seq_nr
+                self.log, survey, self.response, self.ids.seq_nr
             )
             images = list(img_tfr.create_image_sequence(fp, nmbr_seq=img_seq))
             for img in images:

@@ -20,10 +20,7 @@ from requests.adapters import HTTPAdapter
 
 from requests.packages.urllib3.exceptions import MaxRetryError
 
-try:
-    from PDFTransformer import PDFTransformer
-except ImportError:
-    from .PDFTransformer import PDFTransformer
+from .PDFTransformer import PDFTransformer
 
 from transform import settings
 from transform.views.image_filters import get_env, format_date
