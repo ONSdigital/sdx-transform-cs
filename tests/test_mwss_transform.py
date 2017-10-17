@@ -1050,7 +1050,7 @@ class PackingTests(unittest.TestCase):
                 **transformer.ids._asdict()
             )
         )
-        transformer.pack(settings=settings, img_seq=itertools.count())
+        transformer.pack(settings=settings, img_seq=itertools.count(), tmp=None)
 
     def test_image_sequence_number(self):
         """
@@ -1076,7 +1076,7 @@ class PackingTests(unittest.TestCase):
         zf = zipfile.ZipFile(
             transformer.pack(
                 img_seq=itertools.count(),
-                settings=TransformerTests.Settings("", ""),
+                settings=TransformerTests.Settings("", ""), tmp=None
             )
         )
         funct = next(i for i in zf.namelist() if os.path.splitext(i)[1] == ".csv")
