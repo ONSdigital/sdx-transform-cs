@@ -14,6 +14,9 @@ import shutil
 import subprocess
 import sys
 import zipfile
+import requests
+from requests.packages.urllib3.util.retry import Retry
+from requests.adapters import HTTPAdapter
 
 from requests.packages.urllib3.exceptions import MaxRetryError
 
@@ -23,7 +26,6 @@ except ImportError:
     from .PDFTransformer import PDFTransformer
 
 from transform import settings
-from transform import session
 from transform.views.image_filters import get_env, format_date
 
 __doc__ = """
@@ -35,6 +37,14 @@ python -m transform.transformers.ImageTransformer --survey transform/surveys/144
 < tests/replies/ukis-01.json > output.zip
 
 """
+
+# Configure the number of retries attempted before failing call
+session = requests.Session()
+
+retries = Retry(total=5, backoff_factor=0.1)
+
+session.mount('http://', HTTPAdapter(max_retries=retries))
+session.mount('https://', HTTPAdapter(max_retries=retries))
 
 
 class ImageTransformer(object):
