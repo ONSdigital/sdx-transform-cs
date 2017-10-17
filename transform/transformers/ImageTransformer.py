@@ -23,7 +23,7 @@ except ImportError:
     from .PDFTransformer import PDFTransformer
 
 from transform import settings
-from transform.settings import session
+from transform import session
 from transform.views.image_filters import get_env, format_date
 
 __doc__ = """
