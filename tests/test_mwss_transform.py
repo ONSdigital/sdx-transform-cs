@@ -187,7 +187,7 @@ class LogicTests(unittest.TestCase):
         return_value = funct("60", {"60": "19200.02", "60f": "1600.02"}, 0)
         self.assertEqual(20000, return_value)
 
-        default, funct = MWSSTransformer.ops()["70"]
+        _, funct = MWSSTransformer.ops()["70"]
         return_value = funct("70", {"70f": "1280"}, 0)
         self.assertEqual(640, return_value)
         return_value = funct("70", {"70": "7360", "70f": "1280"}, 0)
@@ -201,7 +201,7 @@ class LogicTests(unittest.TestCase):
         return_value = funct("70", {"70": "19200.02", "70f": "1600.02"}, 0)
         self.assertEqual(20000, return_value)
 
-        default, funct = MWSSTransformer.ops()["80"]
+        _, funct = MWSSTransformer.ops()["80"]
         return_value = funct("80", {"80f": "5000"}, 0)
         self.assertEqual(2500, return_value)
         return_value = funct("80", {"80": "15000", "80f": "5000"}, 0)
