@@ -91,7 +91,7 @@ class ImageTransformer(object):
             os.rename(imageFile, fp)
             yield fp
 
-    def create_image_index(self, images):
+    def create_image_index(self, images, current_time=datetime.datetime.utcnow()):
         '''
         Takes a list of images and creates a index csv from them
         '''
@@ -100,7 +100,6 @@ class ImageTransformer(object):
         env = get_env()
         template = env.get_template('csv.tmpl')
 
-        current_time = datetime.datetime.utcnow()
         creation_time = {
             'short': format_date(current_time, 'short'),
             'long': format_date(current_time)
