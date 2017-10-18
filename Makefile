@@ -6,7 +6,7 @@ build:
 test:
 	pip3 install -r test_requirements.txt
 	flake8 --exclude ./lib/*
-	pytest --cov transform
+	pytest -v --cov transform
 
 check-dependencies:
 ifndef PDFTOPPM

@@ -13,6 +13,6 @@ install:
   - pip install codecov
   - pip install -r test_requirements.txt
 script:
-  - pytest tests/ --cov=transform --cov-report html
+  - pytest -v tests/ --cov=transform --cov-report html
 after_success:
   - codecov
