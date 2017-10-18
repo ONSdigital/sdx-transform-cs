@@ -1,8 +1,1 @@
-{
-  "tests/test_cs_transform.py": true,
-  "tests/test_mwss_transform.py": true,
-  "tests/test_nobatch.py": true,
-  "tests/test_pck_transformer.py": true,
-  "tests/test_pdf_transform.py": true,
-  "tests/test_transform.py": true
-}
+{}
