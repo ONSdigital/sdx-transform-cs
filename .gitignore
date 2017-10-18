@@ -16,3 +16,4 @@ coverage.xml
 .coverage
 .idea
 *.sublime*
+.vscode/
