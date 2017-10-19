@@ -1071,10 +1071,7 @@ class PackingTests(unittest.TestCase):
 
         transformer = MWSSTransformer(response, seq_nr=seq_nr)
         zf = zipfile.ZipFile(
-            transformer.pack(
-                img_seq=itertools.count(),
-                settings=TransformerTests.Settings("", ""), tmp=None
-            )
+            transformer.pack(img_seq=itertools.count(), tmp=None)
         )
         funct = next(i for i in zf.namelist() if os.path.splitext(i)[1] == ".csv")
         bits = os.path.splitext(funct)[0].split("_")
