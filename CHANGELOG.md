@@ -3,6 +3,7 @@
   - Add all service configurations to config file
   - Correct the spelling error in RSI image
   - Rename FTP_HOST to FTP_PATH
+ - improve test output and implemented Pytest
 
 ### 2.10.0 2017-10-18
   - Refactored variable names for MWSS transformer
