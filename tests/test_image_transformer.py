@@ -25,15 +25,15 @@ class ImageTransformTests(unittest.TestCase):
     def test_mwss_index(self):
         log = wrap_logger(logging.getLogger(__name__))
 
-        with open("tests/data/eq-mwss.json", "r") as fb:
+        with open("./tests/data/eq-mwss.json") as fb:
             data = fb.read()
         reply = json.loads(data)
 
-        with open("tests/data/134.0005.json", "r") as fb:
+        with open("./tests/data/134.0005.json") as fb:
             survey_data = fb.read()
         survey = json.loads(survey_data)
 
-        with open("tests/data/EDC_134_20170301_1000.csv", "r") as fb:
+        with open("./tests/data/EDC_134_20170301_1000.csv") as fb:
             check = fb.read()
 
         with tempfile.TemporaryDirectory(prefix="sdx_") as locn:
