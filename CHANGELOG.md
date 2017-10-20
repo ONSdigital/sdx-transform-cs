@@ -1,4 +1,5 @@
 ### Unreleased
+ - Add all service configurations to config file
 
 ### 2.10.0 2017-10-18
   - Refactored variable names for MWSS transformer
