@@ -59,17 +59,13 @@ class ProcessorTests(unittest.TestCase):
         proc = Processor.boolean
 
         # Supply int default for range checking
-        self.assertEqual(True, proc("q", {"q": 0.49}, 0))
-        self.assertEqual(True, proc("q", {"q": 101}, 0))
-        self.assertEqual(False, proc("q", {"q": 0}, 0))
-        self.assertEqual(False, proc("q", {"q": ""}, 0))
+        self.assertTrue(proc("q", {"q": 0.49}, 0))
+        self.assertTrue(proc("q", {"q": 101}, 0))
+        self.assertFalse(proc("q", {"q": 0}, 0))
+        self.assertFalse(proc("q", {"q": ""}, 0))
 
         proc = Processor.boolean
-        self.assertEqual(True, proc("q", {"q": 0.49}, 0, precision='1.',
-                                    rounding_direction=ROUND_HALF_UP))
-        self.assertEqual(True, proc("q", {"q": 100.5}, 0, precision='1.',
-                                    rounding_direction=ROUND_HALF_UP))
-        self.assertEqual(False, proc("q", {"q": 0}, 0, precision='1.',
-                                     rounding_direction=ROUND_HALF_UP)),
-        self.assertEqual(False, proc("q", {"q": ""}, 0, precision='1.',
-                                     rounding_direction=ROUND_HALF_UP))
+        self.assertTrue(proc("q", {"q": 0.49}, 0, precision='1.', rounding_direction=ROUND_HALF_UP))
+        self.assertTrue(proc("q", {"q": 100.5}, 0, precision='1.', rounding_direction=ROUND_HALF_UP))
+        self.assertFalse(proc("q", {"q": 0}, 0, precision='1.', rounding_direction=ROUND_HALF_UP))
+        self.assertFalse(proc("q", {"q": ""}, 0, precision='1.', rounding_direction=ROUND_HALF_UP))

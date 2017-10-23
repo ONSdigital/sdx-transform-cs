@@ -88,7 +88,7 @@ class LogicTests(unittest.TestCase):
         QIds 40, 40f are added to give a value for weekly paid employees (40).
 
         """
-        dflt, fn = TestTransformer.ops()["40"]
+        _, fn = TestTransformer.ops()["40"]
         rv = fn("40", {"40": "125000"}, 0)
         self.assertEqual(125000, rv)
         rv = fn("40", {"40": "125000", "40f": "25000"}, 0)
