@@ -6,13 +6,6 @@ import logging
 import pkg_resources
 
 
-__doc__ = """
-The survey module provides functions to access survey reply data.
-These will be of use in :ref:`processors` and :ref:`transformers`.
-
-"""
-
-
 class Survey:
     """Provide operations and accessors to survey data."""
 

@@ -8,14 +8,6 @@ import sys
 
 DFLT_LOCN = os.path.expanduser("~")
 
-__doc__ = """
-Defines a common CLI for SDX tooling.
-
-Operation via CLI requires a set of common options.
-
-
-"""
-
 
 def logging_format(service="sdx-common"):
     return "%(asctime)s|%(levelname)s: {0}: %(message)s".format(service)

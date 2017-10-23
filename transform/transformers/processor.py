@@ -5,13 +5,6 @@ from functools import reduce
 from transform.transformers.survey import Survey
 
 
-__doc__ = """
-The processor module collects business logic processing functions under a single
-namespace so they can be used in :ref:`transformers`.
-
-"""
-
-
 class Processor:
     """Business logic operations on data.
 

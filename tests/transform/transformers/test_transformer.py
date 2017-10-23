@@ -79,7 +79,7 @@ class LogicTests(unittest.TestCase):
         Increase in weekly pay (100).
 
         """
-        dflt, fn = TestTransformer.ops()["100"]
+        _, fn = TestTransformer.ops()["100"]
         rv = fn("100", {"100": "6.0"}, 0)
         self.assertEqual(6, rv)
 
@@ -100,7 +100,7 @@ class LogicTests(unittest.TestCase):
         the value for qid 50.
 
         """
-        dflt, fn = TestTransformer.ops()["50"]
+        _, fn = TestTransformer.ops()["50"]
         rv = fn("50", {"50f": "1600"}, 0)
         self.assertEqual(800, rv)
         rv = fn("50", {"50": "19200", "50f": "1600"}, 0)
@@ -112,19 +112,19 @@ class LogicTests(unittest.TestCase):
         are divided by 2 and added to qids 60, 70, 80 respectively.
 
         """
-        dflt, fn = TestTransformer.ops()["60"]
+        _, fn = TestTransformer.ops()["60"]
         rv = fn("60", {"60f": "360"}, 0)
         self.assertEqual(180, rv)
         rv = fn("60", {"60": "4600", "60f": "360"}, 0)
         self.assertEqual(4780, rv)
 
-        dflt, fn = TestTransformer.ops()["70"]
+        _, fn = TestTransformer.ops()["70"]
         rv = fn("70", {"70f": "1280"}, 0)
         self.assertEqual(640, rv)
         rv = fn("70", {"70": "7360", "70f": "1280"}, 0)
         self.assertEqual(8000, rv)
 
-        dflt, fn = TestTransformer.ops()["80"]
+        _, fn = TestTransformer.ops()["80"]
         rv = fn("80", {"80f": "5000"}, 0)
         self.assertEqual(2500, rv)
         rv = fn("80", {"80": "15000", "80f": "5000"}, 0)
@@ -135,7 +135,7 @@ class LogicTests(unittest.TestCase):
         Increase in Fortnightly pay (100f); aggregated with weekly increase (100).
 
         """
-        dflt, fn = TestTransformer.ops()["100"]
+        _, fn = TestTransformer.ops()["100"]
         rv = fn("100", {"100f": "6.0"}, 0)
         self.assertEqual(6, rv)
         rv = fn("100", {"100": "7.0", "100f": "6.0"}, 0)
@@ -148,7 +148,7 @@ class LogicTests(unittest.TestCase):
         Date of increase in Fortnightly pay (110f); aggregated with weekly (110).
 
         """
-        dflt, fn = TestTransformer.ops()["110"]
+        _, fn = TestTransformer.ops()["110"]
         rv = fn(
             "110", {"110": "2017-01-09", "110f": "2017-01-11"}, datetime.date.today(),
         )
@@ -161,7 +161,7 @@ class LogicTests(unittest.TestCase):
         aggregated with weekly increase (120).
 
         """
-        dflt, fn = TestTransformer.ops()["120"]
+        _, fn = TestTransformer.ops()["120"]
         rv = fn("120", {"120f": "60"}, 0)
         self.assertEqual(60, rv)
         rv = fn("120", {"120": "40", "120f": "41"}, 0)
@@ -174,7 +174,7 @@ class LogicTests(unittest.TestCase):
         QIds 90f - 97f used for fortnightly changes questions; all aggregated as 90.
 
         """
-        dflt, fn = TestTransformer.ops()["90"]
+        _, fn = TestTransformer.ops()["90"]
         for qid in ("90f", "91f", "92f", "93f", "94f", "95f", "96f", "97f"):
             with self.subTest(qid=qid):
                 rv = fn("90", {qid: ""}, True)
@@ -189,7 +189,7 @@ class LogicTests(unittest.TestCase):
         QIds 90w - 97w used for weekly changes questions; all aggregated as 90.
 
         """
-        dflt, fn = TestTransformer.ops()["90"]
+        _, fn = TestTransformer.ops()["90"]
         for qid in ("90w", "91w", "92w", "93w", "94w", "95w", "96w", "97w"):
             with self.subTest(qid=qid):
                 rv = fn("90", {qid: ""}, True)
@@ -205,7 +205,7 @@ class LogicTests(unittest.TestCase):
         have answers other than Yes/No.
 
         """
-        dflt, fn = TestTransformer.ops()["90"]
+        _, fn = TestTransformer.ops()["90"]
         for qid in ("92w", "94w", "92f", "94f"):
             with self.subTest(qid=qid):
                 rv = fn("90", {qid: ""}, True)
@@ -215,7 +215,7 @@ class LogicTests(unittest.TestCase):
                 rv = fn("90", {qid: "Any other string"}, False)
                 self.assertTrue(rv)
 
-        dflt, fn = TestTransformer.ops()["190"]
+        _, fn = TestTransformer.ops()["190"]
         for qid in ("192m", "194m", "192w4", "194w4", "192w5", "194w5"):
             with self.subTest(qid=qid):
                 rv = fn("190", {qid: ""}, True)
@@ -230,7 +230,7 @@ class LogicTests(unittest.TestCase):
         QIds 190w4 - 197w4 used for fourweekly changes questions; all aggregated as 190.
 
         """
-        dflt, fn = TestTransformer.ops()["190"]
+        _, fn = TestTransformer.ops()["190"]
         for qid in ("190w4", "191w4", "192w4", "193w4", "194w4", "195w4", "196w4", "197w4"):
             with self.subTest(qid=qid):
                 rv = fn("190", {qid: ""}, True)
@@ -245,7 +245,7 @@ class LogicTests(unittest.TestCase):
         Increase in fourweekly pay (200w4); aggregated with monthly increase (200).
 
         """
-        dflt, fn = TestTransformer.ops()["200"]
+        _, fn = TestTransformer.ops()["200"]
         rv = fn("200", {"200w4": "6.0"}, 0)
         self.assertEqual(6, rv)
         rv = fn("200", {"200": "7.0", "200w4": "6.0"}, 0)
@@ -258,7 +258,7 @@ class LogicTests(unittest.TestCase):
         Date of increase in fourweekly pay (210w4); aggregated with monthly (210).
 
         """
-        dflt, fn = TestTransformer.ops()["210"]
+        _, fn = TestTransformer.ops()["210"]
         rv = fn(
             "210", {"210": "2017-01-09", "210w4": "2017-01-11"}, datetime.date.today(),
         )
@@ -271,7 +271,7 @@ class LogicTests(unittest.TestCase):
         aggregated with monthly increase (220).
 
         """
-        dflt, fn = TestTransformer.ops()["220"]
+        _, fn = TestTransformer.ops()["220"]
         rv = fn("220", {"220w4": "60"}, 0)
         self.assertEqual(60, rv)
         rv = fn("220", {"220": "40", "220w4": "41"}, 0)
@@ -284,7 +284,7 @@ class LogicTests(unittest.TestCase):
         QIds 190m - 197m used for monthly changes questions; all aggregated as 190.
 
         """
-        dflt, fn = TestTransformer.ops()["190"]
+        _, fn = TestTransformer.ops()["190"]
         for qid in ("190m", "191m", "192m", "193m", "194m", "195m", "196m", "197m"):
             with self.subTest(qid=qid):
                 rv = fn("190", {qid: ""}, True)
@@ -299,7 +299,7 @@ class LogicTests(unittest.TestCase):
         QIds 300w, 300f, 300m, 300w4 & 300w5; all aggregated as 300.
 
         """
-        dflt, fn = TestTransformer.ops()["300"]
+        _, fn = TestTransformer.ops()["300"]
         for qid in ("300w", "300f", "300m", "300w4", "300w5"):
             with self.subTest(qid=qid):
                 rv = fn("300", {qid: "Single comment"}, "")
@@ -312,7 +312,7 @@ class LogicTests(unittest.TestCase):
         QIds 140m, 140w4, 140w5 are added to give a value for monthly paid employees (140).
 
         """
-        dflt, fn = TestTransformer.ops()["140"]
+        _, fn = TestTransformer.ops()["140"]
         rv = fn("140", {"140w4": "125000"}, 0)
         self.assertEqual(125000, rv)
         for qid in ("140m", "140w4", "140w5"):
@@ -324,7 +324,7 @@ class LogicTests(unittest.TestCase):
         QIds 190w5 - 197w5 used for fiveweekly changes questions; all aggregated as 190.
 
         """
-        dflt, fn = TestTransformer.ops()["190"]
+        _, fn = TestTransformer.ops()["190"]
         for qid in ("190w5", "191w5", "192w5", "193w5", "194w5", "195w5", "196w5", "197w5"):
             with self.subTest(qid=qid):
                 rv = fn("190", {qid: ""}, True)
@@ -339,7 +339,7 @@ class LogicTests(unittest.TestCase):
         Increase in fiveweekly pay (200w5); aggregated with monthly increase (200).
 
         """
-        dflt, fn = TestTransformer.ops()["200"]
+        _, fn = TestTransformer.ops()["200"]
         rv = fn("200", {"200w5": "6.0"}, 0)
         self.assertEqual(6, rv)
         rv = fn("200", {"200": "7.0", "200w5": "6.0"}, 0)
@@ -352,7 +352,7 @@ class LogicTests(unittest.TestCase):
         Date of increase in fiveweekly pay (210w5); aggregated with monthly (210).
 
         """
-        dflt, fn = TestTransformer.ops()["210"]
+        _, fn = TestTransformer.ops()["210"]
         rv = fn(
             "210", {"210": "2017-01-09", "210w5": "2017-01-11"}, datetime.date.today(),
         )
@@ -365,7 +365,7 @@ class LogicTests(unittest.TestCase):
         aggregated with monthly increase (220).
 
         """
-        dflt, fn = TestTransformer.ops()["220"]
+        _, fn = TestTransformer.ops()["220"]
         rv = fn("220", {"220w5": "60"}, 0)
         self.assertEqual(60, rv)
         rv = fn("220", {"220": "40", "220w5": "41"}, 0)
@@ -465,7 +465,6 @@ class BatchFileTests(unittest.TestCase):
         reply = json.loads(src.decode("utf-8"))
         tfr = TestTransformer(reply)
         survey = Survey.load_survey(tfr.ids, tfr.package, tfr.pattern)
-        settings = PackingTests.Settings("\\NFS", "SDX")
         for settings in [
             PackingTests.Settings("\\\\NFS", "SDX"),
             PackingTests.Settings("\\\\NFS\\", "SDX"),

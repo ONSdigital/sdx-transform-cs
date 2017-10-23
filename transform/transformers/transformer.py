@@ -14,9 +14,6 @@ from transform.transformers.PDFTransformer import PDFTransformer
 from structlog import wrap_logger
 
 
-__doc__ = "Transform survey data into formats required downstream."
-
-
 class Transformer:
 
     """A base class for SDX transformers.

@@ -41,7 +41,6 @@ def logger_initial_config(service_name=None,
                         datefmt=logger_date_format)
 
 
-
 logger_initial_config(service_name='sdx-transform-cs',
                       log_level=settings.LOGGING_LEVEL)
 
