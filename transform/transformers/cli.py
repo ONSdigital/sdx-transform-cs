@@ -6,7 +6,14 @@ import logging
 import os.path
 import sys
 
+
 DFLT_LOCN = os.path.expanduser("~")
+
+
+DOC = """
+Defines a common CLI for SDX tooling.
+Operation via CLI requires a set of common options.
+"""
 
 
 def logging_format(service="sdx-common"):
@@ -54,7 +61,7 @@ def parser(description):
     )
 
 
-def transformer_cli(description=__doc__):
+def transformer_cli(description=DOC):
     return add_transformer_options(
         add_common_options(
             parser(description)
