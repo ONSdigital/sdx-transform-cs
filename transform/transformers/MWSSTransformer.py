@@ -1,4 +1,3 @@
-from collections import namedtuple
 from collections import OrderedDict
 from decimal import Decimal, ROUND_DOWN, ROUND_HALF_UP
 from functools import partial
@@ -7,9 +6,9 @@ import json
 import re
 import sys
 
-import sdx.common.cli
-from sdx.common.processor import Processor
-from sdx.common.transformer import Transformer
+import transform.transformers.cli
+from transform.transformers.processor import Processor
+from transform.transformers.transformer import Transformer
 
 __doc__ = """Transform MWSS survey data into formats required downstream.
 
@@ -122,18 +121,11 @@ class MWSSTransformer(Transformer):
 
 
 def main(args):
-    Settings = namedtuple(
-        "Settings",
-        [
-            "FTP_HOST",
-            "SDX_FTP_IMAGE_PATH",
-        ]
-    )
 
     reply = json.load(args.input)
     transformer = MWSSTransformer(reply, seq_nr=args.seq_nr)
     zipfile = transformer.pack(
-        settings=Settings("\\\\NP3RVWAPXX370\\SDX_Prod\\", "EDC_QImages"),
+
         img_seq=itertools.count(args.img_nr),
         tmp=args.work
     )
@@ -142,7 +134,7 @@ def main(args):
 
 
 def run():
-    parser = sdx.common.cli.transformer_cli(__doc__)
+    parser = transform.transformers.cli.transformer_cli(__doc__)
     args = parser.parse_args()
     return_value = main(args)
     sys.exit(return_value)

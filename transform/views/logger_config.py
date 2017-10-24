@@ -1,9 +1,6 @@
 import logging
 import os
 
-from transform import __version__
-from transform import app, settings
-
 
 def logger_initial_config(service_name=None,
                           log_level=None,
@@ -39,14 +36,3 @@ def logger_initial_config(service_name=None,
     logging.basicConfig(level=log_level,
                         format=logger_format,
                         datefmt=logger_date_format)
-
-
-logger_initial_config(service_name='sdx-transform-cs',
-                      log_level=settings.LOGGING_LEVEL)
-
-
-if __name__ == '__main__':
-    # Startup
-    logging.info("Starting server: version='{}'".format(__version__))
-    port = int(os.getenv("PORT"))
-    app.run(debug=True, host='0.0.0.0', port=port)

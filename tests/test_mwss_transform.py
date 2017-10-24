@@ -8,10 +8,9 @@ import zipfile
 
 import pkg_resources
 
-from sdx.common.formats.cs_formatter import CSFormatter
-from sdx.common.processor import Processor
-from sdx.common.survey import Survey
-from sdx.common.test.test_transformer import PackingTests as TransformerTests
+from transform.transformers.cs_formatter import CSFormatter
+from transform.transformers.processor import Processor
+from transform.transformers.survey import Survey
 from transform.transformers.MWSSTransformer import MWSSTransformer
 
 
@@ -1025,10 +1024,6 @@ class PackingTests(unittest.TestCase):
         Test if temp directory contains response
 
         """
-        settings = TransformerTests.Settings(
-            "\\\\NP3RVWAPXX370\\SDX_preprod",
-            "EDC_QImages"
-        )
         response = {
             "survey_id": "134",
             "tx_id": "27923934-62de-475c-bc01-433c09fd38b8",
@@ -1050,7 +1045,8 @@ class PackingTests(unittest.TestCase):
                 **transformer.ids._asdict()
             )
         )
-        transformer.pack(settings=settings, img_seq=itertools.count(), tmp=None)
+
+        transformer.pack(img_seq=itertools.count(), tmp=None)
 
     def test_image_sequence_number(self):
         """
@@ -1072,13 +1068,12 @@ class PackingTests(unittest.TestCase):
             "data": {}
         }
         seq_nr = 12345
+
         transformer = MWSSTransformer(response, seq_nr=seq_nr)
         zf = zipfile.ZipFile(
-            transformer.pack(
-                img_seq=itertools.count(),
-                settings=TransformerTests.Settings("", ""), tmp=None
-            )
+            transformer.pack(img_seq=itertools.count(), tmp=None)
         )
         funct = next(i for i in zf.namelist() if os.path.splitext(i)[1] == ".csv")
         bits = os.path.splitext(funct)[0].split("_")
+
         self.assertEqual(seq_nr, int(bits[-1]))
