@@ -5,7 +5,7 @@ import os.path
 from flask import request, make_response, send_file, jsonify
 from jinja2 import Environment, PackageLoader
 from structlog import wrap_logger
-from sdx.common.logger_config import logger_initial_config
+from transform.views.logger_config import logger_initial_config
 
 from transform import app
 from transform import settings
@@ -63,10 +63,10 @@ def get_survey(survey_response):
             "{0}.{1}.json".format(survey_response['survey_id'], form_id)
         )
         logger.info("Opening file", file=fp, tx_id=tx_id)
-        with open(fp, 'r') as json_file:
+        with open(fp, 'r', encoding='utf-8') as json_file:
             return json.load(json_file)
-    except IOError:
-        logger.exception("Error opening file", file=fp, tx_id=tx_id)
+    except (IOError, UnicodeDecodeError) as e:
+        logger.exception("Error opening file", file=fp, tx_id=tx_id, error=e)
         return False
 
 
@@ -199,7 +199,7 @@ def common_software(sequence_no=1000, batch_number=0):
     try:
         if survey_id == "134":
             tfr = MWSSTransformer(survey_response, sequence_no, log=logger)
-            zipfile = tfr.pack(settings=settings)
+            zipfile = tfr.pack()
         else:
             ctransformer = CSTransformer(
                 logger, survey, survey_response, batch_number, sequence_no)
