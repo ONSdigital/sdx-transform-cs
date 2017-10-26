@@ -108,7 +108,7 @@ Some of important environment variables available for configuration are listed b
 | Environment Variable    | Default                               | Description
 |-------------------------|---------------------------------------|----------------
 | SDX_SEQUENCE_URL        | `http://sdx-sequence:5000`            | URL of the ``sdx-sequence`` service
-| FTP_HOST                | `\\\\NP3-------370\\SDX_preprod\\`    | FTP host
+| FTP_PATH                | `\\\\NP3-------370\\SDX_preprod\\`    | FTP path
 | SDX_FTP_IMAGE_PATH      | `EDC_QImages`                         | Location of EDC Images
 
 ### License

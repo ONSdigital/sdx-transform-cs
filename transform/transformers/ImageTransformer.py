@@ -107,7 +107,7 @@ class ImageTransformer(object):
         submission_date = dateutil.parser.parse(self.response['submitted_at'])
         submission_date_str = format_date(submission_date, 'short')
 
-        image_path = settings.FTP_HOST + settings.SDX_FTP_IMAGE_PATH + "\\Images"
+        image_path = settings.FTP_PATH + settings.SDX_FTP_IMAGE_PATH + "\\Images"
         template_output = template.render(
             SDX_FTP_IMAGES_PATH=image_path,
             images=[os.path.basename(i) for i in images],
