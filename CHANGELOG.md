@@ -1,6 +1,7 @@
 ### Unreleased
   - Removed unchanging configurable variables.
   - Add all service configurations to config file
+  - Correct the spelling error in RSI image
   - Rename FTP_HOST to FTP_PATH
 
 ### 2.10.0 2017-10-18
