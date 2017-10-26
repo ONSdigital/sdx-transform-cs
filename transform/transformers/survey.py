@@ -3,7 +3,7 @@ import datetime
 import json
 import logging
 
-import pkg_resources
+logger = logging.getLogger(__name__)
 
 
 class Survey:
@@ -16,7 +16,7 @@ class Survey:
     ])
 
     @staticmethod
-    def load_survey(ids, package, pattern):
+    def load_survey(ids, pattern):
         """Retrieve the survey definition by id.
 
         This function takes metadata from a survey reply, finds the JSON definition of
@@ -38,13 +38,14 @@ class Survey:
 
         """
         try:
-            content = pkg_resources.resource_string(
-                package, pattern.format(**ids._asdict())
-            )
+            file_name = pattern.format(**ids._asdict())
+            with open(file_name, encoding="utf-8") as fh:
+                content = fh.read()
         except FileNotFoundError:
+            logger.error("File not found {}".format(file_name))
             return None
         else:
-            return json.loads(content.decode("utf-8"))
+            return json.loads(content)
 
     @staticmethod
     def bind_logger(log, ids):
