@@ -42,12 +42,6 @@ class Transformer:
     #:
     defn = []
 
-    #: Defines the package where survey definitions can be found.
-    #: For deployed Python packages, this will be a dotted package name.
-    #: If your Transformer class is deployed from a source repository,
-    #: you should set this class variable to `__name__`.
-    package = "sdx.common"
-
     #: Defines a search pattern for survey definitions based on identifiers.
     #: The path is relative to the location specified by :py:const:`package` above.
     pattern = "../surveys/{survey_id}.{inst_id}.json"
@@ -102,7 +96,7 @@ class Transformer:
         else:
             self.log = Survey.bind_logger(log, self.ids)
 
-        for attr in ("defn", "package", "pattern"):
+        for attr in ("defn", "pattern"):
             if not hasattr(self.__class__, attr):
                 raise UserWarning("Missing class attribute: {0}".format(attr))
 
@@ -113,7 +107,7 @@ class Transformer:
         The object maintains a temporary directory while the output is generated.
 
         """
-        survey = Survey.load_survey(self.ids, self.package, self.pattern)
+        survey = Survey.load_survey(self.ids, self.pattern)
         manifest = []
         with tempfile.TemporaryDirectory(prefix="sdx_", dir=tmp) as locn:
             # Do transform and write PCK

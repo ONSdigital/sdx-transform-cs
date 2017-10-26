@@ -8,15 +8,13 @@ import zipfile
 from collections import OrderedDict
 from functools import partial
 
-import pkg_resources
 from transform.transformers.cs_formatter import CSFormatter
 from transform.transformers.processor import Processor
 from transform.transformers.survey import Survey
 from transform.transformers.transformer import Transformer
-from transform.transformers.ImageTransformer import ImageTransformer
 
 
-class TestTransformer(Transformer):
+class MockTransformer(Transformer):
     """An example of how to build a transformer.
 
     Taken from the MWSS survey.
@@ -67,9 +65,7 @@ class TestTransformer(Transformer):
             convert=str, op=lambda x, y: x + "\n" + y)),
     ]
 
-    # package = "sdx.common.test"
-    package = __name__
-    pattern = "data/{survey_id}.{inst_id}.json"
+    pattern = "./tests/data/{survey_id}.{inst_id}.json"
 
 
 class LogicTests(unittest.TestCase):
@@ -79,7 +75,7 @@ class LogicTests(unittest.TestCase):
         Increase in weekly pay (100).
 
         """
-        _, fn = TestTransformer.ops()["100"]
+        _, fn = MockTransformer.ops()["100"]
         rv = fn("100", {"100": "6.0"}, 0)
         self.assertEqual(6, rv)
 
@@ -88,7 +84,7 @@ class LogicTests(unittest.TestCase):
         QIds 40, 40f are added to give a value for weekly paid employees (40).
 
         """
-        _, fn = TestTransformer.ops()["40"]
+        _, fn = MockTransformer.ops()["40"]
         rv = fn("40", {"40": "125000"}, 0)
         self.assertEqual(125000, rv)
         rv = fn("40", {"40": "125000", "40f": "25000"}, 0)
@@ -100,7 +96,7 @@ class LogicTests(unittest.TestCase):
         the value for qid 50.
 
         """
-        _, fn = TestTransformer.ops()["50"]
+        _, fn = MockTransformer.ops()["50"]
         rv = fn("50", {"50f": "1600"}, 0)
         self.assertEqual(800, rv)
         rv = fn("50", {"50": "19200", "50f": "1600"}, 0)
@@ -112,19 +108,19 @@ class LogicTests(unittest.TestCase):
         are divided by 2 and added to qids 60, 70, 80 respectively.
 
         """
-        _, fn = TestTransformer.ops()["60"]
+        _, fn = MockTransformer.ops()["60"]
         rv = fn("60", {"60f": "360"}, 0)
         self.assertEqual(180, rv)
         rv = fn("60", {"60": "4600", "60f": "360"}, 0)
         self.assertEqual(4780, rv)
 
-        _, fn = TestTransformer.ops()["70"]
+        _, fn = MockTransformer.ops()["70"]
         rv = fn("70", {"70f": "1280"}, 0)
         self.assertEqual(640, rv)
         rv = fn("70", {"70": "7360", "70f": "1280"}, 0)
         self.assertEqual(8000, rv)
 
-        _, fn = TestTransformer.ops()["80"]
+        _, fn = MockTransformer.ops()["80"]
         rv = fn("80", {"80f": "5000"}, 0)
         self.assertEqual(2500, rv)
         rv = fn("80", {"80": "15000", "80f": "5000"}, 0)
@@ -135,7 +131,7 @@ class LogicTests(unittest.TestCase):
         Increase in Fortnightly pay (100f); aggregated with weekly increase (100).
 
         """
-        _, fn = TestTransformer.ops()["100"]
+        _, fn = MockTransformer.ops()["100"]
         rv = fn("100", {"100f": "6.0"}, 0)
         self.assertEqual(6, rv)
         rv = fn("100", {"100": "7.0", "100f": "6.0"}, 0)
@@ -148,7 +144,7 @@ class LogicTests(unittest.TestCase):
         Date of increase in Fortnightly pay (110f); aggregated with weekly (110).
 
         """
-        _, fn = TestTransformer.ops()["110"]
+        _, fn = MockTransformer.ops()["110"]
         rv = fn(
             "110", {"110": "2017-01-09", "110f": "2017-01-11"}, datetime.date.today(),
         )
@@ -161,7 +157,7 @@ class LogicTests(unittest.TestCase):
         aggregated with weekly increase (120).
 
         """
-        _, fn = TestTransformer.ops()["120"]
+        _, fn = MockTransformer.ops()["120"]
         rv = fn("120", {"120f": "60"}, 0)
         self.assertEqual(60, rv)
         rv = fn("120", {"120": "40", "120f": "41"}, 0)
@@ -174,7 +170,7 @@ class LogicTests(unittest.TestCase):
         QIds 90f - 97f used for fortnightly changes questions; all aggregated as 90.
 
         """
-        _, fn = TestTransformer.ops()["90"]
+        _, fn = MockTransformer.ops()["90"]
         for qid in ("90f", "91f", "92f", "93f", "94f", "95f", "96f", "97f"):
             with self.subTest(qid=qid):
                 rv = fn("90", {qid: ""}, True)
@@ -189,7 +185,7 @@ class LogicTests(unittest.TestCase):
         QIds 90w - 97w used for weekly changes questions; all aggregated as 90.
 
         """
-        _, fn = TestTransformer.ops()["90"]
+        _, fn = MockTransformer.ops()["90"]
         for qid in ("90w", "91w", "92w", "93w", "94w", "95w", "96w", "97w"):
             with self.subTest(qid=qid):
                 rv = fn("90", {qid: ""}, True)
@@ -205,7 +201,7 @@ class LogicTests(unittest.TestCase):
         have answers other than Yes/No.
 
         """
-        _, fn = TestTransformer.ops()["90"]
+        _, fn = MockTransformer.ops()["90"]
         for qid in ("92w", "94w", "92f", "94f"):
             with self.subTest(qid=qid):
                 rv = fn("90", {qid: ""}, True)
@@ -215,7 +211,7 @@ class LogicTests(unittest.TestCase):
                 rv = fn("90", {qid: "Any other string"}, False)
                 self.assertTrue(rv)
 
-        _, fn = TestTransformer.ops()["190"]
+        _, fn = MockTransformer.ops()["190"]
         for qid in ("192m", "194m", "192w4", "194w4", "192w5", "194w5"):
             with self.subTest(qid=qid):
                 rv = fn("190", {qid: ""}, True)
@@ -230,7 +226,7 @@ class LogicTests(unittest.TestCase):
         QIds 190w4 - 197w4 used for fourweekly changes questions; all aggregated as 190.
 
         """
-        _, fn = TestTransformer.ops()["190"]
+        _, fn = MockTransformer.ops()["190"]
         for qid in ("190w4", "191w4", "192w4", "193w4", "194w4", "195w4", "196w4", "197w4"):
             with self.subTest(qid=qid):
                 rv = fn("190", {qid: ""}, True)
@@ -245,7 +241,7 @@ class LogicTests(unittest.TestCase):
         Increase in fourweekly pay (200w4); aggregated with monthly increase (200).
 
         """
-        _, fn = TestTransformer.ops()["200"]
+        _, fn = MockTransformer.ops()["200"]
         rv = fn("200", {"200w4": "6.0"}, 0)
         self.assertEqual(6, rv)
         rv = fn("200", {"200": "7.0", "200w4": "6.0"}, 0)
@@ -258,7 +254,7 @@ class LogicTests(unittest.TestCase):
         Date of increase in fourweekly pay (210w4); aggregated with monthly (210).
 
         """
-        _, fn = TestTransformer.ops()["210"]
+        _, fn = MockTransformer.ops()["210"]
         rv = fn(
             "210", {"210": "2017-01-09", "210w4": "2017-01-11"}, datetime.date.today(),
         )
@@ -271,7 +267,7 @@ class LogicTests(unittest.TestCase):
         aggregated with monthly increase (220).
 
         """
-        _, fn = TestTransformer.ops()["220"]
+        _, fn = MockTransformer.ops()["220"]
         rv = fn("220", {"220w4": "60"}, 0)
         self.assertEqual(60, rv)
         rv = fn("220", {"220": "40", "220w4": "41"}, 0)
@@ -284,7 +280,7 @@ class LogicTests(unittest.TestCase):
         QIds 190m - 197m used for monthly changes questions; all aggregated as 190.
 
         """
-        _, fn = TestTransformer.ops()["190"]
+        _, fn = MockTransformer.ops()["190"]
         for qid in ("190m", "191m", "192m", "193m", "194m", "195m", "196m", "197m"):
             with self.subTest(qid=qid):
                 rv = fn("190", {qid: ""}, True)
@@ -299,7 +295,7 @@ class LogicTests(unittest.TestCase):
         QIds 300w, 300f, 300m, 300w4 & 300w5; all aggregated as 300.
 
         """
-        _, fn = TestTransformer.ops()["300"]
+        _, fn = MockTransformer.ops()["300"]
         for qid in ("300w", "300f", "300m", "300w4", "300w5"):
             with self.subTest(qid=qid):
                 rv = fn("300", {qid: "Single comment"}, "")
@@ -312,7 +308,7 @@ class LogicTests(unittest.TestCase):
         QIds 140m, 140w4, 140w5 are added to give a value for monthly paid employees (140).
 
         """
-        _, fn = TestTransformer.ops()["140"]
+        _, fn = MockTransformer.ops()["140"]
         rv = fn("140", {"140w4": "125000"}, 0)
         self.assertEqual(125000, rv)
         for qid in ("140m", "140w4", "140w5"):
@@ -324,7 +320,7 @@ class LogicTests(unittest.TestCase):
         QIds 190w5 - 197w5 used for fiveweekly changes questions; all aggregated as 190.
 
         """
-        _, fn = TestTransformer.ops()["190"]
+        _, fn = MockTransformer.ops()["190"]
         for qid in ("190w5", "191w5", "192w5", "193w5", "194w5", "195w5", "196w5", "197w5"):
             with self.subTest(qid=qid):
                 rv = fn("190", {qid: ""}, True)
@@ -339,7 +335,7 @@ class LogicTests(unittest.TestCase):
         Increase in fiveweekly pay (200w5); aggregated with monthly increase (200).
 
         """
-        _, fn = TestTransformer.ops()["200"]
+        _, fn = MockTransformer.ops()["200"]
         rv = fn("200", {"200w5": "6.0"}, 0)
         self.assertEqual(6, rv)
         rv = fn("200", {"200": "7.0", "200w5": "6.0"}, 0)
@@ -352,7 +348,7 @@ class LogicTests(unittest.TestCase):
         Date of increase in fiveweekly pay (210w5); aggregated with monthly (210).
 
         """
-        _, fn = TestTransformer.ops()["210"]
+        _, fn = MockTransformer.ops()["210"]
         rv = fn(
             "210", {"210": "2017-01-09", "210w5": "2017-01-11"}, datetime.date.today(),
         )
@@ -365,7 +361,7 @@ class LogicTests(unittest.TestCase):
         aggregated with monthly increase (220).
 
         """
-        _, fn = TestTransformer.ops()["220"]
+        _, fn = MockTransformer.ops()["220"]
         rv = fn("220", {"220w5": "60"}, 0)
         self.assertEqual(60, rv)
         rv = fn("220", {"220": "40", "220w5": "41"}, 0)
@@ -377,13 +373,13 @@ class LogicTests(unittest.TestCase):
 class TransformTests(unittest.TestCase):
 
     def test_unsigned(self):
-        rv = TestTransformer.transform({"40": "33"})
+        rv = MockTransformer.transform({"40": "33"})
         self.assertEqual(33, rv["40"])
         item = CSFormatter.pck_item("40", rv["40"])
         self.assertEqual(item, "0040 00000000033")
 
     def test_currency(self):
-        rv = TestTransformer.transform({"50": "36852"})
+        rv = MockTransformer.transform({"50": "36852"})
         self.assertEqual(36852, rv["50"])
         item = CSFormatter.pck_item("50", rv["50"])
         self.assertEqual(item, "0050 00000036852")
@@ -393,10 +389,10 @@ class TransformTests(unittest.TestCase):
         for qNr in digits_ingested_as_bools:
             qid = str(qNr)
             with self.subTest(qNr=qNr, qid=qid):
-                rv = TestTransformer.transform({qid: "64"})
+                rv = MockTransformer.transform({qid: "64"})
                 self.assertIs(True, rv[qid])
                 self.assertEqual(1, CSFormatter.pck_value(qid, rv[qid]))
-                rv = TestTransformer.transform({qid: ""})
+                rv = MockTransformer.transform({qid: ""})
                 self.assertEqual(2, CSFormatter.pck_value(qid, rv[qid]))
 
     def test_dates_to_onetwo(self):
@@ -404,15 +400,20 @@ class TransformTests(unittest.TestCase):
         for qNr in dates_ingested_as_bools:
             qid = str(qNr)
             with self.subTest(qNr=qNr, qid=qid):
-                rv = TestTransformer.transform({qid: "23/4/2017"})
+                rv = MockTransformer.transform({qid: "23/4/2017"})
                 self.assertEqual([datetime.date(2017, 4, 23)], rv[qid])
                 self.assertEqual(1, CSFormatter.pck_value(qid, rv[qid]))
-                rv = TestTransformer.transform({qid: ""})
+                rv = MockTransformer.transform({qid: ""})
                 self.assertEqual([], rv[qid])
                 self.assertEqual(2, CSFormatter.pck_value(qid, rv[qid]))
 
 
 class BatchFileTests(unittest.TestCase):
+
+    def setUp(self):
+        with open("./tests/data/eq-mwss.json", encoding="utf-8") as fh:
+            self.src = fh.read()
+            self.reply = json.loads(self.src)
 
     def test_pck_batch_header(self):
         batch_nr = 3866
@@ -441,7 +442,7 @@ class BatchFileTests(unittest.TestCase):
                 "ru_ref": "12345678901A"
             }
         })
-        rv = Survey.load_survey(ids, TestTransformer.package, TestTransformer.pattern)
+        rv = Survey.load_survey(ids, MockTransformer.pattern)
         self.assertIsNotNone(rv)
 
     def test_load_survey_miss(self):
@@ -457,30 +458,8 @@ class BatchFileTests(unittest.TestCase):
                 "ru_ref": "12345678901A"
             }
         })
-        rv = Survey.load_survey(ids, TestTransformer.package, TestTransformer.pattern)
+        rv = Survey.load_survey(ids, MockTransformer.pattern)
         self.assertIsNone(rv)
-
-    def test_image_path(self):
-        src = pkg_resources.resource_string("sdx.common.test", "data/eq-mwss.json")
-        reply = json.loads(src.decode("utf-8"))
-        tfr = TestTransformer(reply)
-        survey = Survey.load_survey(tfr.ids, tfr.package, tfr.pattern)
-        for settings in [
-            PackingTests.Settings("\\\\NFS", "SDX"),
-            PackingTests.Settings("\\\\NFS\\", "SDX"),
-            PackingTests.Settings("\\\\NFS", "\\SDX"),
-            PackingTests.Settings("\\\\NFS", "SDX\\"),
-            PackingTests.Settings("\\\\NFS\\", "SDX\\"),
-            PackingTests.Settings("\\\\NFS\\", "\\SDX\\"),
-        ]:
-            with self.subTest(settings=settings):
-                img_tfr = ImageTransformer(
-                    tfr.log, settings, survey, tfr.response, tfr.ids.seq_nr
-                )
-                self.assertEqual(
-                    "\\\\NFS\\SDX\\Images\\IMG_01.JPG",
-                    img_tfr.image_path("/work/IMG_01.JPG")
-                )
 
     def test_pck_lines(self):
         batch_nr = 3866
@@ -508,23 +487,19 @@ class BatchFileTests(unittest.TestCase):
         ], rv)
 
     def test_idbr_receipt(self):
-        src = pkg_resources.resource_string("sdx.common.test", "data/eq-mwss.json")
-        reply = json.loads(src.decode("utf-8"))
-        reply["tx_id"] = "27923934-62de-475c-bc01-433c09fd38b8"
-        ids = Survey.identifiers(reply, batch_nr=3866)
+        self.reply["tx_id"] = "27923934-62de-475c-bc01-433c09fd38b8"
+        ids = Survey.identifiers(self.reply, batch_nr=3866)
         rv = CSFormatter.idbr_receipt(**ids._asdict())
         self.assertEqual("12346789012:A:134:201605", rv)
 
     def test_identifiers(self):
-        src = pkg_resources.resource_string("sdx.common.test", "data/eq-mwss.json")
-        reply = json.loads(src.decode("utf-8"))
-        reply["tx_id"] = "27923934-62de-475c-bc01-433c09fd38b8"
-        reply["collection"]["period"] = "200911"
-        ids = Survey.identifiers(reply)
+        self.reply["tx_id"] = "27923934-62de-475c-bc01-433c09fd38b8"
+        self.reply["collection"]["period"] = "200911"
+        ids = Survey.identifiers(self.reply)
         self.assertIsInstance(ids, Survey.Identifiers)
         self.assertEqual(0, ids.batch_nr)
         self.assertEqual(0, ids.seq_nr)
-        self.assertEqual(reply["tx_id"], ids.tx_id)
+        self.assertEqual(self.reply["tx_id"], ids.tx_id)
         self.assertEqual(datetime.date.today(), ids.ts.date())
         self.assertEqual("134", ids.survey_id)
         self.assertEqual("K5O86M2NU1", ids.user_id)
@@ -533,19 +508,17 @@ class BatchFileTests(unittest.TestCase):
         self.assertEqual("200911", ids.period)
 
     def test_pck_from_transformed_data(self):
-        src = pkg_resources.resource_string("sdx.common.test", "data/eq-mwss.json")
-        reply = json.loads(src.decode("utf-8"))
-        reply["tx_id"] = "27923934-62de-475c-bc01-433c09fd38b8"
-        reply["survey_id"] = "134"
-        reply["collection"]["period"] = "200911"
-        reply["metadata"]["ru_ref"] = "49900001225C"
-        reply["data"] = OrderedDict([
+        self.reply["tx_id"] = "27923934-62de-475c-bc01-433c09fd38b8"
+        self.reply["survey_id"] = "134"
+        self.reply["collection"]["period"] = "200911"
+        self.reply["metadata"]["ru_ref"] = "49900001225C"
+        self.reply["data"] = OrderedDict([
             ("0001", 2),
             ("0140", 124),
             ("0151", 217222)
         ])
-        ids = Survey.identifiers(reply, batch_nr=3866)
-        rv = CSFormatter.pck_lines(reply["data"], **ids._asdict())
+        ids = Survey.identifiers(self.reply, batch_nr=3866)
+        rv = CSFormatter.pck_lines(self.reply["data"], **ids._asdict())
         self.assertEqual([
             "FV          ",
             "0005:49900001225C:200911",
@@ -561,7 +534,7 @@ class PackingTests(unittest.TestCase):
         with open("tests/data/eq-mwss.json", "r") as fb:
             src = fb.read()
         reply = json.loads(src)
-        tfr = TestTransformer(reply)
+        tfr = MockTransformer(reply)
         self.assertEqual(
             "REC0103_0000.DAT",
             CSFormatter.idbr_name(
@@ -592,7 +565,6 @@ class PackingTests(unittest.TestCase):
         self.assertEqual(expected, actual)
 
     def test_image_sequence_number(self):
-        settings = PackingTests.Settings("\\NFS", "SDX")
         response = {
             "survey_id": "134",
             "tx_id": "27923934-62de-475c-bc01-433c09fd38b8",
@@ -604,12 +576,12 @@ class PackingTests(unittest.TestCase):
                 "user_id": "123456789",
                 "ru_ref": "12345678901A"
             },
-            "submitted_at": "2017-04-12                                                 T13:01:26Z",
+            "submitted_at": "2017-04-12T13:01:26Z",
             "data": {}
         }
         seq_nr = 12345
-        tfr = TestTransformer(response, seq_nr=seq_nr)
-        zf = zipfile.ZipFile(tfr.pack(settings=settings, img_seq=itertools.count(), tmp=None))
+        tfr = MockTransformer(response, seq_nr=seq_nr)
+        zf = zipfile.ZipFile(tfr.pack(img_seq=itertools.count(), tmp=None))
         fn = next(i for i in zf.namelist() if os.path.splitext(i)[1] == ".csv")
         bits = os.path.splitext(fn)[0].split("_")
         self.assertEqual(seq_nr, int(bits[-1]))

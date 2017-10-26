@@ -90,8 +90,7 @@ class MWSSTransformer(Transformer):
             convert=str, op=lambda x, y: x + "\n" + y)),
     ]
 
-    package = __name__
-    pattern = "../surveys/{survey_id}.{inst_id}.json"
+    pattern = "./transform/surveys/{survey_id}.{inst_id}.json"
 
     @staticmethod
     def transform(data, survey=None):

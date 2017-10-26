@@ -3,12 +3,16 @@ import json
 import unittest
 from collections import OrderedDict
 
-import pkg_resources
 from transform.transformers.cs_formatter import CSFormatter
 from transform.transformers.survey import Survey
 
 
 class BatchFileTests(unittest.TestCase):
+
+    def setUp(self):
+        with open("./tests/data/eq-mwss.json", encoding="utf-8") as fh:
+            self.src = fh.read()
+            self.reply = json.loads(self.src)
 
     def test_pck_batch_header(self):
         batch_nr = 3866
@@ -50,23 +54,19 @@ class BatchFileTests(unittest.TestCase):
         ], rv)
 
     def test_idbr_receipt(self):
-        src = pkg_resources.resource_string("sdx.common.test", "data/eq-mwss.json")
-        reply = json.loads(src.decode("utf-8"))
-        reply["tx_id"] = "27923934-62de-475c-bc01-433c09fd38b8"
-        ids = Survey.identifiers(reply, batch_nr=3866)
+        self.reply["tx_id"] = "27923934-62de-475c-bc01-433c09fd38b8"
+        ids = Survey.identifiers(self.reply, batch_nr=3866)
         rv = CSFormatter.idbr_receipt(**ids._asdict())
         self.assertEqual("12346789012:A:134:201605", rv)
 
     def test_identifiers(self):
-        src = pkg_resources.resource_string("sdx.common.test", "data/eq-mwss.json")
-        reply = json.loads(src.decode("utf-8"))
-        reply["tx_id"] = "27923934-62de-475c-bc01-433c09fd38b8"
-        reply["collection"]["period"] = "200911"
-        ids = Survey.identifiers(reply)
+        self.reply["tx_id"] = "27923934-62de-475c-bc01-433c09fd38b8"
+        self.reply["collection"]["period"] = "200911"
+        ids = Survey.identifiers(self.reply)
         self.assertIsInstance(ids, Survey.Identifiers)
         self.assertEqual(0, ids.batch_nr)
         self.assertEqual(0, ids.seq_nr)
-        self.assertEqual(reply["tx_id"], ids.tx_id)
+        self.assertEqual(self.reply["tx_id"], ids.tx_id)
         self.assertEqual(datetime.date.today(), ids.ts.date())
         self.assertEqual("134", ids.survey_id)
         self.assertEqual("K5O86M2NU1", ids.user_id)
@@ -75,19 +75,17 @@ class BatchFileTests(unittest.TestCase):
         self.assertEqual("200911", ids.period)
 
     def test_pck_from_transformed_data(self):
-        src = pkg_resources.resource_string("sdx.common.test", "data/eq-mwss.json")
-        reply = json.loads(src.decode("utf-8"))
-        reply["tx_id"] = "27923934-62de-475c-bc01-433c09fd38b8"
-        reply["survey_id"] = "134"
-        reply["collection"]["period"] = "200911"
-        reply["metadata"]["ru_ref"] = "49900001225C"
-        reply["data"] = OrderedDict([
+        self.reply["tx_id"] = "27923934-62de-475c-bc01-433c09fd38b8"
+        self.reply["survey_id"] = "134"
+        self.reply["collection"]["period"] = "200911"
+        self.reply["metadata"]["ru_ref"] = "49900001225C"
+        self.reply["data"] = OrderedDict([
             ("0001", 2),
             ("0140", 124),
             ("0151", 217222)
         ])
-        ids = Survey.identifiers(reply, batch_nr=3866)
-        rv = CSFormatter.pck_lines(reply["data"], **ids._asdict())
+        ids = Survey.identifiers(self.reply, batch_nr=3866)
+        rv = CSFormatter.pck_lines(self.reply["data"], **ids._asdict())
         self.assertEqual([
             "FV          ",
             "0005:49900001225C:200911",

@@ -11,8 +11,8 @@ before_install:
 install:
   - make build
   - pip install codecov
+  - pip install -r test_requirements.txt
 script:
-  - make test
-  - coverage run -m unittest tests/*.py
+  - pytest -v tests/ --cov=transform --cov-report html
 after_success:
   - codecov
