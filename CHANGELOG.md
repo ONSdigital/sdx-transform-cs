@@ -1,4 +1,6 @@
 ### Unreleased
+
+### 2.11.0 2017-11-01
   - Removed unchanging configurable variables.
   - Add all service configurations to config file
   - Correct the spelling error in RSI image
