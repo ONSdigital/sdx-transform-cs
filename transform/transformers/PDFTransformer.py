@@ -67,14 +67,20 @@ class PDFTransformer(object):
         self.response = response_data
 
     def render(self):
+        """Get the pdf data in memory"""
+        return self.render_pages()[0]
+
+    def render_pages(self):
+        """Return both the in memory pdf data and a count of the pages"""
         buffer = BytesIO()
         doc = SimpleDocTemplate(buffer, pagesize=A4)
         doc.build(self.get_elements())
 
         pdf = buffer.getvalue()
+
         buffer.close()
 
-        return pdf
+        return pdf, doc.page
 
     def render_to_file(self):
         rndm_name = uuid.uuid4()
