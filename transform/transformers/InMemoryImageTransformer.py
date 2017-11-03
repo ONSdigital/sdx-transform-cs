@@ -5,35 +5,43 @@ from io import BytesIO
 import dateutil.parser
 from transform import settings
 from transform.transformers.InMemoryZip import InMemoryZip
+from transform.transformers.ImageTransformerBase import ImageTransformerBase
+from transform.transformers.ImageTransformer import ImageTransformer
 from transform.views.image_filters import get_env, format_date
 from .PDFTransformer import PDFTransformer
 
 
-class InMemoryImageTransformer:
+class InMemoryImageTransformer(ImageTransformer):
     """Transforms a survey and response into a zip file
     useage:
 
     transformer = InMemoryImageTransformer(survey_json, response_json)
-    zip = transformer.get_zip()
+    zip = transformer.get_zip(number_sequence_iterator)
     return send_file(zip.in_memory_zip,attachment_filename='image.zip',mimetype='application/zip')
+
+    Note: Inherits from Image transformer only to get access to existing code to call out to get
+    image sequence numbers . There is a case to refactor ImageTransformer to get a common base class
     """
 
     def __init__(self, logger, survey, response, current_time=datetime.datetime.utcnow(), sequence_no=1000):
-        self._logger = logger
-        self._survey = survey
-        self._response = response
-        self._sequence_number = sequence_no
         self._page_count = -1
         self._current_time = current_time
         self._index = None
         self._pdf = None
+        self._image_names = []
         self.zip = InMemoryZip()
+        super().__init__(logger, survey, response, sequence_no)
 
-    def get_zip(self):
-        self._create_pdf(self._survey, self._response)
+    def get_zip(self, num_sequence=None):
+        self._create_pdf(self.survey, self.response)
+        self._build_image_names(num_sequence, self._page_count)
         self._create_index()
         self._build_zip()
         return self.zip
+
+    @staticmethod
+    def get_image_name(i):
+        return "S{0:09}.JPG".format(i)
 
     def _create_pdf(self, survey, response):
         """Create a pdf which will be used as the basis for images """
@@ -41,18 +49,27 @@ class InMemoryImageTransformer:
         self._pdf, self._page_count = pdf_transformer.render_pages()
         return self._pdf
 
+    def _build_image_names(self, num_sequence, image_count):
+        if num_sequence is None:
+            for image_sequence in self.get_image_sequence_list(image_count):
+                self._image_names.append(InMemoryImageTransformer.get_image_name(image_sequence))
+        else:
+            for _ in range(0, image_count):
+                name = InMemoryImageTransformer.get_image_name(next(num_sequence))
+                self._image_names.append(name)
+
     def _create_index(self):
         """Create the in memory index"""
-        self._index = InMemoryIndex(self._logger, self._response, self._page_count,
-                                    self._current_time, self._sequence_number)
+
+        self._index = InMemoryIndex(self.logger, self.response, self._page_count, self._image_names,
+                                    self._current_time, self.sequence_no)
 
     def _build_zip(self):
         i = 0
         for image in self._extract_pdf_images(self._pdf):
-            self.zip.append(InMemoryIndex.get_image_name(i), image)
+            self.zip.append(self._image_names[i], image)
             i += 1
-
-        self.zip.append("index", self._index.index.getvalue())
+        self.zip.append(self._index.index_name, self._index.index.getvalue())
         self.zip.rewind()
 
     @staticmethod
@@ -88,6 +105,7 @@ class InMemoryImageTransformer:
             end_pos = start_pos + ppm_header.size
 
             yield result[start_pos:end_pos]
+
             start_pos = end_pos
 
 
@@ -105,7 +123,8 @@ class PpmHeader(object):
 
 class InMemoryIndex:
     """Class for creating in memory index object using StringIO."""
-    def __init__(self, logger, response_data, image_count, current_time=datetime.datetime.utcnow(), sequence_no=1000):
+    def __init__(self, logger, response_data, image_count, image_names,
+                 current_time=datetime.datetime.utcnow(), sequence_no=1000):
         self.index = BytesIO()
         self.logger = logger
         self._response = response_data
@@ -114,18 +133,15 @@ class InMemoryIndex:
             'short': format_date(current_time, 'short'),
             'long': format_date(current_time)
         }
-        self._index_name = self._get_index_name(self._response, sequence_no)
-        self._build_index()
+        self.index_name = self._get_index_name(self._response, sequence_no)
+
+        self._build_index(image_names)
 
     def rewind(self):
         """Rewinds the read-write position of the in-memory index to the start."""
         self.index.seek(0)
 
-    @staticmethod
-    def get_image_name(i):
-        return "S{0:09}.JPG".format(i)
-
-    def _build_index(self):
+    def _build_index(self, image_names):
         """Builds the index file contents into self.index"""
         env = get_env()
         template = env.get_template('csv.tmpl')
@@ -133,13 +149,13 @@ class InMemoryIndex:
         image_path = settings.FTP_PATH + settings.SDX_FTP_IMAGE_PATH + "\\Images"
         template_output = template.render(
             SDX_FTP_IMAGES_PATH=image_path,
-            images=[self.get_image_name(i) for i in range(self._image_count)],
+            images=image_names,
             response=self._response,
             creation_time=self._creation_time
         )
 
         msg = "Adding image to index"
-        [self.logger.info(msg, file=self.get_image_name(i)) for i in range(self._image_count)]
+        [self.logger.info(msg, file=image_name) for image_name in image_names]
         self.index.write(template_output.encode())
         self.rewind()
 

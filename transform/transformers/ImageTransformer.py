@@ -23,6 +23,7 @@ from requests.packages.urllib3.exceptions import MaxRetryError
 from .PDFTransformer import PDFTransformer
 
 from transform import settings
+from transform.transformers.ImageTransformerBase import ImageTransformerBase
 from transform.views.image_filters import get_env, format_date
 
 __doc__ = """
@@ -35,16 +36,8 @@ python -m transform.transformers.ImageTransformer --survey transform/surveys/144
 
 """
 
-# Configure the number of retries attempted before failing call
-session = requests.Session()
 
-retries = Retry(total=5, backoff_factor=0.1)
-
-session.mount('http://', HTTPAdapter(max_retries=retries))
-session.mount('https://', HTTPAdapter(max_retries=retries))
-
-
-class ImageTransformer(object):
+class ImageTransformer(ImageTransformerBase):
 
     @staticmethod
     def create_pdf(survey, data):
@@ -67,10 +60,7 @@ class ImageTransformer(object):
         return sorted(glob.glob("%s/%s-*.jpg" % (path, rootName)))
 
     def __init__(self, logger, survey, response_data, sequence_no=1000):
-        self.logger = logger
-        self.survey = survey
-        self.response = response_data
-        self.sequence_no = sequence_no
+        super().__init__(logger, survey, response_data, sequence_no)
 
     def get_image_sequence_numbers(self):
         sequence_numbers = self.get_image_sequence_list(len(self.images))
@@ -156,42 +146,6 @@ class ImageTransformer(object):
         '''
         shutil.rmtree(locn)
 
-    def response_ok(self, res):
-
-        if res.status_code == 200:
-            self.logger.info("Returned from sdx-sequence",
-                             request_url=res.url, status=res.status_code)
-            return True
-        else:
-            self.logger.error("Returned from sdx-sequence",
-                              request_url=res.url, status=res.status_code)
-            return False
-
-    def remote_call(self, request_url, json=None):
-        try:
-            self.logger.info("Calling sdx-sequence", request_url=request_url)
-
-            r = None
-
-            if json:
-                r = session.post(request_url, json=json)
-            else:
-                r = session.get(request_url)
-
-            return r
-        except MaxRetryError:
-            self.logger.error("Max retries exceeded (5)", request_url=request_url)
-
-    def get_image_sequence_list(self, n):
-        sequence_url = "{0}/image-sequence?n={1}".format(settings.SDX_SEQUENCE_URL, n)
-
-        r = self.remote_call(sequence_url)
-
-        if not self.response_ok(r):
-            return False
-
-        result = r.json()
-        return result['sequence_list']
 
 
 def parser(description=__doc__):

@@ -1,4 +1,5 @@
 import datetime
+import itertools
 import json
 import logging
 import unittest
@@ -26,7 +27,10 @@ class InMemoryImageTransformTests(unittest.TestCase):
         # Create page images from PDF
         img_tfr = InMemoryImageTransformer(log, survey, reply, current_time=datetime.datetime(2017, 3, 7, 9, 45, 4))
 
-        img_tfr.get_zip()
+        img_tfr.get_zip(itertools.count())
+
+        with open("images.zip","wb") as fp:
+            fp.write(img_tfr.zip.in_memory_zip.read())
 
         with img_tfr._index.index as f:
             csv = f.read()
