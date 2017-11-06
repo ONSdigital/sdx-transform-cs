@@ -21,14 +21,15 @@ from .PDFTransformer import PDFTransformer
 
 
 class InMemoryImageTransformer(ImageTransformerBase):
-    """Transforms a survey and response into a zip file
+    """Transforms a survey and _response into a zip file
     useage:
     transformer = InMemoryImageTransformer(survey_json, response_json)
     zip = transformer.get_zip(number_sequence_iterator)
     return send_file(zip.in_memory_zip,attachment_filename='XXXXXXX',mimetype='application/zip')
     """
 
-    def __init__(self, logger, survey, response, current_time=datetime.datetime.utcnow(), sequence_no=1000):
+    def __init__(self, logger, survey, response, current_time=datetime.datetime.utcnow(), sequence_no=1000,
+                 base_image_path = ""):
         self._page_count = -1
         self._current_time = current_time
         self.index = None
@@ -36,6 +37,8 @@ class InMemoryImageTransformer(ImageTransformerBase):
         self._image_names = []
         self.zip = InMemoryZip()
         super().__init__(logger, survey, response, sequence_no)
+        self.image_path = "" if base_image_path == "" else os.path.join(base_image_path, "Images")
+        self.index_path = "" if base_image_path == "" else os.path.join(base_image_path, "Index")
 
     def get_zip(self, num_sequence=None):
         self._create_pdf(self.survey, self.response)
@@ -72,9 +75,10 @@ class InMemoryImageTransformer(ImageTransformerBase):
     def _build_zip(self):
         i = 0
         for image in self._extract_pdf_images(self._pdf):
-            self.zip.append(self._image_names[i], image)
+
+            self.zip.append(os.path.join(self.image_path, self._image_names[i]), image)
             i += 1
-        self.zip.append(self.index.index_name, self.index.in_memory_index.getvalue())
+        self.zip.append(os.path.join(self.index_path, self.index.index_name), self.index.in_memory_index.getvalue())
         self.zip.rewind()
 
     @staticmethod

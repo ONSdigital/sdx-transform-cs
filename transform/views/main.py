@@ -9,8 +9,8 @@ from transform.views.logger_config import logger_initial_config
 
 from transform import app
 from transform import settings
-from transform.transformers import CSTransformer
-from transform.transformers.InMemoryImageTransformer import InMemoryImageTransformer
+from transform.transformers import InMemoryCSTransformer
+from transform.transformers import InMemoryImageTransformer
 from transform.transformers import MWSSTransformer
 from transform.transformers import PCKTransformer, PDFTransformer
 
@@ -192,30 +192,26 @@ def common_software(sequence_no=1000, batch_number=0):
         if survey_id == "134":
             tfr = MWSSTransformer(survey_response, sequence_no, log=logger)
             zipfile = tfr.pack()
-        else:
-            ctransformer = CSTransformer(
-                logger, survey, survey_response, batch_number, sequence_no)
+            logger.info("CS:SUCCESS")
 
+            return send_file(zipfile, mimetype='application/zip', add_etags=False)
+        else:
+            ctransformer = InMemoryCSTransformer(logger, survey, survey_response, batch_number, sequence_no)
             try:
-                ctransformer.create_formats()
-                ctransformer.prepare_archive()
-                zipfile = ctransformer.create_zip()
+                ctransformer.create_zip()
             except IOError as e:
                 return client_error("CS:Could not create zip buffer: {0}".format(repr(e)))
 
-            try:
-                ctransformer.cleanup()
-            except Exception as e:
-                return client_error("CS:Could not delete tmp files: {0}".format(repr(e)))
+            logger.info("CS:SUCCESS")
+
+            return send_file(ctransformer.itransformer.zip.in_memory_zip, mimetype='application/zip', add_etags=False)
 
     except Exception as e:
         tx_id = survey_response.get("tx_id")
         logger.exception("CS:could not create files for survey", survey_id=survey_id, tx_id=tx_id)
         return server_error(e)
 
-    logger.info("CS:SUCCESS")
 
-    return send_file(zipfile, mimetype='application/zip', add_etags=False)
 
 
 @app.route('/healthcheck', methods=['GET'])
