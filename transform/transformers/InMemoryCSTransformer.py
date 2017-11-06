@@ -6,7 +6,7 @@ import zipfile
 
 from jinja2 import Environment, PackageLoader
 
-from .ImageTransformer import ImageTransformer
+from .InMemoryImageTransformer import InMemoryImageTransformer
 from .PCKTransformer import PCKTransformer
 from transform import settings
 
@@ -24,6 +24,8 @@ class CSTransformer(object):
         self.batch_number = batch_number
         self.sequence_no = sequence_no
         self.setup_logger()
+
+
 
     def setup_logger(self):
         if self.survey:
@@ -46,9 +48,8 @@ class CSTransformer(object):
         self.rootname, _ = os.path.splitext(baseName)
         self.itransformer = itransformer
 
-        self.create_pck()
-        self.create_idbr()
-        return path
+        self._create_pck()
+        self._create_idbr()
 
     def prepare_archive(self):
         '''
@@ -74,7 +75,7 @@ class CSTransformer(object):
             self.files_to_archive.append((settings.SDX_FTP_IMAGE_PATH + "/Index", f_name))
             self.logger.info("Added in_memory_index file to archive", file=path + f_name)
 
-    def create_pck(self):
+    def _create_pck(self):
         template = env.get_template('pck.tmpl')
 
         pck_transformer = PCKTransformer(self.survey, self.response)
@@ -91,7 +92,7 @@ class CSTransformer(object):
         with open(os.path.join(self.path, self.pck_file), "w") as fh:
             fh.write(template_output)
 
-    def create_idbr(self):
+    def _create_idbr(self):
         template = env.get_template('idbr.tmpl')
         template_output = template.render(response=self.response)
         submission_date = dateutil.parser.parse(self.response['submitted_at'])

@@ -1,32 +1,37 @@
+#!/usr/bin/env python
+#   coding: UTF-8
+
 import datetime
+import itertools
+import json
+import logging
+import os.path
 import re
 import subprocess
+import sys
 from io import BytesIO
+
 import dateutil.parser
+
 from transform import settings
+from transform.transformers.ImageTransformerBase import ImageTransformerBase, parser
 from transform.transformers.InMemoryZip import InMemoryZip
-from transform.transformers.ImageTransformerBase import ImageTransformerBase
-from transform.transformers.ImageTransformer import ImageTransformer
 from transform.views.image_filters import get_env, format_date
 from .PDFTransformer import PDFTransformer
 
 
-class InMemoryImageTransformer(ImageTransformer):
+class InMemoryImageTransformer(ImageTransformerBase):
     """Transforms a survey and response into a zip file
     useage:
-
     transformer = InMemoryImageTransformer(survey_json, response_json)
     zip = transformer.get_zip(number_sequence_iterator)
-    return send_file(zip.in_memory_zip,attachment_filename='image.zip',mimetype='application/zip')
-
-    Note: Inherits from Image transformer only to get access to existing code to call out to get
-    image sequence numbers . There is a case to refactor ImageTransformer to get a common base class
+    return send_file(zip.in_memory_zip,attachment_filename='XXXXXXX',mimetype='application/zip')
     """
 
     def __init__(self, logger, survey, response, current_time=datetime.datetime.utcnow(), sequence_no=1000):
         self._page_count = -1
         self._current_time = current_time
-        self._index = None
+        self.index = None
         self._pdf = None
         self._image_names = []
         self.zip = InMemoryZip()
@@ -59,17 +64,17 @@ class InMemoryImageTransformer(ImageTransformer):
                 self._image_names.append(name)
 
     def _create_index(self):
-        """Create the in memory index"""
+        """Create the in memory in_memory_index"""
 
-        self._index = InMemoryIndex(self.logger, self.response, self._page_count, self._image_names,
-                                    self._current_time, self.sequence_no)
+        self.index = InMemoryIndex(self.logger, self.response, self._page_count, self._image_names,
+                                   self._current_time, self.sequence_no)
 
     def _build_zip(self):
         i = 0
         for image in self._extract_pdf_images(self._pdf):
             self.zip.append(self._image_names[i], image)
             i += 1
-        self.zip.append(self._index.index_name, self._index.index.getvalue())
+        self.zip.append(self.index.index_name, self.index.in_memory_index.getvalue())
         self.zip.rewind()
 
     @staticmethod
@@ -80,7 +85,6 @@ class InMemoryImageTransformer(ImageTransformer):
         images in one stream . These appear without a delimiter between images. So the only delimiter we
         have is the header .
         The header is of the format P6\n<width>space<height>\n<maximum pixel count>
-        We need to cope with 0 , 1 or many images in a stream .
         Note- the ppm format leads to large amounts of data as its bitmapped . 11 pages may be 13KB
         in the input pdf stream , but that can lead to 72.8MB in memory (6.5MB per page !) .
         Hence memory may become an issue.
@@ -94,7 +98,7 @@ class InMemoryImageTransformer(ImageTransformer):
         result, errors = process.communicate(pdf_stream)
 
         if errors:
-            raise IOError("IMAGES:Could not extract Images from pdf: {0}".format(repr(errors)))
+            raise IOError("images:Could not extract Images from pdf: {0}".format(repr(errors)))
 
         header_regex = re.compile(b'P6\n[0-9 ]+[0-9]+\n[0-9]+\n')
 
@@ -115,17 +119,17 @@ class PpmHeader(object):
         self.source = source.split()
         self.type = self.source[0]
         if self.type != b'P6':  # 'P6' is the identifier for PPM file types
-            raise TypeError("IMAGES: Non ppm file type detected")
+            raise TypeError("images: Non ppm file type detected")
         self.width = int(self.source[1])
         self.height = int(self.source[2])
         self.size = len(source) + (3*self.height*self.width)   # 3 bytes per pixel (rgb)
 
 
 class InMemoryIndex:
-    """Class for creating in memory index object using StringIO."""
+    """Class for creating in memory in_memory_index object using StringIO."""
     def __init__(self, logger, response_data, image_count, image_names,
                  current_time=datetime.datetime.utcnow(), sequence_no=1000):
-        self.index = BytesIO()
+        self.in_memory_index = BytesIO()
         self.logger = logger
         self._response = response_data
         self._image_count = image_count
@@ -138,11 +142,11 @@ class InMemoryIndex:
         self._build_index(image_names)
 
     def rewind(self):
-        """Rewinds the read-write position of the in-memory index to the start."""
-        self.index.seek(0)
+        """Rewinds the read-write position of the in-memory in_memory_index to the start."""
+        self.in_memory_index.seek(0)
 
     def _build_index(self, image_names):
-        """Builds the index file contents into self.index"""
+        """Builds the in_memory_index file contents into self.in_memory_index"""
         env = get_env()
         template = env.get_template('csv.tmpl')
 
@@ -154,9 +158,9 @@ class InMemoryIndex:
             creation_time=self._creation_time
         )
 
-        msg = "Adding image to index"
+        msg = "Adding image to in_memory_index"
         [self.logger.info(msg, file=image_name) for image_name in image_names]
-        self.index.write(template_output.encode())
+        self.in_memory_index.write(template_output.encode())
         self.rewind()
 
     @staticmethod
@@ -164,3 +168,28 @@ class InMemoryIndex:
         submission_date = dateutil.parser.parse(response['submitted_at'])
         submission_date_str = format_date(submission_date, 'short')
         return "EDC_{}_{}_{:04d}.csv".format(response['survey_id'], submission_date_str, sequence_no)
+
+
+def main(args):
+    log = logging.getLogger("InMemoryImageTransformer")
+    fp = os.path.expanduser(os.path.abspath(args.survey))
+    with open(fp, "r") as f_obj:
+        survey = json.load(f_obj)
+
+    data = json.load(sys.stdin)
+    tx = InMemoryImageTransformer(log, survey, data)
+    zipfile = tx.get_zip(num_sequence=itertools.count())
+
+    sys.stdout.write(zipfile.in_memory_zip.read())
+    return 0
+
+
+def run():
+    p = parser()
+    args = p.parse_args()
+    rv = main(args)
+    sys.exit(rv)
+
+
+if __name__ == "__main__":
+    run()

@@ -138,7 +138,7 @@ class Transformer:
                 f_name = os.path.basename(img)
                 manifest.append(("EDC_QImages/Images", f_name))
 
-            # Write image index
+            # Write image in_memory_index
             index = img_tfr.create_image_index(images)
             if index is not None:
                 f_name = os.path.basename(index)

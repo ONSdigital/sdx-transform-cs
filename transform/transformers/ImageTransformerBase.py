@@ -2,29 +2,12 @@
 #   coding: UTF-8
 
 import argparse
-import datetime
-import dateutil.parser
-import glob
-from io import BytesIO
-import itertools
-import json
-import logging
-import os.path
-import shutil
-import subprocess
-import sys
-import zipfile
 import requests
-from requests.packages.urllib3.util.retry import Retry
 from requests.adapters import HTTPAdapter
-
 from requests.packages.urllib3.exceptions import MaxRetryError
-
-from .PDFTransformer import PDFTransformer
+from requests.packages.urllib3.util.retry import Retry
 
 from transform import settings
-from transform.views.image_filters import get_env, format_date
-
 
 # Configure the number of retries attempted before failing call
 session = requests.Session()
@@ -79,3 +62,15 @@ class ImageTransformerBase(object):
 
         result = r.json()
         return result['sequence_list']
+
+
+def parser(description=__doc__):
+    rv = argparse.ArgumentParser(
+        description,
+    )
+    rv.add_argument(
+        "--survey", required=True,
+        help="Set a path to the survey JSON file.")
+    return rv
+
+

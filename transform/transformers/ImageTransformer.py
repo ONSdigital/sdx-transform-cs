@@ -1,11 +1,8 @@
 #!/usr/bin/env python
 #   coding: UTF-8
 
-import argparse
 import datetime
-import dateutil.parser
 import glob
-from io import BytesIO
 import itertools
 import json
 import logging
@@ -14,17 +11,14 @@ import shutil
 import subprocess
 import sys
 import zipfile
-import requests
-from requests.packages.urllib3.util.retry import Retry
-from requests.adapters import HTTPAdapter
+from io import BytesIO
 
-from requests.packages.urllib3.exceptions import MaxRetryError
-
-from .PDFTransformer import PDFTransformer
+import dateutil.parser
 
 from transform import settings
-from transform.transformers.ImageTransformerBase import ImageTransformerBase
+from transform.transformers.ImageTransformerBase import ImageTransformerBase, parser
 from transform.views.image_filters import get_env, format_date
+from .PDFTransformer import PDFTransformer
 
 __doc__ = """
 SDX Image Transformer.
@@ -83,7 +77,7 @@ class ImageTransformer(ImageTransformerBase):
 
     def create_image_index(self, images, current_time=datetime.datetime.utcnow()):
         '''
-        Takes a list of images and creates a index csv from them
+        Takes a list of images and creates a in_memory_index csv from them
         '''
         if not images:
             return None
@@ -105,7 +99,7 @@ class ImageTransformer(ImageTransformerBase):
             creation_time=creation_time
         )
 
-        msg = "Adding image to index"
+        msg = "Adding image to in_memory_index"
         [self.logger.info(msg, file=(image_path + os.path.basename(i))) for i in images]
 
         self.index_file = "EDC_%s_%s_%04d.csv" % (
@@ -145,17 +139,6 @@ class ImageTransformer(ImageTransformerBase):
         Remove all temporary files, by removing top level dir
         '''
         shutil.rmtree(locn)
-
-
-
-def parser(description=__doc__):
-    rv = argparse.ArgumentParser(
-        description,
-    )
-    rv.add_argument(
-        "--survey", required=True,
-        help="Set a path to the survey JSON file.")
-    return rv
 
 
 def main(args):

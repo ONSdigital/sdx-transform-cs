@@ -9,7 +9,7 @@ from transform.views.logger_config import logger_initial_config
 
 from transform import app
 from transform import settings
-from transform.transformers import ImageTransformer, CSTransformer
+from transform.transformers import CSTransformer
 from transform.transformers.InMemoryImageTransformer import InMemoryImageTransformer
 from transform.transformers import MWSSTransformer
 from transform.transformers import PCKTransformer, PDFTransformer
