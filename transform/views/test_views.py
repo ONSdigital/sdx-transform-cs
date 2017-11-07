@@ -6,8 +6,8 @@ from jinja2 import Environment, PackageLoader
 from structlog import wrap_logger
 
 from transform import app
-from transform.transformers import PDFTransformer, InMemoryCSTransformer
-from transform.transformers.InMemoryImageTransformer import InMemoryImageTransformer
+from transform.transformers import PDFTransformer, CSTransformer
+from transform.transformers.ImageTransformer import ImageTransformer
 
 logger = wrap_logger(logging.getLogger(__name__))
 
@@ -57,8 +57,8 @@ def images_test():
     with open("./transform/surveys/%s.%s.json" % (survey_response['survey_id'], form_id)) as json_file:
         survey = json.load(json_file)
 
-        itransformer = InMemoryImageTransformer(logger, survey, survey_response)
-        zipfile = itransformer.get_zip()
+        itransformer = ImageTransformer(logger, survey, survey_response)
+        zipfile = itransformer.get_zipped_images()
 
         return send_file(zipfile.in_memory_zip, mimetype='application/zip')
 
@@ -100,7 +100,7 @@ def cs_test():
     with open("./transform/surveys/%s.%s.json" % (survey_response['survey_id'], form_id)) as json_file:
         survey = json.load(json_file)
 
-        ctransformer = InMemoryCSTransformer(logger, survey, survey_response)
+        ctransformer = CSTransformer(logger, survey, survey_response)
         ctransformer.create_zip()
 
-        return send_file(ctransformer.itransformer.zip.in_memory_zip, mimetype='application/zip')
+        return send_file(ctransformer.image_transformer.zip.in_memory_zip, mimetype='application/zip')

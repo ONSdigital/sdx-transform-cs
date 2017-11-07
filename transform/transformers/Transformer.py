@@ -1,14 +1,14 @@
 import logging
 from collections import OrderedDict
-
+import os.path
 from structlog import wrap_logger
 
-from transform.transformers.InMemoryCsFormatter import InMemoryCSFormatter
-from transform.transformers.InMemoryImageTransformer import InMemoryImageTransformer
+from transform.transformers.CSFormatter import CSFormatter
+from transform.transformers.ImageTransformer import ImageTransformer
 from transform.transformers.survey import Survey
 
 
-class InMemoryTransformer:
+class Transformer:
 
     """A base class for SDX transformers.
 
@@ -40,6 +40,10 @@ class InMemoryTransformer:
     #: The path is relative to the location specified by :py:const:`package` above.
     pattern = "../surveys/{survey_id}.{inst_id}.json"
 
+    receipt_path = os.getenv("SDX_FTP_RECEIPT_PATH")
+    data_path = os.getenv("SDX_FTP_DATA_PATH")
+    image_path = os.getenv("SDX_FTP_IMAGE_PATH")
+
     def __init__(self, response, seq_nr=0, log=None):
         """Create a transformer object to process a survey response."""
         self.response = response
@@ -59,8 +63,8 @@ class InMemoryTransformer:
                 raise UserWarning("Missing class attribute: {0}".format(attr))
 
         self.survey = Survey.load_survey(self.ids, self.pattern)
-        self.image_transformer = InMemoryImageTransformer(self.log, self.survey, self.response,
-                                                          sequence_no= self.ids.seq_nr)
+        self.image_transformer = ImageTransformer(self.log, self.survey, self.response,
+                                                  sequence_no= self.ids.seq_nr, base_image_path=self.image_path)
 
     @classmethod
     def ops(cls):
@@ -83,10 +87,6 @@ class InMemoryTransformer:
             for qid, (dflt, fn) in cls.ops().items()
         )
 
-    # temp function remove later
-    def pack(self, img_seq=None):
-        self.create_zip(img_seq)
-
     def create_zip(self, img_seq=None):
         """Perform transformation on the survey data
         and pack the output into a zip file exposed by the image transformer
@@ -94,13 +94,13 @@ class InMemoryTransformer:
 
         data = self.transform(self.response["data"], self.survey)
 
-        pck_name = InMemoryCSFormatter.pck_name(**self.ids._asdict())
-        pck = InMemoryCSFormatter.get_pck(data, **self.ids._asdict())
+        pck_name = CSFormatter.pck_name(**self.ids._asdict())
+        pck = CSFormatter.get_pck(data, **self.ids._asdict())
 
-        idbr_name = InMemoryCSFormatter.idbr_name(**self.ids._asdict())
-        idbr = InMemoryCSFormatter.get_idbr(**self.ids._asdict())
+        idbr_name = CSFormatter.idbr_name(**self.ids._asdict())
+        idbr = CSFormatter.get_idbr(**self.ids._asdict())
 
-        self.image_transformer.zip.append(pck_name, pck)
-        self.image_transformer.zip.append(idbr_name, idbr)
+        self.image_transformer.zip.append(os.path.join(self.data_path, pck_name), pck)
+        self.image_transformer.zip.append(os.path.join(self.receipt_path, idbr_name), idbr)
 
-        self.image_transformer.get_zip(img_seq)
+        self.image_transformer.get_zipped_images(img_seq)

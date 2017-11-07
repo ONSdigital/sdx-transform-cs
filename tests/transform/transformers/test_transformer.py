@@ -4,14 +4,14 @@ import json
 import os.path
 import re
 import unittest
-import zipfile
+
 from collections import OrderedDict
 from functools import partial
 
-from transform.transformers.cs_formatter import CSFormatter
+from transform.transformers.CSFormatter import CSFormatter
 from transform.transformers.processor import Processor
 from transform.transformers.survey import Survey
-from transform.transformers.transformer import Transformer
+from transform.transformers.Transformer import Transformer
 
 
 class MockTransformer(Transformer):
@@ -530,7 +530,7 @@ class BatchFileTests(unittest.TestCase):
 
 class PackingTests(unittest.TestCase):
 
-    def test_mwss_pack(self):
+    def test_mwss_create_zip(self):
         with open("tests/data/eq-mwss.json", "r") as fb:
             src = fb.read()
         reply = json.loads(src)
@@ -541,10 +541,9 @@ class PackingTests(unittest.TestCase):
                 **tfr.ids._asdict()
             )
         )
-        zip_data = tfr.pack(img_seq=itertools.count(), tmp=None)
+        tfr.create_zip(img_seq=itertools.count())
 
-        with zipfile.ZipFile(zip_data) as zip_file:
-            actual = zip_file.namelist()
+        actual = tfr.image_transformer.zip.get_filenames()
 
         expected = [
             "EDC_QData/134_0000",
@@ -581,7 +580,8 @@ class PackingTests(unittest.TestCase):
         }
         seq_nr = 12345
         tfr = MockTransformer(response, seq_nr=seq_nr)
-        zf = zipfile.ZipFile(tfr.pack(img_seq=itertools.count(), tmp=None))
-        fn = next(i for i in zf.namelist() if os.path.splitext(i)[1] == ".csv")
+        tfr.create_zip(img_seq=itertools.count())
+
+        fn = next(i for i in tfr.image_transformer.zip.get_filenames() if os.path.splitext(i)[1] == ".csv")
         bits = os.path.splitext(fn)[0].split("_")
         self.assertEqual(seq_nr, int(bits[-1]))

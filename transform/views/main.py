@@ -9,9 +9,9 @@ from transform.views.logger_config import logger_initial_config
 
 from transform import app
 from transform import settings
-from transform.transformers import InMemoryCSTransformer
-from transform.transformers import InMemoryImageTransformer
-from transform.transformers import InMemoryMWSSTransformer
+from transform.transformers import CSTransformer
+from transform.transformers import ImageTransformer
+from transform.transformers import MWSSTransformer
 from transform.transformers import PCKTransformer, PDFTransformer
 
 env = Environment(loader=PackageLoader('transform', 'templates'))
@@ -159,10 +159,10 @@ def render_images():
     if not survey:
         return client_error("IMAGES:Unsupported survey/instrument id")
 
-    transformer = InMemoryImageTransformer(logger, survey, survey_response)
+    transformer = ImageTransformer(logger, survey, survey_response)
 
     try:
-        zipfile = transformer.get_zip()
+        zipfile = transformer.get_zipped_images()
     except IOError as e:
         return client_error("IMAGES:Could not create zip buffer: {0}".format(repr(e)))
 
@@ -190,9 +190,9 @@ def common_software(sequence_no=1000, batch_number=0):
     survey_id = survey_response.get("survey_id")
     try:
         if survey_id == "134":
-            transformer = InMemoryMWSSTransformer(survey_response, sequence_no, log=logger)
+            transformer = MWSSTransformer(survey_response, sequence_no, log=logger)
         else:
-            transformer = InMemoryCSTransformer(logger, survey, survey_response, batch_number, sequence_no)
+            transformer = CSTransformer(logger, survey, survey_response, batch_number, sequence_no)
 
         transformer.create_zip()
     except Exception as e:
@@ -201,7 +201,9 @@ def common_software(sequence_no=1000, batch_number=0):
         return server_error(e)
 
     logger.info("CS:SUCCESS")
-    return send_file(transformer.itransformer.zip.in_memory_zip, mimetype='application/zip', add_etags=False)
+
+    # reach into transformer so as to minimise use of large objects on the stack
+    return send_file(transformer.image_transformer.zip.in_memory_zip, mimetype='application/zip', add_etags=False)
 
 
 @app.route('/healthcheck', methods=['GET'])

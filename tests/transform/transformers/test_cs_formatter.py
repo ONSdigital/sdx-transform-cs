@@ -3,7 +3,7 @@ import json
 import unittest
 from collections import OrderedDict
 
-from transform.transformers.cs_formatter import CSFormatter
+from transform.transformers.CSFormatter import CSFormatter
 from transform.transformers.survey import Survey
 
 

@@ -58,11 +58,11 @@ class CSFormatter:
         ]
 
     @staticmethod
-    def write_pck(f_obj, data, **kwargs):
+    def get_pck(data, **kwargs):
         """Write a PCK file."""
-        output = CSFormatter.pck_lines(data, **kwargs)
-        f_obj.write("\n".join(output))
-        f_obj.write("\n")
+        pck_lines = CSFormatter.pck_lines(data, **kwargs)
+        output = "\n".join(pck_lines)
+        return output + "\n"
 
     @staticmethod
     def idbr_name(user_ts, seq_nr, **kwargs):
@@ -77,8 +77,7 @@ class CSFormatter:
         )
 
     @staticmethod
-    def write_idbr(f_obj, **kwargs):
+    def get_idbr(**kwargs):
         """Write an IDBR file."""
         output = CSFormatter.idbr_receipt(**kwargs)
-        f_obj.write(output)
-        f_obj.write("\n")
+        return output

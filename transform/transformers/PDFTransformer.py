@@ -1,11 +1,5 @@
-#!/usr/bin/env python
-#   coding: UTF-8
-
-import argparse
 from io import BytesIO
-import json
 import os
-import sys
 import uuid
 
 import arrow
@@ -18,12 +12,6 @@ from reportlab.lib.enums import TA_LEFT, TA_CENTER
 
 __doc__ = """
 SDX PDF Transformer.
-
-Example:
-
-python transform/transformers/PDFTransformer.py --survey transform/surveys/144.0001.json \\
-< tests/replies/ukis-01.json > output.pdf
-
 """
 styles = getSampleStyleSheet()
 

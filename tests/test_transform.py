@@ -11,7 +11,6 @@ import zipfile
 import dateutil
 
 from transform import app
-from transform.transformers.ImageTransformer import ImageTransformer
 from transform.views.image_filters import format_date
 
 
@@ -121,7 +120,7 @@ class TestTransformService(unittest.TestCase):
 
             self.assertEqual(actual_response, expected_response)
 
-    @patch('transform.transformers.ImageTransformerBase.ImageTransformerBase.get_image_sequence_list', return_value=[1, 2])
+    @patch('transform.transformers.ImageTransformer.get_image_sequence_list', return_value=[1, 2])
     def test_transforms_csv(self, mock_sequence_no):
         test_scenarios = get_test_scenarios('csv')
 
@@ -191,8 +190,6 @@ class TestTransformService(unittest.TestCase):
 
     def test_cleanup(self):
         for dirpath, dirnames, files in os.walk('./tmp'):
-            if dirnames:
-                ImageTransformer.cleanup(self, './tmp')
             if not dirnames:
                 self.assertEqual(dirpath, './tmp')
                 self.assertEqual(dirnames, [])
