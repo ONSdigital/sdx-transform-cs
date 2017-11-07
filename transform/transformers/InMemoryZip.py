@@ -21,3 +21,10 @@ class InMemoryZip(object):
     def rewind(self):
         """Rewind"""
         self.in_memory_zip.seek(0)
+
+    def get_filenames(self):
+        """Returns a list of filenames currently in the zipfile"""
+        zf = ZipFile(self.in_memory_zip, "r", ZIP_DEFLATED, False)
+        file_names = zf.namelist()
+        zf.close()
+        return file_names

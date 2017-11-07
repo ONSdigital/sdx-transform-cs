@@ -62,15 +62,3 @@ class ImageTransformerBase(object):
 
         result = r.json()
         return result['sequence_list']
-
-
-def parser(description=__doc__):
-    rv = argparse.ArgumentParser(
-        description,
-    )
-    rv.add_argument(
-        "--survey", required=True,
-        help="Set a path to the survey JSON file.")
-    return rv
-
-

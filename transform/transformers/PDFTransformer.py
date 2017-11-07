@@ -154,35 +154,3 @@ class PDFTransformer(object):
     def get_localised_date(date_to_transform, timezone='Europe/London'):
         return arrow.get(date_to_transform).to(timezone).format("DD MMMM YYYY HH:mm:ss")
 
-
-def parser(description=__doc__):
-    rv = argparse.ArgumentParser(
-        description,
-    )
-    rv.add_argument(
-        "--survey", required=True,
-        help="Set a path to the survey JSON file.")
-    return rv
-
-
-def main(args):
-    fp = os.path.expanduser(os.path.abspath(args.survey))
-    with open(fp, "r") as fobj:
-        survey = json.load(fobj)
-
-    data = json.load(sys.stdin)
-    tx = PDFTransformer(survey, data)
-    output = tx.render()
-    sys.stdout.write(output.decode("latin-1"))
-    return 0
-
-
-def run():
-    p = parser()
-    args = p.parse_args()
-    rv = main(args)
-    sys.exit(rv)
-
-
-if __name__ == "__main__":
-    run()

@@ -11,7 +11,7 @@ import pkg_resources
 from transform.transformers.cs_formatter import CSFormatter
 from transform.transformers.processor import Processor
 from transform.transformers.survey import Survey
-from transform.transformers.MWSSTransformer import MWSSTransformer
+from transform.transformers.InMemoryMWSSTransformer import InMemoryMWSSTransformer
 
 
 class SurveyTests(unittest.TestCase):
@@ -120,7 +120,7 @@ class OpTests(unittest.TestCase):
             },
             "submitted_at": "2017-04-12T13:01:26Z",
         }
-        transformer = MWSSTransformer(response, 0)
+        transformer = InMemoryMWSSTransformer(response, 0)
         self.assertTrue(transformer)
 
 
@@ -131,7 +131,7 @@ class LogicTests(unittest.TestCase):
         Increase in weekly pay (100).
 
         """
-        _, funct = MWSSTransformer.ops()["100"]
+        _, funct = InMemoryMWSSTransformer.ops()["100"]
         return_value = funct("100", {"100": "6.0"}, 0)
         self.assertEqual(6, return_value)
 
@@ -140,7 +140,7 @@ class LogicTests(unittest.TestCase):
         question_id 40, 40f are added to give a value for weekly paid employees (40).
 
         """
-        _, funct = MWSSTransformer.ops()["40"]
+        _, funct = InMemoryMWSSTransformer.ops()["40"]
         return_value = funct("40", {"40": "125000"}, 0)
         self.assertEqual(125000, return_value)
         return_value = funct("40", {"40": "125000", "40f": "25000"}, 0)
@@ -152,7 +152,7 @@ class LogicTests(unittest.TestCase):
         the value for question_id 50.
 
         """
-        _, funct = MWSSTransformer.ops()["50"]
+        _, funct = InMemoryMWSSTransformer.ops()["50"]
         return_value = funct("50", {"50f": "1600"}, 0)
         self.assertEqual(800, return_value)
         return_value = funct("50", {"50": "19200", "50f": "1600"}, 0)
@@ -172,7 +172,7 @@ class LogicTests(unittest.TestCase):
         are divided by 2 and added to question_id 60, 70, 80 respectively.
 
         """
-        _, funct = MWSSTransformer.ops()["60"]
+        _, funct = InMemoryMWSSTransformer.ops()["60"]
         return_value = funct("60", {"60f": "360"}, 0)
         self.assertEqual(180, return_value)
         return_value = funct("60", {"60": "4600", "60f": "360"}, 0)
@@ -186,7 +186,7 @@ class LogicTests(unittest.TestCase):
         return_value = funct("60", {"60": "19200.02", "60f": "1600.02"}, 0)
         self.assertEqual(20000, return_value)
 
-        _, funct = MWSSTransformer.ops()["70"]
+        _, funct = InMemoryMWSSTransformer.ops()["70"]
         return_value = funct("70", {"70f": "1280"}, 0)
         self.assertEqual(640, return_value)
         return_value = funct("70", {"70": "7360", "70f": "1280"}, 0)
@@ -200,7 +200,7 @@ class LogicTests(unittest.TestCase):
         return_value = funct("70", {"70": "19200.02", "70f": "1600.02"}, 0)
         self.assertEqual(20000, return_value)
 
-        _, funct = MWSSTransformer.ops()["80"]
+        _, funct = InMemoryMWSSTransformer.ops()["80"]
         return_value = funct("80", {"80f": "5000"}, 0)
         self.assertEqual(2500, return_value)
         return_value = funct("80", {"80": "15000", "80f": "5000"}, 0)
@@ -219,7 +219,7 @@ class LogicTests(unittest.TestCase):
         Increase in Fortnightly pay (100f); aggregated with weekly increase (100).
 
         """
-        _, funct = MWSSTransformer.ops()["100"]
+        _, funct = InMemoryMWSSTransformer.ops()["100"]
         return_value = funct("100", {"100f": "6.0"}, 0)
         self.assertEqual(6, return_value)
         return_value = funct("100", {"100": "7.0", "100f": "6.0"}, 0)
@@ -232,7 +232,7 @@ class LogicTests(unittest.TestCase):
         Date of increase in Fortnightly pay (110f); aggregated with weekly (110).
 
         """
-        _, funct = MWSSTransformer.ops()["110"]
+        _, funct = InMemoryMWSSTransformer.ops()["110"]
         return_value = funct(
             "110", {"110": "2017-01-09", "110f": "2017-01-11"}, datetime.date.today(),
         )
@@ -245,7 +245,7 @@ class LogicTests(unittest.TestCase):
         aggregated with weekly increase (120).
 
         """
-        _, funct = MWSSTransformer.ops()["120"]
+        _, funct = InMemoryMWSSTransformer.ops()["120"]
         return_value = funct("120", {"120f": "60"}, 0)
         self.assertEqual(60, return_value)
         return_value = funct("120", {"120": "40", "120f": "41"}, 0)
@@ -258,7 +258,7 @@ class LogicTests(unittest.TestCase):
         question_id 90f - 97f used for fortnightly changes questions; all aggregated as 90.
 
         """
-        _, funct = MWSSTransformer.ops()["90"]
+        _, funct = InMemoryMWSSTransformer.ops()["90"]
         for question_id in ("90f", "91f", "92f", "93f", "94f", "95f", "96f", "97f"):
             with self.subTest(question_id=question_id):
                 return_value = funct("90", {question_id: ""}, True)
@@ -273,7 +273,7 @@ class LogicTests(unittest.TestCase):
         question_id 90w - 97w used for weekly changes questions; all aggregated as 90.
 
         """
-        _, funct = MWSSTransformer.ops()["90"]
+        _, funct = InMemoryMWSSTransformer.ops()["90"]
         for question_id in ("90w", "91w", "92w", "93w", "94w", "95w", "96w", "97w"):
             with self.subTest(question_id=question_id):
                 return_value = funct("90", {question_id: ""}, True)
@@ -289,7 +289,7 @@ class LogicTests(unittest.TestCase):
         have answers other than Yes/No.
 
         """
-        _, funct = MWSSTransformer.ops()["90"]
+        _, funct = InMemoryMWSSTransformer.ops()["90"]
         for question_id in ("92w", "94w", "92f", "94f"):
             with self.subTest(question_id=question_id):
                 return_value = funct("90", {question_id: ""}, True)
@@ -299,7 +299,7 @@ class LogicTests(unittest.TestCase):
                 return_value = funct("90", {question_id: "Any other string"}, False)
                 self.assertTrue(return_value)
 
-        _, funct = MWSSTransformer.ops()["190"]
+        _, funct = InMemoryMWSSTransformer.ops()["190"]
         for question_id in ("192m", "194m", "192w4", "194w4", "192w5", "194w5"):
             with self.subTest(question_id=question_id):
                 return_value = funct("190", {question_id: ""}, True)
@@ -314,7 +314,7 @@ class LogicTests(unittest.TestCase):
         question_id 190w4 - 197w4 used for fourweekly changes questions; all aggregated as 190.
 
         """
-        _, funct = MWSSTransformer.ops()["190"]
+        _, funct = InMemoryMWSSTransformer.ops()["190"]
         for question_id in ("190w4", "191w4", "192w4", "193w4", "194w4", "195w4", "196w4", "197w4"):
             with self.subTest(question_id=question_id):
                 return_value = funct("190", {question_id: ""}, True)
@@ -329,7 +329,7 @@ class LogicTests(unittest.TestCase):
         Increase in fourweekly pay (200w4); aggregated with monthly increase (200).
 
         """
-        _, funct = MWSSTransformer.ops()["200"]
+        _, funct = InMemoryMWSSTransformer.ops()["200"]
         return_value = funct("200", {"200w4": "6.0"}, 0)
         self.assertEqual(True, return_value)
         return_value = funct("200", {"200": "7.0", "200w4": "6.0"}, 0)
@@ -342,7 +342,7 @@ class LogicTests(unittest.TestCase):
         Date of increase in fourweekly pay (210w4); aggregated with monthly (210).
 
         """
-        _, funct = MWSSTransformer.ops()["210"]
+        _, funct = InMemoryMWSSTransformer.ops()["210"]
         return_value = funct(
             "210", {"210": "2017-01-09", "210w4": "2017-01-11"}, datetime.date.today(),
         )
@@ -355,7 +355,7 @@ class LogicTests(unittest.TestCase):
         aggregated with monthly increase (220).
 
         """
-        _, funct = MWSSTransformer.ops()["220"]
+        _, funct = InMemoryMWSSTransformer.ops()["220"]
         return_value = funct("220", {"220w4": "60"}, 0)
         self.assertEqual(60, return_value)
         return_value = funct("220", {"220": "40", "220w4": "41"}, 0)
@@ -368,7 +368,7 @@ class LogicTests(unittest.TestCase):
         question_id 190m - 197m used for monthly changes questions; all aggregated as 190.
 
         """
-        _, funct = MWSSTransformer.ops()["190"]
+        _, funct = InMemoryMWSSTransformer.ops()["190"]
         for question_id in ("190m", "191m", "192m", "193m", "194m", "195m", "196m", "197m"):
             with self.subTest(question_id=question_id):
                 return_value = funct("190", {question_id: ""}, True)
@@ -383,7 +383,7 @@ class LogicTests(unittest.TestCase):
         question_id 300w, 300f, 300m, 300w4 & 300w5; all aggregated as 300.
 
         """
-        _, funct = MWSSTransformer.ops()["300"]
+        _, funct = InMemoryMWSSTransformer.ops()["300"]
         for question_id in ("300w", "300f", "300m", "300w4", "300w5"):
             with self.subTest(question_id=question_id):
                 return_value = funct("300", {question_id: "Single comment"}, "")
@@ -396,7 +396,7 @@ class LogicTests(unittest.TestCase):
         question_id 140m, 140w4, 140w5 are added to give a value for monthly paid employees (140).
 
         """
-        _, funct = MWSSTransformer.ops()["140"]
+        _, funct = InMemoryMWSSTransformer.ops()["140"]
         return_value = funct("140", {"140w4": "125000"}, 0)
         self.assertEqual(125000, return_value)
         for question_id in ("140m", "140w4", "140w5"):
@@ -408,7 +408,7 @@ class LogicTests(unittest.TestCase):
         question_id 190w5 - 197w5 used for fiveweekly changes questions; all aggregated as 190.
 
         """
-        _, funct = MWSSTransformer.ops()["190"]
+        _, funct = InMemoryMWSSTransformer.ops()["190"]
         for question_id in ("190w5", "191w5", "192w5", "193w5", "194w5", "195w5", "196w5", "197w5"):
             with self.subTest(question_id=question_id):
                 return_value = funct("190", {question_id: ""}, True)
@@ -423,7 +423,7 @@ class LogicTests(unittest.TestCase):
         Increase in fiveweekly pay (200w5); aggregated with monthly increase (200).
 
         """
-        _, funct = MWSSTransformer.ops()["200"]
+        _, funct = InMemoryMWSSTransformer.ops()["200"]
         return_value = funct("200", {"200w5": "6.0"}, 0)
         self.assertEqual(True, return_value)
         return_value = funct("200", {"200w4": "7.0"}, 0)
@@ -438,7 +438,7 @@ class LogicTests(unittest.TestCase):
         Date of increase in fiveweekly pay (210w5); aggregated with monthly (210).
 
         """
-        _, funct = MWSSTransformer.ops()["210"]
+        _, funct = InMemoryMWSSTransformer.ops()["210"]
         return_value = funct(
             "210", {"210": "2017-01-09", "210w5": "2017-01-11"}, datetime.date.today(),
         )
@@ -451,7 +451,7 @@ class LogicTests(unittest.TestCase):
         aggregated with monthly increase (220).
 
         """
-        _, funct = MWSSTransformer.ops()["220"]
+        _, funct = InMemoryMWSSTransformer.ops()["220"]
         return_value = funct("220", {"220w5": "60"}, 0)
         self.assertEqual(60, return_value)
         return_value = funct("220", {"220": "40", "220w5": "41"}, 0)
@@ -464,7 +464,7 @@ class LogicTests(unittest.TestCase):
         Total gross calendar monthly pay
 
         """
-        _, funct = MWSSTransformer.ops()["151"]
+        _, funct = InMemoryMWSSTransformer.ops()["151"]
         return_value = funct("151", {"151": "1600"}, 0)
         self.assertEqual(1600, return_value)
         return_value = funct("151", {"151": "19200.49"}, 0)
@@ -474,7 +474,7 @@ class LogicTests(unittest.TestCase):
         return_value = funct("151", {"151": "-19200.49"}, 0)
         self.assertEqual(0, return_value)
 
-        _, funct = MWSSTransformer.ops()["152"]
+        _, funct = InMemoryMWSSTransformer.ops()["152"]
         return_value = funct("152", {"152": "1600"}, 0)
         self.assertEqual(1600, return_value)
         return_value = funct("152", {"152": "19200.49"}, 0)
@@ -484,7 +484,7 @@ class LogicTests(unittest.TestCase):
         return_value = funct("152", {"152": "-19200.49"}, 0)
         self.assertEqual(0, return_value)
 
-        _, funct = MWSSTransformer.ops()["153"]
+        _, funct = InMemoryMWSSTransformer.ops()["153"]
         return_value = funct("153", {"153": "1600"}, 0)
         self.assertEqual(1600, return_value)
         return_value = funct("153", {"153": "19200.49"}, 0)
@@ -499,7 +499,7 @@ class LogicTests(unittest.TestCase):
         Breakdown of the calendar monthly paid employees totals.
 
         """
-        _, funct = MWSSTransformer.ops()["171"]
+        _, funct = InMemoryMWSSTransformer.ops()["171"]
         return_value = funct("171", {"171": "1600"}, 0)
         self.assertEqual(1600, return_value)
         return_value = funct("171", {"171": "19200.49"}, 0)
@@ -509,7 +509,7 @@ class LogicTests(unittest.TestCase):
         return_value = funct("171", {"171": "-19200.49"}, 0)
         self.assertEqual(0, return_value)
 
-        _, funct = MWSSTransformer.ops()["172"]
+        _, funct = InMemoryMWSSTransformer.ops()["172"]
         return_value = funct("172", {"172": "1600"}, 0)
         self.assertEqual(1600, return_value)
         return_value = funct("172", {"172": "19200.49"}, 0)
@@ -519,7 +519,7 @@ class LogicTests(unittest.TestCase):
         return_value = funct("172", {"172": "-19200.49"}, 0)
         self.assertEqual(0, return_value)
 
-        _, funct = MWSSTransformer.ops()["173"]
+        _, funct = InMemoryMWSSTransformer.ops()["173"]
         return_value = funct("173", {"173": "1600"}, 0)
         self.assertEqual(1600, return_value)
         return_value = funct("173", {"173": "19200.49"}, 0)
@@ -534,7 +534,7 @@ class LogicTests(unittest.TestCase):
         Breakdown of the calendar monthly paid employees totals.
 
         """
-        _, funct = MWSSTransformer.ops()["181"]
+        _, funct = InMemoryMWSSTransformer.ops()["181"]
         return_value = funct("181", {"181": "1600"}, 0)
         self.assertEqual(1600, return_value)
         return_value = funct("181", {"181": "19200.49"}, 0)
@@ -544,7 +544,7 @@ class LogicTests(unittest.TestCase):
         return_value = funct("181", {"181": "-19200.49"}, 0)
         self.assertEqual(0, return_value)
 
-        _, funct = MWSSTransformer.ops()["182"]
+        _, funct = InMemoryMWSSTransformer.ops()["182"]
         return_value = funct("182", {"182": "1600"}, 0)
         self.assertEqual(1600, return_value)
         return_value = funct("182", {"182": "19200.49"}, 0)
@@ -554,7 +554,7 @@ class LogicTests(unittest.TestCase):
         return_value = funct("182", {"182": "-19200.49"}, 0)
         self.assertEqual(0, return_value)
 
-        _, funct = MWSSTransformer.ops()["173"]
+        _, funct = InMemoryMWSSTransformer.ops()["173"]
         return_value = funct("173", {"173": "1600"}, 0)
         self.assertEqual(1600, return_value)
         return_value = funct("173", {"173": "19200.49"}, 0)
@@ -569,7 +569,7 @@ class LogicTests(unittest.TestCase):
         Breakdown of percentage increase pay rates
 
         """
-        _, funct = MWSSTransformer.ops()["200"]
+        _, funct = InMemoryMWSSTransformer.ops()["200"]
         return_value = funct("200", {"200w5": "1600"}, 0)
         self.assertEqual(True, return_value)
         return_value = funct("200", {"200w5": "19200.49"}, 0)
@@ -581,7 +581,7 @@ class LogicTests(unittest.TestCase):
         return_value = funct("200", {"200w5": ""}, 0)
         self.assertEqual(False, return_value)
 
-        _, funct = MWSSTransformer.ops()["200"]
+        _, funct = InMemoryMWSSTransformer.ops()["200"]
         return_value = funct("200", {"200w4": "1600"}, 0)
         self.assertEqual(True, return_value)
         return_value = funct("200", {"200w4": "19200.49"}, 0)
@@ -601,7 +601,7 @@ class TransformTests(unittest.TestCase):
         Tests default values are empty
 
         """
-        return_value = MWSSTransformer.transform({})
+        return_value = InMemoryMWSSTransformer.transform({})
         self.assertIsInstance(return_value, OrderedDict)
         self.assertEqual([str(i) for i in (130, 131, 132)], list(return_value.keys()))
 
@@ -610,7 +610,7 @@ class TransformTests(unittest.TestCase):
         Tests default values are populated
 
         """
-        return_value = MWSSTransformer.transform({"40": "33"})
+        return_value = InMemoryMWSSTransformer.transform({"40": "33"})
         self.assertIsInstance(return_value, OrderedDict)
         self.assertEqual(33, return_value["40"])
         self.assertEqual(4, len(return_value))
@@ -620,7 +620,7 @@ class TransformTests(unittest.TestCase):
         Test unsigned integer value
 
         """
-        return_value = MWSSTransformer.transform({"40": "33"})
+        return_value = InMemoryMWSSTransformer.transform({"40": "33"})
         self.assertEqual(33, return_value["40"])
         item = CSFormatter.pck_item("40", return_value["40"])
         self.assertEqual(item, "0040 00000000033")
@@ -634,7 +634,7 @@ class TransformTests(unittest.TestCase):
         for question_range in digits_ingested_as_bools:
             question_id = str(question_range)
             with self.subTest(question_range=question_range, question_id=question_id):
-                return_value = MWSSTransformer.transform({question_id: "64.0"})
+                return_value = InMemoryMWSSTransformer.transform({question_id: "64.0"})
                 self.assertIs(True, return_value[question_id])
                 self.assertEqual(1, CSFormatter.pck_value(question_id, return_value[question_id]))
 
@@ -643,7 +643,7 @@ class TransformTests(unittest.TestCase):
         Test currency value
 
         """
-        return_value = MWSSTransformer.transform({"50": "36852"})
+        return_value = InMemoryMWSSTransformer.transform({"50": "36852"})
         self.assertEqual(36852, return_value["50"])
         item = CSFormatter.pck_item("50", return_value["50"])
         self.assertEqual(item, "0050 00000036852")
@@ -657,10 +657,10 @@ class TransformTests(unittest.TestCase):
         for question_range in digits_ingested_as_bools:
             question_id = str(question_range)
             with self.subTest(question_range=question_range, question_id=question_id):
-                return_value = MWSSTransformer.transform({question_id: "64"})
+                return_value = InMemoryMWSSTransformer.transform({question_id: "64"})
                 self.assertIs(True, return_value[question_id])
                 self.assertEqual(1, CSFormatter.pck_value(question_id, return_value[question_id]))
-                return_value = MWSSTransformer.transform({question_id: ""})
+                return_value = InMemoryMWSSTransformer.transform({question_id: ""})
                 self.assertEqual(2, CSFormatter.pck_value(question_id, return_value[question_id]))
 
     def test_pay_frequency_as_bool(self):
@@ -676,13 +676,13 @@ class TransformTests(unittest.TestCase):
         for question_id, return_value in pay_frequencies.items():
             question_id = str(question_id)
             with self.subTest(question_id=question_id, return_value=return_value):
-                return_value = MWSSTransformer.transform({question_id: return_value})
+                return_value = InMemoryMWSSTransformer.transform({question_id: return_value})
                 self.assertIs(True, return_value[question_id])
                 self.assertEqual(1, CSFormatter.pck_value(question_id, return_value[question_id]))
-                return_value = MWSSTransformer.transform({question_id: ""})
+                return_value = InMemoryMWSSTransformer.transform({question_id: ""})
                 self.assertIs(False, return_value[question_id])
                 self.assertEqual(2, CSFormatter.pck_value(question_id, return_value[question_id]))
-                return_value = MWSSTransformer.transform({})
+                return_value = InMemoryMWSSTransformer.transform({})
                 self.assertIs(False, return_value[question_id])
                 self.assertEqual(2, CSFormatter.pck_value(question_id, return_value[question_id]))
 
@@ -695,10 +695,10 @@ class TransformTests(unittest.TestCase):
         for question_range in dates_ingested_as_bools:
             question_id = str(question_range)
             with self.subTest(question_range=question_range, question_id=question_id):
-                return_value = MWSSTransformer.transform({question_id: "23/4/2017"})
+                return_value = InMemoryMWSSTransformer.transform({question_id: "23/4/2017"})
                 self.assertEqual([datetime.date(2017, 4, 23)], return_value[question_id])
                 self.assertEqual(1, CSFormatter.pck_value(question_id, return_value[question_id]))
-                return_value = MWSSTransformer.transform({question_id: ""})
+                return_value = InMemoryMWSSTransformer.transform({question_id: ""})
                 self.assertEqual([], return_value[question_id])
                 self.assertEqual(2, CSFormatter.pck_value(question_id, return_value[question_id]))
 
@@ -709,11 +709,11 @@ class TransformTests(unittest.TestCase):
         """
         for question_id in ("190w4", "191w4", "192w4", "193w4", "194w4", "195w4", "196w4", "197w4"):
             with self.subTest(question_id=question_id):
-                return_value = MWSSTransformer.transform({question_id: ""})
+                return_value = InMemoryMWSSTransformer.transform({question_id: ""})
                 self.assertIs(False, return_value["190"])
-                return_value = MWSSTransformer.transform({question_id: "No"})
+                return_value = InMemoryMWSSTransformer.transform({question_id: "No"})
                 self.assertIs(False, return_value["190"])
-                return_value = MWSSTransformer.transform({question_id: "Yes"})
+                return_value = InMemoryMWSSTransformer.transform({question_id: "Yes"})
                 self.assertIs(True, return_value["190"])
 
     def test_aggregate_fourweekly_increase(self):
@@ -721,7 +721,7 @@ class TransformTests(unittest.TestCase):
         Increase in fourweekly pay (200w4); aggregated with monthly increase (200).
 
         """
-        return_value = MWSSTransformer.transform({"200w4": "25"})
+        return_value = InMemoryMWSSTransformer.transform({"200w4": "25"})
         self.assertIs(True, return_value["200"])
 
     def test_aggregate_fourweekly_increase_date(self):
@@ -729,7 +729,7 @@ class TransformTests(unittest.TestCase):
         Date of increase in fourweekly pay (210w4); aggregated with monthly (210).
 
         """
-        return_value = MWSSTransformer.transform({"210w4": "2017-01-11"})
+        return_value = InMemoryMWSSTransformer.transform({"210w4": "2017-01-11"})
         self.assertEqual(1, len(return_value["210"]))
         self.assertEqual(11, return_value["210"][0].day)
         self.assertEqual(1, return_value["210"][0].month)
@@ -740,7 +740,7 @@ class TransformTests(unittest.TestCase):
         aggregated with monthly increase (220).
 
         """
-        return_value = MWSSTransformer.transform({"220w4": "25"})
+        return_value = InMemoryMWSSTransformer.transform({"220w4": "25"})
         self.assertIs(True, return_value["220"])
 
     def test_aggregate_monthly_changes(self):
@@ -750,11 +750,11 @@ class TransformTests(unittest.TestCase):
         """
         for question_id in ("190m", "191m", "192m", "193m", "194m", "195m", "196m", "197m"):
             with self.subTest(question_id=question_id):
-                return_value = MWSSTransformer.transform({question_id: ""})
+                return_value = InMemoryMWSSTransformer.transform({question_id: ""})
                 self.assertFalse(return_value["190"])
-                return_value = MWSSTransformer.transform({question_id: "No"})
+                return_value = InMemoryMWSSTransformer.transform({question_id: "No"})
                 self.assertFalse(return_value["190"])
-                return_value = MWSSTransformer.transform({question_id: "Yes"})
+                return_value = InMemoryMWSSTransformer.transform({question_id: "Yes"})
                 self.assertTrue(return_value["190"])
 
     def test_aggregate_weekly_comments(self):
@@ -764,7 +764,7 @@ class TransformTests(unittest.TestCase):
         """
         for question_id in ("300w", "300f", "300m", "300w4", "300w5"):
             with self.subTest(question_id=question_id):
-                return_value = MWSSTransformer.transform({question_id: "This is a comment"})
+                return_value = InMemoryMWSSTransformer.transform({question_id: "This is a comment"})
                 self.assertEqual(True, return_value["300"])
                 self.assertEqual(4, len(return_value))
 
@@ -775,7 +775,7 @@ class TransformTests(unittest.TestCase):
         """
         for question_id in ("140m", "140w4", "140w5"):
             with self.subTest(question_id=question_id):
-                return_value = MWSSTransformer.transform({question_id: "25"})
+                return_value = InMemoryMWSSTransformer.transform({question_id: "25"})
                 self.assertEqual(25, return_value["140"])
                 self.assertEqual(4, len(return_value))
 
@@ -786,11 +786,11 @@ class TransformTests(unittest.TestCase):
         """
         for question_id in ("190w5", "191w5", "192w5", "193w5", "194w5", "195w5", "196w5", "197w5"):
             with self.subTest(question_id=question_id):
-                return_value = MWSSTransformer.transform({question_id: ""})
+                return_value = InMemoryMWSSTransformer.transform({question_id: ""})
                 self.assertFalse(return_value["190"])
-                return_value = MWSSTransformer.transform({question_id: "No"})
+                return_value = InMemoryMWSSTransformer.transform({question_id: "No"})
                 self.assertFalse(return_value["190"])
-                return_value = MWSSTransformer.transform({question_id: "Yes"})
+                return_value = InMemoryMWSSTransformer.transform({question_id: "Yes"})
                 self.assertTrue(return_value["190"])
 
     def test_aggregate_fiveweekly_increase(self):
@@ -798,7 +798,7 @@ class TransformTests(unittest.TestCase):
         Increase in fiveweekly pay (200w5); aggregated with monthly increase (200).
 
         """
-        return_value = MWSSTransformer.transform({"200w5": "25"})
+        return_value = InMemoryMWSSTransformer.transform({"200w5": "25"})
         self.assertIs(True, return_value["200"])
 
     def test_aggregate_fiveweekly_increase_date(self):
@@ -806,7 +806,7 @@ class TransformTests(unittest.TestCase):
         Date of increase in fiveweekly pay (210w5); aggregated with monthly (210).
 
         """
-        return_value = MWSSTransformer.transform({"210w5": "2017-01-11"})
+        return_value = InMemoryMWSSTransformer.transform({"210w5": "2017-01-11"})
         self.assertEqual(1, len(return_value["210"]))
         self.assertEqual(11, return_value["210"][0].day)
         self.assertEqual(1, return_value["210"][0].month)
@@ -817,7 +817,7 @@ class TransformTests(unittest.TestCase):
         aggregated with monthly increase (220).
 
         """
-        return_value = MWSSTransformer.transform({"220w5": "25"})
+        return_value = InMemoryMWSSTransformer.transform({"220w5": "25"})
         self.assertIs(True, return_value["220"])
 
 
@@ -862,7 +862,7 @@ class BatchFileTests(unittest.TestCase):
                 "ru_ref": "12345678901A"
             }
         }, batch_nr=0, seq_nr=0)
-        return_value = Survey.load_survey(ids, MWSSTransformer.pattern)
+        return_value = Survey.load_survey(ids, InMemoryMWSSTransformer.pattern)
         self.assertIsNotNone(return_value)
 
     def test_load_survey_miss(self):
@@ -882,7 +882,7 @@ class BatchFileTests(unittest.TestCase):
                 "ru_ref": "12345678901A"
             }
         }, batch_nr=0, seq_nr=0)
-        return_value = Survey.load_survey(ids, MWSSTransformer.pattern)
+        return_value = Survey.load_survey(ids, InMemoryMWSSTransformer.pattern)
         self.assertIsNone(return_value)
 
     def test_pck_lines(self):
@@ -985,7 +985,7 @@ class BatchFileTests(unittest.TestCase):
         reply["collection"]["period"] = "200911"
         reply["metadata"]["ru_ref"] = "49900001225C"
         ids = Survey.identifiers(reply, batch_nr=3866, seq_nr=0)
-        data = MWSSTransformer.transform(
+        data = InMemoryMWSSTransformer.transform(
             OrderedDict([
                 ("40", 2),
                 ("140", 124),
@@ -1014,39 +1014,10 @@ class PackingTests(unittest.TestCase):
         """
         self.assertRaises(
             UserWarning,
-            MWSSTransformer,
+            InMemoryMWSSTransformer,
             {},
             seq_nr=0
         )
-
-    def test_tempdir(self):
-        """
-        Test if temp directory contains response
-
-        """
-        response = {
-            "survey_id": "134",
-            "tx_id": "27923934-62de-475c-bc01-433c09fd38b8",
-            "collection": {
-                "instrument_id": "0005",
-                "period": "201704"
-            },
-            "metadata": {
-                "user_id": "123456789",
-                "ru_ref": "12345678901A"
-            },
-            "submitted_at": "2017-04-12T13:01:26Z",
-            "data": {}
-        }
-        transformer = MWSSTransformer(response, 0)
-        self.assertEqual(
-            "REC1204_0000.DAT",
-            CSFormatter.idbr_name(
-                **transformer.ids._asdict()
-            )
-        )
-
-        transformer.pack(img_seq=itertools.count(), tmp=None)
 
     def test_image_sequence_number(self):
         """
@@ -1069,11 +1040,10 @@ class PackingTests(unittest.TestCase):
         }
         seq_nr = 12345
 
-        transformer = MWSSTransformer(response, seq_nr=seq_nr)
-        zf = zipfile.ZipFile(
-            transformer.pack(img_seq=itertools.count(), tmp=None)
-        )
-        funct = next(i for i in zf.namelist() if os.path.splitext(i)[1] == ".csv")
+        transformer = InMemoryMWSSTransformer(response, seq_nr=seq_nr)
+        transformer.create_zip(img_seq=itertools.count())
+
+        funct = next(i for i in transformer.image_transformer.zip.get_filenames() if os.path.splitext(i)[1] == ".csv")
         bits = os.path.splitext(funct)[0].split("_")
 
         self.assertEqual(seq_nr, int(bits[-1]))

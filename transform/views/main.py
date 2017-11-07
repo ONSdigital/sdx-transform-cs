@@ -11,7 +11,7 @@ from transform import app
 from transform import settings
 from transform.transformers import InMemoryCSTransformer
 from transform.transformers import InMemoryImageTransformer
-from transform.transformers import MWSSTransformer
+from transform.transformers import InMemoryMWSSTransformer
 from transform.transformers import PCKTransformer, PDFTransformer
 
 env = Environment(loader=PackageLoader('transform', 'templates'))
@@ -190,28 +190,18 @@ def common_software(sequence_no=1000, batch_number=0):
     survey_id = survey_response.get("survey_id")
     try:
         if survey_id == "134":
-            tfr = MWSSTransformer(survey_response, sequence_no, log=logger)
-            zipfile = tfr.pack()
-            logger.info("CS:SUCCESS")
-
-            return send_file(zipfile, mimetype='application/zip', add_etags=False)
+            transformer = InMemoryMWSSTransformer(survey_response, sequence_no, log=logger)
         else:
-            ctransformer = InMemoryCSTransformer(logger, survey, survey_response, batch_number, sequence_no)
-            try:
-                ctransformer.create_zip()
-            except IOError as e:
-                return client_error("CS:Could not create zip buffer: {0}".format(repr(e)))
+            transformer = InMemoryCSTransformer(logger, survey, survey_response, batch_number, sequence_no)
 
-            logger.info("CS:SUCCESS")
-
-            return send_file(ctransformer.itransformer.zip.in_memory_zip, mimetype='application/zip', add_etags=False)
-
+        transformer.create_zip()
     except Exception as e:
         tx_id = survey_response.get("tx_id")
         logger.exception("CS:could not create files for survey", survey_id=survey_id, tx_id=tx_id)
         return server_error(e)
 
-
+    logger.info("CS:SUCCESS")
+    return send_file(transformer.itransformer.zip.in_memory_zip, mimetype='application/zip', add_etags=False)
 
 
 @app.route('/healthcheck', methods=['GET'])

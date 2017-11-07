@@ -1,11 +1,11 @@
-import itertools
-import re
 from collections import OrderedDict
 from decimal import Decimal, ROUND_DOWN, ROUND_HALF_UP
 from functools import partial
+import itertools
+import re
 
 from transform.transformers.processor import Processor
-from transform.transformers.transformer import Transformer
+from transform.transformers.InMemoryTransformer import InMemoryTransformer
 
 __doc__ = """Transform MWSS survey data into formats required downstream.
 
@@ -18,7 +18,7 @@ python -m transform.transformers.MWSSTransformer \
 """
 
 
-class MWSSTransformer(Transformer):
+class InMemoryMWSSTransformer(InMemoryTransformer):
     """Perform the transforms and formatting for the MWSS survey.
 
     Weights = A sequence of 2-tuples giving the weight value for each question in the group.
@@ -111,6 +111,6 @@ class MWSSTransformer(Transformer):
         mandatory = set([Decimal("130"), Decimal("131"), Decimal("132")])
         return OrderedDict(
             (question_id, funct(question_id, data, default, survey))
-            for question_id, (default, funct) in MWSSTransformer.ops().items()
+            for question_id, (default, funct) in InMemoryMWSSTransformer.ops().items()
             if Decimal(question_id) in supplied.union(mandatory)
         )

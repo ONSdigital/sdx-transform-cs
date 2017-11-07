@@ -3,20 +3,16 @@
 
 import datetime
 import glob
-import itertools
-import json
-import logging
 import os.path
 import shutil
 import subprocess
-import sys
 import zipfile
 from io import BytesIO
 
 import dateutil.parser
 
 from transform import settings
-from transform.transformers.ImageTransformerBase import ImageTransformerBase, parser
+from transform.transformers.ImageTransformerBase import ImageTransformerBase
 from transform.views.image_filters import get_env, format_date
 from .PDFTransformer import PDFTransformer
 
@@ -139,30 +135,3 @@ class ImageTransformer(ImageTransformerBase):
         Remove all temporary files, by removing top level dir
         '''
         shutil.rmtree(locn)
-
-
-def main(args):
-    log = logging.getLogger("ImageTransformer")
-    fp = os.path.expanduser(os.path.abspath(args.survey))
-    with open(fp, "r") as f_obj:
-        survey = json.load(f_obj)
-
-    data = json.load(sys.stdin)
-    tx = ImageTransformer(log, survey, data)
-    path = tx.create_pdf(survey, data)
-    images = list(tx.create_image_sequence(path, nmbr_seq=itertools.count()))
-    index = tx.create_image_index(images)
-    zipfile = tx.create_zip(images, index)
-    sys.stdout.write(zipfile)
-    return 0
-
-
-def run():
-    p = parser()
-    args = p.parse_args()
-    rv = main(args)
-    sys.exit(rv)
-
-
-if __name__ == "__main__":
-    run()

@@ -14,7 +14,7 @@ from io import BytesIO
 import dateutil.parser
 
 from transform import settings
-from transform.transformers.ImageTransformerBase import ImageTransformerBase, parser
+from transform.transformers.ImageTransformerBase import ImageTransformerBase
 from transform.transformers.InMemoryZip import InMemoryZip
 from transform.views.image_filters import get_env, format_date
 from .PDFTransformer import PDFTransformer
@@ -29,7 +29,7 @@ class InMemoryImageTransformer(ImageTransformerBase):
     """
 
     def __init__(self, logger, survey, response, current_time=datetime.datetime.utcnow(), sequence_no=1000,
-                 base_image_path = ""):
+                 base_image_path=""):
         self._page_count = -1
         self._current_time = current_time
         self.index = None
@@ -173,27 +173,3 @@ class InMemoryIndex:
         submission_date_str = format_date(submission_date, 'short')
         return "EDC_{}_{}_{:04d}.csv".format(response['survey_id'], submission_date_str, sequence_no)
 
-
-def main(args):
-    log = logging.getLogger("InMemoryImageTransformer")
-    fp = os.path.expanduser(os.path.abspath(args.survey))
-    with open(fp, "r") as f_obj:
-        survey = json.load(f_obj)
-
-    data = json.load(sys.stdin)
-    tx = InMemoryImageTransformer(log, survey, data)
-    zipfile = tx.get_zip(num_sequence=itertools.count())
-
-    sys.stdout.write(zipfile.in_memory_zip.read())
-    return 0
-
-
-def run():
-    p = parser()
-    args = p.parse_args()
-    rv = main(args)
-    sys.exit(rv)
-
-
-if __name__ == "__main__":
-    run()

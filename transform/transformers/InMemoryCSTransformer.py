@@ -40,8 +40,6 @@ class InMemoryCSTransformer(object):
         self.itransformer.zip.append(os.path.join(self.receipt_path, self._idbr_name), self._idbr.read())
         self.itransformer.zip.rewind()
         self.itransformer.get_zip()
-
-
         self.itransformer.zip.rewind()
 
     def _setup_logger(self):
