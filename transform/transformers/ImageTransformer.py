@@ -54,7 +54,6 @@ class ImageTransformer(object):
     def get_image_name(i):
         return "S{0:09}.JPG".format(i)
 
-
     def _create_pdf(self, survey, response):
         """Create a pdf which will be used as the basis for images """
         pdf_transformer = PDFTransformer(survey, response)

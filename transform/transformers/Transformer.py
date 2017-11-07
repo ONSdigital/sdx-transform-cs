@@ -64,7 +64,7 @@ class Transformer:
 
         self.survey = Survey.load_survey(self.ids, self.pattern)
         self.image_transformer = ImageTransformer(self.log, self.survey, self.response,
-                                                  sequence_no= self.ids.seq_nr, base_image_path=self.image_path)
+                                                  sequence_no=self.ids.seq_nr, base_image_path=self.image_path)
 
     @classmethod
     def ops(cls):
