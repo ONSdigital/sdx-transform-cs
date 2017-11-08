@@ -202,7 +202,6 @@ def common_software(sequence_no=1000, batch_number=0):
 
     logger.info("CS:SUCCESS")
 
-    # reach into transformer so as to minimise use of large objects on the stack
     return send_file(transformer.image_transformer.zip.in_memory_zip, mimetype='application/zip', add_etags=False)
 
 

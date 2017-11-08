@@ -87,7 +87,7 @@ class ImageTransformer(object):
     @staticmethod
     def _extract_pdf_images(pdf_stream):
         """
-        Extract pdf pages as mpps labelled as jpegs
+        Extract pdf pages as ppms labelled as jpegs
         ppm format consists of a header followed by image bytes . In this feed we may have multiple
         images in one stream . These appear without a delimiter between images. So the only delimiter we
         have is the header .

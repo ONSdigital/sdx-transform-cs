@@ -10,9 +10,9 @@ env = Environment(loader=PackageLoader('transform', 'templates'))
 
 class CSTransformer(object):
 
-    receipt_path = os.getenv("SDX_FTP_RECEIPT_PATH")
-    data_path = os.getenv("SDX_FTP_DATA_PATH")
-    image_path = os.getenv("SDX_FTP_IMAGE_PATH")
+    receipt_path = os.getenv("SDX_FTP_RECEIPT_PATH", "EDC_QReceipts")
+    data_path = os.getenv("SDX_FTP_DATA_PATH", "EDC_QData")
+    image_path = os.getenv("SDX_FTP_IMAGE_PATH", "EDC_QImages")
 
     def __init__(self, logger, survey, response_data, batch_number=False, sequence_no=1000):
         self._logger = logger
