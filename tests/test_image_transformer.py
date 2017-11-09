@@ -68,7 +68,7 @@ class ImageTransformTests(unittest.TestCase):
             data = fb.read()
         reply = json.loads(data)
 
-        with open("./tests/data/134.0005.json", encoding="utf-8") as fb:
+        with open("./tests/data/134.0005.json") as fb:
             survey_data = fb.read()
         survey = json.loads(survey_data)
 
