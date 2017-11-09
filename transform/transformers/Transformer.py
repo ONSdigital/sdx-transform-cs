@@ -3,6 +3,7 @@ from collections import OrderedDict
 import os.path
 from structlog import wrap_logger
 
+from transform.settings import SDX_FTP_IMAGE_PATH, SDX_FTP_DATA_PATH, SDX_FTP_RECEIPT_PATH
 from transform.transformers.CSFormatter import CSFormatter
 from transform.transformers.ImageTransformer import ImageTransformer
 from transform.transformers.survey import Survey
@@ -42,7 +43,6 @@ class Transformer:
 
     receipt_path = os.getenv("SDX_FTP_RECEIPT_PATH", "EDC_QReceipts")
     data_path = os.getenv("SDX_FTP_DATA_PATH", "EDC_QData")
-    image_path = os.getenv("SDX_FTP_IMAGE_PATH", "EDC_QImages")
 
     def __init__(self, response, seq_nr=0, log=None):
         """Create a transformer object to process a survey response."""
@@ -64,7 +64,7 @@ class Transformer:
 
         self.survey = Survey.load_survey(self.ids, self.pattern)
         self.image_transformer = ImageTransformer(self.log, self.survey, self.response,
-                                                  sequence_no=self.ids.seq_nr, base_image_path=self.image_path)
+                                                  sequence_no=self.ids.seq_nr, base_image_path=SDX_FTP_IMAGE_PATH)
 
     @classmethod
     def ops(cls):
@@ -100,8 +100,8 @@ class Transformer:
         idbr_name = CSFormatter.idbr_name(**self.ids._asdict())
         idbr = CSFormatter.get_idbr(**self.ids._asdict())
 
-        self.image_transformer.zip.append(os.path.join(self.data_path, pck_name), pck)
-        self.image_transformer.zip.append(os.path.join(self.receipt_path, idbr_name), idbr)
+        self.image_transformer.zip.append(os.path.join(SDX_FTP_DATA_PATH, pck_name), pck)
+        self.image_transformer.zip.append(os.path.join(SDX_FTP_RECEIPT_PATH, idbr_name), idbr)
 
         self.image_transformer.get_zipped_images(img_seq)
 
