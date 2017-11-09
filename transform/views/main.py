@@ -195,6 +195,7 @@ def common_software(sequence_no=1000, batch_number=0):
             transformer = CSTransformer(logger, survey, survey_response, batch_number, sequence_no)
 
         transformer.create_zip()
+
     except Exception as e:
         tx_id = survey_response.get("tx_id")
         logger.exception("CS:could not create files for survey", survey_id=survey_id, tx_id=tx_id)
@@ -202,7 +203,7 @@ def common_software(sequence_no=1000, batch_number=0):
 
     logger.info("CS:SUCCESS")
 
-    return send_file(transformer.image_transformer.zip.in_memory_zip, mimetype='application/zip', add_etags=False)
+    return send_file(transformer.get_zip(), mimetype='application/zip', add_etags=False)
 
 
 @app.route('/healthcheck', methods=['GET'])

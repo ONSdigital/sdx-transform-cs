@@ -16,9 +16,7 @@ from transform.transformers.Transformer import Transformer
 
 class MockTransformer(Transformer):
     """An example of how to build a transformer.
-
     Taken from the MWSS survey.
-
     """
 
     defn = [
@@ -528,7 +526,7 @@ class BatchFileTests(unittest.TestCase):
         ], rv)
 
 
-class PackingTests(unittest.TestCase):
+class ZipCreationTests(unittest.TestCase):
 
     def test_mwss_create_zip(self):
         with open("tests/data/eq-mwss.json", "r") as fb:

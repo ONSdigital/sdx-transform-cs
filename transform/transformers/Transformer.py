@@ -40,9 +40,9 @@ class Transformer:
     #: The path is relative to the location specified by :py:const:`package` above.
     pattern = "../surveys/{survey_id}.{inst_id}.json"
 
-    receipt_path = os.getenv("SDX_FTP_RECEIPT_PATH")
-    data_path = os.getenv("SDX_FTP_DATA_PATH")
-    image_path = os.getenv("SDX_FTP_IMAGE_PATH")
+    receipt_path = os.getenv("SDX_FTP_RECEIPT_PATH", "EDC_QReceipts")
+    data_path = os.getenv("SDX_FTP_DATA_PATH", "EDC_QData")
+    image_path = os.getenv("SDX_FTP_IMAGE_PATH", "EDC_QImages")
 
     def __init__(self, response, seq_nr=0, log=None):
         """Create a transformer object to process a survey response."""
@@ -104,3 +104,7 @@ class Transformer:
         self.image_transformer.zip.append(os.path.join(self.receipt_path, idbr_name), idbr)
 
         self.image_transformer.get_zipped_images(img_seq)
+
+    def get_zip(self):
+        self.image_transformer.zip.rewind()
+        return self.image_transformer.zip.in_memory_zip

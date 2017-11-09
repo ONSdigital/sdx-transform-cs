@@ -30,14 +30,19 @@ class CSTransformer(object):
         """
         Create a in memory zip
         """
-        # add pck , idbr then images and index
+        # add pck , idbr then images and index_file
         pck_name = self._create_pck()
         idbr_name = self._create_idbr()
+
         self.image_transformer.zip.append(os.path.join(self.data_path, pck_name), self._pck.read())
         self.image_transformer.zip.append(os.path.join(self.receipt_path, idbr_name), self._idbr.read())
 
         self.image_transformer.get_zipped_images()
         self.image_transformer.zip.rewind()
+
+    def get_zip(self):
+        self.image_transformer.zip.rewind()
+        return self.image_transformer.zip.in_memory_zip
 
     def _setup_logger(self):
         if self._survey:
@@ -57,11 +62,14 @@ class CSTransformer(object):
         cs_form_id = pck_transformer.get_cs_form_id()
         sub_date_str = pck_transformer.get_subdate_str()
 
-        template_output = template.render(response=self._response, submission_date=sub_date_str,
-                                          batch_number=self._batch_number, form_id=cs_form_id,
+        template_output = template.render(response=self._response,
+                                          submission_date=sub_date_str,
+                                          batch_number=self._batch_number,
+                                          form_id=cs_form_id,
                                           answers=answers)
         self._pck.write(template_output)
         self._pck.seek(0)
+
         pck_name = "%s_%04d" % (self._survey['survey_id'], self._sequence_no)
         return pck_name
 
