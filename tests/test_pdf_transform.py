@@ -1,7 +1,8 @@
-import unittest
 import json
-from transform.views.test_views import test_message
+import unittest
+
 from transform.transformers import PDFTransformer
+from transform.views.test_views import test_message
 
 
 class TestPDFTransformer(unittest.TestCase):

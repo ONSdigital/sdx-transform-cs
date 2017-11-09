@@ -1,9 +1,10 @@
 import logging
-from collections import OrderedDict
 import os.path
+
+from collections import OrderedDict
 from structlog import wrap_logger
 
-from transform.settings import SDX_FTP_IMAGE_PATH, SDX_FTP_DATA_PATH, SDX_FTP_RECEIPT_PATH
+from transform.settings import SDX_FTP_DATA_PATH, SDX_FTP_IMAGE_PATH, SDX_FTP_RECEIPT_PATH
 from transform.transformers.CSFormatter import CSFormatter
 from transform.transformers.ImageTransformer import ImageTransformer
 from transform.transformers.survey import Survey

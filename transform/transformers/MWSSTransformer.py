@@ -1,6 +1,7 @@
 from collections import OrderedDict
 from decimal import Decimal, ROUND_DOWN, ROUND_HALF_UP
 from functools import partial
+
 import itertools
 import re
 

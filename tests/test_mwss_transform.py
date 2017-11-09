@@ -8,9 +8,9 @@ import unittest
 import pkg_resources
 
 from transform.transformers.CSFormatter import CSFormatter
+from transform.transformers.MWSSTransformer import MWSSTransformer
 from transform.transformers.processor import Processor
 from transform.transformers.survey import Survey
-from transform.transformers.MWSSTransformer import MWSSTransformer
 
 
 class SurveyTests(unittest.TestCase):

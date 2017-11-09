@@ -1,8 +1,9 @@
+import io
+import unittest
+import zipfile
+
 from transform import app
 from transform.views.test_views import test_message
-import unittest
-import io
-import zipfile
 from unittest.mock import patch
 
 

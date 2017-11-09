@@ -1,9 +1,10 @@
-import unittest
-from transform.transformers.IndexFile import IndexFile
 import json
 import logging
-from structlog import wrap_logger
 import time
+import unittest
+
+from structlog import wrap_logger
+from transform.transformers.IndexFile import IndexFile
 
 
 class IndexFileTests(unittest.TestCase):

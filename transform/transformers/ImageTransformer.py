@@ -1,8 +1,8 @@
 import datetime
 import os.path
+import requests
 import subprocess
 
-import requests
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.exceptions import MaxRetryError
 from requests.packages.urllib3.util.retry import Retry

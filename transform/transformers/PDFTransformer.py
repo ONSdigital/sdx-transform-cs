@@ -1,8 +1,8 @@
-from io import BytesIO
+import arrow
 import os
 import uuid
 
-import arrow
+from io import BytesIO
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle

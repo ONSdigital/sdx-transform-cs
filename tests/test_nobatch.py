@@ -1,6 +1,7 @@
-from transform import app
-from tests.test_transform import get_file_as_string, get_test_scenarios, get_expected_output
 import unittest
+
+from transform import app
+from tests.test_transform import get_expected_output, get_file_as_string, get_test_scenarios
 
 
 class TestNoBatchTransformService(unittest.TestCase):

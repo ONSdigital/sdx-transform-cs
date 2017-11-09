@@ -1,17 +1,16 @@
 import csv
 from datetime import datetime
+import dateutil
 import glob
 import io
 import json
 import os
 import unittest
-from unittest.mock import patch
 import zipfile
-
-import dateutil
 
 from transform import app
 from transform.views.image_filters import format_date
+from unittest.mock import patch
 
 
 def get_file_as_string(filename):
