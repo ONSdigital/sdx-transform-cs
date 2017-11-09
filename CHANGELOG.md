@@ -1,4 +1,6 @@
 ### Unreleased
+
+### 2.12.0 2017-11-09
   - Fix incorrect index date time
 
 ### 2.11.0 2017-11-01
