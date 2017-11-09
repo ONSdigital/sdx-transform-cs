@@ -9,16 +9,14 @@ from transform.views.logger_config import logger_initial_config
 
 from transform import app
 from transform import settings
-from transform.transformers import CSTransformer
-from transform.transformers import ImageTransformer
-from transform.transformers import MWSSTransformer
-from transform.transformers import PCKTransformer, PDFTransformer
+from transform.transformers import CSTransformer, ImageTransformer, MWSSTransformer, PCKTransformer, PDFTransformer
 
 env = Environment(loader=PackageLoader('transform', 'templates'))
 
 logger_initial_config(service_name='sdx-transform-cs',
                       log_level=settings.LOGGING_LEVEL)
 logger = wrap_logger(logging.getLogger(__name__))
+
 
 @app.errorhandler(400)
 def errorhandler_400(e):

@@ -4,7 +4,6 @@ import itertools
 import json
 import os.path
 import unittest
-import zipfile
 
 import pkg_resources
 

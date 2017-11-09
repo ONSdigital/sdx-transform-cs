@@ -141,4 +141,3 @@ class PDFTransformer(object):
     @staticmethod
     def get_localised_date(date_to_transform, timezone='Europe/London'):
         return arrow.get(date_to_transform).to(timezone).format("DD MMMM YYYY HH:mm:ss")
-

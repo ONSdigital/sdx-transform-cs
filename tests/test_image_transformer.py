@@ -42,6 +42,3 @@ class ImageTransformTests(unittest.TestCase):
         img_tfr2 = ImageTransformer(self.log, self.survey, self.reply)
 
         self.assertNotEqual(img_tfr1.current_time, img_tfr2.current_time)
-
-
-

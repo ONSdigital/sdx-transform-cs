@@ -12,7 +12,7 @@ class InMemoryZipTests(unittest.TestCase):
 
     def test_get_filenames_returns_correct_filenames_in_correct_order(self):
         sut = InMemoryZip()
-        expected_files=[]
+        expected_files = []
         file_count = 10
         for i in range(file_count):
             filename = "file_{0}".format(i)
@@ -48,7 +48,3 @@ class InMemoryZipTests(unittest.TestCase):
         file_content = z.open(file_name).read().decode('utf-8')
 
         self.assertEqual(file_content, self.test_data)
-
-
-
-

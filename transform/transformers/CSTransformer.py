@@ -41,6 +41,7 @@ class CSTransformer(object):
         self.image_transformer.zip.rewind()
 
     def get_zip(self):
+        """Get access to the in memory zip """
         self.image_transformer.zip.rewind()
         return self.image_transformer.zip.in_memory_zip
 

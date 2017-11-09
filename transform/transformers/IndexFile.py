@@ -5,7 +5,6 @@ from transform import settings
 from transform.views.image_filters import get_env, format_date
 
 
-
 class IndexFile:
     """Class for creating in memory index_file file using StringIO."""
 
