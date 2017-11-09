@@ -1,4 +1,5 @@
 ### Unreleased
+  - Fix incorrect index date time
 
 ### 2.11.0 2017-11-01
   - Removed unchanging configurable variables.
