@@ -163,7 +163,9 @@ def render_images():
         zipfile = transformer.get_zipped_images()
     except IOError as e:
         return client_error("IMAGES:Could not create zip buffer: {0}".format(repr(e)))
-
+    except Exception as e:
+        logger.exception("IMAGES: Error {0}".format(repr(e)))
+        return server_error(e)
     logger.info("IMAGES:SUCCESS")
 
     return send_file(zipfile.in_memory_zip, mimetype='application/zip', add_etags=False)

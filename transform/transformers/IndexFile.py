@@ -7,7 +7,7 @@ from transform.views.image_filters import get_env, format_date
 
 
 class IndexFile:
-    """Class for creating in memory index_file file using StringIO."""
+    """Class for creating in memory index_file file using BytesIO."""
 
     def __init__(self, logger, response_data, image_count, image_names,
                  current_time=None, sequence_no=1000):

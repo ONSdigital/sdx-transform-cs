@@ -2,7 +2,7 @@ from io import BytesIO
 from zipfile import ZIP_DEFLATED, ZipFile
 
 
-class InMemoryZip(object):
+class InMemoryZip:
     """Class for creating in memory Zip objects using BytesIO."""
     def __init__(self):
         self.in_memory_zip = BytesIO()

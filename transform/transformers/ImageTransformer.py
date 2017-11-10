@@ -21,7 +21,7 @@ session.mount('http://', HTTPAdapter(max_retries=retries))
 session.mount('https://', HTTPAdapter(max_retries=retries))
 
 
-class ImageTransformer(object):
+class ImageTransformer:
     """Transforms a survey and _response into a zip file
     """
 

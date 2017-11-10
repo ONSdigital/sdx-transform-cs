@@ -45,7 +45,7 @@ style_answer.spaceAfter = 20
 MAX_ANSWER_CHARACTERS_PER_LINE = 35
 
 
-class PDFTransformer(object):
+class PDFTransformer:
 
     def __init__(self, survey, response_data):
         '''
@@ -69,17 +69,6 @@ class PDFTransformer(object):
         buffer.close()
 
         return pdf, doc.page
-
-    def render_to_file(self):
-        rndm_name = uuid.uuid4()
-
-        os.makedirs("./tmp/%s" % rndm_name)
-
-        tmp_name = "./tmp/%s/%s.pdf" % (rndm_name, rndm_name)
-        doc = SimpleDocTemplate(tmp_name, pagesize=A4)
-        doc.build(self.get_elements())
-
-        return os.path.realpath(tmp_name)
 
     def get_elements(self):
 
