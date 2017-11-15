@@ -1,6 +1,9 @@
 ### Unreleased
   - Move transformers to be memory based instead of file based
 
+### 2.12.0 2017-11-09
+  - Fix incorrect index date time
+
 ### 2.11.0 2017-11-01
   - Removed unchanging configurable variables.
   - Add all service configurations to config file
