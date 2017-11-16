@@ -1,7 +1,7 @@
 import unittest
 import zipfile
 
-from transform.transformers.InMemoryZip import InMemoryZip
+from transform.transformers.in_memory_zip import InMemoryZip
 
 
 class InMemoryZipTests(unittest.TestCase):

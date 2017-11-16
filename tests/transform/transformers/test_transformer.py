@@ -8,10 +8,10 @@ import unittest
 from collections import OrderedDict
 from functools import partial
 
-from transform.transformers.CSFormatter import CSFormatter
+from transform.transformers.cs_formatter import CSFormatter
 from transform.transformers.processor import Processor
 from transform.transformers.survey import Survey
-from transform.transformers.Transformer import Transformer
+from transform.transformers.transformer import Transformer
 
 
 class MockTransformer(Transformer):

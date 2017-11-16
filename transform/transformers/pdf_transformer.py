@@ -1,6 +1,4 @@
 import arrow
-import os
-import uuid
 
 from io import BytesIO
 from reportlab.lib import colors

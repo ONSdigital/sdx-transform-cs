@@ -7,7 +7,7 @@ from structlog import wrap_logger
 
 from transform import app
 from transform.transformers import PDFTransformer, CSTransformer
-from transform.transformers.ImageTransformer import ImageTransformer
+from transform.transformers.image_transformer import ImageTransformer
 
 logger = wrap_logger(logging.getLogger(__name__))
 

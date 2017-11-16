@@ -4,7 +4,7 @@ import time
 import unittest
 
 from structlog import wrap_logger
-from transform.transformers.IndexFile import IndexFile
+from transform.transformers.index_file import IndexFile
 
 
 class IndexFileTests(unittest.TestCase):

@@ -2,8 +2,8 @@ import dateutil.parser
 from io import StringIO
 import os.path
 from jinja2 import Environment, PackageLoader
-from .ImageTransformer import ImageTransformer
-from .PCKTransformer import PCKTransformer
+from .image_transformer import ImageTransformer
+from .pck_transformer import PCKTransformer
 from transform.settings import SDX_FTP_IMAGE_PATH, SDX_FTP_DATA_PATH, SDX_FTP_RECEIPT_PATH
 
 env = Environment(loader=PackageLoader('transform', 'templates'))

@@ -7,8 +7,8 @@ import unittest
 
 import pkg_resources
 
-from transform.transformers.CSFormatter import CSFormatter
-from transform.transformers.MWSSTransformer import MWSSTransformer
+from transform.transformers.cs_formatter import CSFormatter
+from transform.transformers.mwss_transformer import MWSSTransformer
 from transform.transformers.processor import Processor
 from transform.transformers.survey import Survey
 

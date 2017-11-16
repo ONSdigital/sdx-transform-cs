@@ -8,9 +8,9 @@ from requests.packages.urllib3.exceptions import MaxRetryError
 from requests.packages.urllib3.util.retry import Retry
 
 from transform import settings
-from transform.transformers.InMemoryZip import InMemoryZip
-from transform.transformers.IndexFile import IndexFile
-from .PDFTransformer import PDFTransformer
+from transform.transformers.in_memory_zip import InMemoryZip
+from transform.transformers.index_file import IndexFile
+from .pdf_transformer import PDFTransformer
 
 # Configure the number of retries attempted before failing call
 session = requests.Session()

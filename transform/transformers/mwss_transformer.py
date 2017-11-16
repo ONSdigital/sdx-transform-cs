@@ -6,7 +6,7 @@ import itertools
 import re
 
 from transform.transformers.processor import Processor
-from transform.transformers.Transformer import Transformer
+from transform.transformers.transformer import Transformer
 
 __doc__ = """Transform MWSS survey data into formats required downstream.
 
