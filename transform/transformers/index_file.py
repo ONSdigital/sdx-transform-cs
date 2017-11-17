@@ -45,7 +45,9 @@ class IndexFile:
         )
 
         msg = "Adding image to in_memory_index"
-        [self.logger.info(msg, file=image_name) for image_name in image_names]
+        for image_name in image_names:
+            self.logger.info(msg, file=image_name)
+
         self.in_memory_index.write(template_output.encode())
         self.rewind()
 
