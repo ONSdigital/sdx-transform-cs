@@ -6,7 +6,7 @@ applications:
   env:
     CF_DEPLOYMENT: True
     SDX_SEQUENCE_URL: http://sdx-sequence.apps.devtest.onsclofo.uk/sequence
-    FTP_PATH: \\\\NP3RVWAPXX370\\SDX_preprod\\
+    FTP_PATH: "./"
     SDX_FTP_IMAGE_PATH: EDC_QImages
 
   services:
