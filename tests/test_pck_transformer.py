@@ -43,3 +43,14 @@ class TestPckTransformer(unittest.TestCase):
 
             msg = "ERROR:transform.transformers.pck_transformer:Invalid instrument id '000'"
             self.assertEqual(msg, cm.output[0])
+
+    def test_pck_transformer_cannot_change_the_data_it_is_passed(self):
+        """Tests that pck does not modify the data it is passed.
+        Without the deep copy pck integer rounding will apply to the passed in data
+        and hence get displayed in images"""
+
+        survey = {'survey_id': '023'}
+        response = {'collection': {'instrument_id': '000'}, 'data': {'item1': 'value1'}}
+        pck_transformer = PCKTransformer(survey, response)
+        pck_transformer.data['item1'] = 'new value'
+        self.assertEquals(response['data']['item1'], 'value1')

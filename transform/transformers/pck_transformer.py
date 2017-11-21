@@ -1,3 +1,4 @@
+import copy
 from datetime import datetime
 import dateutil.parser
 from decimal import Decimal, ROUND_HALF_UP
@@ -31,7 +32,7 @@ class PCKTransformer:
         self.survey = survey
         self.response = response_data
 
-        self.data = response_data['data'] if 'data' in response_data else {}
+        self.data = copy.deepcopy(response_data['data']) if 'data' in response_data else {}
 
     def get_form_questions(self):
         """Return the questions (list) and question types (dict
