@@ -1,6 +1,7 @@
 ### Unreleased
-  - Move transformers to be memory based instead of file based
 
+ - Bug fix - nothing displayed after the decimal point in decimal responses in image files
+ - Move transformers to be memory based instead of file based
  - Initial files for move to cloudfoundry
 ### 2.12.0 2017-11-09
   - Fix incorrect index date time
