@@ -9,9 +9,7 @@ from transform.views.logger_config import logger_initial_config
 
 from transform import app
 from transform import settings
-from transform.transformers import ImageTransformer, CSTransformer
-from transform.transformers import MWSSTransformer
-from transform.transformers import PCKTransformer, PDFTransformer
+from transform.transformers import CSTransformer, ImageTransformer, MWSSTransformer, PCKTransformer, PDFTransformer
 
 env = Environment(loader=PackageLoader('transform', 'templates'))
 
@@ -151,6 +149,7 @@ def render_pdf():
 
 @app.route('/images', methods=['POST'])
 def render_images():
+
     survey_response = request.get_json(force=True)
 
     survey = get_survey(survey_response)
@@ -158,25 +157,18 @@ def render_images():
     if not survey:
         return client_error("IMAGES:Unsupported survey/instrument id")
 
-    itransformer = ImageTransformer(logger, survey, survey_response)
+    transformer = ImageTransformer(logger, survey, survey_response)
 
     try:
-        path = itransformer.create_pdf(survey, survey_response)
-        locn = os.path.dirname(path)
-        images = list(itransformer.create_image_sequence(path))
-        index = itransformer.create_image_index(images)
-        zipfile = itransformer.create_zip(images, index)
+        zipfile = transformer.get_zipped_images()
     except IOError as e:
         return client_error("IMAGES:Could not create zip buffer: {0}".format(repr(e)))
-
-    try:
-        itransformer.cleanup(locn)
     except Exception as e:
-        return client_error("IMAGES:Could not delete tmp files: {0}".format(repr(e)))
-
+        logger.exception("IMAGES: Error {0}".format(repr(e)))
+        return server_error(e)
     logger.info("IMAGES:SUCCESS")
 
-    return send_file(zipfile, mimetype='application/zip', add_etags=False)
+    return send_file(zipfile.in_memory_zip, mimetype='application/zip', add_etags=False)
 
 
 @app.route('/common-software', methods=['POST'])
@@ -198,23 +190,11 @@ def common_software(sequence_no=1000, batch_number=0):
     survey_id = survey_response.get("survey_id")
     try:
         if survey_id == "134":
-            tfr = MWSSTransformer(survey_response, sequence_no, log=logger)
-            zipfile = tfr.pack()
+            transformer = MWSSTransformer(survey_response, sequence_no, log=logger)
         else:
-            ctransformer = CSTransformer(
-                logger, survey, survey_response, batch_number, sequence_no)
+            transformer = CSTransformer(logger, survey, survey_response, batch_number, sequence_no)
 
-            try:
-                ctransformer.create_formats()
-                ctransformer.prepare_archive()
-                zipfile = ctransformer.create_zip()
-            except IOError as e:
-                return client_error("CS:Could not create zip buffer: {0}".format(repr(e)))
-
-            try:
-                ctransformer.cleanup()
-            except Exception as e:
-                return client_error("CS:Could not delete tmp files: {0}".format(repr(e)))
+        transformer.create_zip()
 
     except Exception as e:
         tx_id = survey_response.get("tx_id")
@@ -223,7 +203,7 @@ def common_software(sequence_no=1000, batch_number=0):
 
     logger.info("CS:SUCCESS")
 
-    return send_file(zipfile, mimetype='application/zip', add_etags=False)
+    return send_file(transformer.get_zip(), mimetype='application/zip', add_etags=False)
 
 
 @app.route('/healthcheck', methods=['GET'])

@@ -1,7 +1,7 @@
 import operator
+
 from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 from functools import reduce
-
 from transform.transformers.survey import Survey
 
 

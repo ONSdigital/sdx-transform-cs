@@ -7,7 +7,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class PCKTransformer(object):
+class PCKTransformer:
     comments_questions = ['147', '146a', '146b', '146c', '146d', '146e', '146f', '146g', '146h']
     rsi_currency_questions = ["20", "21", "22", "23", "24", "25", "26", "27"]
 

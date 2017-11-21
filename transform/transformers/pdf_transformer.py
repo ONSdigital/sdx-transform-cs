@@ -1,14 +1,6 @@
-#!/usr/bin/env python
-#   coding: UTF-8
-
-import argparse
-from io import BytesIO
-import json
-import os
-import sys
-import uuid
-
 import arrow
+
+from io import BytesIO
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
@@ -18,12 +10,6 @@ from reportlab.lib.enums import TA_LEFT, TA_CENTER
 
 __doc__ = """
 SDX PDF Transformer.
-
-Example:
-
-python transform/transformers/PDFTransformer.py --survey transform/surveys/144.0001.json \\
-< tests/replies/ukis-01.json > output.pdf
-
 """
 styles = getSampleStyleSheet()
 
@@ -57,7 +43,7 @@ style_answer.spaceAfter = 20
 MAX_ANSWER_CHARACTERS_PER_LINE = 35
 
 
-class PDFTransformer(object):
+class PDFTransformer:
 
     def __init__(self, survey, response_data):
         '''
@@ -67,25 +53,20 @@ class PDFTransformer(object):
         self.response = response_data
 
     def render(self):
+        """Get the pdf data in memory"""
+        return self.render_pages()[0]
+
+    def render_pages(self):
+        """Return both the in memory pdf data and a count of the pages"""
         buffer = BytesIO()
         doc = SimpleDocTemplate(buffer, pagesize=A4)
         doc.build(self.get_elements())
 
         pdf = buffer.getvalue()
+
         buffer.close()
 
-        return pdf
-
-    def render_to_file(self):
-        rndm_name = uuid.uuid4()
-
-        os.makedirs("./tmp/%s" % rndm_name)
-
-        tmp_name = "./tmp/%s/%s.pdf" % (rndm_name, rndm_name)
-        doc = SimpleDocTemplate(tmp_name, pagesize=A4)
-        doc.build(self.get_elements())
-
-        return os.path.realpath(tmp_name)
+        return pdf, doc.page
 
     def get_elements(self):
 
@@ -147,36 +128,3 @@ class PDFTransformer(object):
     @staticmethod
     def get_localised_date(date_to_transform, timezone='Europe/London'):
         return arrow.get(date_to_transform).to(timezone).format("DD MMMM YYYY HH:mm:ss")
-
-
-def parser(description=__doc__):
-    rv = argparse.ArgumentParser(
-        description,
-    )
-    rv.add_argument(
-        "--survey", required=True,
-        help="Set a path to the survey JSON file.")
-    return rv
-
-
-def main(args):
-    fp = os.path.expanduser(os.path.abspath(args.survey))
-    with open(fp, "r") as fobj:
-        survey = json.load(fobj)
-
-    data = json.load(sys.stdin)
-    tx = PDFTransformer(survey, data)
-    output = tx.render()
-    sys.stdout.write(output.decode("latin-1"))
-    return 0
-
-
-def run():
-    p = parser()
-    args = p.parse_args()
-    rv = main(args)
-    sys.exit(rv)
-
-
-if __name__ == "__main__":
-    run()

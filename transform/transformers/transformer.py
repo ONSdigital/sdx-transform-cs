@@ -1,17 +1,13 @@
-import io
 import logging
-import os
-import tempfile
-import zipfile
-from collections import OrderedDict
+import os.path
 
-from reportlab.lib.pagesizes import A4
-from reportlab.platypus import SimpleDocTemplate
-from transform.transformers.cs_formatter import CSFormatter
-from transform.transformers.survey import Survey
-from transform.transformers.ImageTransformer import ImageTransformer
-from transform.transformers.PDFTransformer import PDFTransformer
+from collections import OrderedDict
 from structlog import wrap_logger
+
+from transform.settings import SDX_FTP_DATA_PATH, SDX_FTP_IMAGE_PATH, SDX_FTP_RECEIPT_PATH
+from transform.transformers.cs_formatter import CSFormatter
+from transform.transformers.image_transformer import ImageTransformer
+from transform.transformers.survey import Survey
 
 
 class Transformer:
@@ -46,6 +42,31 @@ class Transformer:
     #: The path is relative to the location specified by :py:const:`package` above.
     pattern = "../surveys/{survey_id}.{inst_id}.json"
 
+    receipt_path = os.getenv("SDX_FTP_RECEIPT_PATH", "EDC_QReceipts")
+    data_path = os.getenv("SDX_FTP_DATA_PATH", "EDC_QData")
+
+    def __init__(self, response, seq_nr=0, log=None):
+        """Create a transformer object to process a survey response."""
+        self.response = response
+        self.ids = Survey.identifiers(response, seq_nr=seq_nr)
+
+        if self.ids is None:
+            raise UserWarning("Missing identifiers")
+
+        if log is None:
+            self.log = wrap_logger(logging.getLogger(__name__))
+        else:
+            self.log = Survey.bind_logger(log, self.ids)
+
+        # Enforce that child classes have defn and pattern attributes
+        for attr in ("defn", "pattern"):
+            if not hasattr(self.__class__, attr):
+                raise UserWarning("Missing class attribute: {0}".format(attr))
+
+        self.survey = Survey.load_survey(self.ids, self.pattern)
+        self.image_transformer = ImageTransformer(self.log, self.survey, self.response,
+                                                  sequence_no=self.ids.seq_nr, base_image_path=SDX_FTP_IMAGE_PATH)
+
     @classmethod
     def ops(cls):
         """Publish the sequence of operations for the transform.
@@ -67,81 +88,24 @@ class Transformer:
             for qid, (dflt, fn) in cls.ops().items()
         )
 
-    @staticmethod
-    def create_zip(locn, manifest):
-        """Create a zip archive from a local directory and a manifest list.
-
-        Return the contents of the zip as bytes.
-
+    def create_zip(self, img_seq=None):
+        """Perform transformation on the survey data
+        and pack the output into a zip file exposed by the image transformer
         """
-        zip_bytes = io.BytesIO()
 
-        with zipfile.ZipFile(zip_bytes, "w", zipfile.ZIP_DEFLATED) as zip_obj:
-            for dst, f_name in manifest:
-                zip_obj.write(os.path.join(locn, f_name), arcname=os.path.join(dst, f_name))
+        data = self.transform(self.response["data"], self.survey)
 
-        zip_bytes.seek(0)
-        return zip_bytes
+        pck_name = CSFormatter.pck_name(**self.ids._asdict())
+        pck = CSFormatter.get_pck(data, **self.ids._asdict())
 
-    def __init__(self, response, seq_nr=0, log=None):
-        """Create a transformer object to process a survey response."""
-        self.response = response
-        self.ids = Survey.identifiers(response, seq_nr=seq_nr)
+        idbr_name = CSFormatter.idbr_name(**self.ids._asdict())
+        idbr = CSFormatter.get_idbr(**self.ids._asdict())
 
-        if self.ids is None:
-            raise UserWarning("Missing identifiers")
+        self.image_transformer.zip.append(os.path.join(SDX_FTP_DATA_PATH, pck_name), pck)
+        self.image_transformer.zip.append(os.path.join(SDX_FTP_RECEIPT_PATH, idbr_name), idbr)
 
-        if log is None:
-            self.log = wrap_logger(logging.getLogger(__name__))
-        else:
-            self.log = Survey.bind_logger(log, self.ids)
+        self.image_transformer.get_zipped_images(img_seq)
 
-        for attr in ("defn", "pattern"):
-            if not hasattr(self.__class__, attr):
-                raise UserWarning("Missing class attribute: {0}".format(attr))
-
-    def pack(self, img_seq=None, tmp="tmp"):
-        """Perform transformation on the survey data and pack the output into a zip file.
-
-        Return the contents of the zip as bytes.
-        The object maintains a temporary directory while the output is generated.
-
-        """
-        survey = Survey.load_survey(self.ids, self.pattern)
-        manifest = []
-        with tempfile.TemporaryDirectory(prefix="sdx_", dir=tmp) as locn:
-            # Do transform and write PCK
-            data = self.transform(self.response["data"], survey)
-            f_name = CSFormatter.pck_name(**self.ids._asdict())
-            with open(os.path.join(locn, f_name), "w") as pck:
-                CSFormatter.write_pck(pck, data, **self.ids._asdict())
-            manifest.append(("EDC_QData", f_name))
-
-            # Create IDBR file
-            f_name = CSFormatter.idbr_name(**self.ids._asdict())
-            with open(os.path.join(locn, f_name), "w") as idbr:
-                CSFormatter.write_idbr(idbr, **self.ids._asdict())
-            manifest.append(("EDC_QReceipts", f_name))
-
-            # Build PDF
-            fp = os.path.join(locn, "pages.pdf")
-            doc = SimpleDocTemplate(fp, pagesize=A4)
-            pdf_transformer = PDFTransformer(survey, self.response)
-            doc.build(pdf_transformer.get_elements())
-
-            # Create page images from PDF
-            img_tfr = ImageTransformer(
-                self.log, survey, self.response, self.ids.seq_nr
-            )
-            images = list(img_tfr.create_image_sequence(fp, nmbr_seq=img_seq))
-            for img in images:
-                f_name = os.path.basename(img)
-                manifest.append(("EDC_QImages/Images", f_name))
-
-            # Write image index
-            index = img_tfr.create_image_index(images)
-            if index is not None:
-                f_name = os.path.basename(index)
-                manifest.append(("EDC_QImages/Index", f_name))
-
-            return self.create_zip(locn, manifest)
+    def get_zip(self):
+        self.image_transformer.zip.rewind()
+        return self.image_transformer.zip.in_memory_zip

@@ -1,12 +1,13 @@
-from transform.transformers import PDFTransformer, ImageTransformer, CSTransformer
-from transform import app
-from jinja2 import Environment, PackageLoader
+import json
+import logging
 
 from flask import make_response, send_file
-import logging
+from jinja2 import Environment, PackageLoader
 from structlog import wrap_logger
-import json
-import os.path
+
+from transform import app
+from transform.transformers import PDFTransformer, CSTransformer
+from transform.transformers.image_transformer import ImageTransformer
 
 logger = wrap_logger(logging.getLogger(__name__))
 
@@ -57,16 +58,9 @@ def images_test():
         survey = json.load(json_file)
 
         itransformer = ImageTransformer(logger, survey, survey_response)
+        zipfile = itransformer.get_zipped_images()
 
-        path = itransformer.create_pdf(survey, survey_response)
-        locn = os.path.dirname(path)
-        images = list(itransformer.create_image_sequence(path))
-        index = itransformer.create_image_index(images)
-        zipfile = itransformer.create_zip(images, index)
-
-        itransformer.cleanup(locn)
-
-        return send_file(zipfile, mimetype='application/zip')
+        return send_file(zipfile.in_memory_zip, mimetype='application/zip')
 
 
 @app.route('/pdf-test', methods=['GET'])
@@ -107,10 +101,6 @@ def cs_test():
         survey = json.load(json_file)
 
         ctransformer = CSTransformer(logger, survey, survey_response)
+        ctransformer.create_zip()
 
-        ctransformer.create_formats()
-        ctransformer.prepare_archive()
-        zipfile = ctransformer.create_zip()
-        ctransformer.cleanup()
-
-        return send_file(zipfile, mimetype='application/zip')
+        return send_file(ctransformer.image_transformer.zip.in_memory_zip, mimetype='application/zip')

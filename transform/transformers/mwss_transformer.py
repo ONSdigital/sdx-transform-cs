@@ -1,23 +1,16 @@
 from collections import OrderedDict
 from decimal import Decimal, ROUND_DOWN, ROUND_HALF_UP
 from functools import partial
-import itertools
-import json
-import re
-import sys
 
-import transform.transformers.cli
+import itertools
+import re
+
 from transform.transformers.processor import Processor
 from transform.transformers.transformer import Transformer
 
 __doc__ = """Transform MWSS survey data into formats required downstream.
 
 The class API is used by the SDX transform service.
-Additionally this module will run as a script from the command line:
-
-python -m transform.transformers.MWSSTransformer \
-< tests/replies/eq-mwss.json > test-output.zip
-
 """
 
 
@@ -117,27 +110,3 @@ class MWSSTransformer(Transformer):
             for question_id, (default, funct) in MWSSTransformer.ops().items()
             if Decimal(question_id) in supplied.union(mandatory)
         )
-
-
-def main(args):
-
-    reply = json.load(args.input)
-    transformer = MWSSTransformer(reply, seq_nr=args.seq_nr)
-    zipfile = transformer.pack(
-
-        img_seq=itertools.count(args.img_nr),
-        tmp=args.work
-    )
-    args.output.write(zipfile.read())
-    return 0
-
-
-def run():
-    parser = transform.transformers.cli.transformer_cli(__doc__)
-    args = parser.parse_args()
-    return_value = main(args)
-    sys.exit(return_value)
-
-
-if __name__ == "__main__":
-    run()

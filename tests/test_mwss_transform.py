@@ -4,14 +4,13 @@ import itertools
 import json
 import os.path
 import unittest
-import zipfile
 
 import pkg_resources
 
 from transform.transformers.cs_formatter import CSFormatter
+from transform.transformers.mwss_transformer import MWSSTransformer
 from transform.transformers.processor import Processor
 from transform.transformers.survey import Survey
-from transform.transformers.MWSSTransformer import MWSSTransformer
 
 
 class SurveyTests(unittest.TestCase):
@@ -1019,35 +1018,6 @@ class PackingTests(unittest.TestCase):
             seq_nr=0
         )
 
-    def test_tempdir(self):
-        """
-        Test if temp directory contains response
-
-        """
-        response = {
-            "survey_id": "134",
-            "tx_id": "27923934-62de-475c-bc01-433c09fd38b8",
-            "collection": {
-                "instrument_id": "0005",
-                "period": "201704"
-            },
-            "metadata": {
-                "user_id": "123456789",
-                "ru_ref": "12345678901A"
-            },
-            "submitted_at": "2017-04-12T13:01:26Z",
-            "data": {}
-        }
-        transformer = MWSSTransformer(response, 0)
-        self.assertEqual(
-            "REC1204_0000.DAT",
-            CSFormatter.idbr_name(
-                **transformer.ids._asdict()
-            )
-        )
-
-        transformer.pack(img_seq=itertools.count(), tmp=None)
-
     def test_image_sequence_number(self):
         """
         Test image sequence number returns as expected
@@ -1070,10 +1040,9 @@ class PackingTests(unittest.TestCase):
         seq_nr = 12345
 
         transformer = MWSSTransformer(response, seq_nr=seq_nr)
-        zf = zipfile.ZipFile(
-            transformer.pack(img_seq=itertools.count(), tmp=None)
-        )
-        funct = next(i for i in zf.namelist() if os.path.splitext(i)[1] == ".csv")
+        transformer.create_zip(img_seq=itertools.count())
+
+        funct = next(i for i in transformer.image_transformer.zip.get_filenames() if os.path.splitext(i)[1] == ".csv")
         bits = os.path.splitext(funct)[0].split("_")
 
         self.assertEqual(seq_nr, int(bits[-1]))
