@@ -19,7 +19,7 @@ class InMemoryZip:
         return self
 
     def rewind(self):
-        """Rewind"""
+        """Rewind current file position to the start of in memory file"""
         self.in_memory_zip.seek(0)
 
     def get_filenames(self):
