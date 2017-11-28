@@ -8,7 +8,7 @@ app = Flask(__name__)
 from .views import test_views  # noqa
 from .views import main  # noqa
 
-__version__ = "2.12.0"
+__version__ = "2.13.0"
 
 # Configure the number of retries attempted before failing call
 session = requests.Session()
