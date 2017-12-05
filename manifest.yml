@@ -1,8 +1,8 @@
 applications:
 - name: sdx-transform-cs
   buildpack: https://github.com/cloudfoundry/multi-buildpack
-
-  health-check-type: process
+  health-check-http-endpoint: /info
+  health-check-type: http
 
   env:
     CF_DEPLOYMENT: True
