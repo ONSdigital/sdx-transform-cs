@@ -1,11 +1,12 @@
 ### Unreleased
- - Added the original Json data in the zip file sent to the ftp server 
- - refactored cs_fromatter to use named parameters instead of **kwargs for clarity  
+  - Added the original Json data in the zip file sent to the ftp server 
+  - refactored cs_fromatter to use named parameters instead of **kwargs for clarity  
+  - Add /info healthcheck endpoint
 
 ### 2.13.0 2017-11-27
- - Bug fix - nothing displayed after the decimal point in decimal responses in image files
- - Move transformers to be memory based instead of file based
- - Initial files for move to cloudfoundry
+  - Bug fix - nothing displayed after the decimal point in decimal responses in image files
+  - Move transformers to be memory based instead of file based
+  - Initial files for move to cloudfoundry
 
 ### 2.12.0 2017-11-09
   - Fix incorrect index date time
