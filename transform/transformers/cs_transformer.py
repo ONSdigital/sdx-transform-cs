@@ -1,10 +1,11 @@
 import dateutil.parser
+import json
 from io import StringIO
 import os.path
 from jinja2 import Environment, PackageLoader
 from .image_transformer import ImageTransformer
 from .pck_transformer import PCKTransformer
-from transform.settings import SDX_FTP_IMAGE_PATH, SDX_FTP_DATA_PATH, SDX_FTP_RECEIPT_PATH
+from transform.settings import SDX_FTP_IMAGE_PATH, SDX_FTP_DATA_PATH, SDX_FTP_RECEIPT_PATH, SDX_RESPONSE_JSON_PATH
 
 env = Environment(loader=PackageLoader('transform', 'templates'))
 
@@ -19,6 +20,7 @@ class CSTransformer(object):
         self._sequence_no = sequence_no
         self._idbr = StringIO()
         self._pck = StringIO()
+        self._response_json = StringIO()
         self.image_transformer = ImageTransformer(self._logger, self._survey, self._response,
                                                   sequence_no=self._sequence_no, base_image_path=SDX_FTP_IMAGE_PATH)
         self._setup_logger()
@@ -30,11 +32,16 @@ class CSTransformer(object):
         # add pck , idbr then images and index_file
         pck_name = self._create_pck()
         idbr_name = self._create_idbr()
+        response_io_name = self._create_response_json()
 
         self.image_transformer.zip.append(os.path.join(SDX_FTP_DATA_PATH, pck_name), self._pck.read())
         self.image_transformer.zip.append(os.path.join(SDX_FTP_RECEIPT_PATH, idbr_name), self._idbr.read())
 
         self.image_transformer.get_zipped_images()
+
+        self.image_transformer.zip.append(os.path.join(SDX_RESPONSE_JSON_PATH, response_io_name),
+                                          self._response_json.read())
+
         self.image_transformer.zip.rewind()
 
     def get_zip(self):
@@ -83,3 +90,9 @@ class CSTransformer(object):
         self._idbr.write(template_output)
         self._idbr.seek(0)
         return idbr_name
+
+    def _create_response_json(self):
+        original_json_name = "%s_%04d.json" % (self._survey['survey_id'], self._sequence_no)
+        self._response_json.write(json.dumps(self._response))
+        self._response_json.seek(0)
+        return original_json_name

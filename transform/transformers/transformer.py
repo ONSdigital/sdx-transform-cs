@@ -1,10 +1,11 @@
 import logging
+import json
 import os.path
 
 from collections import OrderedDict
 from structlog import wrap_logger
 
-from transform.settings import SDX_FTP_DATA_PATH, SDX_FTP_IMAGE_PATH, SDX_FTP_RECEIPT_PATH
+from transform.settings import SDX_FTP_DATA_PATH, SDX_FTP_IMAGE_PATH, SDX_FTP_RECEIPT_PATH, SDX_RESPONSE_JSON_PATH
 from transform.transformers.cs_formatter import CSFormatter
 from transform.transformers.image_transformer import ImageTransformer
 from transform.transformers.survey import Survey
@@ -95,16 +96,25 @@ class Transformer:
 
         data = self.transform(self.response["data"], self.survey)
 
-        pck_name = CSFormatter.pck_name(**self.ids._asdict())
-        pck = CSFormatter.get_pck(data, **self.ids._asdict())
+        id_dict = self.ids._asdict()
 
-        idbr_name = CSFormatter.idbr_name(**self.ids._asdict())
-        idbr = CSFormatter.get_idbr(**self.ids._asdict())
+        pck_name = CSFormatter.pck_name(id_dict["survey_id"], id_dict["seq_nr"])
+
+        pck = CSFormatter.get_pck(data, id_dict["inst_id"], id_dict["ru_ref"], id_dict["ru_check"], id_dict["period"])
+
+        idbr_name = CSFormatter.idbr_name(id_dict["user_ts"], id_dict["seq_nr"])
+
+        idbr = CSFormatter.get_idbr(id_dict["survey_id"], id_dict["ru_ref"], id_dict["ru_check"], id_dict["period"])
+
+        response_json_name = CSFormatter.response_json_name(id_dict["survey_id"], id_dict["seq_nr"])
 
         self.image_transformer.zip.append(os.path.join(SDX_FTP_DATA_PATH, pck_name), pck)
         self.image_transformer.zip.append(os.path.join(SDX_FTP_RECEIPT_PATH, idbr_name), idbr)
 
         self.image_transformer.get_zipped_images(img_seq)
+
+        self.image_transformer.zip.append(os.path.join(SDX_RESPONSE_JSON_PATH, response_json_name),
+                                          json.dumps(self.response["data"]))
 
     def get_zip(self):
         self.image_transformer.zip.rewind()

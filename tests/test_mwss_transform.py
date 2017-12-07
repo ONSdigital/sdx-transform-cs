@@ -4,6 +4,7 @@ import itertools
 import json
 import os.path
 import unittest
+import zipfile
 
 import pkg_resources
 
@@ -621,7 +622,7 @@ class TransformTests(unittest.TestCase):
         """
         return_value = MWSSTransformer.transform({"40": "33"})
         self.assertEqual(33, return_value["40"])
-        item = CSFormatter.pck_item("40", return_value["40"])
+        item = CSFormatter._pck_item("40", return_value["40"])
         self.assertEqual(item, "0040 00000000033")
 
     def test_unsigned_decimals(self):
@@ -635,7 +636,7 @@ class TransformTests(unittest.TestCase):
             with self.subTest(question_range=question_range, question_id=question_id):
                 return_value = MWSSTransformer.transform({question_id: "64.0"})
                 self.assertIs(True, return_value[question_id])
-                self.assertEqual(1, CSFormatter.pck_value(question_id, return_value[question_id]))
+                self.assertEqual(1, CSFormatter._pck_value(return_value[question_id]))
 
     def test_currency(self):
         """
@@ -644,7 +645,7 @@ class TransformTests(unittest.TestCase):
         """
         return_value = MWSSTransformer.transform({"50": "36852"})
         self.assertEqual(36852, return_value["50"])
-        item = CSFormatter.pck_item("50", return_value["50"])
+        item = CSFormatter._pck_item("50", return_value["50"])
         self.assertEqual(item, "0050 00000036852")
 
     def test_digits_to_onetwo(self):
@@ -658,9 +659,9 @@ class TransformTests(unittest.TestCase):
             with self.subTest(question_range=question_range, question_id=question_id):
                 return_value = MWSSTransformer.transform({question_id: "64"})
                 self.assertIs(True, return_value[question_id])
-                self.assertEqual(1, CSFormatter.pck_value(question_id, return_value[question_id]))
+                self.assertEqual(1, CSFormatter._pck_value(return_value[question_id]))
                 return_value = MWSSTransformer.transform({question_id: ""})
-                self.assertEqual(2, CSFormatter.pck_value(question_id, return_value[question_id]))
+                self.assertEqual(2, CSFormatter._pck_value(return_value[question_id]))
 
     def test_pay_frequency_as_bool(self):
         """
@@ -677,13 +678,13 @@ class TransformTests(unittest.TestCase):
             with self.subTest(question_id=question_id, return_value=return_value):
                 return_value = MWSSTransformer.transform({question_id: return_value})
                 self.assertIs(True, return_value[question_id])
-                self.assertEqual(1, CSFormatter.pck_value(question_id, return_value[question_id]))
+                self.assertEqual(1, CSFormatter._pck_value(return_value[question_id]))
                 return_value = MWSSTransformer.transform({question_id: ""})
                 self.assertIs(False, return_value[question_id])
-                self.assertEqual(2, CSFormatter.pck_value(question_id, return_value[question_id]))
+                self.assertEqual(2, CSFormatter._pck_value(return_value[question_id]))
                 return_value = MWSSTransformer.transform({})
                 self.assertIs(False, return_value[question_id])
-                self.assertEqual(2, CSFormatter.pck_value(question_id, return_value[question_id]))
+                self.assertEqual(2, CSFormatter._pck_value(return_value[question_id]))
 
     def test_dates_to_onetwo(self):
         """
@@ -696,10 +697,10 @@ class TransformTests(unittest.TestCase):
             with self.subTest(question_range=question_range, question_id=question_id):
                 return_value = MWSSTransformer.transform({question_id: "23/4/2017"})
                 self.assertEqual([datetime.date(2017, 4, 23)], return_value[question_id])
-                self.assertEqual(1, CSFormatter.pck_value(question_id, return_value[question_id]))
+                self.assertEqual(1, CSFormatter._pck_value(return_value[question_id]))
                 return_value = MWSSTransformer.transform({question_id: ""})
                 self.assertEqual([], return_value[question_id])
-                self.assertEqual(2, CSFormatter.pck_value(question_id, return_value[question_id]))
+                self.assertEqual(2, CSFormatter._pck_value(return_value[question_id]))
 
     def test_aggregate_fourweekly_changes(self):
         """
@@ -822,16 +823,6 @@ class TransformTests(unittest.TestCase):
 
 class BatchFileTests(unittest.TestCase):
 
-    def test_pck_batch_header(self):
-        """
-        Test package batch header
-
-        """
-        batch_nr = 3866
-        batch_date = datetime.date(2009, 12, 29)
-        return_value = CSFormatter.pck_batch_header(batch_nr, batch_date)
-        self.assertEqual("FBFV00386629/12/09", return_value)
-
     def test_pck_form_header(self):
         """
         Test package form header
@@ -841,7 +832,7 @@ class BatchFileTests(unittest.TestCase):
         ru_ref = 49900001225
         check = "C"
         period = "200911"
-        return_value = CSFormatter.pck_form_header(form_id, ru_ref, check, period)
+        return_value = CSFormatter._pck_form_header(form_id, ru_ref, check, period)
         self.assertEqual("0005:49900001225C:200911", return_value)
 
     def test_load_survey(self):
@@ -889,9 +880,6 @@ class BatchFileTests(unittest.TestCase):
         Tests data in packet is valid
 
         """
-        batch_nr = 3866
-        batch_date = datetime.date(2009, 12, 29)
-        survey_id = "134"
         inst_id = "0005"
         ru_ref = 49900001225
         check = "C"
@@ -902,9 +890,7 @@ class BatchFileTests(unittest.TestCase):
             ("0151", 217222)
         ])
         self.assertTrue(isinstance(return_value, int) for return_value in data.values())
-        return_value = CSFormatter.pck_lines(
-            data, batch_nr, batch_date, survey_id, inst_id, ru_ref, check, period
-        )
+        return_value = CSFormatter._pck_lines(data, inst_id, ru_ref, check, period)
         self.assertEqual([
             "FV          ",
             "0005:49900001225C:200911",
@@ -922,7 +908,10 @@ class BatchFileTests(unittest.TestCase):
         reply = json.loads(src.decode("utf-8"))
         reply["tx_id"] = "27923934-62de-475c-bc01-433c09fd38b8"
         ids = Survey.identifiers(reply, batch_nr=3866, seq_nr=0)
-        return_value = CSFormatter.idbr_receipt(**ids._asdict())
+        id_dict = ids._asdict()
+
+        return_value = CSFormatter._idbr_receipt(id_dict["survey_id"], id_dict["ru_ref"], id_dict["ru_check"],
+                                                 id_dict["period"])
         self.assertEqual("12346789012:A:134:201605", return_value)
 
     def test_identifiers(self):
@@ -963,7 +952,9 @@ class BatchFileTests(unittest.TestCase):
             ("0151", 217222)
         ])
         ids = Survey.identifiers(reply, batch_nr=3866, seq_nr=0)
-        return_value = CSFormatter.pck_lines(reply["data"], **ids._asdict())
+        id_dict = ids._asdict()
+        return_value = CSFormatter._pck_lines(reply["data"], id_dict["inst_id"], id_dict["ru_ref"], id_dict["ru_check"],
+                                              id_dict["period"])
         self.assertEqual([
             "FV          ",
             "0005:49900001225C:200911",
@@ -991,7 +982,9 @@ class BatchFileTests(unittest.TestCase):
                 ("151", 217222)
             ])
         )
-        return_value = CSFormatter.pck_lines(data, **ids._asdict())
+        id_dict = ids._asdict()
+        return_value = CSFormatter._pck_lines(data, id_dict["inst_id"], id_dict["ru_ref"], id_dict["ru_check"],
+                                              id_dict["period"])
         self.assertEqual([
             "FV          ",
             "0005:49900001225C:200911",
@@ -1035,7 +1028,7 @@ class PackingTests(unittest.TestCase):
                 "ru_ref": "12345678901A"
             },
             "submitted_at": "2017-04-12T13:01:26Z",
-            "data": {}
+            "data": {"something": "some data", "something else": "some other data"}
         }
         seq_nr = 12345
 
@@ -1046,3 +1039,33 @@ class PackingTests(unittest.TestCase):
         bits = os.path.splitext(funct)[0].split("_")
 
         self.assertEqual(seq_nr, int(bits[-1]))
+
+    def test_original_response_is_stored(self):
+        """Compare the dictionary loaded from the zip file json is the same as that submitted"""
+        response = {
+            "survey_id": "134",
+            "tx_id": "27923934-62de-475c-bc01-433c09fd38b8",
+            "collection": {
+                "instrument_id": "0005",
+                "period": "201704"
+            },
+            "metadata": {
+                "user_id": "123456789",
+                "ru_ref": "12345678901A"
+            },
+            "submitted_at": "2017-04-12T13:01:26Z",
+            "data": {"something": "some data", "something else": "some other data"}
+        }
+        seq_nr = 12345
+
+        transformer = MWSSTransformer(response, seq_nr=seq_nr)
+        transformer.create_zip(img_seq=itertools.count())
+
+        expected_json_data = response["data"]
+
+        z = zipfile.ZipFile(transformer.image_transformer.zip.in_memory_zip)
+        zfile = z.open('EDC_QJson/134_12345.json', 'r')
+        actual_json_data = json.loads(zfile.read().decode('utf-8'))
+        z.close()
+
+        self.assertEquals(actual_json_data, expected_json_data)

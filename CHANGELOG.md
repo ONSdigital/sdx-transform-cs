@@ -1,4 +1,6 @@
 ### Unreleased
+  - Added the original Json data in the zip file sent to the ftp server 
+  - refactored cs_fromatter to use named parameters instead of **kwargs for clarity  
   - Add /info healthcheck endpoint
 
 ### 2.13.0 2017-11-27
