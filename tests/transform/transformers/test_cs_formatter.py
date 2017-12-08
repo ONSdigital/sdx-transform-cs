@@ -14,24 +14,15 @@ class BatchFileTests(unittest.TestCase):
             self.src = fh.read()
             self.reply = json.loads(self.src)
 
-    def test_pck_batch_header(self):
-        batch_nr = 3866
-        batch_date = datetime.date(2009, 12, 29)
-        rv = CSFormatter.pck_batch_header(batch_nr, batch_date)
-        self.assertEqual("FBFV00386629/12/09", rv)
-
     def test_pck_form_header(self):
         form_id = 5
         ru_ref = 49900001225
         check = "C"
         period = "200911"
-        rv = CSFormatter.pck_form_header(form_id, ru_ref, check, period)
+        rv = CSFormatter._pck_form_header(form_id, ru_ref, check, period)
         self.assertEqual("0005:49900001225C:200911", rv)
 
     def test_pck_lines(self):
-        batch_nr = 3866
-        batch_date = datetime.date(2009, 12, 29)
-        survey_id = "134"
         inst_id = "0005"
         ru_ref = 49900001225
         check = "C"
@@ -42,9 +33,7 @@ class BatchFileTests(unittest.TestCase):
             ("0151", 217222)
         ])
         self.assertTrue(isinstance(val, int) for val in data.values())
-        rv = CSFormatter.pck_lines(
-            data, batch_nr, batch_date, survey_id, inst_id, ru_ref, check, period
-        )
+        rv = CSFormatter._pck_lines(data, inst_id, ru_ref, check, period)
         self.assertEqual([
             "FV          ",
             "0005:49900001225C:200911",
@@ -56,7 +45,9 @@ class BatchFileTests(unittest.TestCase):
     def test_idbr_receipt(self):
         self.reply["tx_id"] = "27923934-62de-475c-bc01-433c09fd38b8"
         ids = Survey.identifiers(self.reply, batch_nr=3866)
-        rv = CSFormatter.idbr_receipt(**ids._asdict())
+        id_dict = ids._asdict()
+        rv = CSFormatter._idbr_receipt(id_dict["survey_id"], id_dict["ru_ref"], id_dict["ru_check"],
+                                       id_dict["period"])
         self.assertEqual("12346789012:A:134:201605", rv)
 
     def test_identifiers(self):
@@ -85,7 +76,9 @@ class BatchFileTests(unittest.TestCase):
             ("0151", 217222)
         ])
         ids = Survey.identifiers(self.reply, batch_nr=3866)
-        rv = CSFormatter.pck_lines(self.reply["data"], **ids._asdict())
+        id_dict = ids._asdict()
+        rv = CSFormatter._pck_lines(self.reply["data"], id_dict["inst_id"], id_dict["ru_ref"], id_dict["ru_check"],
+                                    id_dict["period"])
         self.assertEqual([
             "FV          ",
             "0005:49900001225C:200911",
