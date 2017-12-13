@@ -1042,7 +1042,7 @@ class PackingTests(unittest.TestCase):
 
     def test_original_response_is_stored(self):
         """Compare the dictionary loaded from the zip file json is the same as that submitted"""
-        response = {
+        expected_json_data = {
             "survey_id": "134",
             "tx_id": "27923934-62de-475c-bc01-433c09fd38b8",
             "collection": {
@@ -1058,10 +1058,8 @@ class PackingTests(unittest.TestCase):
         }
         seq_nr = 12345
 
-        transformer = MWSSTransformer(response, seq_nr=seq_nr)
+        transformer = MWSSTransformer(expected_json_data, seq_nr=seq_nr)
         transformer.create_zip(img_seq=itertools.count())
-
-        expected_json_data = response["data"]
 
         z = zipfile.ZipFile(transformer.image_transformer.zip.in_memory_zip)
         zfile = z.open('EDC_QJson/134_12345.json', 'r')

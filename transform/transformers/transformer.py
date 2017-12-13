@@ -114,7 +114,7 @@ class Transformer:
         self.image_transformer.get_zipped_images(img_seq)
 
         self.image_transformer.zip.append(os.path.join(SDX_RESPONSE_JSON_PATH, response_json_name),
-                                          json.dumps(self.response["data"]))
+                                          json.dumps(self.response))
 
     def get_zip(self):
         self.image_transformer.zip.rewind()
