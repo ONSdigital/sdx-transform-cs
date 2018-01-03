@@ -18,7 +18,7 @@ def _get_value(key, default_value=None):
 
 
 SDX_SEQUENCE_URL = _get_value("SDX_SEQUENCE_URL", "http://sdx-sequence:5000")
-FTP_PATH = _get_value("FTP_PATH", "\\\\NP3RVWAPXX370\\SDX_preprod\\")
+FTP_PATH = _get_value("FTP_PATH", "\\")
 SDX_FTP_IMAGE_PATH = _get_value("SDX_FTP_IMAGES_PATH", "EDC_QImages")
 
 SDX_FTP_DATA_PATH = "EDC_QData"
