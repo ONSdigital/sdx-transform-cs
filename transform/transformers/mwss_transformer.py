@@ -42,8 +42,7 @@ class MWSSTransformer(Transformer):
         (90, False, partial(
             Processor.evaluate,
             group=[
-                "90w", "91w", "92w", "93w", "94w", "95w", "96w", "97w",
-                "90f", "91f", "92f", "93f", "94f", "95f", "96f", "97f",
+                "90w", "90f",
             ],
             convert=re.compile("^((?!No).)+$").search, op=lambda x, y: x or y)),
         (100, False, partial(Processor.mean, group=["100f"])),
@@ -67,9 +66,7 @@ class MWSSTransformer(Transformer):
         (190, False, partial(
             Processor.evaluate,
             group=[
-                "190w4", "191w4", "192w4", "193w4", "194w4", "195w4", "196w4", "197w4",
-                "190m", "191m", "192m", "193m", "194m", "195m", "196m", "197m",
-                "190w5", "191w5", "192w5", "193w5", "194w5", "195w5", "196w5", "197w5",
+                "190w4", "190m", "190w5",
             ],
             convert=re.compile("^((?!No).)+$").search, op=lambda x, y: x or y)),
         (200, False, partial(Processor.boolean, group=["200w4", "200w5"])),
