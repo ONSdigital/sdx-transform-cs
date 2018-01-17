@@ -333,7 +333,7 @@ class LogicTests(unittest.TestCase):
 
     def test_aggregate_monthly_changes(self):
         """
-        question_id 190m-  used for monthly changes question; aggregates to 190.
+        question_id 190m used for monthly changes question; aggregates to 190.
 
         """
         _, funct = MWSSTransformer.ops()["190"]
@@ -371,7 +371,7 @@ class LogicTests(unittest.TestCase):
 
     def test_aggregate_fiveweekly_changes(self):
         """
-        question_id 190w5 used for fiveweekly changes question; all aggregates to 190.
+        question_id 190w5 used for fiveweekly changes question; aggregates to 190.
 
         """
         _, funct = MWSSTransformer.ops()["190"]
@@ -707,7 +707,7 @@ class TransformTests(unittest.TestCase):
 
     def test_aggregate_monthly_changes(self):
         """
-        question_id 190m - 197m used for monthly changes questions; all aggregated as 190.
+        question_id 190m used for monthly changes question; aggregates to 190.
 
         """
         return_value = MWSSTransformer.transform({"190m": ""})
