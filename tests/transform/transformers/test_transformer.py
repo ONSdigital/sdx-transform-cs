@@ -71,7 +71,6 @@ class LogicTests(unittest.TestCase):
     def test_weekly_increase(self):
         """
         Increase in weekly pay (100).
-
         """
         _, fn = MockTransformer.ops()["100"]
         rv = fn("100", {"100": "6.0"}, 0)
@@ -80,7 +79,6 @@ class LogicTests(unittest.TestCase):
     def test_aggregate_weekly_paid_employees(self):
         """
         QIds 40, 40f are added to give a value for weekly paid employees (40).
-
         """
         _, fn = MockTransformer.ops()["40"]
         rv = fn("40", {"40": "125000"}, 0)
@@ -92,7 +90,6 @@ class LogicTests(unittest.TestCase):
         """
         Fortnightly gross pay (50f) is divided by 2 and added to
         the value for qid 50.
-
         """
         _, fn = MockTransformer.ops()["50"]
         rv = fn("50", {"50f": "1600"}, 0)
@@ -104,7 +101,6 @@ class LogicTests(unittest.TestCase):
         """
         Fortnightly holiday pay (60f), arrears of pay (70f) and bonuses (80f)
         are divided by 2 and added to qids 60, 70, 80 respectively.
-
         """
         _, fn = MockTransformer.ops()["60"]
         rv = fn("60", {"60f": "360"}, 0)
@@ -127,7 +123,6 @@ class LogicTests(unittest.TestCase):
     def test_aggregate_fortnightly_increase(self):
         """
         Increase in Fortnightly pay (100f); aggregated with weekly increase (100).
-
         """
         _, fn = MockTransformer.ops()["100"]
         rv = fn("100", {"100f": "6.0"}, 0)
@@ -140,7 +135,6 @@ class LogicTests(unittest.TestCase):
     def test_aggregate_fortnightly_increase_date(self):
         """
         Date of increase in Fortnightly pay (110f); aggregated with weekly (110).
-
         """
         _, fn = MockTransformer.ops()["110"]
         rv = fn(
@@ -153,7 +147,6 @@ class LogicTests(unittest.TestCase):
         """
         Employees with increase in Fortnightly pay (120f);
         aggregated with weekly increase (120).
-
         """
         _, fn = MockTransformer.ops()["120"]
         rv = fn("120", {"120f": "60"}, 0)
@@ -166,7 +159,6 @@ class LogicTests(unittest.TestCase):
     def test_aggregate_fortnightly_changes(self):
         """
         QIds 90f - 97f used for fortnightly changes questions; all aggregated as 90.
-
         """
         _, fn = MockTransformer.ops()["90"]
         for qid in ("90f", "91f", "92f", "93f", "94f", "95f", "96f", "97f"):
@@ -181,7 +173,6 @@ class LogicTests(unittest.TestCase):
     def test_aggregate_weekly_changes(self):
         """
         QIds 90w - 97w used for weekly changes questions; all aggregated as 90.
-
         """
         _, fn = MockTransformer.ops()["90"]
         for qid in ("90w", "91w", "92w", "93w", "94w", "95w", "96w", "97w"):
@@ -197,7 +188,6 @@ class LogicTests(unittest.TestCase):
         """
         QIds 92w, 94w, 92f, 94f, 192m, 194m, 192w4, 194w4, 192w5, 194w5
         have answers other than Yes/No.
-
         """
         _, fn = MockTransformer.ops()["90"]
         for qid in ("92w", "94w", "92f", "94f"):
@@ -222,7 +212,6 @@ class LogicTests(unittest.TestCase):
     def test_aggregate_fourweekly_changes(self):
         """
         QIds 190w4 - 197w4 used for fourweekly changes questions; all aggregated as 190.
-
         """
         _, fn = MockTransformer.ops()["190"]
         for qid in ("190w4", "191w4", "192w4", "193w4", "194w4", "195w4", "196w4", "197w4"):
@@ -237,7 +226,6 @@ class LogicTests(unittest.TestCase):
     def test_aggregate_fourweekly_increase(self):
         """
         Increase in fourweekly pay (200w4); aggregated with monthly increase (200).
-
         """
         _, fn = MockTransformer.ops()["200"]
         rv = fn("200", {"200w4": "6.0"}, 0)
@@ -250,7 +238,6 @@ class LogicTests(unittest.TestCase):
     def test_aggregate_fourweekly_increase_date(self):
         """
         Date of increase in fourweekly pay (210w4); aggregated with monthly (210).
-
         """
         _, fn = MockTransformer.ops()["210"]
         rv = fn(
@@ -263,7 +250,6 @@ class LogicTests(unittest.TestCase):
         """
         Employees with increase in fourweekly pay (220w4);
         aggregated with monthly increase (220).
-
         """
         _, fn = MockTransformer.ops()["220"]
         rv = fn("220", {"220w4": "60"}, 0)
@@ -276,7 +262,6 @@ class LogicTests(unittest.TestCase):
     def test_aggregate_monthly_changes(self):
         """
         QIds 190m - 197m used for monthly changes questions; all aggregated as 190.
-
         """
         _, fn = MockTransformer.ops()["190"]
         for qid in ("190m", "191m", "192m", "193m", "194m", "195m", "196m", "197m"):
@@ -291,7 +276,6 @@ class LogicTests(unittest.TestCase):
     def test_aggregate_weekly_comments(self):
         """
         QIds 300w, 300f, 300m, 300w4 & 300w5; all aggregated as 300.
-
         """
         _, fn = MockTransformer.ops()["300"]
         for qid in ("300w", "300f", "300m", "300w4", "300w5"):
@@ -304,7 +288,6 @@ class LogicTests(unittest.TestCase):
     def test_aggregate_monthly_paid_employees(self):
         """
         QIds 140m, 140w4, 140w5 are added to give a value for monthly paid employees (140).
-
         """
         _, fn = MockTransformer.ops()["140"]
         rv = fn("140", {"140w4": "125000"}, 0)
@@ -316,7 +299,6 @@ class LogicTests(unittest.TestCase):
     def test_aggregate_fiveweekly_changes(self):
         """
         QIds 190w5 - 197w5 used for fiveweekly changes questions; all aggregated as 190.
-
         """
         _, fn = MockTransformer.ops()["190"]
         for qid in ("190w5", "191w5", "192w5", "193w5", "194w5", "195w5", "196w5", "197w5"):
@@ -331,7 +313,6 @@ class LogicTests(unittest.TestCase):
     def test_aggregate_fiveweekly_increase(self):
         """
         Increase in fiveweekly pay (200w5); aggregated with monthly increase (200).
-
         """
         _, fn = MockTransformer.ops()["200"]
         rv = fn("200", {"200w5": "6.0"}, 0)
@@ -344,7 +325,6 @@ class LogicTests(unittest.TestCase):
     def test_aggregate_fiveweekly_increase_date(self):
         """
         Date of increase in fiveweekly pay (210w5); aggregated with monthly (210).
-
         """
         _, fn = MockTransformer.ops()["210"]
         rv = fn(
@@ -357,7 +337,6 @@ class LogicTests(unittest.TestCase):
         """
         Employees with increase in fiveweekly pay (220w5);
         aggregated with monthly increase (220).
-
         """
         _, fn = MockTransformer.ops()["220"]
         rv = fn("220", {"220w5": "60"}, 0)

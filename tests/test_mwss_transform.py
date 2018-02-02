@@ -255,74 +255,42 @@ class LogicTests(unittest.TestCase):
 
     def test_aggregate_fortnightly_changes(self):
         """
-        question_id 90f - 97f used for fortnightly changes questions; all aggregated as 90.
+        question_id 90f used for fortnightly changes question; aggregates to 90.
 
         """
         _, funct = MWSSTransformer.ops()["90"]
-        for question_id in ("90f", "91f", "92f", "93f", "94f", "95f", "96f", "97f"):
-            with self.subTest(question_id=question_id):
-                return_value = funct("90", {question_id: ""}, True)
-                self.assertFalse(return_value)
-                return_value = funct("90", {question_id: "No"}, True)
-                self.assertFalse(return_value)
-                return_value = funct("90", {question_id: "Yes"}, False)
-                self.assertTrue(return_value)
+        return_value = funct("90", {"90f": ""}, True)
+        self.assertFalse(return_value)
+        return_value = funct("90", {"90f": "No"}, True)
+        self.assertFalse(return_value)
+        return_value = funct("90", {"90f": "Yes"}, False)
+        self.assertTrue(return_value)
 
     def test_aggregate_weekly_changes(self):
         """
-        question_id 90w - 97w used for weekly changes questions; all aggregated as 90.
+        question_id 90w weekly changes question; aggregates to 90.
 
         """
         _, funct = MWSSTransformer.ops()["90"]
-        for question_id in ("90w", "91w", "92w", "93w", "94w", "95w", "96w", "97w"):
-            with self.subTest(question_id=question_id):
-                return_value = funct("90", {question_id: ""}, True)
-                self.assertFalse(return_value)
-                return_value = funct("90", {question_id: "No"}, True)
-                self.assertFalse(return_value)
-                return_value = funct("90", {question_id: "Yes"}, False)
-                self.assertTrue(return_value)
-
-    def test_radio_button_logic(self):
-        """
-        question_id 92w, 94w, 92f, 94f, 192m, 194m, 192w4, 194w4, 192w5, 194w5
-        have answers other than Yes/No.
-
-        """
-        _, funct = MWSSTransformer.ops()["90"]
-        for question_id in ("92w", "94w", "92f", "94f"):
-            with self.subTest(question_id=question_id):
-                return_value = funct("90", {question_id: ""}, True)
-                self.assertFalse(return_value)
-                return_value = funct("90", {question_id: "No significant change"}, True)
-                self.assertFalse(return_value)
-                return_value = funct("90", {question_id: "Any other string"}, False)
-                self.assertTrue(return_value)
-
-        _, funct = MWSSTransformer.ops()["190"]
-        for question_id in ("192m", "194m", "192w4", "194w4", "192w5", "194w5"):
-            with self.subTest(question_id=question_id):
-                return_value = funct("190", {question_id: ""}, True)
-                self.assertFalse(return_value)
-                return_value = funct("190", {question_id: "No significant change"}, True)
-                self.assertFalse(return_value)
-                return_value = funct("190", {question_id: "Any other string"}, False)
-                self.assertTrue(return_value)
+        return_value = funct("90", {"90w": ""}, True)
+        self.assertFalse(return_value)
+        return_value = funct("90", {"90w": "No"}, True)
+        self.assertFalse(return_value)
+        return_value = funct("90", {"90w": "Yes"}, False)
+        self.assertTrue(return_value)
 
     def test_aggregate_fourweekly_changes(self):
         """
-        question_id 190w4 - 197w4 used for fourweekly changes questions; all aggregated as 190.
+        question_id 190w4 used for fourweekly changes question; aggregates to 190.
 
         """
         _, funct = MWSSTransformer.ops()["190"]
-        for question_id in ("190w4", "191w4", "192w4", "193w4", "194w4", "195w4", "196w4", "197w4"):
-            with self.subTest(question_id=question_id):
-                return_value = funct("190", {question_id: ""}, True)
-                self.assertFalse(return_value)
-                return_value = funct("190", {question_id: "No"}, True)
-                self.assertFalse(return_value)
-                return_value = funct("190", {question_id: "Yes"}, False)
-                self.assertTrue(return_value)
+        return_value = funct("190", {"190w4": ""}, True)
+        self.assertFalse(return_value)
+        return_value = funct("190", {"190w4": "No"}, True)
+        self.assertFalse(return_value)
+        return_value = funct("190", {"190w4": "Yes"}, False)
+        self.assertTrue(return_value)
 
     def test_aggregate_fourweekly_increase(self):
         """
@@ -365,18 +333,16 @@ class LogicTests(unittest.TestCase):
 
     def test_aggregate_monthly_changes(self):
         """
-        question_id 190m - 197m used for monthly changes questions; all aggregated as 190.
+        question_id 190m used for monthly changes question; aggregates to 190.
 
         """
         _, funct = MWSSTransformer.ops()["190"]
-        for question_id in ("190m", "191m", "192m", "193m", "194m", "195m", "196m", "197m"):
-            with self.subTest(question_id=question_id):
-                return_value = funct("190", {question_id: ""}, True)
-                self.assertFalse(return_value)
-                return_value = funct("190", {question_id: "No"}, True)
-                self.assertFalse(return_value)
-                return_value = funct("190", {question_id: "Yes"}, False)
-                self.assertTrue(return_value)
+        return_value = funct("190", {"190m": ""}, True)
+        self.assertFalse(return_value)
+        return_value = funct("190", {"190m": "No"}, True)
+        self.assertFalse(return_value)
+        return_value = funct("190", {"190m": "Yes"}, False)
+        self.assertTrue(return_value)
 
     def test_aggregate_weekly_comments(self):
         """
@@ -405,18 +371,16 @@ class LogicTests(unittest.TestCase):
 
     def test_aggregate_fiveweekly_changes(self):
         """
-        question_id 190w5 - 197w5 used for fiveweekly changes questions; all aggregated as 190.
+        question_id 190w5 used for fiveweekly changes question; aggregates to 190.
 
         """
         _, funct = MWSSTransformer.ops()["190"]
-        for question_id in ("190w5", "191w5", "192w5", "193w5", "194w5", "195w5", "196w5", "197w5"):
-            with self.subTest(question_id=question_id):
-                return_value = funct("190", {question_id: ""}, True)
-                self.assertFalse(return_value)
-                return_value = funct("190", {question_id: "No"}, True)
-                self.assertFalse(return_value)
-                return_value = funct("190", {question_id: "Yes"}, False)
-                self.assertTrue(return_value)
+        return_value = funct("190", {"190w5": ""}, True)
+        self.assertFalse(return_value)
+        return_value = funct("190", {"190w5": "No"}, True)
+        self.assertFalse(return_value)
+        return_value = funct("190", {"190w5": "Yes"}, False)
+        self.assertTrue(return_value)
 
     def test_aggregate_fiveweekly_increase(self):
         """
@@ -704,17 +668,15 @@ class TransformTests(unittest.TestCase):
 
     def test_aggregate_fourweekly_changes(self):
         """
-        question_id 190w4 - 197w4 used for fourweekly changes questions; all aggregated as 190.
+        question_id 190w4 used for fourweekly changes question; aggregates to 190.
 
         """
-        for question_id in ("190w4", "191w4", "192w4", "193w4", "194w4", "195w4", "196w4", "197w4"):
-            with self.subTest(question_id=question_id):
-                return_value = MWSSTransformer.transform({question_id: ""})
-                self.assertIs(False, return_value["190"])
-                return_value = MWSSTransformer.transform({question_id: "No"})
-                self.assertIs(False, return_value["190"])
-                return_value = MWSSTransformer.transform({question_id: "Yes"})
-                self.assertIs(True, return_value["190"])
+        return_value = MWSSTransformer.transform({"190w4": ""})
+        self.assertIs(False, return_value["190"])
+        return_value = MWSSTransformer.transform({"190w4": "No"})
+        self.assertIs(False, return_value["190"])
+        return_value = MWSSTransformer.transform({"190w4": "Yes"})
+        self.assertIs(True, return_value["190"])
 
     def test_aggregate_fourweekly_increase(self):
         """
@@ -745,17 +707,15 @@ class TransformTests(unittest.TestCase):
 
     def test_aggregate_monthly_changes(self):
         """
-        question_id 190m - 197m used for monthly changes questions; all aggregated as 190.
+        question_id 190m used for monthly changes question; aggregates to 190.
 
         """
-        for question_id in ("190m", "191m", "192m", "193m", "194m", "195m", "196m", "197m"):
-            with self.subTest(question_id=question_id):
-                return_value = MWSSTransformer.transform({question_id: ""})
-                self.assertFalse(return_value["190"])
-                return_value = MWSSTransformer.transform({question_id: "No"})
-                self.assertFalse(return_value["190"])
-                return_value = MWSSTransformer.transform({question_id: "Yes"})
-                self.assertTrue(return_value["190"])
+        return_value = MWSSTransformer.transform({"190m": ""})
+        self.assertFalse(return_value["190"])
+        return_value = MWSSTransformer.transform({"190m": "No"})
+        self.assertFalse(return_value["190"])
+        return_value = MWSSTransformer.transform({"190m": "Yes"})
+        self.assertTrue(return_value["190"])
 
     def test_aggregate_weekly_comments(self):
         """
@@ -781,17 +741,15 @@ class TransformTests(unittest.TestCase):
 
     def test_aggregate_fiveweekly_changes(self):
         """
-        question_id 190w5 - 197w5 used for fiveweekly changes questions; all aggregated as 190.
+        question_id 190w5 used for fiveweekly changes question; aggregates to 190.
 
         """
-        for question_id in ("190w5", "191w5", "192w5", "193w5", "194w5", "195w5", "196w5", "197w5"):
-            with self.subTest(question_id=question_id):
-                return_value = MWSSTransformer.transform({question_id: ""})
-                self.assertFalse(return_value["190"])
-                return_value = MWSSTransformer.transform({question_id: "No"})
-                self.assertFalse(return_value["190"])
-                return_value = MWSSTransformer.transform({question_id: "Yes"})
-                self.assertTrue(return_value["190"])
+        return_value = MWSSTransformer.transform({"190w5": ""})
+        self.assertFalse(return_value["190"])
+        return_value = MWSSTransformer.transform({"190w5": "No"})
+        self.assertFalse(return_value["190"])
+        return_value = MWSSTransformer.transform({"190w5": "Yes"})
+        self.assertTrue(return_value["190"])
 
     def test_aggregate_fiveweekly_increase(self):
         """
