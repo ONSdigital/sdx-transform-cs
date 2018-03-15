@@ -11,7 +11,8 @@ logger = logging.getLogger(__name__)
 class PCKTransformer:
     comments_questions = ['147', '146a', '146b', '146c', '146d', '146e', '146f', '146g', '146h']
     rsi_currency_questions = ["20", "21", "22", "23", "24", "25", "26", "27"]
-    rsi_imputed_zero_questions = ["20", "21", "22", "23", "24", "25", "26"]
+    rsi_turnover_questions = ["20", "21", "22", "23", "24", "25", "26"]
+    employee_questions = ["50", "51", "52", "53", "54"]
 
     form_types = {
         "023": {
@@ -28,6 +29,7 @@ class PCKTransformer:
     }
 
     rsi_survey_id = "023"
+    qbs_survey_id = "139"
 
     def __init__(self, survey, response_data):
         self.survey = survey
@@ -132,9 +134,15 @@ class PCKTransformer:
         """For RSI and QBS Surveys, impute breakdown values as zero if the total
         provided was zero.
         """
-        if self.survey.get('survey_id') == self.rsi_survey_id and 'd20' in self.data:
-            self.data.update({k: '0' for k in self.rsi_imputed_zero_questions})  # noqa
-            del self.data['d20']
+        if self.survey.get('survey_id') == self.rsi_survey_id:
+            if 'd20' in self.data:
+                self.data.update({k: '0' for k in self.rsi_turnover_questions})  # noqa
+                del self.data['d20']
+
+        if self.survey.get('survey_id') in [self.rsi_survey_id, self.qbs_survey_id]:
+            if 'd50' in self.data:
+                self.data.update({k: '0' for k in self.employee_questions})  # noqa
+                del self.data['d50']
 
     def preprocess_comments(self):
         """147 or any 146x indicates a special comment type that should not be shown
