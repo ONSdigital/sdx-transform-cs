@@ -11,6 +11,7 @@ logger = logging.getLogger(__name__)
 class PCKTransformer:
     comments_questions = ['147', '146a', '146b', '146c', '146d', '146e', '146f', '146g', '146h']
     rsi_currency_questions = ["20", "21", "22", "23", "24", "25", "26", "27"]
+    rsi_imputed_zero_questions = ["20", "21", "22", "23", "24", "25", "26"]
 
     form_types = {
         "023": {
@@ -127,6 +128,14 @@ class PCKTransformer:
                 for k, v in self.data.items()  # noqa
                     if k in self.rsi_currency_questions})  # noqa
 
+    def impute_zero_values(self):
+        """For RSI and QBS Surveys, impute breakdown values as zero if the total
+        provided was zero.
+        """
+        if self.survey.get('survey_id') == self.rsi_survey_id and 'd20' in self.data:
+            self.data.update({k: '0' for k in self.rsi_imputed_zero_questions})  # noqa
+            del self.data['d20']
+
     def preprocess_comments(self):
         """147 or any 146x indicates a special comment type that should not be shown
         in pck, but in image. Additionally should set 146 if unset.
@@ -148,6 +157,7 @@ class PCKTransformer:
         except KeyError:
             logger.info("Missing metadata")
         self.round_currency_values()
+        self.impute_zero_values()
         answers = self.preprocess_comments()
 
         self.form_questions, self.form_question_types = self.get_form_questions()
