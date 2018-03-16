@@ -10,8 +10,8 @@ logger = logging.getLogger(__name__)
 
 class PCKTransformer:
     comments_questions = ['147', '146a', '146b', '146c', '146d', '146e', '146f', '146g', '146h']
-    rsi_currency_questions = ["20", "21", "22", "23", "24", "25", "26", "27"]
     rsi_turnover_questions = ["20", "21", "22", "23", "24", "25", "26"]
+    rsi_currency_questions = rsi_turnover_questions + ["27"]
     employee_questions = ["50", "51", "52", "53", "54"]
 
     form_types = {
