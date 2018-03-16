@@ -1,2 +1,2 @@
 ignore:
-  - "tests/pck/*.pck
+  - "tests/pck/*.pck"
