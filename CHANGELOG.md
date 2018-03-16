@@ -1,4 +1,5 @@
 ### Unreleased
+  - Impute zero values for RSI and QBS total questions when the respondent has confirmed they are zero
 
 ### 3.1.0 2018-02-20
   - Changes to the MWSS survey.  Question text and format changes in the schema. Also, questions beginning 90 and 190 aggregate to 90 in the downstream file.  Questions 91-97 and 191-197 no longer need to be included in the aggregation.
