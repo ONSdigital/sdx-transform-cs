@@ -1,0 +1,22 @@
+{
+  "type": "uk.gov.ons.edc.eq:surveyresponse",
+  "version": "0.0.1",
+  "origin": "uk.gov.ons.edc.eq",
+  "survey_id": "139",
+  "collection": {
+    "exercise_sid": "hfjdskf",
+    "instrument_id": "0001",
+    "period": "1604"
+  },
+  "submitted_at": "2016-03-12T13:01:26Z",
+  "metadata": {
+    "user_id": "789473423",
+    "ru_ref": "12345678901A",
+    "ref_period_start_date": "2016-04-01",
+    "ref_period_end_date": "2016-10-31"
+  },
+  "data": {
+    "50": "0",
+    "d50": "Yes"
+  }
+}
