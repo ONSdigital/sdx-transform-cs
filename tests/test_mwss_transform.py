@@ -778,6 +778,69 @@ class TransformTests(unittest.TestCase):
         return_value = MWSSTransformer.transform({"220w5": "25"})
         self.assertIs(True, return_value["220"])
 
+    def test_imputed_zero_values_weekly(self):
+        """
+        Breakdown figures (60, 70, 80) are imputed with zero when the respondent
+        has confirmed the total (50) is zero.
+        """
+        return_value = MWSSTransformer.transform({"d50": "Yes"})
+        self.assertEqual(0, return_value["50"])
+        self.assertEqual(0, return_value["60"])
+        self.assertEqual(0, return_value["70"])
+        self.assertEqual(0, return_value["80"])
+
+    def test_imputed_zero_values_fortnightly(self):
+        """
+        Breakdown figures (60, 70, 80) are imputed with zero when the respondent
+        has confirmed the total (50f) is zero.
+        """
+        return_value = MWSSTransformer.transform({"d50f": "Yes"})
+        self.assertEqual(0, return_value["50"])
+        self.assertEqual(0, return_value["60"])
+        self.assertEqual(0, return_value["70"])
+        self.assertEqual(0, return_value["80"])
+
+    def test_imputed_zero_values_weekly_and_fortnightly(self):
+        """
+        Breakdown figures (60, 70, 80) are imputed with zero when the respondent
+        has confirmed the totals (50, 50f) are zero.
+        """
+        return_value = MWSSTransformer.transform({"d50": "Yes", "d50f": "Yes"})
+        self.assertEqual(0, return_value["50"])
+        self.assertEqual(0, return_value["60"])
+        self.assertEqual(0, return_value["70"])
+        self.assertEqual(0, return_value["80"])
+
+    def test_imputed_zero_values_monthly(self):
+        """
+        Breakdown figures (171, 181) are imputed with zero when the respondent
+        has confirmed the total (151) is zero.
+        """
+        return_value = MWSSTransformer.transform({"d151": "Yes"})
+        self.assertEqual(0, return_value["151"])
+        self.assertEqual(0, return_value["171"])
+        self.assertEqual(0, return_value["181"])
+
+    def test_imputed_zero_values_fourweekly(self):
+        """
+        Breakdown figures (172, 182) are imputed with zero when the respondent
+        has confirmed the total (152) is zero.
+        """
+        return_value = MWSSTransformer.transform({"d152": "Yes"})
+        self.assertEqual(0, return_value["152"])
+        self.assertEqual(0, return_value["172"])
+        self.assertEqual(0, return_value["182"])
+
+    def test_imputed_zero_values_fiveweekly(self):
+        """
+        Breakdown figures (173, 183) are imputed with zero when the respondent
+        has confirmed the total (153) is zero.
+        """
+        return_value = MWSSTransformer.transform({"d153": "Yes"})
+        self.assertEqual(0, return_value["153"])
+        self.assertEqual(0, return_value["173"])
+        self.assertEqual(0, return_value["183"])
+
 
 class BatchFileTests(unittest.TestCase):
 

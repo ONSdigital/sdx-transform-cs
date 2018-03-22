@@ -102,6 +102,19 @@ class MWSSTransformer(Transformer):
             if i is not None
         ))
         mandatory = set([Decimal("130"), Decimal("131"), Decimal("132")])
+
+        if 'd50' in data or 'd50f' in data:
+            mandatory.update([Decimal("50"), Decimal("60"), Decimal("70"), Decimal("80")])
+
+        if 'd151' in data:
+            mandatory.update([Decimal("151"), Decimal("171"), Decimal("181")])
+
+        if 'd152' in data:
+            mandatory.update([Decimal("152"), Decimal("172"), Decimal("182")])
+
+        if 'd153' in data:
+            mandatory.update([Decimal("153"), Decimal("173"), Decimal("183")])
+
         return OrderedDict(
             (question_id, funct(question_id, data, default, survey))
             for question_id, (default, funct) in MWSSTransformer.ops().items()
