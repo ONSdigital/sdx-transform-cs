@@ -1,4 +1,6 @@
 ### Unreleased
+
+### 3.3.0 2018-03-26
   - Impute zero values for MWSS gross pay breakdown questions when the respondent has confirmed they are zero
 
 ### 3.2.0 2018-03-22
