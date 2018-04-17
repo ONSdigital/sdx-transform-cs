@@ -6,113 +6,86 @@ from collections import OrderedDict, defaultdict
 import pkg_resources
 
 from transform.transformers.cs_formatter import CSFormatter
-from transform.transformers.MBSTransformer import MBSTransformer
+from transform.transformers import MBSTransformer
 from transform.transformers.survey import Survey
 
 
 class LogicTests(unittest.TestCase):
 
+    response = {
+        "origin": "uk.gov.ons.edc.eq",
+        "survey_id": "134",
+        "tx_id": "40e659ec-013f-4993-9a31-ec1e0ad37888",
+        "data": {
+            "11": "13/02/2017",
+            "12": "14/03/2018",
+            "146a": "Yes",
+            "146b": "In-store / online promotions",
+            "146c": "Special events (e.g. sporting events)",
+            "146d": "Calendar events (e.g. Christmas, Easter, Bank Holiday)",
+            "146e": "Weather",
+            "146f": "Store closures",
+            "146g": "Store openings",
+            "146h": "Other",
+            "40": "100234",
+            "49": "150000",
+            "90": "2900",
+            "50": "12",
+            "51": "1",
+            "52": "2",
+            "53": "3",
+            "54": "4",
+        },
+        "type": "uk.gov.ons.edc.eq:surveyresponse",
+        "version": "0.0.1",
+        "metadata": {
+            "user_id": "K5O86M2NU1",
+            "ru_ref": "12346789012A"
+        },
+        "submitted_at": "2017-03-01T14:25:46.101447+00:00",
+        "collection": {
+            "period": "201605",
+            "exercise_sid": "82R1VDWN74",
+            "instrument_id": "0005"
+        }
+    }
+
+    mbs_transformer = MBSTransformer(response)
+    transformed_data = mbs_transformer.transform()
+
     def test_reporting_period_from(self):
         """
         QId 11 specifies the date the reporting period starts.
         """
-
-        _, funct = MBSTransformer.ops()["11"]
-
-        return_value = funct("11", {"11", "2017-02-13"}, datetime.date.today())
-
-        self.assertEqual(13, return_value[0].day)
-        self.assertEqual(2, return_value[0].month)
-        self.assertEqual(2017, return_value[0].year)
-
-    def test_reporting_period_from_failure_returns_default(self):
-        """
-        QId 11 has a default of today's date.
-        """
-
-        _, funct = MBSTransformer.ops()["11"]
-
-        return_value = funct("11", {"11", ""}, datetime.date.today())
-
-        self.assertEqual(datetime.date.today().day, return_value[0].day)
-        self.assertEqual(datetime.date.today().month, return_value[0].month)
-        self.assertEqual(datetime.date.today().year, return_value[0].year)
+        self.assertEqual(13, self.transformed_data['11'].day)
+        self.assertEqual(2, self.transformed_data['11'].month)
+        self.assertEqual(2017, self.transformed_data['11'].year)
 
     def test_reporting_period_to(self):
         """
         QId 12 specifies the date the reporting period ends.
         """
-
-        _, funct = MBSTransformer.ops()["12"]
-
-        return_value = funct("12", {"12", "2018-03-14"}, datetime.date.today())
-
-        self.assertEqual(14, return_value[0].day)
-        self.assertEqual(3, return_value[0].month)
-        self.assertEqual(2018, return_value[0].year)
-
-    def test_reporting_period_to_failure_returns_default(self):
-        """
-        QId 12 has a default of today's date.
-        """
-
-        _, funct = MBSTransformer.ops()["11"]
-
-        return_value = funct("11", {"11", ""}, datetime.date.today())
-
-        self.assertEqual(datetime.date.today().day, return_value[0].day)
-        self.assertEqual(datetime.date.today().month, return_value[0].month)
-        self.assertEqual(datetime.date.today().year, return_value[0].year)
+        self.assertEqual(13, self.transformed_data['11'].day)
+        self.assertEqual(2, self.transformed_data['11'].month)
+        self.assertEqual(2017, self.transformed_data['11'].year)
 
     def test_turnover_radio(self):
         """
         QId 146a contributes to 146.
         """
+        self.assertEqual(self.transformed_data['146'], 1)
 
-        _, funct = MBSTransformer.ops()["146"]
-        return_value = funct("146", {"146a": ""}, True)
-        self.assertFalse(return_value)
+        no_turnover_response = dict.copy(self.response)
+        no_turnover_response['data']['146a'] = 'No'
+        no_turnover_transformed = MBSTransformer(no_turnover_response).transform()
 
-        return_value = funct("146", {"146a": "No"}, True)
-        self.assertFalse(return_value)
-
-        return_value = funct("146", {"146a": "Yes"}, False)
-        self.assertTrue(return_value)
-
-    def test_turnover_checkboxes(self):
-        """
-        QIds 146b - 146h are checkboxes and will return various strings when
-        checked. They all aggregate to 146.
-        """
-
-        _, funct = MBSTransformer.ops()["146"]
-        for question_id in ("146b", "146c", "146d", "146e", "146f", "146g", "146h"):
-            with self.subTest(qid=question_id):
-                return_value = funct("146", {question_id: ""}, True)
-                self.assertFalse(return_value)
-
-                return_value = funct("146", {question_id: "Any other string"}, False)
-                self.assertTrue(return_value)
-
-    def test_turnover_textarea(self):
-        """
-        QId 146 is a free text area.
-        """
-
-        _, funct = MBSTransformer.ops()["146"]
-        return_value = funct("146", {"146": ""}, True)
-        self.assertFalse(return_value)
-
-        return_value = funct("146", {"146": "Any other string"}, False)
-        self.assertTrue(return_value)
+        self.assertEqual(no_turnover_transformed['146'], 2)
 
     def test_turnover_excluding_vat(self):
         """
         QId 40 returns an integer.
         """
-        _, funct = MBSTransformer.ops()["40"]
-        return_value = funct("40", {"40": "100234"}, 0)
-        self.assertEqual(return_value, 100234)
+        self.assertEqual(self.transformed_data['40'], 100000)
 
     def test_turnover_excluding_vat_default(self):
         """
