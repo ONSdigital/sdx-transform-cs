@@ -1,22 +1,21 @@
 import datetime
+import decimal
 import json
+import logging
 import os
 from collections import namedtuple
 from decimal import ROUND_HALF_UP, Decimal
-import logging
-
 from transform.settings import (
     SDX_FTP_DATA_PATH, SDX_FTP_IMAGE_PATH, SDX_FTP_RECEIPT_PATH, SDX_RESPONSE_JSON_PATH
 )
-
+from transform.transformers.cs_formatter import CSFormatter
 from transform.transformers.survey import Survey
 from transform.transformers.transformer import ImageTransformer
-from transform.transformers.cs_formatter import CSFormatter
-
-
-__doc__ = """Transform MBS survey data into formats required downstream."""
 
 logger = logging.getLogger(__name__)
+
+# Set the rounding contect for Decimal objects to ROUND_HALF_UP
+decimal.getcontext().rounding = ROUND_HALF_UP
 
 
 class MBSTransformer():
@@ -89,22 +88,34 @@ class MBSTransformer():
         else:
             return ids
 
+    def round_mbs(self, value):
+        """MBS rounding is done on a ROUND_HALF_UP basis and values are divided by 1000 for the pck"""
+        return Decimal(round(Decimal(float(value))) / 1000).quantize(1)
+
     def transform(self):
         """Perform a transform on survey data."""
 
-        return {
+        if self.response["data"].get("d50") == "Yes":
+            employee_totals = {"51": 0, "52": 0, "53": 0, "54": 0}
+        else:
+            employee_totals = {
+                "51": self.response["data"].get("51"),
+                "52": self.response["data"].get("52"),
+                "53": self.response["data"].get("53"),
+                "54": self.response["data"].get("54"),
+            }
+
+        transformed_data = {
             "146": 1 if self.response["data"].get("146a") == "Yes" else 2,
-            "11": Survey.parse_timestamp(self.response["data"].get("11")),
-            "12": Survey.parse_timestamp(self.response["data"].get("12")),
-            "40": Decimal(self.response["data"].get("40")).quantize(Decimal(-3), rounding=ROUND_HALF_UP),
-            "49": Decimal(self.response["data"].get("40")).quantize(Decimal(-3), rounding=ROUND_HALF_UP),
-            "90": Decimal(self.response["data"].get("40")).quantize(Decimal(-3), rounding=ROUND_HALF_UP),
+            "11": Survey.parse_timestamp(self.response["data"].get("11", 0)),
+            "12": Survey.parse_timestamp(self.response["data"].get("12", 0)),
+            "40": self.round_mbs(self.response["data"].get("40")),
+            "49": self.round_mbs(self.response["data"].get("49")),
+            "90": self.round_mbs(self.response["data"].get("90")),
             "50": self.response["data"].get("50"),
-            "51": self.response["data"].get("51"),
-            "52": self.response["data"].get("52"),
-            "53": self.response["data"].get("53"),
-            "54": self.response["data"].get("54"),
         }
+
+        return {**employee_totals, **transformed_data}
 
     def create_zip(self, img_seq=None):
         """Perform transformation on the survey data
