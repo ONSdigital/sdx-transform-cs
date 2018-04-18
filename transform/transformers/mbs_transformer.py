@@ -55,6 +55,12 @@ class MBSTransformer():
             base_image_path=SDX_FTP_IMAGE_PATH,
         )
 
+    def _merge_dicts(self, x, y):
+        """Makes it possible to merge two dicts on Python 3.4."""
+        z = x.copy()
+        z.update(y)
+        return z
+
     def get_identifiers(self, batch_nr=0, seq_nr=0):
         """Parse common metadata from the survey.
 
@@ -115,7 +121,7 @@ class MBSTransformer():
             "50": self.response["data"].get("50"),
         }
 
-        return {**employee_totals, **transformed_data}
+        return self._merge_dicts(transformed_data, employee_totals)
 
     def create_zip(self, img_seq=None):
         """Perform transformation on the survey data
