@@ -1,6 +1,7 @@
 import unittest
 
 from transform.transformers import MBSTransformer
+from transform.transformers.cs_formatter import CSFormatter
 
 
 class LogicTests(unittest.TestCase):
@@ -67,9 +68,9 @@ class LogicTests(unittest.TestCase):
         """
         QId 12 specifies the date the reporting period ends.
         """
-        self.assertEqual(13, self.transformed_data["11"].day)
-        self.assertEqual(2, self.transformed_data["11"].month)
-        self.assertEqual(2017, self.transformed_data["11"].year)
+        self.assertEqual(14, self.transformed_data["12"].day)
+        self.assertEqual(3, self.transformed_data["12"].month)
+        self.assertEqual(2018, self.transformed_data["12"].year)
 
     def test_turnover_radio(self):
         """
@@ -196,3 +197,61 @@ class LogicTests(unittest.TestCase):
         QId 54 defaults to 0 if 'd50' is 'Yes'.
         """
         self.assertEqual(self.transformed_default_data["54"], 0)
+
+
+class BatchFileTests(unittest.TestCase):
+
+    def test_pck_form_header(self):
+        """
+        Test package form header
+        """
+        form_id = 'MB65B'
+        ru_ref = 49900108249
+        check = "D"
+        period = "1704"
+        return_value = CSFormatter._pck_form_header(form_id, ru_ref, check, period)
+        self.assertEqual("MB65B:49900108249D:1704", return_value)
+
+    def test_load_survey(self):
+        """
+        Tests if load data passes if survey id is 009
+        """
+
+        response = {
+            "survey_id": "009",
+            "tx_id": "27923934-62de-475c-bc01-433c09fd38b8",
+            "collection": {
+                "instrument_id": "0255",
+                "period": "201704"
+            },
+            "metadata": {
+                "user_id": "123456789",
+                "ru_ref": "12345678901A"
+            }
+        }
+
+        transformer = MBSTransformer(response)
+        ids = transformer.get_identifiers()
+        self.assertIsInstance(ids, transformer.Identifiers)
+        self.assertIsNotNone(ids)
+
+    def test_load_survey_miss(self):
+        """
+        Tests if load data is missed if survey id is not 009
+        """
+        response = {
+            "survey_id": "127",
+            "tx_id": "27923934-62de-475c-bc01-433c09fd38b8",
+            "collection": {
+                "instrument_id": "0001",
+                "period": "201704"
+            },
+            "metadata": {
+                "user_id": "123456789",
+                "ru_ref": "12345678901A"
+            }
+        }
+
+        transformer = MBSTransformer(response)
+        ids = transformer.get_identifiers()
+        self.assertIsNone(ids)

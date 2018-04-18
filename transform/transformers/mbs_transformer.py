@@ -5,14 +5,16 @@ import logging
 import os
 from collections import namedtuple
 from decimal import ROUND_HALF_UP, Decimal
-from transform.settings import (
-    SDX_FTP_DATA_PATH, SDX_FTP_IMAGE_PATH, SDX_FTP_RECEIPT_PATH, SDX_RESPONSE_JSON_PATH
-)
+
+from structlog import wrap_logger
+
+from transform.settings import (SDX_FTP_DATA_PATH, SDX_FTP_IMAGE_PATH,
+                                SDX_FTP_RECEIPT_PATH, SDX_RESPONSE_JSON_PATH)
 from transform.transformers.cs_formatter import CSFormatter
 from transform.transformers.survey import Survey
 from transform.transformers.transformer import ImageTransformer
 
-logger = logging.getLogger(__name__)
+logger = wrap_logger(logging.getLogger(__name__))
 
 # Set the rounding contect for Decimal objects to ROUND_HALF_UP
 decimal.getcontext().rounding = ROUND_HALF_UP
@@ -21,32 +23,32 @@ decimal.getcontext().rounding = ROUND_HALF_UP
 class MBSTransformer():
     """Perform the transforms and formatting for the MBS survey."""
 
+    Identifiers = namedtuple(
+        "Identifiers",
+        [
+            "batch_nr",
+            "seq_nr",
+            "ts",
+            "tx_id",
+            "survey_id",
+            "inst_id",
+            "user_ts",
+            "user_id",
+            "ru_ref",
+            "ru_check",
+            "period",
+        ],
+    )
+
+
     def __init__(self, response, seq_nr=0):
 
         self.response = response
 
-        self.Identifiers = namedtuple(
-            "Identifiers",
-            [
-                "batch_nr",
-                "seq_nr",
-                "ts",
-                "tx_id",
-                "survey_id",
-                "inst_id",
-                "user_ts",
-                "user_id",
-                "ru_ref",
-                "ru_check",
-                "period",
-            ],
-        )
-
         self.ids = self.get_identifiers(seq_nr=seq_nr)
 
-        self.survey = "../surveys/{survey_id}.{instrument_id}.json".format(
-            survey_id=self.Identifiers.survey_id, instrument_id=self.Identifiers.inst_id
-        )
+        with open("./transform/surveys/{survey_id}.{instrument_id}.json".format(survey_id=getattr(self.ids, 'survey_id'), instrument_id=getattr(self.ids, 'inst_id'))) as fp:
+            self.survey = json.load(fp)
 
         self.image_transformer = ImageTransformer(
             logger,
@@ -55,6 +57,7 @@ class MBSTransformer():
             sequence_no=self.ids.seq_nr,
             base_image_path=SDX_FTP_IMAGE_PATH,
         )
+
 
     def _merge_dicts(self, x, y):
         """Makes it possible to merge two dicts on Python 3.4."""
@@ -67,7 +70,7 @@ class MBSTransformer():
 
         Return a named tuple which code can use to access the various ids and discriminators.
 
-        :param dict data:   A survey reply.
+        :param dict data: A survey reply.
         :param int batch_nr: A batch number for the reply.
         :param int seq_nr: An image sequence number for the reply.
 
@@ -127,49 +130,27 @@ class MBSTransformer():
     def create_zip(self, img_seq=None):
         """Perform transformation on the survey data
         and pack the output into a zip file exposed by the image transformer
-
         """
 
-        data = self.transform()
-
-        id_dict = dict(self.ids)
+        id_dict = self.ids._asdict()
 
         pck_name = CSFormatter.pck_name(id_dict["survey_id"], id_dict["seq_nr"])
 
-        pck = CSFormatter.get_pck(
-            data,
-            id_dict["inst_id"],
-            id_dict["ru_ref"],
-            id_dict["ru_check"],
-            id_dict["period"],
-        )
+        pck = CSFormatter.get_pck(self.transform(), id_dict["inst_id"], id_dict["ru_ref"], id_dict["ru_check"], id_dict["period"])
 
         idbr_name = CSFormatter.idbr_name(id_dict["user_ts"], id_dict["seq_nr"])
 
-        idbr = CSFormatter.get_idbr(
-            id_dict["survey_id"],
-            id_dict["ru_ref"],
-            id_dict["ru_check"],
-            id_dict["period"],
-        )
+        idbr = CSFormatter.get_idbr(id_dict["survey_id"], id_dict["ru_ref"], id_dict["ru_check"], id_dict["period"])
 
-        response_json_name = CSFormatter.response_json_name(
-            id_dict["survey_id"], id_dict["seq_nr"]
-        )
+        response_json_name = CSFormatter.response_json_name(id_dict["survey_id"], id_dict["seq_nr"])
 
-        self.image_transformer.zip.append(
-            os.path.join(SDX_FTP_DATA_PATH, pck_name), pck
-        )
-        self.image_transformer.zip.append(
-            os.path.join(SDX_FTP_RECEIPT_PATH, idbr_name), idbr
-        )
+        self.image_transformer.zip.append(os.path.join(SDX_FTP_DATA_PATH, pck_name), pck)
+        self.image_transformer.zip.append(os.path.join(SDX_FTP_RECEIPT_PATH, idbr_name), idbr)
 
         self.image_transformer.get_zipped_images(img_seq)
 
-        self.image_transformer.zip.append(
-            os.path.join(SDX_RESPONSE_JSON_PATH, response_json_name),
-            json.dumps(self.response),
-        )
+        self.image_transformer.zip.append(os.path.join(SDX_RESPONSE_JSON_PATH, response_json_name),
+                                          json.dumps(self.response))
 
     def get_zip(self):
         self.image_transformer.zip.rewind()
