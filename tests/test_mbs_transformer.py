@@ -12,7 +12,8 @@ class LogicTests(unittest.TestCase):
         "data": {
             "11": "13/02/2017",
             "12": "14/03/2018",
-            "146a": "Yes",
+            "146": "Yes",
+            "146a": "Change in level of business activity",
             "146b": "In-store / online promotions",
             "146c": "Special events (e.g. sporting events)",
             "146d": "Calendar events (e.g. Christmas, Easter, Bank Holiday)",
@@ -72,12 +73,12 @@ class LogicTests(unittest.TestCase):
 
     def test_turnover_radio(self):
         """
-        QId 146a contributes to 146.
+        QId 146 returns Yes.
         """
         self.assertEqual(self.transformed_data["146"], 1)
 
         no_turnover_response = dict.copy(self.response)
-        no_turnover_response["data"]["146a"] = "No"
+        no_turnover_response["data"]["146"] = "No"
         no_turnover_transformed = MBSTransformer(no_turnover_response).transform()
 
         self.assertEqual(no_turnover_transformed["146"], 2)

@@ -47,6 +47,7 @@ class MBSTransformer():
         self.survey = "../surveys/{survey_id}.{instrument_id}.json".format(
             survey_id=self.Identifiers.survey_id, instrument_id=self.Identifiers.inst_id
         )
+
         self.image_transformer = ImageTransformer(
             logger,
             self.survey,
@@ -112,9 +113,9 @@ class MBSTransformer():
             }
 
         transformed_data = {
-            "146": 1 if self.response["data"].get("146a") == "Yes" else 2,
-            "11": Survey.parse_timestamp(self.response["data"].get("11", 0)),
-            "12": Survey.parse_timestamp(self.response["data"].get("12", 0)),
+            "146": 1 if self.response["data"].get("146") == "Yes" else 2,
+            "11": Survey.parse_timestamp(self.response["data"].get("11")),
+            "12": Survey.parse_timestamp(self.response["data"].get("12")),
             "40": self.round_mbs(self.response["data"].get("40")),
             "49": self.round_mbs(self.response["data"].get("49")),
             "90": self.round_mbs(self.response["data"].get("90")),
