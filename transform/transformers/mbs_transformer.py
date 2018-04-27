@@ -8,8 +8,12 @@ from decimal import ROUND_HALF_UP, Decimal
 
 from structlog import wrap_logger
 
-from transform.settings import (SDX_FTP_DATA_PATH, SDX_FTP_IMAGE_PATH,
-                                SDX_FTP_RECEIPT_PATH, SDX_RESPONSE_JSON_PATH)
+from transform.settings import (
+    SDX_FTP_DATA_PATH,
+    SDX_FTP_IMAGE_PATH,
+    SDX_FTP_RECEIPT_PATH,
+    SDX_RESPONSE_JSON_PATH,
+)
 from transform.transformers.cs_formatter import CSFormatter
 from transform.transformers.survey import Survey
 from transform.transformers.transformer import ImageTransformer
@@ -40,14 +44,22 @@ class MBSTransformer():
         ],
     )
 
-
     def __init__(self, response, seq_nr=0):
+
+        self.idbr_ref = {
+                "0255": "MB65B",
+            }
 
         self.response = response
 
         self.ids = self.get_identifiers(seq_nr=seq_nr)
 
-        with open("./transform/surveys/{survey_id}.{instrument_id}.json".format(survey_id=getattr(self.ids, 'survey_id'), instrument_id=getattr(self.ids, 'inst_id'))) as fp:
+        with open(
+            "./transform/surveys/{survey_id}.{instrument_id}.json".format(
+                survey_id=getattr(self.ids, "survey_id"),
+                instrument_id=getattr(self.ids, "inst_id"),
+            )
+        ) as fp:
             self.survey = json.load(fp)
 
         self.image_transformer = ImageTransformer(
@@ -57,7 +69,6 @@ class MBSTransformer():
             sequence_no=self.ids.seq_nr,
             base_image_path=SDX_FTP_IMAGE_PATH,
         )
-
 
     def _merge_dicts(self, x, y):
         """Makes it possible to merge two dicts on Python 3.4."""
@@ -91,6 +102,8 @@ class MBSTransformer():
             self.response.get("collection", {}).get("period"),
         )
 
+        print(ids)
+
         if any(i is None for i in ids):
             logger.warning("Missing an id from {0}".format(ids))
             return None
@@ -104,19 +117,27 @@ class MBSTransformer():
 
     def transform(self):
         """Perform a transform on survey data."""
+        employment_questions = ("51", "52", "53", "54")
 
         if self.response["data"].get("d50") == "Yes":
-            employee_totals = {"51": 0, "52": 0, "53": 0, "54": 0}
+            employee_totals = {q_id: 0 for q_id in employment_questions}
         else:
-            employee_totals = {
-                "51": self.response["data"].get("51"),
-                "52": self.response["data"].get("52"),
-                "53": self.response["data"].get("53"),
-                "54": self.response["data"].get("54"),
-            }
+            employee_totals = {}
+            for q_id in employment_questions:
+
+                # QIDSs 51 - 54 aren't compulsory. If a value isn't present,
+                # then it doesn't need to go in the PCK file.
+
+                try:
+                    employee_totals[q_id] = int(self.response["data"].get(q_id))
+                except TypeError:
+                    logger.exception(
+                        "No answer supplied for {}. Skipping.".format(q_id)
+                    )
+
 
         transformed_data = {
-            "146": 1 if self.response["data"].get("146") == "Yes" else 2,
+            "146": True if self.response["data"].get("146") == "Yes" else False,
             "11": Survey.parse_timestamp(self.response["data"].get("11")),
             "12": Survey.parse_timestamp(self.response["data"].get("12")),
             "40": self.round_mbs(self.response["data"].get("40")),
@@ -135,22 +156,41 @@ class MBSTransformer():
         id_dict = self.ids._asdict()
 
         pck_name = CSFormatter.pck_name(id_dict["survey_id"], id_dict["seq_nr"])
-
-        pck = CSFormatter.get_pck(self.transform(), id_dict["inst_id"], id_dict["ru_ref"], id_dict["ru_check"], id_dict["period"])
+        transformed_data = self.transform()
+        pck = CSFormatter.get_pck(
+            transformed_data,
+            self.idbr_ref[self.ids.inst_id],
+            id_dict["ru_ref"],
+            id_dict["ru_check"],
+            id_dict["period"],
+        )
 
         idbr_name = CSFormatter.idbr_name(id_dict["user_ts"], id_dict["seq_nr"])
 
-        idbr = CSFormatter.get_idbr(id_dict["survey_id"], id_dict["ru_ref"], id_dict["ru_check"], id_dict["period"])
+        idbr = CSFormatter.get_idbr(
+            id_dict["survey_id"],
+            id_dict["ru_ref"],
+            id_dict["ru_check"],
+            id_dict["period"],
+        )
 
-        response_json_name = CSFormatter.response_json_name(id_dict["survey_id"], id_dict["seq_nr"])
+        response_json_name = CSFormatter.response_json_name(
+            id_dict["survey_id"], id_dict["seq_nr"]
+        )
 
-        self.image_transformer.zip.append(os.path.join(SDX_FTP_DATA_PATH, pck_name), pck)
-        self.image_transformer.zip.append(os.path.join(SDX_FTP_RECEIPT_PATH, idbr_name), idbr)
+        self.image_transformer.zip.append(
+            os.path.join(SDX_FTP_DATA_PATH, pck_name), pck
+        )
+        self.image_transformer.zip.append(
+            os.path.join(SDX_FTP_RECEIPT_PATH, idbr_name), idbr
+        )
 
         self.image_transformer.get_zipped_images(img_seq)
 
-        self.image_transformer.zip.append(os.path.join(SDX_RESPONSE_JSON_PATH, response_json_name),
-                                          json.dumps(self.response))
+        self.image_transformer.zip.append(
+            os.path.join(SDX_RESPONSE_JSON_PATH, response_json_name),
+            json.dumps(self.response),
+        )
 
     def get_zip(self):
         self.image_transformer.zip.rewind()

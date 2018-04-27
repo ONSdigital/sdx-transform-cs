@@ -205,7 +205,7 @@ class BatchFileTests(unittest.TestCase):
         """
         Test package form header
         """
-        form_id = 'MB65B'
+        form_id = "MB65B"
         ru_ref = 49900108249
         check = "D"
         period = "1704"
@@ -220,38 +220,11 @@ class BatchFileTests(unittest.TestCase):
         response = {
             "survey_id": "009",
             "tx_id": "27923934-62de-475c-bc01-433c09fd38b8",
-            "collection": {
-                "instrument_id": "0255",
-                "period": "201704"
-            },
-            "metadata": {
-                "user_id": "123456789",
-                "ru_ref": "12345678901A"
-            }
+            "collection": {"instrument_id": "0255", "period": "201704"},
+            "metadata": {"user_id": "123456789", "ru_ref": "12345678901A"},
         }
 
         transformer = MBSTransformer(response)
         ids = transformer.get_identifiers()
         self.assertIsInstance(ids, transformer.Identifiers)
         self.assertIsNotNone(ids)
-
-    def test_load_survey_miss(self):
-        """
-        Tests if load data is missed if survey id is not 009
-        """
-        response = {
-            "survey_id": "127",
-            "tx_id": "27923934-62de-475c-bc01-433c09fd38b8",
-            "collection": {
-                "instrument_id": "0001",
-                "period": "201704"
-            },
-            "metadata": {
-                "user_id": "123456789",
-                "ru_ref": "12345678901A"
-            }
-        }
-
-        transformer = MBSTransformer(response)
-        ids = transformer.get_identifiers()
-        self.assertIsNone(ids)

@@ -191,7 +191,7 @@ def common_software(sequence_no=1000, batch_number=0):
     try:
         if survey_id == "009":
             transformer = MBSTransformer(survey_response, sequence_no)
-        if survey_id == "134":
+        elif survey_id == "134":
             transformer = MWSSTransformer(survey_response, sequence_no, log=logger)
         else:
             transformer = CSTransformer(logger, survey, survey_response, batch_number, sequence_no)
