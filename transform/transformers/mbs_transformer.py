@@ -41,17 +41,15 @@ class MBSTransformer():
     def __init__(self, response, seq_nr=0):
 
         self.idbr_ref = {"0255": "MB65B"}
-
         self.response = response
-
         self.ids = self.get_identifiers(seq_nr=seq_nr)
 
-        with open(
-            "./transform/surveys/{}.{}.json".format(
-                self.ids["survey_id"],
-                self.ids["instrument_id"],
-            )
-        ) as fp:
+        survey_file = "./transform/surveys/{}.{}.json".format(
+            self.ids["survey_id"], self.ids["instrument_id"]
+        )
+
+        with open(survey_file) as fp:
+            logger.info("Loading {}".format(survey_file))
             self.survey = json.load(fp)
 
         self.image_transformer = ImageTransformer(
@@ -72,6 +70,9 @@ class MBSTransformer():
         :param int seq_nr: An image sequence number for the reply.
 
         """
+
+        logger.info("Parsing data from submission")
+
         ru_ref = self.response.get("metadata", {}).get("ru_ref", "")
         ts = datetime.datetime.now(datetime.timezone.utc)
         ids = {
@@ -81,7 +82,9 @@ class MBSTransformer():
             "tx_id": self.response.get("tx_id"),
             "survey_id": self.response.get("survey_id"),
             "instrument_id": self.response.get("collection", {}).get("instrument_id"),
-            "submitted_at": Survey.parse_timestamp(self.response.get("submitted_at", ts.isoformat())),
+            "submitted_at": Survey.parse_timestamp(
+                self.response.get("submitted_at", ts.isoformat())
+            ),
             "user_id": self.response.get("metadata", {}).get("user_id"),
             "ru_ref": "".join(i for i in ru_ref if i.isdigit()),
             "ru_check": ru_ref[-1] if ru_ref and ru_ref[-1].isalpha() else "",
@@ -89,7 +92,7 @@ class MBSTransformer():
         }
 
         if any(i is None for i in ids):
-            logger.warning("Missing an id from {0}".format(ids))
+            logger.error("Missing an id from {0}".format(ids))
             return None
 
         else:
@@ -100,8 +103,10 @@ class MBSTransformer():
         employment_questions = ("51", "52", "53", "54")
 
         if self.response["data"].get("d50") == "Yes":
+            logger.info("Setting default values to 0 for question codes 51:54")
             employee_totals = {q_id: 0 for q_id in employment_questions}
         else:
+            logger.info("d50 not yes. No default values set for question codes 51:54.")
             employee_totals = {}
             for q_id in employment_questions:
 
@@ -114,6 +119,11 @@ class MBSTransformer():
                     logger.exception(
                         "No answer supplied for {}. Skipping.".format(q_id)
                     )
+
+        logger.info(
+            "Transforming data for {}".format(self.ids["ru_ref"]),
+            tx_id=self.ids["tx_id"],
+        )
 
         transformed_data = {
             "146": True if self.response["data"].get("146") == "Yes" else False,
@@ -132,6 +142,8 @@ class MBSTransformer():
         and pack the output into a zip file exposed by the image transformer
         """
 
+        logger.info("Creating PCK", ru_ref=self.ids["ru_ref"])
+
         pck_name = CSFormatter.pck_name(self.ids["survey_id"], self.ids["seq_nr"])
         transformed_data = self.transform()
         pck = CSFormatter.get_pck(
@@ -142,8 +154,9 @@ class MBSTransformer():
             self.ids["period"],
         )
 
-        idbr_name = CSFormatter.idbr_name(self.ids["user_ts"], self.ids["seq_nr"])
+        logger.info("Creating IDBR receipt", ru_ref=self.ids["ru_ref"])
 
+        idbr_name = CSFormatter.idbr_name(self.ids["user_ts"], self.ids["seq_nr"])
         idbr = CSFormatter.get_idbr(
             self.ids["survey_id"],
             self.ids["ru_ref"],
