@@ -1,5 +1,6 @@
 import datetime
 
+
 class CSFormatter:
     """Formatter for common software systems.
 

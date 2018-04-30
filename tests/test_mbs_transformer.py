@@ -82,7 +82,7 @@ class LogicTests(unittest.TestCase):
         no_turnover_response["data"]["146"] = "No"
         no_turnover_transformed = MBSTransformer(no_turnover_response).transform()
 
-        self.assertEqual(no_turnover_transformed["146"], 2)
+        self.assertEqual(no_turnover_transformed["146"], False)
 
     def test_turnover_excluding_vat_rounds_down(self):
         """
@@ -130,13 +130,14 @@ class LogicTests(unittest.TestCase):
         """
         QId 51 returns an integer.
         """
-        self.assertEqual(self.transformed_data["51"], "1")
+        self.assertEqual(self.transformed_data["51"], 1)
 
     def test_q51_not_supplied_is_None(self):
         """
         QId 51 defaults to None if 'd50' is not 'Yes'.
         """
-        self.assertIsNone(self.transformed_no_default_data["51"])
+        with self.assertRaises(KeyError):
+            self.transformed_no_default_data["51"]
 
     def test_q51_default(self):
         """
@@ -148,13 +149,14 @@ class LogicTests(unittest.TestCase):
         """
         QId 52 returns an integer.
         """
-        self.assertEqual(self.transformed_data["52"], "2")
+        self.assertEqual(self.transformed_data["52"], 2)
 
     def test_q52_not_supplied_is_None(self):
         """
         QId 52 defaults to None if 'd50' is not 'Yes'.
         """
-        self.assertIsNone(self.transformed_no_default_data["52"])
+        with self.assertRaises(KeyError):
+            self.transformed_no_default_data["52"]
 
     def test_q52_default(self):
         """
@@ -166,13 +168,14 @@ class LogicTests(unittest.TestCase):
         """
         QId 53 returns an integer.
         """
-        self.assertEqual(self.transformed_data["53"], "3")
+        self.assertEqual(self.transformed_data["53"], 3)
 
     def test_q53_not_supplied_is_None(self):
         """
         QId 53 defaults to None if 'd50' is not 'Yes'.
         """
-        self.assertIsNone(self.transformed_no_default_data["53"])
+        with self.assertRaises(KeyError):
+            self.transformed_no_default_data["53"]
 
     def test_q53_default(self):
         """
@@ -184,13 +187,14 @@ class LogicTests(unittest.TestCase):
         """
         QId 54 returns an integer.
         """
-        self.assertEqual(self.transformed_data["54"], "4")
+        self.assertEqual(self.transformed_data["54"], 4)
 
     def test_q54_not_supplied_is_None(self):
         """
         QId 54 defaults to None if 'd50' is not 'Yes'.
         """
-        self.assertIsNone(self.transformed_no_default_data["54"])
+        with self.assertRaises(KeyError):
+            self.transformed_no_default_data["54"]
 
     def test_q54_default(self):
         """

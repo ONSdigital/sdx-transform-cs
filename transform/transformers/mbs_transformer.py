@@ -46,9 +46,7 @@ class MBSTransformer():
 
     def __init__(self, response, seq_nr=0):
 
-        self.idbr_ref = {
-                "0255": "MB65B",
-            }
+        self.idbr_ref = {"0255": "MB65B"}
 
         self.response = response
 
@@ -134,7 +132,6 @@ class MBSTransformer():
                     logger.exception(
                         "No answer supplied for {}. Skipping.".format(q_id)
                     )
-
 
         transformed_data = {
             "146": True if self.response["data"].get("146") == "Yes" else False,
