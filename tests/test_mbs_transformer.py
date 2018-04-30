@@ -8,7 +8,7 @@ class LogicTests(unittest.TestCase):
 
     response = {
         "origin": "uk.gov.ons.edc.eq",
-        "survey_id": "134",
+        "survey_id": "009",
         "tx_id": "40e659ec-013f-4993-9a31-ec1e0ad37888",
         "data": {
             "11": "13/02/2017",
@@ -36,7 +36,7 @@ class LogicTests(unittest.TestCase):
         "metadata": {"user_id": "K5O86M2NU1", "ru_ref": "12346789012A"},
         "submitted_at": "2017-03-01T14:25:46.101447+00:00",
         "collection": {
-            "period": "201605", "exercise_sid": "82R1VDWN74", "instrument_id": "0005"
+            "period": "201605", "exercise_sid": "82R1VDWN74", "instrument_id": "0255"
         },
     }
 
@@ -230,5 +230,5 @@ class BatchFileTests(unittest.TestCase):
 
         transformer = MBSTransformer(response)
         ids = transformer.get_identifiers()
-        self.assertIsInstance(ids, transformer.Identifiers)
+        self.assertIsInstance(ids, dict)
         self.assertIsNotNone(ids)

@@ -3,7 +3,6 @@ import decimal
 import json
 import logging
 import os
-from collections import namedtuple
 from decimal import ROUND_HALF_UP, Decimal
 
 from structlog import wrap_logger
@@ -27,23 +26,6 @@ decimal.getcontext().rounding = ROUND_HALF_UP
 class MBSTransformer():
     """Perform the transforms and formatting for the MBS survey."""
 
-    Identifiers = namedtuple(
-        "Identifiers",
-        [
-            "batch_nr",
-            "seq_nr",
-            "ts",
-            "tx_id",
-            "survey_id",
-            "inst_id",
-            "user_ts",
-            "user_id",
-            "ru_ref",
-            "ru_check",
-            "period",
-        ],
-    )
-
     @staticmethod
     def _merge_dicts(x, y):
         """Makes it possible to merge two dicts on Python 3.4."""
@@ -65,9 +47,9 @@ class MBSTransformer():
         self.ids = self.get_identifiers(seq_nr=seq_nr)
 
         with open(
-            "./transform/surveys/{survey_id}.{instrument_id}.json".format(
-                survey_id=getattr(self.ids, "survey_id"),
-                instrument_id=getattr(self.ids, "inst_id"),
+            "./transform/surveys/{}.{}.json".format(
+                self.ids["survey_id"],
+                self.ids["instrument_id"],
             )
         ) as fp:
             self.survey = json.load(fp)
@@ -76,7 +58,7 @@ class MBSTransformer():
             logger,
             self.survey,
             self.response,
-            sequence_no=self.ids.seq_nr,
+            sequence_no=self.ids["seq_nr"],
             base_image_path=SDX_FTP_IMAGE_PATH,
         )
 
@@ -92,21 +74,19 @@ class MBSTransformer():
         """
         ru_ref = self.response.get("metadata", {}).get("ru_ref", "")
         ts = datetime.datetime.now(datetime.timezone.utc)
-        ids = self.Identifiers(
-            batch_nr,
-            seq_nr,
-            ts,
-            self.response.get("tx_id"),
-            self.response.get("survey_id"),
-            self.response.get("collection", {}).get("instrument_id"),
-            Survey.parse_timestamp(self.response.get("submitted_at", ts.isoformat())),
-            self.response.get("metadata", {}).get("user_id"),
-            "".join(i for i in ru_ref if i.isdigit()),
-            ru_ref[-1] if ru_ref and ru_ref[-1].isalpha() else "",
-            self.response.get("collection", {}).get("period"),
-        )
-
-        print(ids)
+        ids = {
+            "batch_nr": batch_nr,
+            "seq_nr": seq_nr,
+            "ts": ts,
+            "tx_id": self.response.get("tx_id"),
+            "survey_id": self.response.get("survey_id"),
+            "instrument_id": self.response.get("collection", {}).get("instrument_id"),
+            "submitted_at": Survey.parse_timestamp(self.response.get("submitted_at", ts.isoformat())),
+            "user_id": self.response.get("metadata", {}).get("user_id"),
+            "ru_ref": "".join(i for i in ru_ref if i.isdigit()),
+            "ru_check": ru_ref[-1] if ru_ref and ru_ref[-1].isalpha() else "",
+            "period": self.response.get("collection", {}).get("period"),
+        }
 
         if any(i is None for i in ids):
             logger.warning("Missing an id from {0}".format(ids))
@@ -152,29 +132,27 @@ class MBSTransformer():
         and pack the output into a zip file exposed by the image transformer
         """
 
-        id_dict = self.ids._asdict()
-
-        pck_name = CSFormatter.pck_name(id_dict["survey_id"], id_dict["seq_nr"])
+        pck_name = CSFormatter.pck_name(self.ids["survey_id"], self.ids["seq_nr"])
         transformed_data = self.transform()
         pck = CSFormatter.get_pck(
             transformed_data,
             self.idbr_ref[self.ids.inst_id],
-            id_dict["ru_ref"],
-            id_dict["ru_check"],
-            id_dict["period"],
+            self.ids["ru_ref"],
+            self.ids["ru_check"],
+            self.ids["period"],
         )
 
-        idbr_name = CSFormatter.idbr_name(id_dict["user_ts"], id_dict["seq_nr"])
+        idbr_name = CSFormatter.idbr_name(self.ids["user_ts"], self.ids["seq_nr"])
 
         idbr = CSFormatter.get_idbr(
-            id_dict["survey_id"],
-            id_dict["ru_ref"],
-            id_dict["ru_check"],
-            id_dict["period"],
+            self.ids["survey_id"],
+            self.ids["ru_ref"],
+            self.ids["ru_check"],
+            self.ids["period"],
         )
 
         response_json_name = CSFormatter.response_json_name(
-            id_dict["survey_id"], id_dict["seq_nr"]
+            self.ids["survey_id"], self.ids["seq_nr"]
         )
 
         self.image_transformer.zip.append(
