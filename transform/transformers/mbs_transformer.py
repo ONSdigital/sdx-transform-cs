@@ -44,6 +44,18 @@ class MBSTransformer():
         ],
     )
 
+    @staticmethod
+    def _merge_dicts(x, y):
+        """Makes it possible to merge two dicts on Python 3.4."""
+        z = x.copy()
+        z.update(y)
+        return z
+
+    @staticmethod
+    def round_mbs(value):
+        """MBS rounding is done on a ROUND_HALF_UP basis and values are divided by 1000 for the pck"""
+        return Decimal(round(Decimal(float(value))) / 1000).quantize(1)
+
     def __init__(self, response, seq_nr=0):
 
         self.idbr_ref = {"0255": "MB65B"}
@@ -67,12 +79,6 @@ class MBSTransformer():
             sequence_no=self.ids.seq_nr,
             base_image_path=SDX_FTP_IMAGE_PATH,
         )
-
-    def _merge_dicts(self, x, y):
-        """Makes it possible to merge two dicts on Python 3.4."""
-        z = x.copy()
-        z.update(y)
-        return z
 
     def get_identifiers(self, batch_nr=0, seq_nr=0):
         """Parse common metadata from the survey.
@@ -108,10 +114,6 @@ class MBSTransformer():
 
         else:
             return ids
-
-    def round_mbs(self, value):
-        """MBS rounding is done on a ROUND_HALF_UP basis and values are divided by 1000 for the pck"""
-        return Decimal(round(Decimal(float(value))) / 1000).quantize(1)
 
     def transform(self):
         """Perform a transform on survey data."""
