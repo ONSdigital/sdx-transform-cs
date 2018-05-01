@@ -1,3 +1,6 @@
+import datetime
+
+
 class CSFormatter:
     """Formatter for common software systems.
 
@@ -70,6 +73,8 @@ class CSFormatter:
             return 1 if val else 2
         elif isinstance(val, str):
             return 1 if val else 0
+        elif isinstance(val, datetime.date):
+            return int(val.strftime('%d%m%y'))
         else:
             return val
 
