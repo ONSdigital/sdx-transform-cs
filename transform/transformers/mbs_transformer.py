@@ -148,7 +148,7 @@ class MBSTransformer():
         transformed_data = self.transform()
         pck = CSFormatter.get_pck(
             transformed_data,
-            self.idbr_ref[self.ids.inst_id],
+            self.idbr_ref[self.ids["instrument_id"]],
             self.ids["ru_ref"],
             self.ids["ru_check"],
             self.ids["period"],
@@ -156,7 +156,7 @@ class MBSTransformer():
 
         logger.info("Creating IDBR receipt", ru_ref=self.ids["ru_ref"])
 
-        idbr_name = CSFormatter.idbr_name(self.ids["user_ts"], self.ids["seq_nr"])
+        idbr_name = CSFormatter.idbr_name(self.ids["submitted_at"], self.ids["seq_nr"])
         idbr = CSFormatter.get_idbr(
             self.ids["survey_id"],
             self.ids["ru_ref"],
