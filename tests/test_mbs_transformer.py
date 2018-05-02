@@ -1,44 +1,33 @@
+import json
 import unittest
 
 from transform.transformers import MBSTransformer
 from transform.transformers.cs_formatter import CSFormatter
 
+class 0203LogicTests(unittest.TestCase):
 
-class LogicTests(unittest.TestCase):
+    with open('tests/replies/009.0203.json', 'r') as fp:
+        response = json.load(fp)
 
-    response = {
-        "origin": "uk.gov.ons.edc.eq",
-        "survey_id": "009",
-        "tx_id": "40e659ec-013f-4993-9a31-ec1e0ad37888",
-        "data": {
-            "11": "13/02/2017",
-            "12": "14/03/2018",
-            "146": "Yes",
-            "146a": "Change in level of business activity",
-            "146b": "In-store / online promotions",
-            "146c": "Special events (e.g. sporting events)",
-            "146d": "Calendar events (e.g. Christmas, Easter, Bank Holiday)",
-            "146e": "Weather",
-            "146f": "Store closures",
-            "146g": "Store openings",
-            "146h": "Other",
-            "40": "100499.49",
-            "49": "150500",
-            "90": "2900",
-            "50": "12",
-            "51": "1",
-            "52": "2",
-            "53": "3",
-            "54": "4",
-        },
-        "type": "uk.gov.ons.edc.eq:surveyresponse",
-        "version": "0.0.1",
-        "metadata": {"user_id": "K5O86M2NU1", "ru_ref": "12346789012A"},
-        "submitted_at": "2017-03-01T14:25:46.101447+00:00",
-        "collection": {
-            "period": "201605", "exercise_sid": "82R1VDWN74", "instrument_id": "0255"
-        },
-    }
+    transformed_data = MBSTransformer(response).transform()
+
+    def test_turnover_radio(self):
+        """
+        QId 146 returns Yes.
+        """
+        self.assertEqual(self.transformed_data["146"], 1)
+
+        no_response = dict.copy(self.response)
+        no_response["data"]["146"] = "No"
+        no_response_transformed = MBSTransformer(no_response).transform()
+
+        self.assertEqual(no_response_transformed["146"], False)
+
+
+class 0255LogicTests(unittest.TestCase):
+
+    with open('tests/replies/009.0255.json', 'r') as fp:
+        response = json.load(fp)
 
     transformed_data = MBSTransformer(response).transform()
 
