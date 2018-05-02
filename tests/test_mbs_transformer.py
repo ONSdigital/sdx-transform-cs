@@ -4,7 +4,7 @@ import unittest
 from transform.transformers import MBSTransformer
 from transform.transformers.cs_formatter import CSFormatter
 
-class 0203LogicTests(unittest.TestCase):
+class LogicTests0203(unittest.TestCase):
 
     with open('tests/replies/009.0203.json', 'r') as fp:
         response = json.load(fp)
@@ -24,7 +24,14 @@ class 0203LogicTests(unittest.TestCase):
         self.assertEqual(no_response_transformed["146"], False)
 
 
-class 0255LogicTests(unittest.TestCase):
+    def test_110(self):
+        """
+        QId 110 returns a whole number as a string.
+        """
+        self.assertEqual(self.transformed_data["110"], "256")
+
+
+class LogicTests0255(unittest.TestCase):
 
     with open('tests/replies/009.0255.json', 'r') as fp:
         response = json.load(fp)
