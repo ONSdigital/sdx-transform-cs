@@ -133,7 +133,7 @@ class LogicTests0255(unittest.TestCase):
         QId 51 defaults to None if 'd50' is not 'Yes'.
         """
         with self.assertRaises(KeyError):
-            self.transformed_no_default_data["51"]
+            _ = self.transformed_no_default_data["51"]
 
     def test_q51_default(self):
         """
@@ -152,7 +152,7 @@ class LogicTests0255(unittest.TestCase):
         QId 52 defaults to None if 'd50' is not 'Yes'.
         """
         with self.assertRaises(KeyError):
-            self.transformed_no_default_data["52"]
+            _ = self.transformed_no_default_data["52"]
 
     def test_q52_default(self):
         """
@@ -171,7 +171,7 @@ class LogicTests0255(unittest.TestCase):
         QId 53 defaults to None if 'd50' is not 'Yes'.
         """
         with self.assertRaises(KeyError):
-            self.transformed_no_default_data["53"]
+            _ = self.transformed_no_default_data["53"]
 
     def test_q53_default(self):
         """
@@ -190,7 +190,7 @@ class LogicTests0255(unittest.TestCase):
         QId 54 defaults to None if 'd50' is not 'Yes'.
         """
         with self.assertRaises(KeyError):
-            self.transformed_no_default_data["54"]
+            _ = self.transformed_no_default_data["54"]
 
     def test_q54_default(self):
         """
