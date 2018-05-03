@@ -44,7 +44,29 @@ class MBSTransformer():
 
     def __init__(self, response, seq_nr=0):
 
-        self.idbr_ref = {"0106": "T106G", "0255": "MB65B", "0203": "MB03B"}
+        self.idbr_ref = {
+            "0106": "T106G",
+            "0111": "T111G",
+            "0161": "T161G",
+            "0117": "T117G",
+            "0123": "T123G",
+            "0158": "T158G",
+            "0167": "T167G",
+            "0173": "T173G",
+            "0201": "MB01B",
+            "0202": "MB01B",
+            "0203": "MB03B",
+            "0204": "MB03B",
+            "0205": "MB15B",
+            "0216": "MB15B",
+            "0251": "MB51B",
+            "0253": "MB53B",
+            "0255": "MB65B",
+            "0817": "T817G",
+            "0823": "T823G",
+            "0867": "T867G",
+            "0873": "T873G",
+        }
 
         self.response = response
         self.ids = self.get_identifiers(seq_nr=seq_nr)
