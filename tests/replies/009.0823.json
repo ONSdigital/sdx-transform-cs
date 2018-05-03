@@ -1,0 +1,33 @@
+{
+    "case_id": "5b73299e-c2ea-4db8-8fdb-3c7cb61e4135",
+    "case_ref": "1000000000000001",
+    "collection": {
+        "exercise_sid": "Uc7D0mBx",
+        "instrument_id": "0823",
+        "period": "201605"
+    },
+    "data": {
+        "11": "01/01/2018",
+        "12": "01/04/2018",
+        "40": "1234",
+        "146": "Yes",
+        "146a": "Change in level of business activity",
+        "146c": "Special/calendar events",
+        "146f": "Currency effects (increase/decrease in the currency value)",
+        "146h": "Decreased activity because of St Patrick's day and the monumental crash of sterling.",
+        "d12": "No"
+    },
+    "flushed": false,
+    "metadata": {
+        "ref_period_end_date": "2018-04-01",
+        "ref_period_start_date": "2018-03-01",
+        "ru_ref": "12346789012A",
+        "user_id": "UNKNOWN"
+    },
+    "origin": "uk.gov.ons.edc.eq",
+    "submitted_at": "2018-04-27T08:42:51.300072+00:00",
+    "survey_id": "009",
+    "tx_id": "ba864feb-8763-41ff-a93f-04e791f0f5b1",
+    "type": "uk.gov.ons.edc.eq:surveyresponse",
+    "version": "0.0.1"
+}

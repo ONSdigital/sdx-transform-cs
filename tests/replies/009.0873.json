@@ -1,0 +1,36 @@
+{
+    "case_id": "446bc55a-6a09-43f3-8d18-b557f6417824",
+    "case_ref": "1000000000000001",
+    "collection": {
+        "exercise_sid": "789",
+        "instrument_id": "0873",
+        "period": "201605"
+    },
+    "data": {
+        "11": "01/03/2018",
+        "12": "26/03/2018",
+        "40": "1234",
+        "50": "12",
+        "51": "3",
+        "52": "4",
+        "53": "3",
+        "54": "2",
+        "146": "Yes",
+        "146d": "Weather",
+        "146h": "Bad weather reduced footfall.",
+        "d12": "No"
+    },
+    "flushed": false,
+    "metadata": {
+        "ref_period_end_date": "2018-04-01",
+        "ref_period_start_date": "2018-03-01",
+        "ru_ref": "12346789012A",
+        "user_id": "UNKNOWN"
+    },
+    "origin": "uk.gov.ons.edc.eq",
+    "submitted_at": "2018-04-27T07:31:46.639594+00:00",
+    "survey_id": "009",
+    "tx_id": "7132b976-5e41-4657-aa79-f1626d1aa011",
+    "type": "uk.gov.ons.edc.eq:surveyresponse",
+    "version": "0.0.1"
+}

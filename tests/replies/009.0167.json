@@ -1,0 +1,38 @@
+{
+    "collection": {
+        "exercise_sid": "XxsteeWv",
+        "instrument_id": "0167",
+        "period": "1704"
+    },
+    "data": {
+        "11": "13/02/2017",
+        "12": "14/03/2018",
+        "46": "99999",
+        "47": "12234",
+        "50": "24",
+        "51": "6",
+        "52": "3",
+        "53": "9",
+        "54": "6",
+        "146": "Test",
+        "146a": "Yes",
+        "146b": "In-store / online promotions",
+        "146c": "Special events (e.g. sporting events)",
+        "146d": "Calendar events (e.g. Christmas, Easter, Bank Holiday)",
+        "146e": "Weather",
+        "146f": "Store closures",
+        "146g": "Store openings",
+        "146h": "Other"
+    },
+    "flushed": false,
+    "metadata": {
+        "ru_ref": "49900108249D",
+        "user_id": "UNKNOWN"
+    },
+    "origin": "uk.gov.ons.edc.eq",
+    "submitted_at": "2017-07-05T14:49:33.448608+00:00",
+    "survey_id": "009",
+    "tx_id": "8b85f822-f6fe-4f23-b97d-dc48291cf6dc",
+    "type": "uk.gov.ons.edc.eq:surveyresponse",
+    "version": "0.0.1"
+}

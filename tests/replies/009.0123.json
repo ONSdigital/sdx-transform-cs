@@ -1,0 +1,36 @@
+{
+    "case_id": "cc0cf3e4-6438-4a29-9d7b-ec8567a4f67f",
+    "case_ref": "1000000000000001",
+    "collection": {
+        "exercise_sid": "vLCbbLTB",
+        "instrument_id": "0123",
+        "period": "201605"
+    },
+    "data": {
+        "42": "1000.00",
+        "43": "100.00",
+        "146": "Yes",
+        "146a": "Change in level of business activity",
+        "146b": "Maintenance/shutdowns",
+        "146c": "Special/calendar events",
+        "146d": "Weather",
+        "146e": "Price effects",
+        "146f": "Currency effects (increase/decrease in the currency value)",
+        "146g": "Other",
+        "146h": "This is a test comment",
+        "d12": "Yes"
+    },
+    "flushed": false,
+    "metadata": {
+        "ref_period_end_date": "2016-05-31",
+        "ref_period_start_date": "2016-05-01",
+        "ru_ref": "12346789012A",
+        "user_id": "UNKNOWN"
+    },
+    "origin": "uk.gov.ons.edc.eq",
+    "submitted_at": "2018-04-25T09:23:19.115569+00:00",
+    "survey_id": "009",
+    "tx_id": "6418b5e7-52a3-41d5-8333-561b8d14b89b",
+    "type": "uk.gov.ons.edc.eq:surveyresponse",
+    "version": "0.0.1"
+}
