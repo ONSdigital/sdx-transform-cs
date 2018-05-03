@@ -27,10 +27,12 @@ class MBSTransformer():
     """Perform the transforms and formatting for the MBS survey."""
 
     @staticmethod
-    def _merge_dicts(x, y):
-        """Makes it possible to merge two dicts on Python 3.4."""
-        z = x.copy()
-        z.update(y)
+    def _merge_dicts(*args):
+        """Makes it possible to merge any number of dicts on Python 3.4."""
+        z = args[0].copy()
+
+        for x in args:
+            z.update(x)
         return z
 
     @staticmethod
@@ -43,6 +45,9 @@ class MBSTransformer():
             return None
 
     def __init__(self, response, seq_nr=0):
+
+        self.employment_questions = ("51", "52", "53", "54")
+        self.turnover_questions = ("49",)
 
         self.idbr_ref = {
             "0106": "T106G",
@@ -125,27 +130,50 @@ class MBSTransformer():
         else:
             return ids
 
-    def transform(self):
-        """Perform a transform on survey data."""
-        employment_questions = ("51", "52", "53", "54")
-
+    def check_employee_totals(self):
+        """Populate qcode 51:54 based on d50"""
         if self.response["data"].get("d50") == "Yes":
             logger.info("Setting default values to 0 for question codes 51:54")
-            employee_totals = {q_id: 0 for q_id in employment_questions}
+            return {q_id: 0 for q_id in self.employment_questions}
         else:
             logger.info("d50 not yes. No default values set for question codes 51:54.")
             employee_totals = {}
-            for q_id in employment_questions:
 
+            for q_id in self.employment_questions:
                 # QIDSs 51 - 54 aren't compulsory. If a value isn't present,
                 # then it doesn't need to go in the PCK file.
-
                 try:
                     employee_totals[q_id] = int(self.response["data"].get(q_id))
                 except TypeError:
-                    logger.exception(
+                    logger.info(
                         "No answer supplied for {}. Skipping.".format(q_id)
                     )
+
+            return employee_totals
+
+    def check_turnover_totals(self):
+        """Populate qcode 49 based on d40"""
+        if self.response["data"].get("d40") == "Yes":
+            logger.info("Setting default value to 0 for question code 49")
+            return {q_id: 0 for q_id in self.turnover_questions}
+        else:
+            logger.info("d40 not yes. No default values set for question code 49.")
+            turnover_totals = {}
+
+            for q_id in self.turnover_questions:
+                try:
+                    turnover_totals[q_id] = int(self.response["data"].get(q_id))
+                except TypeError:
+                    logger.info(
+                        "No answer supplied for {}. Skipping.".format(q_id)
+                    )
+
+            return turnover_totals
+
+    def transform(self):
+        """Perform a transform on survey data."""
+        employee_totals = self.check_employee_totals()
+        turnover_totals = self.check_turnover_totals()
 
         logger.info(
             "Transforming data for {}".format(self.ids["ru_ref"]),
@@ -157,6 +185,10 @@ class MBSTransformer():
             "11": Survey.parse_timestamp(self.response["data"].get("11")),
             "12": Survey.parse_timestamp(self.response["data"].get("12")),
             "40": self.round_mbs(self.response["data"].get("40")),
+            "42": self.round_mbs(self.response["data"].get("42")),
+            "43": self.round_mbs(self.response["data"].get("43")),
+            "46": self.round_mbs(self.response["data"].get("46")),
+            "47": self.round_mbs(self.response["data"].get("47")),
             "49": self.round_mbs(self.response["data"].get("49")),
             "90": self.round_mbs(self.response["data"].get("90")),
             "50": self.response["data"].get("50"),
@@ -165,7 +197,7 @@ class MBSTransformer():
 
         return {
             k: v
-            for k, v in self._merge_dicts(transformed_data, employee_totals).items()
+            for k, v in self._merge_dicts(transformed_data, employee_totals, turnover_totals).items()
             if v is not None
         }
 
