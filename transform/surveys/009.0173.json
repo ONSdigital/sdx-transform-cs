@@ -1,0 +1,163 @@
+{
+    "title": "Monthly Business Survey",
+    "survey_id": "009",
+    "form_type": "0173",
+    "comments": "true",
+    "question_groups": [
+        {
+            "title": "Reporting Period",
+            "questions": [
+                {
+                    "title": "What are the dates of the period that you will be reporting for?",
+                    "text": "From",
+                    "question_id": "11",
+                    "number": "11",
+                    "type": "date"
+                },
+                {
+                    "title": "What are the dates of the period that you will be reporting for?",
+                    "text": "To",
+                    "question_id": "12",
+                    "number": "12",
+                    "type": "date"
+                }
+            ]
+        },
+        {
+            "title": "Commision and Fees",
+            "questions": [
+                {
+                    "text": "Total commission and fees excluding VAT",
+                    "question_id": "42",
+                    "number": "42",
+                    "type": "currency"
+                }
+            ]
+        },
+        {
+            "title": "Sales on own account and turnover from other activities",
+            "questions": [
+                {
+                    "text": "Total Sales on own account and turnover from other activities  excluding VAT",
+                    "question_id": "43",
+                    "number": "43",
+                    "type": "currency"
+                }
+            ]
+        },
+        {
+            "title": "Employees",
+            "questions": [
+                {
+                    "text": "Total number of employees",
+                    "question_id": "50",
+                    "number": "50"
+                },
+                {
+                    "text": "Male employees working more than 30 hours per week?",
+                    "question_id": "51",
+                    "number": "51"
+                },
+                {
+                    "text": "Male employees working less than 30 hours per week?",
+                    "question_id": "52",
+                    "number": "52"
+                },
+                {
+                    "text": "Female employees working more than 30 hours per week?",
+                    "question_id": "53",
+                    "number": "53"
+                },
+                {
+                    "text": "Female employees working less than 30 hours per week?",
+                    "question_id": "54",
+                    "number": "54"
+                }
+            ]
+        },
+        {
+            "title": "Changes in turnover",
+            "questions": [
+                {
+                    "text": "Did any significant changes occur to turnover?",
+                    "question_id": "146",
+                    "number": "146",
+                    "type": "radio",
+                    "options": [
+                        "Yes",
+                        "No"
+                    ]
+                },
+                {
+                    "text": "Did any significant changes occur to turnover?",
+                    "question_id": "146a",
+                    "number": "146a",
+                    "type": "checkbox",
+                    "options": [
+                        "Change in level of business activity"
+                    ]
+                },
+                {
+                    "text": "Did any significant changes occur to turnover?",
+                    "question_id": "146b",
+                    "number": "146b",
+                    "type": "checkbox",
+                    "options": [
+                        "Maintenance/shutdowns"
+                    ]
+                },
+                {
+                    "text": "Did any significant changes occur to turnover?",
+                    "question_id": "146c",
+                    "number": "146c",
+                    "type": "checkbox",
+                    "options": [
+                        "Special/calendar events"
+                    ]
+                },
+                {
+                    "text": "Did any significant changes occur to turnover?",
+                    "question_id": "146d",
+                    "number": "146d",
+                    "type": "checkbox",
+                    "options": [
+                        "Weather"
+                    ]
+                },
+                {
+                    "text": "Did any significant changes occur to turnover?",
+                    "question_id": "146e",
+                    "number": "146e",
+                    "type": "checkbox",
+                    "options": [
+                        "Price effects"
+                    ]
+                },
+                {
+                    "text": "Did any significant changes occur to turnover?",
+                    "question_id": "146f",
+                    "number": "146f",
+                    "type": "checkbox",
+                    "options": [
+                        "Currency effects (increase/decrease in the currency value)"
+                    ]
+                },
+                {
+                    "text": "Did any significant changes occur to turnover?",
+                    "question_id": "146g",
+                    "number": "146g",
+                    "type": "checkbox",
+                    "options": [
+                        "Other"
+                    ]
+                },
+                {
+                    "text": "Did any significant changes occur to turnover?",
+                    "question_id": "146h",
+                    "number": "146h",
+                    "type": "contains"
+                }
+            ]
+        }
+    ]
+}
