@@ -4,6 +4,7 @@ import unittest
 from transform.transformers import MBSTransformer
 from transform.transformers.cs_formatter import CSFormatter
 
+
 class LogicTests0203(unittest.TestCase):
 
     with open('tests/replies/009.0203.json', 'r') as fp:
@@ -22,7 +23,6 @@ class LogicTests0203(unittest.TestCase):
         no_response_transformed = MBSTransformer(no_response).transform()
 
         self.assertEqual(no_response_transformed["146"], False)
-
 
     def test_110(self):
         """
@@ -133,7 +133,7 @@ class LogicTests0255(unittest.TestCase):
         QId 51 defaults to None if 'd50' is not 'Yes'.
         """
         with self.assertRaises(KeyError):
-            _ = self.transformed_no_default_data["51"]
+            self.transformed_no_default_data["51"]
 
     def test_q51_default(self):
         """
@@ -152,7 +152,7 @@ class LogicTests0255(unittest.TestCase):
         QId 52 defaults to None if 'd50' is not 'Yes'.
         """
         with self.assertRaises(KeyError):
-            _ = self.transformed_no_default_data["52"]
+            self.transformed_no_default_data["52"]
 
     def test_q52_default(self):
         """
@@ -171,7 +171,7 @@ class LogicTests0255(unittest.TestCase):
         QId 53 defaults to None if 'd50' is not 'Yes'.
         """
         with self.assertRaises(KeyError):
-            _ = self.transformed_no_default_data["53"]
+            self.transformed_no_default_data["53"]
 
     def test_q53_default(self):
         """
@@ -190,7 +190,7 @@ class LogicTests0255(unittest.TestCase):
         QId 54 defaults to None if 'd50' is not 'Yes'.
         """
         with self.assertRaises(KeyError):
-            _ = self.transformed_no_default_data["54"]
+            self.transformed_no_default_data["54"]
 
     def test_q54_default(self):
         """
