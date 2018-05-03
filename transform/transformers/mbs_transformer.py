@@ -44,7 +44,7 @@ class MBSTransformer():
 
     def __init__(self, response, seq_nr=0):
 
-        self.idbr_ref = {"0255": "MB65B", "0203": "MB03B"}
+        self.idbr_ref = {"0106": "T106G", "0255": "MB65B", "0203": "MB03B"}
 
         self.response = response
         self.ids = self.get_identifiers(seq_nr=seq_nr)
