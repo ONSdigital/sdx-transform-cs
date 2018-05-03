@@ -1,0 +1,118 @@
+{
+    "title": "Monthly Business Survey",
+    "survey_id": "009",
+    "form_type": "0106",
+    "comments": "true",
+    "question_groups": [
+        {
+            "title": "Reporting Period",
+            "questions": [
+                {
+                    "title": "What are the dates of the period that you will be reporting for?",
+                    "text": "From",
+                    "question_id": "11",
+                    "number": "11",
+                    "type": "date"
+                },
+                {
+                    "title": "What are the dates of the period that you will be reporting for?",
+                    "text": "To",
+                    "question_id": "12",
+                    "number": "12",
+                    "type": "date"
+                }
+            ]
+        },
+        {
+            "title": "Total Turnover",
+            "questions": [
+                {
+                    "text": "Total turnover excluding VAT",
+                    "question_id": "40",
+                    "number": "40",
+                    "type": "currency"
+                }
+            ]
+        },
+        {
+            "title": "Changes in total turnover",
+            "questions": [
+                {
+                    "text": "Did any significant changes occur to the total turnover?",
+                    "question_id": "146",
+                    "number": "146",
+                    "type": "currency"
+                },
+                {
+                    "text": "Did any significant changes occur to turnover?",
+                    "question_id": "146",
+                    "number": "146a",
+                    "type": "checkbox",
+                    "options": [
+                        "Change in level of business activity"
+                    ]
+                },
+                {
+                    "text": "Did any significant changes occur to turnover?",
+                    "question_id": "146b",
+                    "number": "146b",
+                    "type": "checkbox",
+                    "options": [
+                        "Maintenance/shutdowns"
+                    ]
+                },
+                {
+                    "text": "Did any significant changes occur to turnover?",
+                    "question_id": "146c",
+                    "number": "146c",
+                    "type": "checkbox",
+                    "options": [
+                        "Special/calendar events"
+                    ]
+                },
+                {
+                    "text": "Did any significant changes occur to turnover?",
+                    "question_id": "146d",
+                    "number": "146d",
+                    "type": "checkbox",
+                    "options": [
+                        "Weather"
+                    ]
+                },
+                {
+                    "text": "Did any significant changes occur to turnover?",
+                    "question_id": "146e",
+                    "number": "146e",
+                    "type": "checkbox",
+                    "options": [
+                        "Price effects"
+                    ]
+                },
+                {
+                    "text": "Did any significant changes occur to turnover?",
+                    "question_id": "146f",
+                    "number": "146f",
+                    "type": "checkbox",
+                    "options": [
+                        "Currency effects (increase/decrease in the currency value)"
+                    ]
+                },
+                {
+                    "text": "Did any significant changes occur to turnover?",
+                    "question_id": "146g",
+                    "number": "146g",
+                    "type": "checkbox",
+                    "options": [
+                        "Other"
+                    ]
+                },
+                {
+                    "text": "Did any significant changes occur to turnover?",
+                    "question_id": "146h",
+                    "number": "146h",
+                    "type": "contains"
+                }
+            ]
+        }
+    ]
+}
