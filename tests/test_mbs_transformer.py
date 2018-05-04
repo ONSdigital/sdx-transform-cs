@@ -294,7 +294,6 @@ class TestTransform(unittest.TestCase):
         self.assertEqual(value, -1)
 
     def test_convert_string_float_to_intraises_value_error(self):
-
         with self.assertRaises(ValueError):
-            value = MBSTransformer(self.response).convert_str_to_int('1.5')
+            MBSTransformer(self.response).convert_str_to_int('1.5')
 
