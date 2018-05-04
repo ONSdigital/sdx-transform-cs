@@ -135,7 +135,11 @@ class MBSTransformer():
             "50": self.response["data"].get("50"),
         }
 
-        return self._merge_dicts(transformed_data, employee_totals)
+        return {
+            k: v
+            for k, v in self._merge_dicts(transformed_data, employee_totals).items()
+            if v is not None
+        }
 
     def create_zip(self, img_seq=None):
         """Perform transformation on the survey data
