@@ -150,7 +150,7 @@ class LogicTests(unittest.TestCase):
         QId 51 defaults to 0 if 'd50' is 'Yes'.
         """
         self.assertEqual(self.transformed_default_data["51"], 0)
-s
+
     def test_q52(self):
         """
         QId 52 returns an integer.
