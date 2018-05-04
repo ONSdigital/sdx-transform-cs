@@ -175,8 +175,8 @@ class MBSTransformer():
 
         transformed_data = {
             "146": True if self.response["data"].get("146") == "Yes" else False,
-            "11": Survey.parse_timestamp(self.response["data"].get("11")),
-            "12": Survey.parse_timestamp(self.response["data"].get("12")),
+            "11": MBSTransformer.parse_timestamp(self.response["data"].get("11")),
+            "12": MBSTransformer.parse_timestamp(self.response["data"].get("12")),
             "40": self.round_mbs(self.response["data"].get("40")),
             "49": self.round_mbs(self.response["data"].get("49")),
             "90": self.round_mbs(self.response["data"].get("90")),
