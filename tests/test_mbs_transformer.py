@@ -128,7 +128,7 @@ class LogicTests(unittest.TestCase):
 
     def test_value_number_of_employees(self):
         """
-        QId 50 returns string.
+        QId 50 returns int.
         """
         self.assertEqual(self.transformed_data["50"], 12)
 
@@ -150,7 +150,7 @@ class LogicTests(unittest.TestCase):
         QId 51 defaults to 0 if 'd50' is 'Yes'.
         """
         self.assertEqual(self.transformed_default_data["51"], 0)
-
+s
     def test_q52(self):
         """
         QId 52 returns an integer.
@@ -286,6 +286,15 @@ class TestTransform(unittest.TestCase):
     }
 
     def test_convert_string_to_int(self):
-        value = MBSTransformer(self.response).convert_str(None)
+        value = MBSTransformer(self.response).convert_str_to_int(None)
         self.assertIsNone(value)
+
+    def test_convert_string_to_negative_int(self):
+        value = MBSTransformer(self.response).convert_str_to_int('-1')
+        self.assertEqual(value, -1)
+
+    def test_convert_string_float_to_intraises_value_error(self):
+
+        with self.assertRaises(ValueError):
+            value = MBSTransformer(self.response).convert_str_to_int('1.5')
 

@@ -39,7 +39,7 @@ class MBSTransformer():
         return Decimal(round(Decimal(float(value))) / 1000).quantize(1)
 
     @staticmethod
-    def convert_str(value):
+    def convert_str_to_int(value):
         """Convert submitted data to int in the transform"""
         try:
             return int(value)
@@ -189,7 +189,7 @@ class MBSTransformer():
             "40": self.round_mbs(self.response["data"].get("40")),
             "49": self.round_mbs(self.response["data"].get("49")),
             "90": self.round_mbs(self.response["data"].get("90")),
-            "50": MBSTransformer.convert_str(self.response["data"].get("50")),
+            "50": MBSTransformer.convert_str_to_int(self.response["data"].get("50")),
         }
 
         return {
