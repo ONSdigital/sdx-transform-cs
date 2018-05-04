@@ -5,33 +5,7 @@ from transform.transformers import MBSTransformer
 from transform.transformers.cs_formatter import CSFormatter
 
 
-class LogicTests0203(unittest.TestCase):
-
-    with open('tests/replies/009.0203.json', 'r') as fp:
-        response = json.load(fp)
-
-    transformed_data = MBSTransformer(response).transform()
-
-    def test_turnover_radio(self):
-        """
-        QId 146 returns Yes.
-        """
-        self.assertEqual(self.transformed_data["146"], 1)
-
-        no_response = dict.copy(self.response)
-        no_response["data"]["146"] = "No"
-        no_response_transformed = MBSTransformer(no_response).transform()
-
-        self.assertEqual(no_response_transformed["146"], False)
-
-    def test_110(self):
-        """
-        QId 110 returns a whole number as a string.
-        """
-        self.assertEqual(self.transformed_data["110"], "256")
-
-
-class LogicTests0255(unittest.TestCase):
+class LogicTests(unittest.TestCase):
 
     with open('tests/replies/009.0255.json', 'r') as fp:
         response = json.load(fp)
@@ -51,6 +25,12 @@ class LogicTests0255(unittest.TestCase):
     # in the PCK file
     del default_response["data"]["d50"]
     transformed_no_default_data = MBSTransformer(default_response).transform()
+
+    def test_potable_water(self):
+        """
+        QId 110 returns a whole number as a string.
+        """
+        self.assertEqual(self.transformed_data["110"], "23")
 
     def test_reporting_period_from(self):
         """
@@ -112,7 +92,7 @@ class LogicTests0255(unittest.TestCase):
 
     def test_value_of_excise_duty(self):
         """
-        QId 49 returns a Decimal rounded down to nearest 1000 then divided by 1000.
+        QId 90 returns a Decimal rounded down to nearest 1000 then divided by 1000.
         """
         self.assertEqual(self.transformed_data["90"], 3)
 
