@@ -189,7 +189,7 @@ class MBSTransformer():
             "40": self.round_mbs(self.response["data"].get("40")),
             "49": self.round_mbs(self.response["data"].get("49")),
             "90": self.round_mbs(self.response["data"].get("90")),
-            "50": MBSTransformer.convert_str(response["data"].get("50")),
+            "50": MBSTransformer.convert_str(self.response["data"].get("50")),
         }
 
         return {
