@@ -39,6 +39,15 @@ class MBSTransformer():
         return Decimal(round(Decimal(float(value))) / 1000).quantize(1)
 
     @staticmethod
+    def convert_str(value):
+        """Convert submitted data to int in the transform"""
+        try:
+            return int(value)
+        except TypeError:
+            logger.info("Tried to transform None to int. Returning None.")
+            return None
+
+    @staticmethod
     def parse_timestamp(text):
         """Parse a text field for a date or timestamp.
 
@@ -180,7 +189,7 @@ class MBSTransformer():
             "40": self.round_mbs(self.response["data"].get("40")),
             "49": self.round_mbs(self.response["data"].get("49")),
             "90": self.round_mbs(self.response["data"].get("90")),
-            "50": self.response["data"].get("50"),
+            "50": MBSTransformer.convert_str(response["data"].get("50")),
         }
 
         return {
