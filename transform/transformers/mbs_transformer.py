@@ -36,7 +36,11 @@ class MBSTransformer():
     @staticmethod
     def round_mbs(value):
         """MBS rounding is done on a ROUND_HALF_UP basis and values are divided by 1000 for the pck"""
-        return Decimal(round(Decimal(float(value))) / 1000).quantize(1)
+        try:
+            return Decimal(round(Decimal(float(value))) / 1000).quantize(1)
+        except TypeError:
+            logger.info("Tried to quantize a NoneType object. Returning None")
+            return None
 
     @staticmethod
     def convert_str_to_int(value):
@@ -97,7 +101,8 @@ class MBSTransformer():
 
     def __init__(self, response, seq_nr=0):
 
-        self.idbr_ref = {"0255": "MB65B"}
+        self.idbr_ref = {"0255": "MB65B", "0203": "MB03B"}
+
         self.response = response
         self.ids = self.get_identifiers(seq_nr=seq_nr)
 
@@ -190,6 +195,7 @@ class MBSTransformer():
             "49": self.round_mbs(self.response["data"].get("49")),
             "90": self.round_mbs(self.response["data"].get("90")),
             "50": MBSTransformer.convert_str_to_int(self.response["data"].get("50")),
+            "110": self.response["data"].get("110"),
         }
 
         return {
