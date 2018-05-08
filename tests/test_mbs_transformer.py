@@ -321,7 +321,7 @@ class TestTransform(unittest.TestCase):
         result = MBSTransformer(self.response_d50_d40_yes).check_turnover_totals()
         self.assertEqual(result, {"49": 0})
 
-    def test_check_employee_totals_missing_q_codes(self):
+    def test_check_turnover_totals_missing_q_codes(self):
         local_response = deepcopy(self.response)
         del (local_response["data"]["49"])
         result = MBSTransformer(local_response).check_turnover_totals()
