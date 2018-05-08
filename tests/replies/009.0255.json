@@ -22,7 +22,7 @@
         "146e": "Weather",
         "146f": "Store closures",
         "146g": "Store openings",
-        "146h": "Other",
+        "146h": "Other"
     },
     "type": "uk.gov.ons.edc.eq:surveyresponse",
     "version": "0.0.1",
