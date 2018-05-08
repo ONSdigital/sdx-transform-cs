@@ -36,7 +36,7 @@ class LogicTests(unittest.TestCase):
         """
         QId 110 returns a whole number as a string.
         """
-        self.assertEqual(self.transformed_data["110"], "256")
+        self.assertEqual(self.transformed_data["110"], 256)
 
     def test_reporting_period_from(self):
         """
