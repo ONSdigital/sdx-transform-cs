@@ -1,0 +1,58 @@
+{
+    "title": "Monthly Business Survey",
+    "survey_id": "009",
+    "form_type": "0203",
+    "comments": "true",
+    "question_groups": [
+        {
+            "title": "Reporting Period",
+            "questions": [
+                {
+                    "title": "What are the dates of the period that you will be reporting for?",
+                    "text": "From",
+                    "question_id": "11",
+                    "number": "11",
+                    "type": "date"
+                },
+                {
+                    "title": "What are the dates of the period that you will be reporting for?",
+                    "text": "To",
+                    "question_id": "12",
+                    "number": "12",
+                    "type": "date"
+                }
+            ]
+        },
+        {
+            "title": "Volume of potable water that was supplied to customers",
+            "questions": [
+                {
+                    "text": "Volume of potable water that was supplied to customers, in megalitres",
+                    "question_id": "110",
+                    "number": "110"
+                }
+            ]
+        },
+        {
+            "title": "Significant Changes",
+            "questions": [
+                {
+                    "text": "Did any significant changes occur?",
+                    "question_id": "146",
+                    "number": "146",
+                    "type": "radio",
+                    "options": [
+                        "Yes",
+                        "No"
+                    ]
+                },
+                {
+                    "text": "Did any significant changes occur?",
+                    "question_id": "146h",
+                    "number": "146h",
+                    "type": "contains"
+                }
+            ]
+        }
+    ]
+}
