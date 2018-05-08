@@ -23,7 +23,6 @@
         "146f": "Store closures",
         "146g": "Store openings",
         "146h": "Other",
-        "110": "23"
     },
     "type": "uk.gov.ons.edc.eq:surveyresponse",
     "version": "0.0.1",
