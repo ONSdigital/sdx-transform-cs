@@ -205,7 +205,7 @@ class MBSTransformer():
                 # QIDSs 51 - 54 aren't compulsory. If a value isn't present,
                 # then it doesn't need to go in the PCK file.
                 try:
-                    employee_totals[q_id] = int(self.response["data"].get(q_id))
+                    employee_totals[q_id] = self.convert_str_to_int(self.response["data"].get(q_id))
                 except TypeError:
                     logger.info("No answer supplied for {}. Skipping.".format(q_id))
 
