@@ -34,7 +34,7 @@ class LogicTests(unittest.TestCase):
 
     def test_potable_water(self):
         """
-        QId 110 returns a whole number as a string.
+        QId 110 returns a whole number as n integer.
         """
         self.assertEqual(self.transformed_data["110"], 256)
 
