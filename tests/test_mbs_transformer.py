@@ -225,6 +225,7 @@ class BatchFileTests(unittest.TestCase):
         self.assertIsInstance(ids, dict)
         self.assertIsNotNone(ids)
 
+
 class TestTransform(unittest.TestCase):
 
     response = {
@@ -256,9 +257,7 @@ class TestTransform(unittest.TestCase):
         "version": "0.0.1",
         "metadata": {"user_id": "K5O86M2NU1", "ru_ref": "12346789012A"},
         "submitted_at": "2017-03-01T14:25:46.101447+00:00",
-        "collection": {
-            "period": "201605", "exercise_sid": "82R1VDWN74", "instrument_id": "0255"
-        },
+        "collection": {"period": "201605", "exercise_sid": "82R1VDWN74", "instrument_id": "0255"},
     }
 
     def test_convert_string_to_int(self):
@@ -266,10 +265,9 @@ class TestTransform(unittest.TestCase):
         self.assertIsNone(value)
 
     def test_convert_string_to_negative_int(self):
-        value = MBSTransformer(self.response).convert_str_to_int('-1')
+        value = MBSTransformer(self.response).convert_str_to_int("-1")
         self.assertEqual(value, -1)
 
     def test_convert_string_float_to_intraises_value_error(self):
         with self.assertRaises(ValueError):
-            MBSTransformer(self.response).convert_str_to_int('1.5')
-
+            MBSTransformer(self.response).convert_str_to_int("1.5")
