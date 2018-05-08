@@ -24,6 +24,12 @@ class LogicTests(unittest.TestCase):
     # When no values are supplied for q_codes 51:54 no entries should be present
     # in the PCK file
     del default_response["data"]["d50"]
+
+    # If d12 is "Yes", then nothing for dates go to the PCK.
+    del default_response["data"]["11"]
+    del default_response["data"]["12"]
+    default_response["d12"] = "Yes"
+
     transformed_no_default_data = MBSTransformer(default_response).transform()
 
     def test_potable_water(self):
@@ -177,6 +183,13 @@ class LogicTests(unittest.TestCase):
         QId 54 defaults to 0 if 'd50' is 'Yes'.
         """
         self.assertEqual(self.transformed_default_data["54"], 0)
+
+    def test_no_dates_submitted(self):
+        """
+        Qid d12 is Yes and no Qid 11 or 12
+        """
+        self.transformed_no_default_data["11"] is None
+        self.transformed_no_default_data["12"] is None
 
 
 class BatchFileTests(unittest.TestCase):
