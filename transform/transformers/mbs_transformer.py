@@ -44,6 +44,63 @@ class MBSTransformer():
             logger.info("Tried to quantize a NoneType object. Returning None")
             return None
 
+    @staticmethod
+    def convert_str_to_int(value):
+        """Convert submitted data to int in the transform"""
+        try:
+            return int(value)
+        except TypeError:
+            logger.info("Tried to transform None to int. Returning None.")
+            return None
+
+    @staticmethod
+    def parse_timestamp(text):
+        """Parse a text field for a date or timestamp.
+
+        Date and time formats vary across surveys.
+        This method reads those formats.
+
+        :param str text: The date or timestamp value.
+        :rtype: Python date or datetime.
+
+        """
+
+        cls = datetime.datetime
+
+        if text:
+            if text.endswith("Z"):
+                return cls.strptime(text, "%Y-%m-%dT%H:%M:%SZ").replace(
+                    tzinfo=datetime.timezone.utc
+                )
+
+            try:
+                return cls.strptime(text, "%Y-%m-%dT%H:%M:%S.%f%z")
+            except ValueError:
+                pass
+
+            try:
+                return cls.strptime(text.partition(".")[0], "%Y-%m-%dT%H:%M:%S")
+            except ValueError:
+                pass
+
+            try:
+                return cls.strptime(text, "%Y-%m-%d").date()
+            except ValueError:
+                pass
+
+            try:
+                return cls.strptime(text, "%d/%m/%Y").date()
+            except ValueError:
+                pass
+
+            if len(text) != 6:
+                return None
+
+            try:
+                return cls.strptime(text + "01", "%Y%m%d").date()
+            except ValueError:
+                return None
+
     def __init__(self, response, seq_nr=0):
 
         self.employment_questions = ("51", "52", "53", "54")
@@ -182,8 +239,8 @@ class MBSTransformer():
 
         transformed_data = {
             "146": True if self.response["data"].get("146") == "Yes" else False,
-            "11": Survey.parse_timestamp(self.response["data"].get("11")),
-            "12": Survey.parse_timestamp(self.response["data"].get("12")),
+            "11": MBSTransformer.parse_timestamp(self.response["data"].get("11")),
+            "12": MBSTransformer.parse_timestamp(self.response["data"].get("12")),
             "40": self.round_mbs(self.response["data"].get("40")),
             "42": self.round_mbs(self.response["data"].get("42")),
             "43": self.round_mbs(self.response["data"].get("43")),
@@ -191,8 +248,8 @@ class MBSTransformer():
             "47": self.round_mbs(self.response["data"].get("47")),
             "49": self.round_mbs(self.response["data"].get("49")),
             "90": self.round_mbs(self.response["data"].get("90")),
-            "50": self.response["data"].get("50"),
-            "110": self.response["data"].get("110"),
+            "50": MBSTransformer.convert_str_to_int(self.response["data"].get("50")),
+            "110": MBSTransformer.convert_str_to_int(self.response["data"].get("110"))
         }
 
         return {
