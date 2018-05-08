@@ -260,7 +260,7 @@ class TestTransform(unittest.TestCase):
         "collection": {"period": "201605", "exercise_sid": "82R1VDWN74", "instrument_id": "0255"},
     }
 
-    response_d50_yes = {
+    response_d50_d40_yes = {
         "origin": "uk.gov.ons.edc.eq",
         "survey_id": "009",
         "tx_id": "40e659ec-013f-4993-9a31-ec1e0ad37888",
@@ -276,8 +276,7 @@ class TestTransform(unittest.TestCase):
             "146f": "Store closures",
             "146g": "Store openings",
             "146h": "Other",
-            "40": "100499.49",
-            "49": "150500",
+            "d40": "Yes",
             "90": "2900",
             "d50": "Yes",
         },
@@ -305,7 +304,7 @@ class TestTransform(unittest.TestCase):
         self.assertEqual(result, {"51": 1, "52": 2, "53": 3, "54": 4})
 
     def test_check_employee_totals_d50_yes(self):
-        result = MBSTransformer(self.response_d50_yes).check_employee_totals()
+        result = MBSTransformer(self.response_d50_d40_yes).check_employee_totals()
         self.assertEqual(result, {"51": 0, "52": 0, "53": 0, "54": 0})
 
     def test_check_employee_totals_missing_q_codes(self):
@@ -313,3 +312,17 @@ class TestTransform(unittest.TestCase):
         del (local_response["data"]["51"])
         result = MBSTransformer(local_response).check_employee_totals()
         self.assertEqual(result, {"51": None, "52": 2, "53": 3, "54": 4})
+
+    def test_check_turnover_totals_no_d40(self):
+        result = MBSTransformer(self.response).check_turnover_totals()
+        self.assertEqual(result, {"49": 151})
+
+    def test_check_turnover_totals_d40_yes(self):
+        result = MBSTransformer(self.response_d50_d40_yes).check_turnover_totals()
+        self.assertEqual(result, {"49": 0})
+
+    def test_check_employee_totals_missing_q_codes(self):
+        local_response = deepcopy(self.response)
+        del (local_response["data"]["49"])
+        result = MBSTransformer(local_response).check_turnover_totals()
+        self.assertEqual(result, {"49": None})
