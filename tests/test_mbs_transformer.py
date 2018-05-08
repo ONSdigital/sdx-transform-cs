@@ -213,10 +213,10 @@ class LogicTests(unittest.TestCase):
         Qid d12 is Yes and no Qid 11 or 12
         """
         with self.assertRaises(KeyError):
-            self.transformed_no_default_data["11"] is None
+            self.transformed_no_default_data["11"]
 
         with self.assertRaises(KeyError):
-            self.transformed_no_default_data["12"] is None
+            self.transformed_no_default_data["12"]
 
 
 class BatchFileTests(unittest.TestCase):
