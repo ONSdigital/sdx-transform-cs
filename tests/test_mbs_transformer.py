@@ -4,36 +4,10 @@ import unittest
 from transform.transformers import MBSTransformer
 from transform.transformers.cs_formatter import CSFormatter
 
-class LogicTests0203(unittest.TestCase):
 
-    with open('tests/replies/009.0203.json', 'r') as fp:
-        response = json.load(fp)
+class LogicTests(unittest.TestCase):
 
-    transformed_data = MBSTransformer(response).transform()
-
-    def test_turnover_radio(self):
-        """
-        QId 146 returns Yes.
-        """
-        self.assertEqual(self.transformed_data["146"], 1)
-
-        no_response = dict.copy(self.response)
-        no_response["data"]["146"] = "No"
-        no_response_transformed = MBSTransformer(no_response).transform()
-
-        self.assertEqual(no_response_transformed["146"], False)
-
-
-    def test_110(self):
-        """
-        QId 110 returns a whole number as a string.
-        """
-        self.assertEqual(self.transformed_data["110"], "256")
-
-
-class LogicTests0255(unittest.TestCase):
-
-    with open('tests/replies/009.0255.json', 'r') as fp:
+    with open("tests/replies/009.0255.json", "r") as fp:
         response = json.load(fp)
 
     transformed_data = MBSTransformer(response).transform()
@@ -51,6 +25,12 @@ class LogicTests0255(unittest.TestCase):
     # in the PCK file
     del default_response["data"]["d50"]
     transformed_no_default_data = MBSTransformer(default_response).transform()
+
+    def test_potable_water(self):
+        """
+        QId 110 returns a whole number as a string.
+        """
+        self.assertEqual(self.transformed_data["110"], "256")
 
     def test_reporting_period_from(self):
         """
@@ -122,77 +102,77 @@ class LogicTests0255(unittest.TestCase):
         """
         self.assertEqual(self.transformed_data["50"], "12")
 
-    def test_q51(self):
+    def test_male_employees_working_more_than_30(self):
         """
         QId 51 returns an integer.
         """
         self.assertEqual(self.transformed_data["51"], 1)
 
-    def test_q51_not_supplied_is_None(self):
+    def test_male_employees_working_more_than_30_not_supplied_is_None(self):
         """
         QId 51 defaults to None if 'd50' is not 'Yes'.
         """
         with self.assertRaises(KeyError):
-            _ = self.transformed_no_default_data["51"]
+            self.transformed_no_default_data["51"]
 
-    def test_q51_default(self):
+    def test_male_employees_working_more_than_30_default(self):
         """
         QId 51 defaults to 0 if 'd50' is 'Yes'.
         """
         self.assertEqual(self.transformed_default_data["51"], 0)
 
-    def test_q52(self):
+    def test_male_employees_working_less_than_30(self):
         """
         QId 52 returns an integer.
         """
         self.assertEqual(self.transformed_data["52"], 2)
 
-    def test_q52_not_supplied_is_None(self):
+    def test_male_employees_working_less_than_30_not_supplied_is_None(self):
         """
         QId 52 defaults to None if 'd50' is not 'Yes'.
         """
         with self.assertRaises(KeyError):
-            _ = self.transformed_no_default_data["52"]
+            self.transformed_no_default_data["52"]
 
-    def test_q52_default(self):
+    def test_male_employees_working_less_than_30_default(self):
         """
         QId 52 defaults to 0 if 'd50' is 'Yes'.
         """
         self.assertEqual(self.transformed_default_data["52"], 0)
 
-    def test_q53(self):
+    def test_female_employees_working_more_than_30(self):
         """
         QId 53 returns an integer.
         """
         self.assertEqual(self.transformed_data["53"], 3)
 
-    def test_q53_not_supplied_is_None(self):
+    def test_female_employees_working_more_than_30_not_supplied_is_None(self):
         """
         QId 53 defaults to None if 'd50' is not 'Yes'.
         """
         with self.assertRaises(KeyError):
-            _ = self.transformed_no_default_data["53"]
+            self.transformed_no_default_data["53"]
 
-    def test_q53_default(self):
+    def test_female_employees_working_more_than_30_default(self):
         """
         QId 53 defaults to 0 if 'd50' is 'Yes'.
         """
         self.assertEqual(self.transformed_default_data["53"], 0)
 
-    def test_q54(self):
+    def test_female_employees_working_less_than_30(self):
         """
         QId 54 returns an integer.
         """
         self.assertEqual(self.transformed_data["54"], 4)
 
-    def test_q54_not_supplied_is_None(self):
+    def test_female_employees_working_more_less_30_not_supplied_is_None(self):
         """
         QId 54 defaults to None if 'd50' is not 'Yes'.
         """
         with self.assertRaises(KeyError):
-            _ = self.transformed_no_default_data["54"]
+            self.transformed_no_default_data["54"]
 
-    def test_q54_default(self):
+    def test_female_employees_working_more_less_30_default(self):
         """
         QId 54 defaults to 0 if 'd50' is 'Yes'.
         """
