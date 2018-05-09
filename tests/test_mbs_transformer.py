@@ -1,3 +1,4 @@
+import datetime
 import json
 import unittest
 from copy import deepcopy
@@ -188,11 +189,12 @@ class LogicTests(unittest.TestCase):
         """
         Qid d12 is Yes and no Qid 11 or 12
         """
-        with self.assertRaises(KeyError):
-            self.transformed_no_default_data["11"]
-
-        with self.assertRaises(KeyError):
-            self.transformed_no_default_data["12"]
+        self.assertEqual(
+            self.transformed_no_default_data["11"], datetime.datetime(2018, 1, 1, 0, 0)
+        )
+        self.assertEqual(
+            self.transformed_no_default_data["12"], datetime.datetime(2018, 3, 1, 0, 0)
+        )
 
 
 class BatchFileTests(unittest.TestCase):
@@ -255,9 +257,16 @@ class TestTransform(unittest.TestCase):
         },
         "type": "uk.gov.ons.edc.eq:surveyresponse",
         "version": "0.0.1",
-        "metadata": {"user_id": "K5O86M2NU1", "ru_ref": "12346789012A"},
+        "metadata": {
+            "user_id": "K5O86M2NU1",
+            "ru_ref": "12346789012A",
+            "ref_period_start_date": "2018-01-01",
+            "ref_period_end_date": "2018-03-01",
+        },
         "submitted_at": "2017-03-01T14:25:46.101447+00:00",
-        "collection": {"period": "201605", "exercise_sid": "82R1VDWN74", "instrument_id": "0255"},
+        "collection": {
+            "period": "201605", "exercise_sid": "82R1VDWN74", "instrument_id": "0255"
+        },
     }
 
     response_d50_d40_yes = {
@@ -282,9 +291,16 @@ class TestTransform(unittest.TestCase):
         },
         "type": "uk.gov.ons.edc.eq:surveyresponse",
         "version": "0.0.1",
-        "metadata": {"user_id": "K5O86M2NU1", "ru_ref": "12346789012A"},
+        "metadata": {
+            "user_id": "K5O86M2NU1",
+            "ru_ref": "12346789012A",
+            "ref_period_start_date": "2018-01-01",
+            "ref_period_end_date": "2018-03-01",
+        },
         "submitted_at": "2017-03-01T14:25:46.101447+00:00",
-        "collection": {"period": "201605", "exercise_sid": "82R1VDWN74", "instrument_id": "0255"},
+        "collection": {
+            "period": "201605", "exercise_sid": "82R1VDWN74", "instrument_id": "0255"
+        },
     }
 
     def test_convert_string_to_int(self):
@@ -326,3 +342,52 @@ class TestTransform(unittest.TestCase):
         del (local_response["data"]["49"])
         result = MBSTransformer(local_response).check_turnover_totals()
         self.assertEqual(result, {"49": None})
+
+    def test_survey_date_no_dates_submitted(self):
+        local_response = deepcopy(self.response)
+        del (local_response["data"]["11"])
+        del (local_response["data"]["12"])
+        result = MBSTransformer(local_response).survey_dates()
+        self.assertEqual(
+            result,
+            {
+                "11": datetime.datetime(2018, 1, 1, 0, 0),
+                "12": datetime.datetime(2018, 3, 1, 0, 0),
+            },
+        )
+
+    def test_survey_date_dates_submitted(self):
+        result = MBSTransformer(self.response).survey_dates()
+        self.assertEqual(
+            result,
+            {
+                "11": datetime.date(2017, 2, 13),
+                "12": datetime.date(2018, 3, 14),
+            },
+        )
+
+    def test_survey_date_raises_attribute_error(self):
+        local_response = deepcopy(self.response)
+        del (local_response["data"]["11"])
+        del (local_response["data"]["12"])
+        del (local_response["metadata"]["ref_period_start_date"])
+
+        with self.assertRaises(KeyError):
+            MBSTransformer(local_response).survey_dates()
+
+        local_response = deepcopy(self.response)
+        del (local_response["data"]["11"])
+        del (local_response["data"]["12"])
+        del (local_response["metadata"]["ref_period_end_date"])
+
+        with self.assertRaises(KeyError):
+            MBSTransformer(local_response).survey_dates()
+
+        local_response = deepcopy(self.response)
+        del (local_response["data"]["11"])
+        del (local_response["data"]["12"])
+        del (local_response["metadata"]["ref_period_end_date"])
+        del (local_response["metadata"]["ref_period_start_date"])
+
+        with self.assertRaises(KeyError):
+            MBSTransformer(local_response).survey_dates()
