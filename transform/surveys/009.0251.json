@@ -1,7 +1,7 @@
 {
     "title": "Monthly Business Survey",
     "survey_id": "009",
-    "form_type": "0255",
+    "form_type": "0251",
     "comments": "true",
     "question_groups": [
         {
@@ -24,10 +24,10 @@
             ]
         },
         {
-            "title": "Turnover",
+            "title": "Total Turnover",
             "questions": [
                 {
-                    "text": "Turnover excluding VAT",
+                    "text": "Total turnover excluding VAT",
                     "question_id": "40",
                     "number": "40",
                     "type": "currency"
@@ -38,20 +38,9 @@
             "title": "Exports",
             "questions": [
                 {
-                    "text": "What was the value of exports?",
+                    "text": "Of the total turnover, what was the value of exports?",
                     "question_id": "49",
                     "number": "49",
-                    "type": "currency"
-                }
-            ]
-        },
-        {
-            "title": "Excise Duty",
-            "questions": [
-                {
-                    "text": "What was the value of excise duty?",
-                    "question_id": "90",
-                    "number": "90",
                     "type": "currency"
                 }
             ]
@@ -87,7 +76,7 @@
             ]
         },
         {
-            "title": "Changes in turnover",
+            "title": "Changes in total turnover",
             "questions": [
                 {
                     "text": "Did any significant changes occur to turnover?",

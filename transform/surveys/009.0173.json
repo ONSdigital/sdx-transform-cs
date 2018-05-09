@@ -1,7 +1,7 @@
 {
     "title": "Monthly Business Survey",
     "survey_id": "009",
-    "form_type": "0255",
+    "form_type": "0173",
     "comments": "true",
     "question_groups": [
         {
@@ -24,34 +24,23 @@
             ]
         },
         {
-            "title": "Turnover",
+            "title": "Commision and Fees",
             "questions": [
                 {
-                    "text": "Turnover excluding VAT",
-                    "question_id": "40",
-                    "number": "40",
+                    "text": "Total commission and fees excluding VAT",
+                    "question_id": "42",
+                    "number": "42",
                     "type": "currency"
                 }
             ]
         },
         {
-            "title": "Exports",
+            "title": "Sales on own account and turnover from other activities",
             "questions": [
                 {
-                    "text": "What was the value of exports?",
-                    "question_id": "49",
-                    "number": "49",
-                    "type": "currency"
-                }
-            ]
-        },
-        {
-            "title": "Excise Duty",
-            "questions": [
-                {
-                    "text": "What was the value of excise duty?",
-                    "question_id": "90",
-                    "number": "90",
+                    "text": "Total Sales on own account and turnover from other activities  excluding VAT",
+                    "question_id": "43",
+                    "number": "43",
                     "type": "currency"
                 }
             ]

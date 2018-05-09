@@ -24,11 +24,11 @@ def get_file_as_string(filename):
 
 
 def get_test_scenarios(output_type):
-    return glob.glob('./tests/%s/*.json' % output_type)
+    return glob.glob("./tests/%s/*.json" % output_type)
 
 
 def get_expected_file(filename, output_type):
-    filename, ext = os.path.splitext(filename)
+    filename, _ = os.path.splitext(filename)
     return "%s.%s" % (filename, output_type)
 
 
@@ -47,7 +47,7 @@ def modify_csv_time(csv_content, creation_time):
 
     for row in expected_csv_file:
         row[0] = format_date(creation_time)
-        row[2] = format_date(creation_time, 'short')
+        row[2] = format_date(creation_time, "short")
 
         modified_rows.append(row)
 
@@ -59,7 +59,7 @@ def modify_csv_time(csv_content, creation_time):
     buffer.seek(0)
 
     # Strip the final newline that csv writer creates
-    return buffer.read().rstrip('\r\n')
+    return buffer.read().rstrip("\r\n")
 
 
 class TestTransformService(unittest.TestCase):
@@ -81,7 +81,7 @@ class TestTransformService(unittest.TestCase):
 
     def test_transforms_idbr(self):
 
-        test_scenarios = get_test_scenarios('idbr')
+        test_scenarios = get_test_scenarios("idbr")
 
         print("Found %d idbr scenarios" % len(test_scenarios))
 
@@ -89,17 +89,17 @@ class TestTransformService(unittest.TestCase):
 
             print("Loading scenario %s " % scenario_filename)
             payload = get_file_as_string(scenario_filename)
-            expected_response = get_expected_output(scenario_filename, 'idbr')
+            expected_response = get_expected_output(scenario_filename, "idbr")
 
             r = self.app.post(self.transform_idbr_endpoint, data=payload)
 
-            actual_response = r.data.decode('UTF8')
+            actual_response = r.data.decode("UTF8")
 
             self.assertEqual(actual_response, expected_response)
 
     def test_transforms_pck(self):
 
-        test_scenarios = get_test_scenarios('pck')
+        test_scenarios = get_test_scenarios("pck")
 
         print("Found %d pck scenarios" % len(test_scenarios))
 
@@ -107,21 +107,21 @@ class TestTransformService(unittest.TestCase):
 
             print("Loading scenario %s " % scenario_filename)
             payload = get_file_as_string(scenario_filename)
-            expected_response = get_expected_output(scenario_filename, 'pck')
+            expected_response = get_expected_output(scenario_filename, "pck")
             print("Expected response")
             print(expected_response)
 
             r = self.app.post(self.transform_pck_endpoint, data=payload)
 
-            actual_response = r.data.decode('UTF8')
+            actual_response = r.data.decode("UTF8")
             print("Actual response")
             print(actual_response)
 
             self.assertEqual(actual_response, expected_response)
 
-    @patch('transform.transformers.ImageTransformer._get_image_sequence_list', return_value=[1, 2])
+    @patch("transform.transformers.ImageTransformer._get_image_sequence_list", return_value=[1, 2])
     def test_transforms_csv(self, mock_sequence_no):
-        test_scenarios = get_test_scenarios('csv')
+        test_scenarios = get_test_scenarios("csv")
 
         print("Found %d csv scenarios" % len(test_scenarios))
 
@@ -138,21 +138,21 @@ class TestTransformService(unittest.TestCase):
 
             z = zipfile.ZipFile(zip_contents)
 
-            expected_content = get_expected_output(scenario_filename, 'csv')
+            expected_content = get_expected_output(scenario_filename, "csv")
             expected_csv = list(csv.reader(io.StringIO(expected_content)))
 
-            date_object = datetime.strptime(expected_csv[0][0], '%d/%m/%Y %H:%M:%S')
+            date_object = datetime.strptime(expected_csv[0][0], "%d/%m/%Y %H:%M:%S")
 
-            sub_date = dateutil.parser.parse(payload_object['submitted_at'])
+            sub_date = dateutil.parser.parse(payload_object["submitted_at"])
             sub_date_str = sub_date.strftime("%Y%m%d")
 
-            filename = 'EDC_{}_{}_1000.csv'.format(payload_object['survey_id'], sub_date_str)
+            filename = "EDC_{}_{}_1000.csv".format(payload_object["survey_id"], sub_date_str)
 
             self.assertTrue(filename in z.namelist())
 
             edc_file = z.open(filename)
 
-            actual_content = edc_file.read().decode('utf-8')
+            actual_content = edc_file.read().decode("utf-8")
 
             modified_content = modify_csv_time(actual_content, date_object)
             modified_csv = list(csv.reader(io.StringIO(modified_content)))
@@ -178,9 +178,9 @@ class TestTransformService(unittest.TestCase):
 
     def test_invalid_survey_id(self):
         # Create an invlid survey id payload
-        payload_str = get_file_as_string('./tests/pck/023.0203.json')
+        payload_str = get_file_as_string("./tests/pck/023.0203.json")
         payload_object = json.loads(payload_str)
-        payload_object['survey_id'] = '666'
+        payload_object["survey_id"] = "666"
         payload = json.dumps(payload_object)
 
         r = self.app.post(self.transform_pck_endpoint, data=payload)

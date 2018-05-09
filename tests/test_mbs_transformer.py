@@ -1,6 +1,6 @@
 import json
 import unittest
-
+from copy import deepcopy
 from transform.transformers import MBSTransformer
 from transform.transformers.cs_formatter import CSFormatter
 
@@ -98,7 +98,7 @@ class LogicTests(unittest.TestCase):
 
     def test_value_of_excise_duty(self):
         """
-        QId 49 returns a Decimal rounded down to nearest 1000 then divided by 1000.
+        QId 90 returns a Decimal rounded down to nearest 1000 then divided by 1000.
         """
         self.assertEqual(self.transformed_data["90"], 3)
 
@@ -260,6 +260,33 @@ class TestTransform(unittest.TestCase):
         "collection": {"period": "201605", "exercise_sid": "82R1VDWN74", "instrument_id": "0255"},
     }
 
+    response_d50_d40_yes = {
+        "origin": "uk.gov.ons.edc.eq",
+        "survey_id": "009",
+        "tx_id": "40e659ec-013f-4993-9a31-ec1e0ad37888",
+        "data": {
+            "11": "13/02/2017",
+            "12": "14/03/2018",
+            "146": "Yes",
+            "146a": "Change in level of business activity",
+            "146b": "In-store / online promotions",
+            "146c": "Special events (e.g. sporting events)",
+            "146d": "Calendar events (e.g. Christmas, Easter, Bank Holiday)",
+            "146e": "Weather",
+            "146f": "Store closures",
+            "146g": "Store openings",
+            "146h": "Other",
+            "d40": "Yes",
+            "90": "2900",
+            "d50": "Yes",
+        },
+        "type": "uk.gov.ons.edc.eq:surveyresponse",
+        "version": "0.0.1",
+        "metadata": {"user_id": "K5O86M2NU1", "ru_ref": "12346789012A"},
+        "submitted_at": "2017-03-01T14:25:46.101447+00:00",
+        "collection": {"period": "201605", "exercise_sid": "82R1VDWN74", "instrument_id": "0255"},
+    }
+
     def test_convert_string_to_int(self):
         value = MBSTransformer(self.response).convert_str_to_int(None)
         self.assertIsNone(value)
@@ -271,3 +298,31 @@ class TestTransform(unittest.TestCase):
     def test_convert_string_float_to_intraises_value_error(self):
         with self.assertRaises(ValueError):
             MBSTransformer(self.response).convert_str_to_int("1.5")
+
+    def test_check_employee_totals_no_d50(self):
+        result = MBSTransformer(self.response).check_employee_totals()
+        self.assertEqual(result, {"51": 1, "52": 2, "53": 3, "54": 4})
+
+    def test_check_employee_totals_d50_yes(self):
+        result = MBSTransformer(self.response_d50_d40_yes).check_employee_totals()
+        self.assertEqual(result, {"51": 0, "52": 0, "53": 0, "54": 0})
+
+    def test_check_employee_totals_missing_q_codes(self):
+        local_response = deepcopy(self.response)
+        del (local_response["data"]["51"])
+        result = MBSTransformer(local_response).check_employee_totals()
+        self.assertEqual(result, {"51": None, "52": 2, "53": 3, "54": 4})
+
+    def test_check_turnover_totals_no_d40(self):
+        result = MBSTransformer(self.response).check_turnover_totals()
+        self.assertEqual(result, {"49": 151})
+
+    def test_check_turnover_totals_d40_yes(self):
+        result = MBSTransformer(self.response_d50_d40_yes).check_turnover_totals()
+        self.assertEqual(result, {"49": 0})
+
+    def test_check_turnover_totals_missing_q_codes(self):
+        local_response = deepcopy(self.response)
+        del (local_response["data"]["49"])
+        result = MBSTransformer(local_response).check_turnover_totals()
+        self.assertEqual(result, {"49": None})

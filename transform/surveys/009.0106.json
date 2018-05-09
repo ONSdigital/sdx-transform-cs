@@ -1,7 +1,7 @@
 {
     "title": "Monthly Business Survey",
     "survey_id": "009",
-    "form_type": "0255",
+    "form_type": "0106",
     "comments": "true",
     "question_groups": [
         {
@@ -24,10 +24,10 @@
             ]
         },
         {
-            "title": "Turnover",
+            "title": "Total Turnover",
             "questions": [
                 {
-                    "text": "Turnover excluding VAT",
+                    "text": "Total turnover excluding VAT",
                     "question_id": "40",
                     "number": "40",
                     "type": "currency"
@@ -35,73 +35,17 @@
             ]
         },
         {
-            "title": "Exports",
+            "title": "Changes in total turnover",
             "questions": [
                 {
-                    "text": "What was the value of exports?",
-                    "question_id": "49",
-                    "number": "49",
+                    "text": "Did any significant changes occur to the total turnover?",
+                    "question_id": "146",
+                    "number": "146",
                     "type": "currency"
-                }
-            ]
-        },
-        {
-            "title": "Excise Duty",
-            "questions": [
-                {
-                    "text": "What was the value of excise duty?",
-                    "question_id": "90",
-                    "number": "90",
-                    "type": "currency"
-                }
-            ]
-        },
-        {
-            "title": "Employees",
-            "questions": [
-                {
-                    "text": "Total number of employees",
-                    "question_id": "50",
-                    "number": "50"
                 },
-                {
-                    "text": "Male employees working more than 30 hours per week?",
-                    "question_id": "51",
-                    "number": "51"
-                },
-                {
-                    "text": "Male employees working less than 30 hours per week?",
-                    "question_id": "52",
-                    "number": "52"
-                },
-                {
-                    "text": "Female employees working more than 30 hours per week?",
-                    "question_id": "53",
-                    "number": "53"
-                },
-                {
-                    "text": "Female employees working less than 30 hours per week?",
-                    "question_id": "54",
-                    "number": "54"
-                }
-            ]
-        },
-        {
-            "title": "Changes in turnover",
-            "questions": [
                 {
                     "text": "Did any significant changes occur to turnover?",
                     "question_id": "146",
-                    "number": "146",
-                    "type": "radio",
-                    "options": [
-                        "Yes",
-                        "No"
-                    ]
-                },
-                {
-                    "text": "Did any significant changes occur to turnover?",
-                    "question_id": "146a",
                     "number": "146a",
                     "type": "checkbox",
                     "options": [

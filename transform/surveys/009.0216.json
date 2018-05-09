@@ -1,7 +1,7 @@
 {
     "title": "Monthly Business Survey",
     "survey_id": "009",
-    "form_type": "0255",
+    "form_type": "0216",
     "comments": "true",
     "question_groups": [
         {
@@ -53,36 +53,6 @@
                     "question_id": "90",
                     "number": "90",
                     "type": "currency"
-                }
-            ]
-        },
-        {
-            "title": "Employees",
-            "questions": [
-                {
-                    "text": "Total number of employees",
-                    "question_id": "50",
-                    "number": "50"
-                },
-                {
-                    "text": "Male employees working more than 30 hours per week?",
-                    "question_id": "51",
-                    "number": "51"
-                },
-                {
-                    "text": "Male employees working less than 30 hours per week?",
-                    "question_id": "52",
-                    "number": "52"
-                },
-                {
-                    "text": "Female employees working more than 30 hours per week?",
-                    "question_id": "53",
-                    "number": "53"
-                },
-                {
-                    "text": "Female employees working less than 30 hours per week?",
-                    "question_id": "54",
-                    "number": "54"
                 }
             ]
         },

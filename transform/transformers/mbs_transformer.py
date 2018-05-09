@@ -8,10 +8,7 @@ from decimal import ROUND_HALF_UP, Decimal
 from structlog import wrap_logger
 
 from transform.settings import (
-    SDX_FTP_DATA_PATH,
-    SDX_FTP_IMAGE_PATH,
-    SDX_FTP_RECEIPT_PATH,
-    SDX_RESPONSE_JSON_PATH,
+    SDX_FTP_DATA_PATH, SDX_FTP_IMAGE_PATH, SDX_FTP_RECEIPT_PATH, SDX_RESPONSE_JSON_PATH
 )
 from transform.transformers.cs_formatter import CSFormatter
 from transform.transformers.survey import Survey
@@ -27,10 +24,12 @@ class MBSTransformer():
     """Perform the transforms and formatting for the MBS survey."""
 
     @staticmethod
-    def _merge_dicts(x, y):
-        """Makes it possible to merge two dicts on Python 3.4."""
-        z = x.copy()
-        z.update(y)
+    def _merge_dicts(*args):
+        """Makes it possible to merge any number of dicts on Python 3.4."""
+        z = args[0].copy()
+
+        for x in args:
+            z.update(x)
         return z
 
     @staticmethod
@@ -38,6 +37,7 @@ class MBSTransformer():
         """MBS rounding is done on a ROUND_HALF_UP basis and values are divided by 1000 for the pck"""
         try:
             return Decimal(round(Decimal(float(value))) / 1000).quantize(1)
+
         except TypeError:
             logger.info("Tried to quantize a NoneType object. Returning None")
             return None
@@ -47,6 +47,7 @@ class MBSTransformer():
         """Convert submitted data to int in the transform"""
         try:
             return int(value)
+
         except TypeError:
             logger.info("Tried to transform None to int. Returning None.")
             return None
@@ -73,21 +74,25 @@ class MBSTransformer():
 
             try:
                 return cls.strptime(text, "%Y-%m-%dT%H:%M:%S.%f%z")
+
             except ValueError:
                 pass
 
             try:
                 return cls.strptime(text.partition(".")[0], "%Y-%m-%dT%H:%M:%S")
+
             except ValueError:
                 pass
 
             try:
                 return cls.strptime(text, "%Y-%m-%d").date()
+
             except ValueError:
                 pass
 
             try:
                 return cls.strptime(text, "%d/%m/%Y").date()
+
             except ValueError:
                 pass
 
@@ -96,12 +101,38 @@ class MBSTransformer():
 
             try:
                 return cls.strptime(text + "01", "%Y%m%d").date()
+
             except ValueError:
                 return None
 
     def __init__(self, response, seq_nr=0):
 
-        self.idbr_ref = {"0255": "MB65B", "0203": "MB03B"}
+        self.employment_questions = ("51", "52", "53", "54")
+        self.turnover_questions = ("49",)
+
+        self.idbr_ref = {
+            "0106": "T106G",
+            "0111": "T111G",
+            "0161": "T161G",
+            "0117": "T117G",
+            "0123": "T123G",
+            "0158": "T158G",
+            "0167": "T167G",
+            "0173": "T173G",
+            "0201": "MB01B",
+            "0202": "MB01B",
+            "0203": "MB03B",
+            "0204": "MB03B",
+            "0205": "MB15B",
+            "0216": "MB15B",
+            "0251": "MB51B",
+            "0253": "MB53B",
+            "0255": "MB65B",
+            "0817": "T817G",
+            "0823": "T823G",
+            "0867": "T867G",
+            "0873": "T873G",
+        }
 
         self.response = response
         self.ids = self.get_identifiers(seq_nr=seq_nr)
@@ -160,47 +191,70 @@ class MBSTransformer():
         else:
             return ids
 
-    def transform(self):
-        """Perform a transform on survey data."""
-        employment_questions = ("51", "52", "53", "54")
-
+    def check_employee_totals(self):
+        """Populate qcode 51:54 based on d50"""
         if self.response["data"].get("d50") == "Yes":
             logger.info("Setting default values to 0 for question codes 51:54")
-            employee_totals = {q_id: 0 for q_id in employment_questions}
+            return {q_id: 0 for q_id in self.employment_questions}
+
         else:
             logger.info("d50 not yes. No default values set for question codes 51:54.")
             employee_totals = {}
-            for q_id in employment_questions:
 
+            for q_id in self.employment_questions:
                 # QIDSs 51 - 54 aren't compulsory. If a value isn't present,
                 # then it doesn't need to go in the PCK file.
-
                 try:
-                    employee_totals[q_id] = int(self.response["data"].get(q_id))
+                    employee_totals[q_id] = self.convert_str_to_int(self.response["data"].get(q_id))
                 except TypeError:
-                    logger.exception(
-                        "No answer supplied for {}. Skipping.".format(q_id)
-                    )
+                    logger.info("No answer supplied for {}. Skipping.".format(q_id))
 
-        logger.info(
-            "Transforming data for {}".format(self.ids["ru_ref"]),
-            tx_id=self.ids["tx_id"],
-        )
+            return employee_totals
+
+    def check_turnover_totals(self):
+        """Populate qcode 49 based on d40"""
+        if self.response["data"].get("d40") == "Yes":
+            logger.info("Setting default value to 0 for question code 49")
+            return {q_id: 0 for q_id in self.turnover_questions}
+
+        else:
+            logger.info("d40 not yes. No default values set for question code 49.")
+            turnover_totals = {}
+
+            for q_id in self.turnover_questions:
+                try:
+                    turnover_totals[q_id] = self.round_mbs(self.response["data"].get(q_id))
+                except TypeError:
+                    logger.info("No answer supplied for {}. Skipping.".format(q_id))
+
+            return turnover_totals
+
+    def transform(self):
+        """Perform a transform on survey data."""
+        employee_totals = self.check_employee_totals()
+        turnover_totals = self.check_turnover_totals()
+
+        logger.info("Transforming data for {}".format(self.ids["ru_ref"]), tx_id=self.ids["tx_id"])
 
         transformed_data = {
             "146": True if self.response["data"].get("146") == "Yes" else False,
             "11": MBSTransformer.parse_timestamp(self.response["data"].get("11")),
             "12": MBSTransformer.parse_timestamp(self.response["data"].get("12")),
             "40": self.round_mbs(self.response["data"].get("40")),
-            "49": self.round_mbs(self.response["data"].get("49")),
+            "42": self.round_mbs(self.response["data"].get("42")),
+            "43": self.round_mbs(self.response["data"].get("43")),
+            "46": self.round_mbs(self.response["data"].get("46")),
+            "47": self.round_mbs(self.response["data"].get("47")),
             "90": self.round_mbs(self.response["data"].get("90")),
             "50": MBSTransformer.convert_str_to_int(self.response["data"].get("50")),
-            "110": MBSTransformer.convert_str_to_int(self.response["data"].get("110"))
+            "110": MBSTransformer.convert_str_to_int(self.response["data"].get("110")),
         }
 
         return {
             k: v
-            for k, v in self._merge_dicts(transformed_data, employee_totals).items()
+            for k, v in self._merge_dicts(
+                transformed_data, employee_totals, turnover_totals
+            ).items()
             if v is not None
         }
 
@@ -225,28 +279,20 @@ class MBSTransformer():
 
         idbr_name = CSFormatter.idbr_name(self.ids["submitted_at"], self.ids["seq_nr"])
         idbr = CSFormatter.get_idbr(
-            self.ids["survey_id"],
-            self.ids["ru_ref"],
-            self.ids["ru_check"],
-            self.ids["period"],
+            self.ids["survey_id"], self.ids["ru_ref"], self.ids["ru_check"], self.ids["period"]
         )
 
         response_json_name = CSFormatter.response_json_name(
             self.ids["survey_id"], self.ids["seq_nr"]
         )
 
-        self.image_transformer.zip.append(
-            os.path.join(SDX_FTP_DATA_PATH, pck_name), pck
-        )
-        self.image_transformer.zip.append(
-            os.path.join(SDX_FTP_RECEIPT_PATH, idbr_name), idbr
-        )
+        self.image_transformer.zip.append(os.path.join(SDX_FTP_DATA_PATH, pck_name), pck)
+        self.image_transformer.zip.append(os.path.join(SDX_FTP_RECEIPT_PATH, idbr_name), idbr)
 
         self.image_transformer.get_zipped_images(img_seq)
 
         self.image_transformer.zip.append(
-            os.path.join(SDX_RESPONSE_JSON_PATH, response_json_name),
-            json.dumps(self.response),
+            os.path.join(SDX_RESPONSE_JSON_PATH, response_json_name), json.dumps(self.response)
         )
 
     def get_zip(self):
