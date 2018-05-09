@@ -28,7 +28,9 @@
     "version": "0.0.1",
     "metadata": {
         "user_id": "K5O86M2NU1",
-        "ru_ref": "12346789012A"
+        "ru_ref": "12346789012A",
+        "ref_period_start_date": "2018-01-01",
+        "ref_period_end_date": "2018-03-01"
     },
     "submitted_at": "2017-03-01T14:25:46.101447+00:00",
     "collection": {
