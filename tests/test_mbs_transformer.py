@@ -190,10 +190,10 @@ class LogicTests(unittest.TestCase):
         Qid d12 is Yes and no Qid 11 or 12
         """
         self.assertEqual(
-            self.transformed_no_default_data["11"], datetime.datetime(2018, 1, 1, 0, 0)
+            self.transformed_no_default_data["11"], datetime.date(2018, 1, 1)
         )
         self.assertEqual(
-            self.transformed_no_default_data["12"], datetime.datetime(2018, 3, 1, 0, 0)
+            self.transformed_no_default_data["12"], datetime.date(2018, 3, 1)
         )
 
 
@@ -351,8 +351,8 @@ class TestTransform(unittest.TestCase):
         self.assertEqual(
             result,
             {
-                "11": datetime.datetime(2018, 1, 1, 0, 0),
-                "12": datetime.datetime(2018, 3, 1, 0, 0),
+                "11": datetime.date(2018, 1, 1),
+                "12": datetime.date(2018, 3, 1),
             },
         )
 

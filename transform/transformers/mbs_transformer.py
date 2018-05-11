@@ -243,16 +243,16 @@ class MBSTransformer():
             start_date = MBSTransformer.parse_timestamp(self.response["data"]["11"])
         except KeyError:
             logger.info("Populating start date using metadata")
-            start_date = datetime.datetime.strptime(
-                self.response.get("metadata", {})["ref_period_start_date"], "%Y-%m-%d"
+            start_date = MBSTransformer.parse_timestamp(
+                self.response.get("metadata", {})["ref_period_start_date"]
             )
 
         try:
             end_date = MBSTransformer.parse_timestamp(self.response["data"]["12"])
         except KeyError:
             logger.info("Populating end date using metadata")
-            end_date = datetime.datetime.strptime(
-                self.response.get("metadata", {})["ref_period_end_date"], "%Y-%m-%d"
+            end_date = MBSTransformer.parse_timestamp(
+                self.response.get("metadata", {})["ref_period_end_date"]
             )
 
         return {"11": start_date, "12": end_date}
