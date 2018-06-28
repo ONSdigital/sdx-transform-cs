@@ -216,13 +216,13 @@ class MBSTransformer():
             return employee_totals
 
     def check_turnover_totals(self):
-        """Populate qcode 49 based on d40"""
-        if self.response["data"].get("d40") == "Yes":
+        """Populate qcode 49 based on d49"""
+        if self.response["data"].get("d49") == "Yes":
             logger.info("Setting default value to 0 for question code 49")
             return {q_id: 0 for q_id in self.turnover_questions}
 
         else:
-            logger.info("d40 not yes. No default values set for question code 49.")
+            logger.info("d49 not yes. No default values set for question code 49.")
             turnover_totals = {}
 
             for q_id in self.turnover_questions:
