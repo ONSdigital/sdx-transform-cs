@@ -1,5 +1,5 @@
 ### Unreleased
-  -
+  - Change mbs transformer q_code from d40 to d49
 
 ### 3.4.0 2018-05-21
   - Add MBS Transformer
