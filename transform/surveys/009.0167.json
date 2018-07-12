@@ -24,6 +24,17 @@
             ]
         },
         {
+            "title": "Turnover",
+            "questions": [
+                {
+                    "text": "Turnover excluding VAT",
+                    "question_id": "46",
+                    "number": "46",
+                    "type": "currency"
+                }
+            ]
+        },
+        {
             "title": "Grants and Funding",
             "questions": [
                 {
