@@ -19,9 +19,6 @@ from transform.transformers.transformer import ImageTransformer
 
 logger = wrap_logger(logging.getLogger(__name__))
 
-# Set the rounding contect for Decimal objects to ROUND_HALF_UP
-decimal.getcontext().rounding = ROUND_HALF_UP
-
 
 class MBSTransformer():
     """Perform the transforms and formatting for the MBS survey."""
@@ -39,6 +36,8 @@ class MBSTransformer():
     def round_mbs(value):
         """MBS rounding is done on a ROUND_HALF_UP basis and values are divided by 1000 for the pck"""
         try:
+            # Set the rounding context for Decimal objects to ROUND_HALF_UP
+            decimal.getcontext().rounding = ROUND_HALF_UP
             return Decimal(round(Decimal(float(value))) / 1000).quantize(1)
 
         except TypeError:

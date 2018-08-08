@@ -82,6 +82,15 @@ class LogicTests(unittest.TestCase):
         rounded_up_transformed = MBSTransformer(rounded_up_response).transform()
         self.assertEqual(rounded_up_transformed["40"], 101)
 
+    def test_turnover_excluding_vat_rounds_half_up_when_equal(self):
+        """
+        QId 40 returns a Decimal rounded up to nearest 1000 then divided by 1000.
+        """
+        rounded_up_response = dict.copy(self.response)
+        rounded_up_response["data"]["40"] = "1234500.00"
+        rounded_up_transformed = MBSTransformer(rounded_up_response).transform()
+        self.assertEqual(rounded_up_transformed["40"], 1235)
+
     def test_turnover_excluding_vat_rounds_half_up(self):
         """
         QId 40 returns a Decimal rounded half up to nearest 1000 then divided by 1000.
