@@ -1,4 +1,6 @@
 ### Unreleased
+
+### 3.5.2 2018-08-09
   - Fix error in turnover rounding
 
 ### 3.5.1 2018-07-12
