@@ -9,12 +9,18 @@ logger = logging.getLogger(__name__)
 
 
 class PCKTransformer:
-    comments_questions = ['147', '146a', '146b', '146c', '146d', '146e', '146f', '146g', '146h']
+    comments_questions = ['147', '146a', '146b', '146c', '146d', '146e', '146f', '146g', '146h', '146i', '146j', '146k']
     rsi_turnover_questions = ["20", "21", "22", "23", "24", "25", "26"]
     rsi_currency_questions = rsi_turnover_questions + ["27"]
+    qcas_currency_questions = ['681', '688', '689', '695', '696', '697', '703', '704', '707', '708', '709', '710', '711', '712']
     employee_questions = ["50", "51", "52", "53", "54"]
 
     form_types = {
+        "019": {
+            "0018": "0018",
+            "0019": "0019",
+            "0020": "0020"
+        },
         "023": {
             "0102": "RSI5B",
             "0112": "RSI6B",
@@ -28,6 +34,7 @@ class PCKTransformer:
         }
     }
 
+    qcas_survey_id = "019"
     rsi_survey_id = "023"
     qbs_survey_id = "139"
 
@@ -122,17 +129,19 @@ class PCKTransformer:
                 self.data['12'] = end_date.strftime("%d/%m/%Y")
 
     def round_currency_values(self):
-        """For RSI Surveys, round the values of the currency fields.
+        """For RSI/QCAS Surveys, round the values of the currency fields.
         Rounds up if the value is .5
         """
-        if self.survey.get('survey_id') == self.rsi_survey_id:
+        if self.survey.get('survey_id') in [self.rsi_survey_id, self.qcas_survey_id]:
             self.data.update({k: str(Decimal(v).quantize(Decimal('1.'), ROUND_HALF_UP))
                 for k, v in self.data.items()  # noqa
-                    if k in self.rsi_currency_questions})  # noqa
+                    if k in self.rsi_currency_questions or k in self.qcas_currency_questions})  # noqa
 
-    def impute_zero_values(self):
-        """For RSI and QBS Surveys, impute breakdown values as zero if the total
+    def evaluate_confirmation_questions(self):
+        """
+        For RSI and QBS Surveys, impute breakdown values as zero if the total
         provided was zero.
+        For QCAS, the confirmation questions are not needed for transformation.
         """
         if self.survey.get('survey_id') == self.rsi_survey_id:
             if 'd20' in self.data:
@@ -143,6 +152,13 @@ class PCKTransformer:
             if 'd50' in self.data:
                 self.data.update({k: '0' for k in self.employee_questions})  # noqa
                 del self.data['d50']
+
+        if self.survey.get('survey_id') == self.qcas_survey_id:
+            if 'd12' in self.data:
+                del self.data['d12']
+
+            if 'd681' in self.data:
+                del self.data['d681']
 
     def preprocess_comments(self):
         """147 or any 146x indicates a special comment type that should not be shown
@@ -165,7 +181,7 @@ class PCKTransformer:
         except KeyError:
             logger.info("Missing metadata")
         self.round_currency_values()
-        self.impute_zero_values()
+        self.evaluate_confirmation_questions()
         answers = self.preprocess_comments()
 
         self.form_questions, self.form_question_types = self.get_form_questions()
