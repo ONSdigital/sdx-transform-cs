@@ -1,4 +1,5 @@
 import datetime
+import itertools
 import json
 import unittest
 from copy import deepcopy
@@ -7,7 +8,6 @@ from transform.transformers.cs_formatter import CSFormatter
 
 
 class LogicTests(unittest.TestCase):
-
     with open("tests/replies/009.0255.json", "r") as fp:
         response = json.load(fp)
 
@@ -236,9 +236,25 @@ class BatchFileTests(unittest.TestCase):
         self.assertIsInstance(ids, dict)
         self.assertIsNotNone(ids)
 
+    def test_load_survey_fails(self):
+        """
+        Tests if load data fails if an id is unavailable
+        """
+
+        response = {
+            "survey_id": "009",
+            "tx_id": "27923934-62de-475c-bc01-433c09fd38b8",
+            "collection": {"instrument_id": "0255", "period": "201704"},
+            "metadata": {"user_id": "123456789", "ru_ref": "12345678901A"},
+        }
+
+        transformer = MBSTransformer(response)
+        del (transformer.response["survey_id"])
+        ids = transformer.get_identifiers()
+        self.assertIsNone(ids)
+
 
 class TestTransform(unittest.TestCase):
-
     response = {
         "origin": "uk.gov.ons.edc.eq",
         "survey_id": "009",
@@ -366,7 +382,8 @@ class TestTransform(unittest.TestCase):
         )
 
     def test_survey_date_dates_submitted(self):
-        result = MBSTransformer(self.response).survey_dates()
+        response = deepcopy(self.response)
+        result = MBSTransformer(response).survey_dates()
         self.assertEqual(
             result,
             {
@@ -400,3 +417,96 @@ class TestTransform(unittest.TestCase):
 
         with self.assertRaises(KeyError):
             MBSTransformer(local_response).survey_dates()
+
+    def test_period_date_29_06_2018(self):
+        response = deepcopy(self.response)
+        result = MBSTransformer(response)
+        result.response['data'].update({
+            '11': '29/06/2018',
+            '12': '31/07/2018'
+        })
+        result = result.survey_dates()
+        expected = {
+            "11": datetime.date(2018, 6, 29),
+            "12": datetime.date(2018, 7, 31)
+        }
+
+        self.assertEqual(result, expected)
+
+    def test_period_date_less_than_6_characters(self):
+        response = deepcopy(self.response)
+        result = MBSTransformer(response)
+        result.response['data'].update({
+            '11': '3',
+            '12': '5'
+        })
+        result = result.survey_dates()
+
+        self.assertEqual(result, {'11': None, '12': None})
+
+    def test_period_date_empty_string(self):
+        response = deepcopy(self.response)
+        result = MBSTransformer(response)
+        result.response['data'].update({
+            '11': '',
+            '12': ''
+        })
+        result = result.survey_dates()
+
+        self.assertEqual(result, {'11': None, '12': None})
+
+    def test_period_date_with_6_blank_characters(self):
+        response = deepcopy(self.response)
+        result = MBSTransformer(response)
+        result.response['data'].update({
+            '11': '      ',
+            '12': '      '
+        })
+        result = result.survey_dates()
+
+        self.assertEqual(result, {'11': None, '12': None})
+
+    def test_period_date_with_blank_characters_before_and_after_date(self):
+        response = deepcopy(self.response)
+        result = MBSTransformer(response)
+        result.response['data'].update({
+            '11': '    2018/02/23    ',
+            '12': '    2018/04/01    '
+        })
+        result = result.survey_dates()
+
+        self.assertEqual(result, {'11': None, '12': None})
+
+    def test_period_date_ends_with_Z(self):
+        response = deepcopy(self.response)
+        result = MBSTransformer(response)
+        result.response['data'].update({
+            '11': '2018-06-29T10:20:30Z',
+            '12': '2018-07-30T10:20:30Z'
+        })
+
+        expected = {
+            '11': datetime.datetime(2018, 6, 29, 10, 20, 30, tzinfo=datetime.timezone.utc),
+            '12': datetime.datetime(2018, 7, 30, 10, 20, 30, tzinfo=datetime.timezone.utc)
+        }
+
+        result = result.survey_dates()
+        self.assertEqual(result, expected)
+
+    def test_mbs_create_zip(self):
+        response = deepcopy(self.response)
+        transformed = MBSTransformer(response)
+
+        transformed.create_zip(img_seq=itertools.count())
+        actual = transformed.image_transformer.zip.get_filenames()
+
+        expected = [
+            'EDC_QData/009_0000',
+            'EDC_QReceipts/REC0103_0000.DAT',
+            'EDC_QImages/Images/S000000000.JPG',
+            'EDC_QImages/Images/S000000001.JPG',
+            'EDC_QImages/Images/S000000002.JPG',
+            'EDC_QImages/Index/EDC_009_20170301_0000.csv',
+            'EDC_QJson/009_0000.json'
+        ]
+        self.assertEqual(expected, actual)
