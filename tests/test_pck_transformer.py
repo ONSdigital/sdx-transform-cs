@@ -103,3 +103,76 @@ class TestPckTransformer(unittest.TestCase):
         pck_transformer.evaluate_confirmation_questions()
 
         self.assertEquals(pck_transformer.data, {'681': '100'})
+
+    def test_pck_transformer_calculates_total_playback_qcas(self):
+        """
+        For QCAS, downstream needs the calculated values for both acquisitions
+        and proceeds from disposals to be sent in the PCK.
+        """
+        survey = {'survey_id': '019'}
+        response = {
+            "collection": {
+                "instrument_id": "0020"
+            },
+            "data": {
+                "11": "03/07/2018",
+                "12": "01/10/2018",
+                "146": "A lot of changes.",
+                "681": "123456.78",
+                "688": "54.32",
+                "689": "12",
+                "695": "56999.1",
+                "696": "57999.9",
+                "697": "0",
+                "703": "700",
+                "704": "300",
+                "707": "100",
+                "708": "200",
+                "709": "321",
+                "710": "123",
+                "711": "987",
+                "712": "9.87",
+                "146a": "Yes",
+                "146b": "Start or end of a long term project",
+                "146c": "Site changes, for example, openings, closures, refurbishments or upgrades",
+                "146d": "End of accounting period or financial year",
+                "146e": "Normal movement for time of year",
+                "146f": "Change of business structure, merger, or takeover",
+                "146g": "One off or unusual investment",
+                "146h": "Introduction / removal of new legislation / incentive",
+                "146i": "Availability of credit",
+                "146j": "Overspend during the previous quarter",
+                "146k": "Other",
+                "d12": "Yes",
+                "d681": "Yes"
+            }
+        }
+
+        pck_transformer = PCKTransformer(survey, response)
+        pck_transformer.calculate_total_playback()
+
+        # Total value of acquisitions questions for only machinery and equipments section
+        self.assertEquals(pck_transformer.data['714'], '59161.42')
+
+        # Total value of disposals questions for only machinery and equipments section
+        self.assertEquals(pck_transformer.data['715'], '58644.77')
+
+        # Total value of all acquisitions questions
+        self.assertEquals(pck_transformer.data['692'], '182618.20')
+
+        # Total value of all disposals questions (same as '715' since constructions section and minerals sections does not have disposals question)
+        self.assertEquals(pck_transformer.data['693'], '58644.77')
+
+        pck_transformer.round_currency_values()
+
+        # Total value of acquisitions questions for only machinery and equipments section
+        self.assertEquals(pck_transformer.data['714'], '59161')
+
+        # Total value of disposals questions for only machinery and equipments section
+        self.assertEquals(pck_transformer.data['715'], '58645')
+
+        # Total value of all acquisitions questions
+        self.assertEquals(pck_transformer.data['692'], '182618')
+
+        # Total value of all disposals questions (same as '715' since constructions section and minerals sections does not have disposals question)
+        self.assertEquals(pck_transformer.data['693'], '58645')

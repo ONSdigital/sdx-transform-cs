@@ -1,9 +1,9 @@
 import copy
-from datetime import datetime
-import dateutil.parser
-from decimal import Decimal, ROUND_HALF_UP
 import logging
+from datetime import datetime
+from decimal import Decimal, ROUND_HALF_UP
 
+import dateutil.parser
 
 logger = logging.getLogger(__name__)
 
@@ -12,8 +12,13 @@ class PCKTransformer:
     comments_questions = ['147', '146a', '146b', '146c', '146d', '146e', '146f', '146g', '146h', '146i', '146j', '146k']
     rsi_turnover_questions = ["20", "21", "22", "23", "24", "25", "26"]
     rsi_currency_questions = rsi_turnover_questions + ["27"]
-    qcas_currency_questions = ['681', '688', '689', '695', '696', '697', '703', '704', '707', '708', '709', '710', '711', '712']
     employee_questions = ["50", "51", "52", "53", "54"]
+
+    qcas_machinery_acquisitions_questions = ['688', '695', '703', '707', '709', '711']
+    qcas_other_acquisitions_questions = ['681', '697']
+    qcas_disposals_questions = ['689', '696', '704', '708', '710', '712']
+    qcas_calculated_total = ['692', '693', '714', '715']  # Calculated summary values
+    qcas_currency_questions = qcas_other_acquisitions_questions + qcas_disposals_questions + qcas_machinery_acquisitions_questions + qcas_calculated_total
 
     form_types = {
         "019": {
@@ -171,6 +176,27 @@ class PCKTransformer:
         self.data = data
         return self.data
 
+    def calculate_total_playback(self):
+        """
+        Calculates the total value for both acquisitions and proceeds from disposals for machinery and equipment section
+        as well as all sections.
+        q_code - 692 - Total value of all acquisitions questions.
+        q_code - 693 - Total value of all disposals questions.
+        q_code - 714 - Total value of all acquisitions questions for only machinery and equipments sections.
+        q_code - 715 - Total value of all disposals questions for only machinery and equipments sections.
+        """
+        if self.survey.get('survey_id') == self.qcas_survey_id:
+            all_acquisitions_questions = self.qcas_machinery_acquisitions_questions + self.qcas_other_acquisitions_questions
+
+            total_machinery_acquisitions = sum(Decimal(value) for q_code, value in self.data.items() if q_code in self.qcas_machinery_acquisitions_questions)
+            total_disposals = sum(Decimal(value) for q_code, value in self.data.items() if q_code in self.qcas_disposals_questions)
+            all_acquisitions_total = sum(Decimal(value) for q_code, value in self.data.items() if q_code in all_acquisitions_questions)
+
+            self.data['714'] = str(total_machinery_acquisitions)
+            self.data['715'] = str(total_disposals)
+            self.data['692'] = str(all_acquisitions_total)
+            self.data['693'] = str(total_disposals)   # Construction and minerals do not have disposals answers.
+
     def derive_answers(self):
         """Takes a loaded dict structure of survey data and answers sent
         in a request and derives values to use in response
@@ -180,8 +206,11 @@ class PCKTransformer:
             self.populate_period_data()
         except KeyError:
             logger.info("Missing metadata")
+
+        self.calculate_total_playback()
         self.round_currency_values()
         self.evaluate_confirmation_questions()
+
         answers = self.preprocess_comments()
 
         self.form_questions, self.form_question_types = self.get_form_questions()

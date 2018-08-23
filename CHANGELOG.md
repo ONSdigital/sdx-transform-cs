@@ -1,5 +1,7 @@
 ### Unreleased
-
+  - Added support for QCAS form types.
+  - Calculate total values for QCAS to be sent downstream.
+    
 ### 3.5.2 2018-08-09
   - Fix error in turnover rounding
 
