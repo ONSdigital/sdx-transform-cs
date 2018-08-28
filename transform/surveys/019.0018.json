@@ -150,6 +150,44 @@
             ]
         },
         {
+            "title": "Total playback for machinery and equipments",
+            "questions": [
+                {
+                    "title": "The total value of acquisitions for machinery and equipments",
+                    "text": "The total value of acquisitions for machinery and equipments",
+                    "question_id": "714",
+                    "number": "714",
+                    "type": "currency"
+                },
+                {
+                    "title": "The total value of proceeds from disposals for machinery and equipments",
+                    "text": "The total value of proceeds from disposals for machinery and equipments",
+                    "question_id": "715",
+                    "number": "715",
+                    "type": "currency"
+                }
+            ]
+        },
+        {
+            "title": "Total playback for all questions",
+            "questions": [
+                {
+                    "title": "The total value of all acquisitions",
+                    "text": "The total value of all acquisitions",
+                    "question_id": "692",
+                    "number": "692",
+                    "type": "currency"
+                },
+                {
+                    "title": "The total value of all proceeds from disposals",
+                    "text": "The total value of all proceeds from disposals",
+                    "question_id": "693",
+                    "number": "693",
+                    "type": "currency"
+                }
+            ]
+        },
+        {
             "title": "Significant changes",
             "questions": [
                 {
