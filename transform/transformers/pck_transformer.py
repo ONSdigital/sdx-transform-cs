@@ -142,6 +142,21 @@ class PCKTransformer:
                 for k, v in self.data.items()  # noqa
                     if k in self.rsi_currency_questions or k in self.qcas_currency_questions})  # noqa
 
+    def parse_negative_values(self):
+        """If any number field contains a negative value then replace it with a number containing
+        the maxiumum number of 9's that downstream will allow
+        """
+        for k, v in self.data.items():  # noqa
+            try:
+                # If v isn't a number then an exception is thrown and we skip it
+                int_v = int(v)
+                # If the original number is between -1 and -499, it gets rounded to -0.  In this case, we want it to
+                # also be all 9's as the original number was negative.
+                if v == '-0' or int_v < 0:
+                    self.data[k] = '9' * 11
+            except ValueError:
+                continue
+
     def evaluate_confirmation_questions(self):
         """
         For RSI and QBS Surveys, impute breakdown values as zero if the total
@@ -209,6 +224,7 @@ class PCKTransformer:
 
         self.calculate_total_playback()
         self.round_currency_values()
+        self.parse_negative_values()
         self.evaluate_confirmation_questions()
 
         answers = self.preprocess_comments()

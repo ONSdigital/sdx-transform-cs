@@ -1,6 +1,7 @@
 ### Unreleased
   - Added support for QCAS form types.
   - Calculate total values for QCAS to be sent downstream.
+  - Replace all negative numbers with a string of 11 characters containing only 9's in pck file.
     
 ### 3.5.2 2018-08-09
   - Fix error in turnover rounding

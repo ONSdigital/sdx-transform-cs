@@ -104,6 +104,83 @@ class TestPckTransformer(unittest.TestCase):
 
         self.assertEquals(pck_transformer.data, {'681': '100'})
 
+    def test_pck_transformer_parse_negative_values(self):
+        """If any values in the survey are negative, they should be replaced with an all 9's string that is 11 characters long
+        """
+        survey = {'survey_id': '019'}
+        response = {'collection': {'instrument_id': '000'},
+                    'data': {'681': '-100', '703': '-1234', '704': '-12345', '707': '-123456', '708': '-0', '709': '1234', '710': '-123word'}}
+        pck_transformer = PCKTransformer(survey, response)
+        self.assertEquals(pck_transformer.data, {
+            '681': '-100',
+            '703': '-1234',
+            '704': '-12345',
+            '707': '-123456',
+            '708': '-0',
+            '709': '1234',
+            '710': '-123word'})
+
+        pck_transformer.parse_negative_values()
+        self.assertEquals(pck_transformer.data, {
+            '681': '99999999999',
+            '703': '99999999999',
+            '704': '99999999999',
+            '707': '99999999999',
+            '708': '99999999999',
+            '709': '1234',
+            '710': '-123word'})
+
+    def test_pck_transformer_preprocess_comments(self):
+        """Tests 2 things.  First, if every comment question (147 and all 146x) is present and 146 IS NOT in the data, then 146 is added.
+        Second, all of the comment questions are removed from the submission as they're not put into the pck file.
+        """
+        survey = {'survey_id': '019'}
+        response = {'collection': {'instrument_id': '000'},
+                    'data': {
+                        "11": "03/07/2018",
+                        "12": "01/10/2018",
+                        "681": "123456.78",
+                        "146a": "Yes",
+                        "146b": "Start or end of a long term project",
+                        "146c": "Site changes, for example, openings, closures, refurbishments or upgrades",
+                        "146d": "End of accounting period or financial year",
+                        "146e": "Normal movement for time of year",
+                        "146f": "Change of business structure, merger, or takeover",
+                        "146g": "One off or unusual investment",
+                        "146h": "Introduction / removal of new legislation / incentive",
+                        "146i": "Availability of credit",
+                        "146j": "Overspend during the previous quarter",
+                        "146k": "Other",
+                        '147': "Yes",
+                        'd12': 'Yes'}}
+
+        pck_transformer = PCKTransformer(survey, response)
+        self.assertEquals(pck_transformer.data, {
+            "11": "03/07/2018",
+            "12": "01/10/2018",
+            "681": "123456.78",
+            "146a": "Yes",
+            "146b": "Start or end of a long term project",
+            "146c": "Site changes, for example, openings, closures, refurbishments or upgrades",
+            "146d": "End of accounting period or financial year",
+            "146e": "Normal movement for time of year",
+            "146f": "Change of business structure, merger, or takeover",
+            "146g": "One off or unusual investment",
+            "146h": "Introduction / removal of new legislation / incentive",
+            "146i": "Availability of credit",
+            "146j": "Overspend during the previous quarter",
+            "146k": "Other",
+            '147': "Yes",
+            'd12': 'Yes'})
+
+        pck_transformer.preprocess_comments()
+        self.assertEquals(pck_transformer.data, {
+            "11": "03/07/2018",
+            "12": "01/10/2018",
+            "146": 1,
+            "681": "123456.78",
+            'd12': 'Yes'})
+
     def test_pck_transformer_calculates_total_playback_qcas(self):
         """
         For QCAS, downstream needs the calculated values for both acquisitions
