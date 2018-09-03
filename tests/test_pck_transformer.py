@@ -243,13 +243,13 @@ class TestPckTransformer(unittest.TestCase):
         pck_transformer.round_currency_values()
 
         # Total value of acquisitions questions for only machinery and equipments section
-        self.assertEquals(pck_transformer.data['714'], '59161')
+        self.assertEquals(pck_transformer.data['714'], '59')
 
         # Total value of disposals questions for only machinery and equipments section
-        self.assertEquals(pck_transformer.data['715'], '58645')
+        self.assertEquals(pck_transformer.data['715'], '59')
 
         # Total value of all acquisitions questions
-        self.assertEquals(pck_transformer.data['692'], '182618')
+        self.assertEquals(pck_transformer.data['692'], '183')
 
         # Total value of all disposals questions (same as '715' since constructions section and minerals sections does not have disposals question)
-        self.assertEquals(pck_transformer.data['693'], '58645')
+        self.assertEquals(pck_transformer.data['693'], '59')

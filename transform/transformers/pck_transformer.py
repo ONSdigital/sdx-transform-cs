@@ -1,4 +1,5 @@
 import copy
+import decimal
 import logging
 from datetime import datetime
 from decimal import Decimal, ROUND_HALF_UP
@@ -125,7 +126,7 @@ class PCKTransformer:
         """If questions 11 or 12 don't appear in the survey data, then populate
         them with the period start and end date found in the metadata
         """
-        if self.survey['survey_id'] == self.rsi_survey_id:
+        if self.survey['survey_id'] in [self.rsi_survey_id, self.qcas_survey_id]:
             if '11' not in self.data:
                 start_date = datetime.strptime(self.response['metadata']['ref_period_start_date'], "%Y-%m-%d")
                 self.data['11'] = start_date.strftime("%d/%m/%Y")
@@ -134,13 +135,21 @@ class PCKTransformer:
                 self.data['12'] = end_date.strftime("%d/%m/%Y")
 
     def round_currency_values(self):
-        """For RSI/QCAS Surveys, round the values of the currency fields.
+        """For RSI Surveys, round the values of the currency fields.
         Rounds up if the value is .5
+
+        For QCAS Surveys, round the values of the currency fields and divide
+        by 1000 (i.e., 56100 would return 56)
         """
-        if self.survey.get('survey_id') in [self.rsi_survey_id, self.qcas_survey_id]:
+        if self.survey.get('survey_id') in [self.rsi_survey_id]:
             self.data.update({k: str(Decimal(v).quantize(Decimal('1.'), ROUND_HALF_UP))
                 for k, v in self.data.items()  # noqa
-                    if k in self.rsi_currency_questions or k in self.qcas_currency_questions})  # noqa
+                    if k in self.rsi_currency_questions})  # noqa
+
+        if self.survey.get('survey_id') in [self.qcas_survey_id]:
+            self.data.update({k: str(self.round_to_nearest_thousand(v))
+                for k, v in self.data.items()  # noqa
+                    if k in self.qcas_currency_questions})  # noqa
 
     def parse_negative_values(self):
         """If any number field contains a negative value then replace it with a number containing
@@ -241,3 +250,11 @@ class PCKTransformer:
                 derived.append((int(k), self.get_derived_value(k, v)))
 
         return sorted(derived)
+
+    @staticmethod
+    def round_to_nearest_thousand(value):
+        """QCAS rounding is done on a ROUND_HALF_UP basis and values are divided by 1000 for the pck"""
+
+        # Set the rounding context for Decimal objects to ROUND_HALF_UP
+        decimal.getcontext().rounding = ROUND_HALF_UP
+        return Decimal(round(Decimal(float(value))) / 1000).quantize(1)
