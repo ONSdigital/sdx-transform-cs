@@ -195,20 +195,29 @@ class TestPckTransformer(unittest.TestCase):
                 "11": "03/07/2018",
                 "12": "01/10/2018",
                 "146": "A lot of changes.",
-                "681": "123456.78",
-                "688": "54.32",
-                "689": "12",
-                "695": "56999.1",
-                "696": "57999.9",
-                "697": "0",
-                "703": "700",
-                "704": "300",
-                "707": "100",
-                "708": "200",
-                "709": "321",
-                "710": "123",
-                "711": "987",
-                "712": "9.87",
+
+                # Disposals
+                "689": "499",
+                "696": "500",
+                "704": "12345.67",
+                "708": "12345500",
+                "710": "-499",
+                "712": "-12345.67",
+
+                # Construction
+                "681": "1000",
+
+                # Acquisitions
+                "688": "1500",
+                "695": "1500",
+                "703": "1500",
+                "707": "1500",
+                "709": "1500",
+                "711": "1500",
+
+                # Mineral
+                "697": "-1500",
+
                 "146a": "Yes",
                 "146b": "Start or end of a long term project",
                 "146c": "Site changes, for example, openings, closures, refurbishments or upgrades",
@@ -226,30 +235,26 @@ class TestPckTransformer(unittest.TestCase):
         }
 
         pck_transformer = PCKTransformer(survey, response)
-        pck_transformer.calculate_total_playback()
-
-        # Total value of acquisitions questions for only machinery and equipments section
-        self.assertEquals(pck_transformer.data['714'], '59161.42')
-
-        # Total value of disposals questions for only machinery and equipments section
-        self.assertEquals(pck_transformer.data['715'], '58644.77')
-
-        # Total value of all acquisitions questions
-        self.assertEquals(pck_transformer.data['692'], '182618.20')
-
-        # Total value of all disposals questions (same as '715' since constructions section and minerals sections does not have disposals question)
-        self.assertEquals(pck_transformer.data['693'], '58644.77')
 
         pck_transformer.round_currency_values()
 
+        self.assertEquals(pck_transformer.data['689'], '0')
+        self.assertEquals(pck_transformer.data['696'], '1')
+        self.assertEquals(pck_transformer.data['704'], '12')
+        self.assertEquals(pck_transformer.data['708'], '12346')
+        self.assertEquals(pck_transformer.data['710'], '-0')
+        self.assertEquals(pck_transformer.data['712'], '-12')
+
+        pck_transformer.calculate_total_playback()
+
         # Total value of acquisitions questions for only machinery and equipments section
-        self.assertEquals(pck_transformer.data['714'], '59')
+        self.assertEquals(pck_transformer.data['714'], '12')
 
         # Total value of disposals questions for only machinery and equipments section
-        self.assertEquals(pck_transformer.data['715'], '59')
+        self.assertEquals(pck_transformer.data['715'], '12347')
 
         # Total value of all acquisitions questions
-        self.assertEquals(pck_transformer.data['692'], '183')
+        self.assertEquals(pck_transformer.data['692'], '11')
 
         # Total value of all disposals questions (same as '715' since constructions section and minerals sections does not have disposals question)
-        self.assertEquals(pck_transformer.data['693'], '59')
+        self.assertEquals(pck_transformer.data['693'], '12347')

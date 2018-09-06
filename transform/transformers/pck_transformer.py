@@ -231,8 +231,8 @@ class PCKTransformer:
         except KeyError:
             logger.info("Missing metadata")
 
-        self.calculate_total_playback()
         self.round_currency_values()
+        self.calculate_total_playback()
         self.parse_negative_values()
         self.evaluate_confirmation_questions()
 
