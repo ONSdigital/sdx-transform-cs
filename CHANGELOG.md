@@ -1,4 +1,5 @@
 ### Unreleased
+  - Improve tests for mbs_transformer
 
 ### 3.6.0 2018-09-11
   - Added support for QCAS form types.

@@ -20,7 +20,7 @@ from transform.transformers.transformer import ImageTransformer
 logger = wrap_logger(logging.getLogger(__name__))
 
 
-class MBSTransformer():
+class MBSTransformer:
     """Perform the transforms and formatting for the MBS survey."""
 
     @staticmethod
@@ -185,12 +185,12 @@ class MBSTransformer():
             "period": self.response.get("collection", {}).get("period"),
         }
 
-        if any(i is None for i in ids):
-            logger.error("Missing an id from {0}".format(ids))
-            return None
+        for key, value in ids.items():
+            if value is None:
+                logger.error("Missing value for: {0}".format(key))
+                return None
 
-        else:
-            return ids
+        return ids
 
     def check_employee_totals(self):
         """Populate qcode 51:54 based on d50"""
