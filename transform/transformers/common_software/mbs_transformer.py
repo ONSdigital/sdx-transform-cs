@@ -13,24 +13,16 @@ from transform.settings import (
     SDX_FTP_RECEIPT_PATH,
     SDX_RESPONSE_JSON_PATH,
 )
-from transform.transformers.cs_formatter import CSFormatter
+from transform.transformers.common_software.cs_formatter import CSFormatter
 from transform.transformers.survey import Survey
-from transform.transformers.transformer import ImageTransformer
+from transform.transformers.image_transformer import ImageTransformer
+from transform.utilities.general import merge_dicts
 
 logger = wrap_logger(logging.getLogger(__name__))
 
 
 class MBSTransformer:
     """Perform the transforms and formatting for the MBS survey."""
-
-    @staticmethod
-    def _merge_dicts(*args):
-        """Makes it possible to merge any number of dicts on Python 3.4."""
-        z = args[0].copy()
-
-        for x in args:
-            z.update(x)
-        return z
 
     @staticmethod
     def round_mbs(value):
@@ -281,7 +273,7 @@ class MBSTransformer:
 
         return {
             k: v
-            for k, v in self._merge_dicts(
+            for k, v in merge_dicts(
                 transformed_data, employee_totals, turnover_totals, dates
             ).items()
             if v is not None
@@ -293,7 +285,6 @@ class MBSTransformer:
         """
 
         logger.info("Creating PCK", ru_ref=self.ids["ru_ref"])
-
         pck_name = CSFormatter.pck_name(self.ids["survey_id"], self.ids["seq_nr"])
         transformed_data = self.transform()
         pck = CSFormatter.get_pck(
@@ -305,7 +296,6 @@ class MBSTransformer:
         )
 
         logger.info("Creating IDBR receipt", ru_ref=self.ids["ru_ref"])
-
         idbr_name = CSFormatter.idbr_name(self.ids["submitted_at"], self.ids["seq_nr"])
         idbr = CSFormatter.get_idbr(
             self.ids["survey_id"],
@@ -314,24 +304,9 @@ class MBSTransformer:
             self.ids["period"],
         )
 
-        response_json_name = CSFormatter.response_json_name(
-            self.ids["survey_id"], self.ids["seq_nr"]
-        )
+        response_json_name = CSFormatter.response_json_name(self.ids["survey_id"], self.ids["seq_nr"])
 
-        self.image_transformer.zip.append(
-            os.path.join(SDX_FTP_DATA_PATH, pck_name), pck
-        )
-        self.image_transformer.zip.append(
-            os.path.join(SDX_FTP_RECEIPT_PATH, idbr_name), idbr
-        )
-
+        self.image_transformer.zip.append(os.path.join(SDX_FTP_DATA_PATH, pck_name), pck)
+        self.image_transformer.zip.append(os.path.join(SDX_FTP_RECEIPT_PATH, idbr_name), idbr)
         self.image_transformer.get_zipped_images(img_seq)
-
-        self.image_transformer.zip.append(
-            os.path.join(SDX_RESPONSE_JSON_PATH, response_json_name),
-            json.dumps(self.response),
-        )
-
-    def get_zip(self):
-        self.image_transformer.zip.rewind()
-        return self.image_transformer.zip.in_memory_zip
+        self.image_transformer.zip.append(os.path.join(SDX_RESPONSE_JSON_PATH, response_json_name), json.dumps(self.response))

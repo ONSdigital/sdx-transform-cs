@@ -8,8 +8,8 @@ import zipfile
 
 import pkg_resources
 
-from transform.transformers.cs_formatter import CSFormatter
-from transform.transformers.mwss_transformer import MWSSTransformer
+from transform.transformers.common_software.cs_formatter import CSFormatter
+from transform.transformers.common_software.mwss_transformer import MWSSTransformer
 from transform.transformers.processor import Processor
 from transform.transformers.survey import Survey
 
@@ -1087,4 +1087,4 @@ class PackingTests(unittest.TestCase):
         actual_json_data = json.loads(zfile.read().decode('utf-8'))
         z.close()
 
-        self.assertEquals(actual_json_data, expected_json_data)
+        self.assertEqual(actual_json_data, expected_json_data)

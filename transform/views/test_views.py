@@ -6,8 +6,8 @@ from jinja2 import Environment, PackageLoader
 from structlog import wrap_logger
 
 from transform import app
-from transform.transformers import PDFTransformer, CSTransformer
-from transform.transformers.image_transformer import ImageTransformer
+from transform.transformers import ImageTransformer, PDFTransformer
+from transform.transformers.common_software import CSTransformer
 
 logger = wrap_logger(logging.getLogger(__name__))
 

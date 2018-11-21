@@ -32,7 +32,7 @@ class TestCSTransformService(unittest.TestCase):
         return z.namelist()
 
     @patch('transform.transformers.ImageTransformer._get_image_sequence_list', return_value=[13, 14])
-    def test_creates_cs_defaults(self, mock_sequence_no):
+    def test_creates_cs_defaults(self, mock_sequence_no):  # pylint: disable=unused-argument
 
         ziplist = self.get_zip_list(self.transform_cs_endpoint)
 
@@ -49,7 +49,7 @@ class TestCSTransformService(unittest.TestCase):
         self.assertEqual(expected, ziplist)
 
     @patch('transform.transformers.ImageTransformer._get_image_sequence_list', return_value=[1985, 1986])
-    def test_creates_cs_sequence(self, mock_sequence_no):
+    def test_creates_cs_sequence(self, mock_sequence_no):  # pylint: disable=unused-argument
 
         ziplist = self.get_zip_list(self.transform_cs_endpoint + "/2345")
 
@@ -80,7 +80,7 @@ class TestCSTransformService(unittest.TestCase):
         self.assertEqual(expected, ziplist)
 
     @patch('transform.transformers.ImageTransformer._get_image_sequence_list', return_value=[13, 14])
-    def test_original_json_stored_in_zip(self, mock_sequence_no):
+    def test_original_json_stored_in_zip(self, mock_sequence_no):  # pylint: disable=unused-argument
         """Compare the dictionary loaded from the zip file json is the same as that submitted"""
         expected_json_data = json.loads(test_message)
 
@@ -90,7 +90,7 @@ class TestCSTransformService(unittest.TestCase):
         zfile = z.open('EDC_QJson/023_2345.json', 'r')
         actual_json_data = json.loads(zfile.read().decode('utf-8'))
 
-        self.assertEquals(actual_json_data, expected_json_data)
+        self.assertEqual(actual_json_data, expected_json_data)
 
     def test_invalid_data(self):
         r = self.app.post(self.transform_cs_endpoint, data="rubbish")

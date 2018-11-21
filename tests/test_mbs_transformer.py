@@ -3,8 +3,8 @@ import itertools
 import json
 import unittest
 from copy import deepcopy
-from transform.transformers import MBSTransformer
-from transform.transformers.cs_formatter import CSFormatter
+from transform.transformers.common_software import MBSTransformer
+from transform.transformers.common_software.cs_formatter import CSFormatter
 
 
 class LogicTests(unittest.TestCase):

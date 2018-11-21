@@ -1,8 +1,8 @@
 import copy
-import decimal
-import logging
 from datetime import datetime
+import decimal
 from decimal import Decimal, ROUND_HALF_UP
+import logging
 
 import dateutil.parser
 
@@ -49,6 +49,8 @@ class PCKTransformer:
         self.response = response_data
 
         self.data = copy.deepcopy(response_data['data']) if 'data' in response_data else {}
+        self.form_questions = None
+        self.form_question_types = None
 
     def get_form_questions(self):
         """Return the questions (list) and question types (dict
@@ -73,6 +75,10 @@ class PCKTransformer:
         return questions, question_types
 
     def get_cs_form_id(self):
+        """
+        Returns the formtype that common software uses from self.response data.  Also checks the form_type and intstrument_id are valid too.
+        :returns: Common software version of formtype, or None if either form_type or instrument_id are invalid.
+        """
         instrument_id = self.response['collection']['instrument_id']
 
         try:
@@ -90,6 +96,10 @@ class PCKTransformer:
         return form_id
 
     def get_subdate_str(self):
+        """
+        Gets the submission date from the 'submitted_at' field in the response and returns it formatted
+        :returns: Date formatted in the 'dd/mm/yy' format.
+        """
         submission_date = dateutil.parser.parse(self.response['submitted_at'])
 
         return submission_date.strftime("%d/%m/%y")
@@ -143,13 +153,11 @@ class PCKTransformer:
         """
         if self.survey.get('survey_id') in [self.rsi_survey_id]:
             self.data.update({k: str(Decimal(v).quantize(Decimal('1.'), ROUND_HALF_UP))
-                for k, v in self.data.items()  # noqa
-                    if k in self.rsi_currency_questions})  # noqa
+                              for k, v in self.data.items() if k in self.rsi_currency_questions})
 
         if self.survey.get('survey_id') in [self.qcas_survey_id]:
             self.data.update({k: str(self.round_to_nearest_thousand(v))
-                for k, v in self.data.items()  # noqa
-                    if k in self.qcas_currency_questions})  # noqa
+                              for k, v in self.data.items() if k in self.qcas_currency_questions})
 
     def parse_negative_values(self):
         """If any number field contains a negative value then replace it with a number containing
@@ -174,7 +182,7 @@ class PCKTransformer:
         """
         if self.survey.get('survey_id') == self.rsi_survey_id:
             if 'd20' in self.data:
-                self.data.update({k: '0' for k in self.rsi_turnover_questions})  # noqa
+                self.data.update({k: '0' for k in self.rsi_turnover_questions})
                 del self.data['d20']
 
         if self.survey.get('survey_id') in [self.rsi_survey_id, self.qbs_survey_id]:
@@ -194,7 +202,7 @@ class PCKTransformer:
         in pck, but in image. Additionally should set 146 if unset.
         """
         if set(self.comments_questions) <= set(self.data.keys()) and '146' not in self.data.keys():
-                self.data['146'] = 1
+            self.data['146'] = 1
 
         data = {k: v for k, v in self.data.items() if k not in self.comments_questions}
         self.data = data

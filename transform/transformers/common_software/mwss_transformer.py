@@ -1,12 +1,19 @@
 from collections import OrderedDict
 from decimal import Decimal, ROUND_DOWN, ROUND_HALF_UP
 from functools import partial
+import json
+import logging
+import os.path
 
 import itertools
 import re
+from structlog import wrap_logger
 
+from transform.transformers.common_software.cs_formatter import CSFormatter
+from transform.transformers.image_transformer import ImageTransformer
 from transform.transformers.processor import Processor
-from transform.transformers.transformer import Transformer
+from transform.transformers.survey import Survey
+from transform.settings import SDX_FTP_DATA_PATH, SDX_FTP_IMAGE_PATH, SDX_FTP_RECEIPT_PATH, SDX_RESPONSE_JSON_PATH
 
 __doc__ = """Transform MWSS survey data into formats required downstream.
 
@@ -14,7 +21,7 @@ The class API is used by the SDX transform service.
 """
 
 
-class MWSSTransformer(Transformer):
+class MWSSTransformer:
     """Perform the transforms and formatting for the MWSS survey.
 
     Weights = A sequence of 2-tuples giving the weight value for each question in the group.
@@ -82,6 +89,28 @@ class MWSSTransformer(Transformer):
 
     pattern = "./transform/surveys/{survey_id}.{inst_id}.json"
 
+    def __init__(self, response, seq_nr=0, log=None):
+        """Create a transformer object to process a survey response."""
+        self.response = response
+        self.ids = Survey.identifiers(response, seq_nr=seq_nr)
+
+        if self.ids is None:
+            raise UserWarning("Missing identifiers")
+
+        if log is None:
+            self.log = wrap_logger(logging.getLogger(__name__))
+        else:
+            self.log = Survey.bind_logger(log, self.ids)
+
+        # Enforce that child classes have defn and pattern attributes
+        for attr in ("defn", "pattern"):
+            if not hasattr(self.__class__, attr):
+                raise UserWarning("Missing class attribute: {0}".format(attr))
+
+        self.survey = Survey.load_survey(self.ids, self.pattern)
+        self.image_transformer = ImageTransformer(self.log, self.survey, self.response,
+                                                  sequence_no=self.ids.seq_nr, base_image_path=SDX_FTP_IMAGE_PATH)
+
     @staticmethod
     def transform(data, survey=None):
         """Perform a transform on survey data.
@@ -120,3 +149,43 @@ class MWSSTransformer(Transformer):
             for question_id, (default, funct) in MWSSTransformer.ops().items()
             if Decimal(question_id) in supplied.union(mandatory)
         )
+
+    @classmethod
+    def ops(cls):
+        """Publish the sequence of operations for the transform.
+
+        Return an ordered mapping from question id to default value and processing function.
+
+        """
+        return OrderedDict([
+            ("{0:02}".format(qNr), (dflt, fn))
+            for rng, dflt, fn in cls.defn
+            for qNr in (rng if isinstance(rng, range) else [rng])
+        ])
+
+    def create_zip(self, img_seq=None):
+        """Perform transformation on the survey data
+        and pack the output into a zip file exposed by the image transformer
+        """
+
+        data = self.transform(self.response["data"], self.survey)
+
+        id_dict = self.ids._asdict()
+
+        pck_name = CSFormatter.pck_name(id_dict["survey_id"], id_dict["seq_nr"])
+
+        pck = CSFormatter.get_pck(data, id_dict["inst_id"], id_dict["ru_ref"], id_dict["ru_check"], id_dict["period"])
+
+        idbr_name = CSFormatter.idbr_name(id_dict["user_ts"], id_dict["seq_nr"])
+
+        idbr = CSFormatter.get_idbr(id_dict["survey_id"], id_dict["ru_ref"], id_dict["ru_check"], id_dict["period"])
+
+        response_json_name = CSFormatter.response_json_name(id_dict["survey_id"], id_dict["seq_nr"])
+
+        self.image_transformer.zip.append(os.path.join(SDX_FTP_DATA_PATH, pck_name), pck)
+        self.image_transformer.zip.append(os.path.join(SDX_FTP_RECEIPT_PATH, idbr_name), idbr)
+
+        self.image_transformer.get_zipped_images(img_seq)
+
+        self.image_transformer.zip.append(os.path.join(SDX_RESPONSE_JSON_PATH, response_json_name),
+                                          json.dumps(self.response))
