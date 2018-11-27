@@ -7,10 +7,12 @@ from jinja2 import Environment, PackageLoader
 from structlog import wrap_logger
 from transform.views.logger_config import logger_initial_config
 
-from transform import app
-from transform import settings
-from transform.transformers import CSTransformer, ImageTransformer, MBSTransformer, MWSSTransformer, PCKTransformer, PDFTransformer
+from transform import app, settings
+from transform.transformers import ImageTransformer, PDFTransformer
+from transform.transformers.common_software import CSTransformer, MBSTransformer, MWSSTransformer, PCKTransformer
+from transform.transformers.cord import EcommerceTransformer
 
+cord_surveys = ["187"]
 env = Environment(loader=PackageLoader('transform', 'templates'))
 
 logger_initial_config(service_name='sdx-transform-cs',
@@ -72,12 +74,24 @@ def get_survey(survey_response):
 @app.route('/pck/<batch_number>', methods=['POST'])
 def render_pck(batch_number=False):
     response = request.get_json(force=True)
-    template = env.get_template('pck.tmpl')
     survey = get_survey(response)
 
     if not survey:
         return client_error("PCK:Unsupported survey/instrument id")
 
+    survey_id = survey.get("survey_id")
+
+    if survey_id in cord_surveys:
+        logger.info("PCK:CORD survey detected")
+        if batch_number:
+            return client_error("PCK:CORD surveys don't support batch numbers")
+
+        transformer = EcommerceTransformer(response)
+        transformed_data = transformer.transform()
+        logger.info("PCK:SUCCESS")
+        return transformer.create_pck(transformed_data)
+
+    template = env.get_template('pck.tmpl')
     if batch_number:
         batch_number = int(batch_number)
 
@@ -205,7 +219,37 @@ def common_software(sequence_no=1000, batch_number=0):
 
     logger.info("CS:SUCCESS")
 
-    return send_file(transformer.get_zip(), mimetype='application/zip', add_etags=False)
+    return send_file(transformer.image_transformer.get_zip(), mimetype='application/zip', add_etags=False)
+
+
+@app.route('/cord', methods=['POST'])
+@app.route('/cord/<sequence_no>', methods=['POST'])
+def cord(sequence_no=1000):
+    survey_response = request.get_json(force=True)
+
+    if sequence_no:
+        sequence_no = int(sequence_no)
+
+    survey = get_survey(survey_response)
+    if not survey:
+        return client_error("CS:Unsupported survey/instrument id")
+
+    survey_id = survey_response.get("survey_id")
+    try:
+        if survey_id == "187":
+            transformer = EcommerceTransformer(survey_response, sequence_no)
+            transformer.create_zip()
+        else:
+            return client_error("CORD survey with survey id {} is not supported".format(survey_id))
+
+    except Exception as e:
+        tx_id = survey_response.get("tx_id")
+        logger.exception("CORD:could not create files for survey", survey_id=survey_id, tx_id=tx_id)
+        return server_error(e)
+
+    logger.info("CORD:SUCCESS")
+
+    return send_file(transformer.image_transformer.get_zip(), mimetype='application/zip', add_etags=False)
 
 
 @app.route('/info', methods=['GET'])

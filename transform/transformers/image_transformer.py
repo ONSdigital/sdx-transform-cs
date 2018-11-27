@@ -55,6 +55,11 @@ class ImageTransformer:
         self._build_zip()
         return self.zip
 
+    def get_zip(self):
+        """Get access to the in memory zip """
+        self.zip.rewind()
+        return self.zip.in_memory_zip
+
     @staticmethod
     def _get_image_name(i):
         return "S{0:09}.JPG".format(i)

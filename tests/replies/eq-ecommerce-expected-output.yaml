@@ -1,0 +1,178 @@
+# Dummy question for paper equivalence
+'001': '0'
+# '10' # Use computers ( YES )
+'010': "10"
+# '0110' # Percentage people use computers (10.98 %)
+'023': '0110'
+# '01' # Employ IT specialists ( NO )
+'154': "01"
+# '01' # Training for ICT or IT Specialists ( Unchecked )
+'165': '10'
+# '10' # Training for other employees (Checked)
+'316': '10'
+# '10' # Tried to recruit IT specialist ( YES )
+'155': "10"
+# '01' # Vacancies hard to fill (NO)
+'156': "01"
+# '10' # Internet Access (YES)
+'038': "10"
+# '0202' # Percentage people with internet access (20.21 %)
+'022': '0202'
+# '10' # Fixed Broadband (YES)
+'356': "10"
+# '0' # < 2MBps
+'277': '0'
+# '0' # 2MBps < x < 10 MBps
+'278': '0'
+# '0' # 10 MBps < x < 30Mbps
+'279': '0'
+# '1' # 30 MBps < x < 100 MBps
+'280': '1'
+# '0' # 100 MBps
+'281': '0'
+# '10' # Provide devices (YES)
+'453': "10"
+# '0112' # Percentage people use portable for business (11.21 %)
+'320': '0112'
+# '10' # Does have website (YES)
+'080': "10"
+# '10' # Online ordering
+'203': '10'
+# '0' # Description of goods services
+'147': '0'
+# '0' # Order tracking
+'332': '0'
+# '0' # Visitors Customise
+'202': '0'
+# '0' # Personalised Content
+'205': '0'
+# '0' # Links to social media
+'414': '0'
+# '0' # Changes last 6 negative playback
+# 'd1': '0'
+# '10' # Paid Adverts Social Media
+'386': '10'
+# '0' # Paid Adverts Business Blogs
+'387': '0'
+# '0' # Paid Adverts Multimedia content sharing
+'388': '0'
+# '0' # Paid Adverts Wiki based knowledge sharing
+'389': '0'
+# '0' # Changes last 4 negative playback
+# 'd2': '0'
+# '0' # Social media develop business' image
+'341': '0'
+# '0' # Social media obtain or respond to customer opinions
+'342': '0'
+# '0' # Social media involve customers in development
+'343': '0'
+# '0' # Social media collaborate business partners
+'344': '0'
+# '0' # Social media recruit employees
+'345': '0'
+# '10' # Social media exchange views
+'346': '10'
+# '0' # Changes last 6, negative playback
+# 'd3': '0'
+# '10' # Use ERP software (YES)
+'190': "10"
+# '10' # Use CRM software internal information (YES)
+'191': "10"
+# '10' # Use CRM software analyse customers (YES)
+'197': "10"
+# '10' # IT Security: Strong Password
+'272': '10'
+# '10' # IT Security: User identification authentication
+'482': '10'
+# '10' # IT Security: Encryption techniques for data
+'483': '10'
+# '10' # IT Security: Access control business network
+'484': '10'
+# '10' # IT Security: VPN
+'485': '10'
+# '01' # Changes last 5, negative playback
+# 'd4': '01'
+# '10' # IT Security Procedures: Up to date software
+'481': '10'
+# '0' # IT Security Precedures: Offsite data backup
+'274': '0'
+# '0' # IT Security Precedures: Logging Activities
+'275': '0'
+# '0' # IT Security Precedures: ICT risk assesment
+'486': '0'
+# '10' # IT Security Precedures: ICT Security tests
+'487': '10'
+# '10' # Change last 5, negative playback
+# 'd5': '10'
+# '01' # Obligations in ICT security voluntary
+'266': "01"
+# '01' # Obligations in ICT security training
+'265': "01"
+# '10' # Obligations in ICT security contract
+'267': "10"
+# '10' # Who Security activities: Own employees
+'488': "10"
+# '01' # Who Security activities: External suppliers
+'489': "01"
+# '01' # Documented practices
+'490': "01"
+# '1' # Policy defined last 12 months
+'415': '1'
+# '0' # Policy defined 12 - 24 months
+'416': '0'
+# '0' # Polcy defined > 24 months
+'417': '0'
+# '10' # unavailable ICT services
+'491': "10"
+# '01' # destruction of data
+'492': "01"
+# '10' # Disclosure of condidential data
+'493': "10"
+# '10' # Security Insurance
+'494': "10"
+# '10' # Receive orders through web
+'234': "10"
+# '0008' # Percentage turnover orders through web (0.8%)
+'235': '0008'
+# '0231' # Sales to private customers (23.1%)
+'348': '0231'
+# '0769' # Sales to other businesses (76.9%)
+'349': '0769'
+# '10' # Receive orders via website
+'458': '10'
+# '10' # Receive orders via market place
+'459': '10'
+# '0100' # Percentage orders via website
+'460': '0100'
+# '0900' # Percentage orders via market place
+'461': '0900'
+# '10' # Orders from UK
+'310': '10'
+# '10' # Other EU Countries
+'311': '10'
+# '10' # Rest of the world
+'312': '10'
+# '00' # Difficulties EU high cost delivery
+'462': '0'
+# '00' # Difficulties EU resolving complaints
+'463': '0'
+# '00' # Difficulties EU Adapting product labelling
+'464': '0'
+# '00' # Difficulties EU Lack of knowledge of foreign languages
+'465': '0'
+# '01' # Difficulties EU Restrictions from business partners
+'466': '10'
+# '0' # Change last 6, negative playback
+# 'd6': '0'
+# '01' # Orders via EDI type messages
+'257': "01"
+# '0000' # Percentage turnover EDI
+'258': '0'
+# '01' # Orders via EDI From UK
+'313': '0'
+# '01' # Orders via EDI Other EU
+'314': '0'
+# '01' # Orders via EDI Rest World
+'315': '0'
+# '0' # Comments
+'500': '0'

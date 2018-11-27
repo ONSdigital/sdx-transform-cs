@@ -1,6 +1,6 @@
 import unittest
 
-from transform.transformers.pck_transformer import PCKTransformer
+from transform.transformers.common_software import PCKTransformer
 
 
 class TestPckTransformer(unittest.TestCase):
@@ -51,7 +51,7 @@ class TestPckTransformer(unittest.TestCase):
             form_id = pck_transformer.get_cs_form_id()
             self.assertEqual(form_id, None)
 
-            msg = "ERROR:transform.transformers.pck_transformer:Invalid survey id '23'"
+            msg = "ERROR:transform.transformers.common_software.pck_transformer:Invalid survey id '23'"
             self.assertEqual(msg, cm.output[0])
 
     def test_get_cs_form_id_invalid_instrument(self):
@@ -63,7 +63,7 @@ class TestPckTransformer(unittest.TestCase):
             form_id = pck_transformer.get_cs_form_id()
             self.assertEqual(form_id, None)
 
-            msg = "ERROR:transform.transformers.pck_transformer:Invalid instrument id '000'"
+            msg = "ERROR:transform.transformers.common_software.pck_transformer:Invalid instrument id '000'"
             self.assertEqual(msg, cm.output[0])
 
         # QCAS
@@ -75,7 +75,7 @@ class TestPckTransformer(unittest.TestCase):
             form_id = pck_transformer.get_cs_form_id()
             self.assertEqual(form_id, None)
 
-            msg = "ERROR:transform.transformers.pck_transformer:Invalid instrument id '0021'"
+            msg = "ERROR:transform.transformers.common_software.pck_transformer:Invalid instrument id '0021'"
             self.assertEqual(msg, cm.output[0])
 
     def test_pck_transformer_cannot_change_the_data_it_is_passed(self):
@@ -87,7 +87,7 @@ class TestPckTransformer(unittest.TestCase):
         response = {'collection': {'instrument_id': '000'}, 'data': {'item1': 'value1'}}
         pck_transformer = PCKTransformer(survey, response)
         pck_transformer.data['item1'] = 'new value'
-        self.assertEquals(response['data']['item1'], 'value1')
+        self.assertEqual(response['data']['item1'], 'value1')
 
     def test_pck_transformer_discards_qcas_confirmation_question(self):
         """
@@ -98,11 +98,11 @@ class TestPckTransformer(unittest.TestCase):
         response = {'collection': {'instrument_id': '000'}, 'data': {'681': '100', 'd681': 'Yes', 'd12': 'Yes'}}
         pck_transformer = PCKTransformer(survey, response)
 
-        self.assertEquals(pck_transformer.data, {'681': '100', 'd681': 'Yes', 'd12': 'Yes'})
+        self.assertEqual(pck_transformer.data, {'681': '100', 'd681': 'Yes', 'd12': 'Yes'})
 
         pck_transformer.evaluate_confirmation_questions()
 
-        self.assertEquals(pck_transformer.data, {'681': '100'})
+        self.assertEqual(pck_transformer.data, {'681': '100'})
 
     def test_pck_transformer_parse_negative_values(self):
         """If any values in the survey are negative, they should be replaced with an all 9's string that is 11 characters long
@@ -111,7 +111,7 @@ class TestPckTransformer(unittest.TestCase):
         response = {'collection': {'instrument_id': '000'},
                     'data': {'681': '-100', '703': '-1234', '704': '-12345', '707': '-123456', '708': '-0', '709': '1234', '710': '-123word'}}
         pck_transformer = PCKTransformer(survey, response)
-        self.assertEquals(pck_transformer.data, {
+        self.assertEqual(pck_transformer.data, {
             '681': '-100',
             '703': '-1234',
             '704': '-12345',
@@ -121,7 +121,7 @@ class TestPckTransformer(unittest.TestCase):
             '710': '-123word'})
 
         pck_transformer.parse_negative_values()
-        self.assertEquals(pck_transformer.data, {
+        self.assertEqual(pck_transformer.data, {
             '681': '99999999999',
             '703': '99999999999',
             '704': '99999999999',
@@ -155,7 +155,7 @@ class TestPckTransformer(unittest.TestCase):
                         'd12': 'Yes'}}
 
         pck_transformer = PCKTransformer(survey, response)
-        self.assertEquals(pck_transformer.data, {
+        self.assertEqual(pck_transformer.data, {
             "11": "03/07/2018",
             "12": "01/10/2018",
             "681": "123456.78",
@@ -174,7 +174,7 @@ class TestPckTransformer(unittest.TestCase):
             'd12': 'Yes'})
 
         pck_transformer.preprocess_comments()
-        self.assertEquals(pck_transformer.data, {
+        self.assertEqual(pck_transformer.data, {
             "11": "03/07/2018",
             "12": "01/10/2018",
             "146": 1,
@@ -238,23 +238,23 @@ class TestPckTransformer(unittest.TestCase):
 
         pck_transformer.round_currency_values()
 
-        self.assertEquals(pck_transformer.data['689'], '0')
-        self.assertEquals(pck_transformer.data['696'], '1')
-        self.assertEquals(pck_transformer.data['704'], '12')
-        self.assertEquals(pck_transformer.data['708'], '12346')
-        self.assertEquals(pck_transformer.data['710'], '-0')
-        self.assertEquals(pck_transformer.data['712'], '-12')
+        self.assertEqual(pck_transformer.data['689'], '0')
+        self.assertEqual(pck_transformer.data['696'], '1')
+        self.assertEqual(pck_transformer.data['704'], '12')
+        self.assertEqual(pck_transformer.data['708'], '12346')
+        self.assertEqual(pck_transformer.data['710'], '-0')
+        self.assertEqual(pck_transformer.data['712'], '-12')
 
         pck_transformer.calculate_total_playback()
 
         # Total value of acquisitions questions for only machinery and equipments section
-        self.assertEquals(pck_transformer.data['714'], '12')
+        self.assertEqual(pck_transformer.data['714'], '12')
 
         # Total value of disposals questions for only machinery and equipments section
-        self.assertEquals(pck_transformer.data['715'], '12347')
+        self.assertEqual(pck_transformer.data['715'], '12347')
 
         # Total value of all acquisitions questions
-        self.assertEquals(pck_transformer.data['692'], '11')
+        self.assertEqual(pck_transformer.data['692'], '11')
 
         # Total value of all disposals questions (same as '715' since constructions section and minerals sections does not have disposals question)
-        self.assertEquals(pck_transformer.data['693'], '12347')
+        self.assertEqual(pck_transformer.data['693'], '12347')

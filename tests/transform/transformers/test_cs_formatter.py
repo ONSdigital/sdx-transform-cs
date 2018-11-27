@@ -3,7 +3,7 @@ import json
 import unittest
 from collections import OrderedDict
 
-from transform.transformers.cs_formatter import CSFormatter
+from transform.transformers.common_software.cs_formatter import CSFormatter
 from transform.transformers.survey import Survey
 
 
@@ -23,6 +23,7 @@ class BatchFileTests(unittest.TestCase):
         self.assertEqual("0005:49900001225C:200911", rv)
 
     def test_pck_lines(self):
+        """Tests conversions of various types of values."""
         inst_id = "0005"
         ru_ref = 49900001225
         check = "C"
@@ -30,7 +31,9 @@ class BatchFileTests(unittest.TestCase):
         data = OrderedDict([
             ("0001", 2),
             ("0140", 124),
-            ("0151", 217222)
+            ("0146", "This is a comment"),
+            ("0151", 217222),
+            ("0200", {})
         ])
         self.assertTrue(isinstance(val, int) for val in data.values())
         rv = CSFormatter._pck_lines(data, inst_id, ru_ref, check, period)
@@ -39,7 +42,9 @@ class BatchFileTests(unittest.TestCase):
             "0005:49900001225C:200911",
             "0001 00000000002",
             "0140 00000000124",
+            "0146 00000000001",
             "0151 00000217222",
+            "0200 ???????????"
         ], rv)
 
     def test_idbr_receipt(self):

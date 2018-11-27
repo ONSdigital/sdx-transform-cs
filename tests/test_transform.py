@@ -27,6 +27,14 @@ def get_test_scenarios(output_type):
     return glob.glob("./tests/%s/*.json" % output_type)
 
 
+def get_common_software_test_scenarios(output_type):
+    return glob.glob("./tests/%s/common_software/*.json" % output_type)
+
+
+def get_cord_test_scenarios(output_type):
+    return glob.glob("./tests/%s/cord/*.json" % output_type)
+
+
 def get_expected_file(filename, output_type):
     filename, _ = os.path.splitext(filename)
     return "%s.%s" % (filename, output_type)
@@ -68,6 +76,7 @@ class TestTransformService(unittest.TestCase):
     transform_images_endpoint = "/images"
     # Provide a default batch no as url param
     transform_pck_endpoint = "/pck/30001"
+    transform_cord_pck_endpoint = "/pck"
     transform_images_endpoint = "/images"
     transform_pdf_endpoint = "/pdf"
 
@@ -99,7 +108,7 @@ class TestTransformService(unittest.TestCase):
 
     def test_transforms_pck(self):
 
-        test_scenarios = get_test_scenarios("pck")
+        test_scenarios = get_common_software_test_scenarios("pck")
 
         print("Found %d pck scenarios" % len(test_scenarios))
 
@@ -112,6 +121,29 @@ class TestTransformService(unittest.TestCase):
             print(expected_response)
 
             r = self.app.post(self.transform_pck_endpoint, data=payload)
+
+            actual_response = r.data.decode("UTF8")
+            print("Actual response")
+            print(actual_response)
+
+            self.assertEqual(actual_response, expected_response)
+
+    def test_cord_transforms_pck(self):
+        """Tests the pck transformation for responses that go to the CORD system."""
+
+        test_scenarios = get_cord_test_scenarios("pck")
+
+        print("Found %d cord pck scenarios" % len(test_scenarios))
+
+        for scenario_filename in test_scenarios:
+
+            print("Loading scenario %s " % scenario_filename)
+            payload = get_file_as_string(scenario_filename)
+            expected_response = get_expected_output(scenario_filename, "pck")
+            print("Expected response")
+            print(expected_response)
+
+            r = self.app.post(self.transform_cord_pck_endpoint, data=payload)
 
             actual_response = r.data.decode("UTF8")
             print("Actual response")
@@ -178,7 +210,7 @@ class TestTransformService(unittest.TestCase):
 
     def test_invalid_survey_id(self):
         # Create an invlid survey id payload
-        payload_str = get_file_as_string("./tests/pck/023.0203.json")
+        payload_str = get_file_as_string("./tests/pck/common_software/023.0203.json")
         payload_object = json.loads(payload_str)
         payload_object["survey_id"] = "666"
         payload = json.dumps(payload_object)

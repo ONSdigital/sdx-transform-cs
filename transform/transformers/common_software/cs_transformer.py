@@ -3,14 +3,14 @@ import json
 from io import StringIO
 import os.path
 from jinja2 import Environment, PackageLoader
-from .image_transformer import ImageTransformer
-from .pck_transformer import PCKTransformer
+from transform.transformers import ImageTransformer
+from transform.transformers.common_software.pck_transformer import PCKTransformer
 from transform.settings import SDX_FTP_IMAGE_PATH, SDX_FTP_DATA_PATH, SDX_FTP_RECEIPT_PATH, SDX_RESPONSE_JSON_PATH
 
 env = Environment(loader=PackageLoader('transform', 'templates'))
 
 
-class CSTransformer(object):
+class CSTransformer:
 
     def __init__(self, logger, survey, response_data, batch_number=False, sequence_no=1000):
         self._logger = logger
@@ -43,11 +43,6 @@ class CSTransformer(object):
                                           self._response_json.read())
 
         self.image_transformer.zip.rewind()
-
-    def get_zip(self):
-        """Get access to the in memory zip """
-        self.image_transformer.zip.rewind()
-        return self.image_transformer.zip.in_memory_zip
 
     def _setup_logger(self):
         if self._survey:

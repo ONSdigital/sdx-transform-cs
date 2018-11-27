@@ -1,7 +1,7 @@
 import unittest
 
 from transform import app
-from tests.test_transform import get_expected_output, get_file_as_string, get_test_scenarios
+from tests.test_transform import get_expected_output, get_file_as_string, get_common_software_test_scenarios
 
 
 class TestNoBatchTransformService(unittest.TestCase):
@@ -18,10 +18,12 @@ class TestNoBatchTransformService(unittest.TestCase):
 
     def test_transforms_no_batch(self):
 
-        test_scenarios = get_test_scenarios('pck')
+        test_scenarios = get_common_software_test_scenarios('pck')
+
         print("Found %d nobatch/pck scenarios" % len(test_scenarios))
 
         for scenario_filename in test_scenarios:
+
             print("Loading scenario %s " % scenario_filename)
             payload = get_file_as_string(scenario_filename)
             expected_response = get_expected_output(scenario_filename, 'nobatch')
