@@ -174,6 +174,7 @@ class TestTransformerUnits:
     @pytest.mark.parametrize('qcode, answer_value, expected_output', [
         ('r1', 'Something else', '1'),
         ('r1', 'Not something else', '0'),
+        ('r2', 'Not something else', '0'),
     ])
     def test_radio_question_option(self, qcode, answer_value, expected_output):
         data = {
@@ -186,6 +187,23 @@ class TestTransformerUnits:
         transformer = get_transformer(data)
 
         assert transformer.radio_question_option(qcode, answer_value) == expected_output
+
+    @pytest.mark.parametrize('qcode, answer_value, checked, unchecked, expected_output', [
+        ('r1', 'Something else', '10', '01', '10'),
+        ('r1', 'Not something else', '10', '01', '01'),
+        ('r2', 'Not something else', '10', '01', '0'),
+    ])
+    def test_radio_question_option_with_custom_checked_and_unchecked(self, qcode, answer_value, checked, unchecked, expected_output):
+        data = {
+            'data': {
+                '1': 'Something Something',
+                'r1': 'Something else'
+            }
+        }
+
+        transformer = get_transformer(data)
+
+        assert transformer.radio_question_option(qcode, answer_value, checked=checked, unchecked=unchecked) == expected_output
 
     @pytest.mark.parametrize('qcode, expected_output', [
         ('1', '10'),
