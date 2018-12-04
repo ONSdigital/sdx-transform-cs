@@ -117,11 +117,11 @@
 # '01' # Documented practices
 '490': "01"
 # '1' # Policy defined last 12 months
-'415': '1'
+'415': '10'
 # '0' # Policy defined 12 - 24 months
-'416': '0'
+'416': '01'
 # '0' # Polcy defined > 24 months
-'417': '0'
+'417': '01'
 # '10' # unavailable ICT services
 '491': "10"
 # '01' # destruction of data

@@ -124,7 +124,7 @@ class EcommerceTransformer:
 
         return "0"
 
-    def radio_question_option(self, qcode, answer_value):
+    def radio_question_option(self, qcode, answer_value, checked="1", unchecked="0"):
         """
         Since runner uses 1 qcode for all options, we need to seperate each answer option into a different qcode.
         qcode: The qcode for the radio question
@@ -132,12 +132,14 @@ class EcommerceTransformer:
         """
         qcode_value = self.get_qcode(qcode)
 
+        # If the code isn't there, then default to '0' as we never got the chance to answer the question
         if not qcode_value:
             return "0"
-        if qcode_value == answer_value:
-            return "1"
 
-        return "0"
+        if qcode_value == answer_value:
+            return checked
+
+        return unchecked
 
     def use_of_computers(self):
         """
@@ -243,9 +245,9 @@ class EcommerceTransformer:
             "266": self.yes_no_question("266"),
             "267": self.yes_no_question("267"),
 
-            "415": self.radio_question_option("r2", "Within the last 12 months"),
-            "416": self.radio_question_option("r2", "More than 12 months and up to 24 months ago"),
-            "417": self.radio_question_option("r2", "More than 24 months ago"),
+            "415": self.radio_question_option("r2", "Within the last 12 months", checked="10", unchecked="01"),
+            "416": self.radio_question_option("r2", "More than 12 months and up to 24 months ago", checked="10", unchecked="01"),
+            "417": self.radio_question_option("r2", "More than 24 months ago", checked="10", unchecked="01"),
             "488": self.checkbox_question("488"),
             "489": self.checkbox_question("489"),
             "490": self.yes_no_question("490"),
