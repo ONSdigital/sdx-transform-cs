@@ -61,44 +61,7 @@
           "question_id": "356"
         }, {
           "text": "What is the maximum contracted download speed of the fastest fixed internet connection of the business?",
-          "question_id": "277",
-          "number": "277",
-          "type": "radio",
-          "options": [
-              "Less than 2Mbps"
-          ]
-        }, {
-          "text": "What is the maximum contracted download speed of the fastest fixed internet connection of the business?",
-          "question_id": "278",
-          "number": "278",
-          "type": "radio",
-          "options": [
-              "2Mbps or more, but less than 10Mbps"
-          ]
-        }, {
-          "text": "What is the maximum contracted download speed of the fastest fixed internet connection of the business?",
-          "question_id": "279",
-          "number": "279",
-          "type": "radio",
-          "options": [
-              "10Mbps or more, but less than 30Mbps"
-          ]
-        }, {
-          "text": "What is the maximum contracted download speed of the fastest fixed internet connection of the business?",
-          "question_id": "280",
-          "number": "280",
-          "type": "radio",
-          "options": [
-              "30Mbps or more, but less than 100Mbps"
-          ]
-        }, {
-          "text": "What is the maximum contracted download speed of the fastest fixed internet connection of the business?",
-          "question_id": "281",
-          "number": "281",
-          "type": "radio",
-          "options": [
-              "100Mbps or more"
-          ]
+          "question_id": "r1"
         }, {
           "text": "Does the business provide the people employed in the business with portable devices that allow a mobile telephone network connection to the internet for business purposes?",
           "question_id": "453"
@@ -158,6 +121,9 @@
               "Links or references to this business' social media profile"
           ]
         }, {
+          "text": "Why were the remaining website features not selected?",
+          "question_id": "d1"
+        }, {
           "text": "Which social media does the business use for purposes other than posting paid adverts?",
           "question_id": "386",
           "number": "386",
@@ -189,6 +155,9 @@
           "options": [
               "Wiki based knowledge sharing tools"
           ]
+        }, {
+          "text": "Why were the remaining social media channels not selected?",
+          "question_id": "d2"
         }, {
           "text": "How does the business use social media?",
           "question_id": "341",
@@ -237,6 +206,9 @@
           "options": [
               "Exchange views, opinions or knowledge within this business"
           ]
+        }, {
+          "text": "Why were the remaining reasons not selected?",
+          "question_id": "d3"
         }]
     },
     {
@@ -297,6 +269,9 @@
               "VPN (Virtual Private Network)"
           ]
         }, {
+          "text": "Why were the remaining ICT security control measures not selected?",
+          "question_id": "d4"
+        }, {
           "text": "Which ICT security procedures does the business use?",
           "question_id": "481",
           "number": "481",
@@ -336,6 +311,9 @@
           "options": [
               "ICT security tests"
           ]
+        }, {
+          "text": "Why were the remaining ICT security control procedures not selected?",
+          "question_id": "d5"
         }, {
           "text": "During 2018, did the business make it's employees aware of their obligations in ICT security issues by voluntary training or internally available information?",
           "question_id": "266"
@@ -508,6 +486,9 @@
           "options": [
               "Restrictions from business partners to sell to certain EU countries"
           ]
+        }, {
+          "text": "Why were the remaining difficulties not selected?",
+          "question_id": "d6"
         }, {
           "text": "During 2018, did business receive any orders from customers for goods or services via EDI type messages?",
           "question_id": "257"
