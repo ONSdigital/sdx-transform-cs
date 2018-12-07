@@ -21,7 +21,7 @@ def get_transformer(data):
         'collection': {
             'period': '201605',
             'exercise_sid': '82R1VDWN74',
-            'instrument_id': '0041'
+            'instrument_id': '0051'
         },
         'type': 'uk.gov.ons.edc.eq:surveyresponse',
         'version': '0.0.1',

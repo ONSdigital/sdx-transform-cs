@@ -4,8 +4,7 @@
   "tx_id": "40e659ec-013f-4888-9a31-ec1e0ad37888",
   "case_id": "d9e9ce29-d755-4370-b96c-6c4176b722d1",
   "data": {
-    "010": "No",
-    "500": "No computers here"
+    "010": "No"
   },
   "type": "uk.gov.ons.edc.eq:surveyresponse",
   "version": "0.0.1",
@@ -17,6 +16,6 @@
   "collection": {
     "period": "2018",
     "exercise_sid": "82R1VDWN74",
-    "instrument_id": "0041"
+    "instrument_id": "0051"
   }
 }
