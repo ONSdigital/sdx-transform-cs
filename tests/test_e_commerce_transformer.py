@@ -89,7 +89,7 @@ class TestTransformerUnits:
                              '267': 'Yes',
                              '488': 'Own employees',
                              '490': 'No',
-                             'r2': 'Within the last 12 months',
+                             'r3': 'Within the last 12 months',
                              '491': 'Yes',
                              '492': 'No',
                              '493': 'Yes',

@@ -245,9 +245,9 @@ class EcommerceTransformer:
             "266": self.yes_no_question("266"),
             "267": self.yes_no_question("267"),
 
-            "415": self.radio_question_option("r2", "Within the last 12 months", checked="10", unchecked="01"),
-            "416": self.radio_question_option("r2", "More than 12 months and up to 24 months ago", checked="10", unchecked="01"),
-            "417": self.radio_question_option("r2", "More than 24 months ago", checked="10", unchecked="01"),
+            "415": self.radio_question_option("r3", "Within the last 12 months", checked="10", unchecked="01"),
+            "416": self.radio_question_option("r3", "More than 12 months and up to 24 months ago", checked="10", unchecked="01"),
+            "417": self.radio_question_option("r3", "More than 24 months ago", checked="10", unchecked="01"),
             "488": self.checkbox_question("488"),
             "489": self.checkbox_question("489"),
             "490": self.yes_no_question("490"),
