@@ -14,16 +14,16 @@
     "038": "Yes",
     "022": "20.21",
     "356": "Yes",
-    "r1": "30Mbps or more, but less than 100Mbps",
+    "r2": "No, I don’t know the download speed",
     "453": "Yes",
     "320": "11.21",
     "080": "Yes",
     "203": "Online ordering or reservation / booking",
-    "d1": "I don't know what they are",
+    "d1": "I don’t know what they are",
     "386": "Social Networks",
-    "d2": "I don't know what they are",
+    "d2": "I don’t know what they are",
     "346": "Exchange views opinions or knowledge within this business",
-    "d3": "I don't know what they are",
+    "d3": "I don’t know what they are",
     "190": "Yes",
     "191": "Yes",
     "197": "Yes",
@@ -34,7 +34,7 @@
     "485": "VPN (Virtual Private Network)",
     "481": "Keeping the software up to date",
     "487": "ICT security tests",
-    "d5": "They're not used",
+    "d5": "They’re not used",
     "266": "No",
     "265": "No",
     "267": "Yes",
@@ -57,18 +57,19 @@
     "311": "Other EU Countries",
     "312": "Rest of the world",
     "466": "Restrictions from business partners to sell to certain EU countries",
-    "d6": "They weren't experienced",
-    "257": "No"
+    "d6": "They weren’t experienced",
+    "257": "No", 
+    "w1": "www.website.com"
   },
   "type": "uk.gov.ons.edc.eq:surveyresponse",
   "version": "0.0.1",
   "metadata": {
     "user_id": "K5O86M2NU1",
-    "ru_ref": "12346789012A"
+    "ru_ref": "49901484596"
   },
   "submitted_at": "2017-03-01T14:25:46.101447+00:00",
   "collection": {
-    "period": "201605",
+    "period": "2018",
     "exercise_sid": "82R1VDWN74",
     "instrument_id": "0051"
   }

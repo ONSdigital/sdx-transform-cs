@@ -62,6 +62,9 @@
         }, {
           "text": "What is the maximum contracted download speed of the fastest fixed internet connection of the business?",
           "question_id": "r1"
+        },{
+          "text": "Do you know your maximum contracted download speed?",
+          "question_id": "r2"
         }, {
           "text": "Does the business provide the people employed in the business with portable devices that allow a mobile telephone network connection to the internet for business purposes?",
           "question_id": "453"
