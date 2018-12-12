@@ -39,37 +39,37 @@
 # '10' # Online ordering
 '203': '10'
 # '0' # Description of goods services
-'147': '0'
+'147': '00'
 # '0' # Order tracking
-'332': '0'
+'332': '00'
 # '0' # Visitors Customise
-'202': '0'
+'202': '00'
 # '0' # Personalised Content
-'205': '0'
+'205': '00'
 # '0' # Links to social media
-'414': '0'
+'414': '00'
 # '0' # Changes last 6 negative playback
 # 'd1': '0'
 # '10' # Paid Adverts Social Media
 '386': '10'
 # '0' # Paid Adverts Business Blogs
-'387': '0'
+'387': '00'
 # '0' # Paid Adverts Multimedia content sharing
-'388': '0'
+'388': '00'
 # '0' # Paid Adverts Wiki based knowledge sharing
-'389': '0'
+'389': '00'
 # '0' # Changes last 4 negative playback
 # 'd2': '0'
 # '0' # Social media develop business' image
-'341': '0'
+'341': '00'
 # '0' # Social media obtain or respond to customer opinions
-'342': '0'
+'342': '00'
 # '0' # Social media involve customers in development
-'343': '0'
+'343': '00'
 # '0' # Social media collaborate business partners
-'344': '0'
+'344': '00'
 # '0' # Social media recruit employees
-'345': '0'
+'345': '00'
 # '10' # Social media exchange views
 '346': '10'
 # '0' # Changes last 6, negative playback
@@ -95,11 +95,11 @@
 # '10' # IT Security Procedures: Up to date software
 '481': '10'
 # '0' # IT Security Precedures: Offsite data backup
-'274': '0'
+'274': '00'
 # '0' # IT Security Precedures: Logging Activities
-'275': '0'
+'275': '00'
 # '0' # IT Security Precedures: ICT risk assesment
-'486': '0'
+'486': '00'
 # '10' # IT Security Precedures: ICT Security tests
 '487': '10'
 # '10' # Change last 5, negative playback
@@ -153,13 +153,13 @@
 # '10' # Rest of the world
 '312': '10'
 # '00' # Difficulties EU high cost delivery
-'462': '0'
+'462': '00'
 # '00' # Difficulties EU resolving complaints
-'463': '0'
+'463': '00'
 # '00' # Difficulties EU Adapting product labelling
-'464': '0'
+'464': '00'
 # '00' # Difficulties EU Lack of knowledge of foreign languages
-'465': '0'
+'465': '00'
 # '01' # Difficulties EU Restrictions from business partners
 '466': '10'
 # '0' # Change last 6, negative playback
@@ -169,10 +169,10 @@
 # '0000' # Percentage turnover EDI
 '258': '0'
 # '01' # Orders via EDI From UK
-'313': '0'
+'313': '00'
 # '01' # Orders via EDI Other EU
-'314': '0'
+'314': '00'
 # '01' # Orders via EDI Rest World
-'315': '0'
+'315': '00'
 # '0' # Comments
 '500': '0'

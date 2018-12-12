@@ -51,10 +51,10 @@ class EcommerceTransformer:
     def yes_no_question(self, qcode):
         """ Handles optional Yes / No radio questions
         Gets the question value from the submission via qcode
-        Returns '10' if value is "Yes", '01' if value is 'No' and '0' otherwise
+        Returns '10' if value is "Yes", '01' if value is 'No' and '00' otherwise
         """
         value = self.get_qcode(qcode)
-        return "10" if value == "Yes" else "01" if value == "No" else "0"
+        return "10" if value == "Yes" else "01" if value == "No" else "00"
 
     def checkbox_question(self, qcode, dependant_qcode=None):
         """ Handles checkbox question type
@@ -65,7 +65,7 @@ class EcommerceTransformer:
         different to it not being there because it was unchecked)
         """
         if self.get_qcode("010") == "No" or self.get_qcode(dependant_qcode) == "No":
-            return "0"
+            return "00"
         return "10" if self.get_qcode(qcode) is not None else "01"
 
     @staticmethod
@@ -100,14 +100,14 @@ class EcommerceTransformer:
         :param playback_q_code: The code from the negative playback page that affects the result of the q_code passed in.
         The regex form of this code would typically be 'd[0-9]+'.
         :returns: "10" if the q_code value in the response data has a true value.  "01" if the q_code response value is false
-        BUT the playback_q_code response value is 'They're not used' or 'They weren’t experienced'.  Otherwise "0".
+        BUT the playback_q_code response value is 'They're not used' or 'They weren’t experienced'.  Otherwise "00".
 
         Examples:
         self.response = {"123": "words", "d1": "They’re not used"}
         negative_playback_question("123", "d1") # "10"
 
         self.response = {"123": "words", "d1": "I don’t know what they are"}
-        negative_playback_question("124", "d1") # "0"
+        negative_playback_question("124", "d1") # "00"
 
         self.response = {"123": "words", "d1": "They’re not used"}
         negative_playback_question("124", "d1") # "01"
@@ -122,9 +122,9 @@ class EcommerceTransformer:
         if self.get_qcode(playback_q_code) in change_responses:
             return "01"
 
-        return "0"
+        return "00"
 
-    def radio_question_option(self, qcode, answer_value, checked="1", unchecked="0"):
+    def radio_question_option(self, qcode, answer_value, checked="1", unchecked="0", unanswered="0"):
         """
         Since runner uses 1 qcode for all options, we need to seperate each answer option into a different qcode.
         qcode: The qcode for the radio question
@@ -132,9 +132,9 @@ class EcommerceTransformer:
         """
         qcode_value = self.get_qcode(qcode)
 
-        # If the code isn't there, then default to '0' as we never got the chance to answer the question
+        # If the code isn't there, then default to unanswered value as we never got the chance to answer the question
         if not qcode_value:
-            return "0"
+            return unanswered
 
         if qcode_value == answer_value:
             return checked
@@ -245,9 +245,9 @@ class EcommerceTransformer:
             "266": self.yes_no_question("266"),
             "267": self.yes_no_question("267"),
 
-            "415": self.radio_question_option("r3", "Within the last 12 months", checked="10", unchecked="01"),
-            "416": self.radio_question_option("r3", "More than 12 months and up to 24 months ago", checked="10", unchecked="01"),
-            "417": self.radio_question_option("r3", "More than 24 months ago", checked="10", unchecked="01"),
+            "415": self.radio_question_option("r3", "Within the last 12 months", checked="10", unchecked="01", unanswered="00"),
+            "416": self.radio_question_option("r3", "More than 12 months and up to 24 months ago", checked="10", unchecked="01", unanswered="00"),
+            "417": self.radio_question_option("r3", "More than 24 months ago", checked="10", unchecked="01", unanswered="00"),
             "488": self.checkbox_question("488"),
             "489": self.checkbox_question("489"),
             "490": self.yes_no_question("490"),
