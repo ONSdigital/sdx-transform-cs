@@ -1,4 +1,6 @@
 ### Unreleased
+
+### 3.7.0 2018-12-12
   - Added support for E-commerce form and CORD surveys.
   - Improve tests for mbs_transformer
 
