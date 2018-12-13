@@ -114,26 +114,20 @@ class ImageTransformer:
 
     def _response_ok(self, res):
         if res.status_code == 200:
-            self.logger.info("Returned from sdx-sequence",
-                             request_url=res.url, status=res.status_code)
+            self.logger.info("Returned from sdx-sequence", request_url=res.url, status=res.status_code)
             return True
         else:
-            self.logger.error("Returned from sdx-sequence",
-                              request_url=res.url, status=res.status_code)
+            self.logger.error("Returned from sdx-sequence", request_url=res.url, status=res.status_code)
             return False
 
     def _remote_call(self, request_url, json=None):
         try:
             self.logger.info("Calling sdx-sequence", request_url=request_url)
-
-            r = None
-
             if json:
-                r = session.post(request_url, json=json)
-            else:
-                r = session.get(request_url)
+                return session.post(request_url, json=json)
 
-            return r
+            return session.get(request_url)
+
         except MaxRetryError:
             self.logger.error("Max retries exceeded (5)", request_url=request_url)
 
