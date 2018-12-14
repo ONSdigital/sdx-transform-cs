@@ -132,8 +132,8 @@ class TestTransformerUnits:
     @pytest.mark.parametrize('qcode, expected_output', [
         ('1', '10'),
         ('2', '01'),
-        ('3', '0'),
-        ('500', '0')
+        ('3', '00'),
+        ('500', '00')
     ])
     def test_yes_no_question(self, qcode, expected_output):
         data = {
@@ -152,7 +152,7 @@ class TestTransformerUnits:
         ('1', 'd1', '10'),
         ('2', 'd1', '10'),
         ('100', 'd1', '01'),
-        ('100', 'd2', '0'),
+        ('100', 'd2', '00'),
         ('100', 'd3', '01'),
     ])
     def test_negative_playback(self, qcode, playback_qcode, expected_output):
@@ -188,12 +188,12 @@ class TestTransformerUnits:
 
         assert transformer.radio_question_option(qcode, answer_value) == expected_output
 
-    @pytest.mark.parametrize('qcode, answer_value, checked, unchecked, expected_output', [
-        ('r1', 'Something else', '10', '01', '10'),
-        ('r1', 'Not something else', '10', '01', '01'),
-        ('r2', 'Not something else', '10', '01', '0'),
+    @pytest.mark.parametrize('qcode, answer_value, checked, unchecked, unanswered, expected_output', [
+        ('r1', 'Something else', '10', '01', '00', '10'),
+        ('r1', 'Not something else', '10', '01', '00', '01'),
+        ('r2', 'Not something else', '10', '01', '00', '00'),
     ])
-    def test_radio_question_option_with_custom_checked_and_unchecked(self, qcode, answer_value, checked, unchecked, expected_output):
+    def test_radio_question_option_with_custom_checked_and_unchecked(self, qcode, answer_value, checked, unchecked, unanswered, expected_output):
         data = {
             'data': {
                 '1': 'Something Something',
@@ -203,7 +203,7 @@ class TestTransformerUnits:
 
         transformer = get_transformer(data)
 
-        assert transformer.radio_question_option(qcode, answer_value, checked=checked, unchecked=unchecked) == expected_output
+        assert transformer.radio_question_option(qcode, answer_value, checked=checked, unchecked=unchecked, unanswered=unanswered) == expected_output
 
     @pytest.mark.parametrize('qcode, expected_output', [
         ('1', '10'),
@@ -224,15 +224,15 @@ class TestTransformerUnits:
         assert transformer.checkbox_question(qcode) == expected_output
 
     @pytest.mark.parametrize('qcode, dependant_qcode, expected_output', [
-        ('1', '10', '0'),
+        ('1', '10', '00'),
         ('1', '100', '10'),
-        ('1', '101', '0'),
-        ('2', '10', '0'),
+        ('1', '101', '00'),
+        ('2', '10', '00'),
         ('2', '100', '10'),
-        ('2', '101', '0'),
-        ('3', '10', '0'),
+        ('2', '101', '00'),
+        ('3', '10', '00'),
         ('3', '100', '01'),
-        ('3', '101', '0'),
+        ('3', '101', '00'),
     ])
     def test_checkbox_question_with_dependant_qcode(self, qcode, dependant_qcode, expected_output):
         data = {
