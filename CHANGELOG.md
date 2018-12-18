@@ -1,4 +1,5 @@
 ### Unreleased
+ - Change option value for E-Commerce q-code 416 (r3)
 
 ### 3.7.0 2018-12-12
   - Added support for E-commerce form and CORD surveys.
