@@ -347,28 +347,7 @@
           "question_id": "490"
         }, {
           "text": "When was the business security policy defined or most recently reviewed?",
-          "question_id": "415",
-          "number": "415",
-          "type": "radio",
-          "options": [
-              "Within the last 12 months"
-          ]
-        }, {
-          "text": "When was the business security policy defined or most recently reviewed?",
-          "question_id": "416",
-          "number": "416",
-          "type": "radio",
-          "options": [
-              "More than 12 months ago and up to 24 months ago"
-          ]
-        }, {
-          "text": "When was the business security policy defined or most recently reviewed?",
-          "question_id": "417",
-          "number": "417",
-          "type": "radio",
-          "options": [
-              "More than 24 months ago"
-          ]
+          "question_id": "r3"
         }, {
           "text": "During 2018, did any ICT security issues result in the unavailability of ICT services?",
           "question_id": "491"

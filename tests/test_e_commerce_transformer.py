@@ -275,6 +275,7 @@ class TestTransformerUnits:
             'EDC_QImages/Images/S000000004.JPG',
             'EDC_QImages/Images/S000000005.JPG',
             'EDC_QImages/Images/S000000006.JPG',
+            'EDC_QImages/Images/S000000007.JPG',
             'EDC_QImages/Index/EDC_187_20170301_0000.csv',
             'EDC_QJson/187_0000.json'
         ]
