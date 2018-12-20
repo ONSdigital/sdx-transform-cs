@@ -1,4 +1,6 @@
 ### Unreleased
+
+### 3.7.1 2018-12-20
  - Change option value for E-Commerce q-code 416 (r3)
  - Ensure r3 is on image file
 
