@@ -10,9 +10,11 @@ from transform.views.logger_config import logger_initial_config
 from transform import app, settings
 from transform.transformers import ImageTransformer, PDFTransformer
 from transform.transformers.common_software import CSTransformer, MBSTransformer, MWSSTransformer, PCKTransformer
+from transform.transformers.cora import UKISTransformer
 from transform.transformers.cord import EcommerceTransformer
 
 cord_surveys = ["187"]
+cora_surveys = ["144"]
 env = Environment(loader=PackageLoader('transform', 'templates'))
 
 logger_initial_config(service_name='sdx-transform-cs',
@@ -80,15 +82,31 @@ def render_pck(batch_number=False):
         return client_error("PCK:Unsupported survey/instrument id")
 
     survey_id = survey.get("survey_id")
+    bound_logger = logger.bind(
+        survey_id=survey_id,
+        tx_id=response.get("tx_id"),
+        form_id=response['collection']['instrument_id']
+    )
 
     if survey_id in cord_surveys:
-        logger.info("PCK:CORD survey detected")
+        bound_logger.info("PCK:CORD survey detected")
         if batch_number:
             return client_error("PCK:CORD surveys don't support batch numbers")
 
         transformer = EcommerceTransformer(response)
         transformed_data = transformer.transform()
-        logger.info("PCK:SUCCESS")
+        bound_logger.info("PCK:SUCCESS")
+        return transformer.create_pck(transformed_data)
+
+    if survey_id in cora_surveys:
+        bound_logger.info("PCK:CORA survey detected")
+        if batch_number:
+            return client_error("PCK:CORA surveys don't support batch numbers")
+
+        transformer = UKISTransformer(response)
+        transformed_data = transformer.transform()
+        bound_logger.info("PCK:SUCCESS")
+
         return transformer.create_pck(transformed_data)
 
     template = env.get_template('pck.tmpl')
@@ -100,7 +118,7 @@ def render_pck(batch_number=False):
     cs_form_id = pck_transformer.get_cs_form_id()
     sub_date_str = pck_transformer.get_subdate_str()
 
-    logger.info("PCK:SUCCESS")
+    bound_logger.info("PCK:SUCCESS")
 
     return template.render(response=response, submission_date=sub_date_str,
                            batch_number=batch_number, form_id=cs_form_id,
@@ -222,6 +240,36 @@ def common_software(sequence_no=1000, batch_number=0):
     return send_file(transformer.image_transformer.get_zip(), mimetype='application/zip', add_etags=False)
 
 
+@app.route('/cora', methods=['POST'])
+@app.route('/cora/<sequence_no>', methods=['POST'])
+def cora(sequence_no=1000):
+    survey_response = request.get_json(force=True)
+
+    if sequence_no:
+        sequence_no = int(sequence_no)
+
+    survey = get_survey(survey_response)
+    if not survey:
+        return client_error("CORA:Unsupported survey/instrument id")
+
+    survey_id = survey_response.get("survey_id")
+    try:
+        if survey_id == "144":
+            transformer = UKISTransformer(survey_response, sequence_no)
+            transformer.create_zip()
+        else:
+            return client_error("CORA survey with survey id {} is not supported".format(survey_id))
+
+    except Exception as e:
+        tx_id = survey_response.get("tx_id")
+        logger.exception("CORA:could not create files for survey", survey_id=survey_id, tx_id=tx_id)
+        return server_error(e)
+
+    logger.info("CORA:SUCCESS")
+
+    return send_file(transformer.image_transformer.get_zip(), mimetype='application/zip', add_etags=False)
+
+
 @app.route('/cord', methods=['POST'])
 @app.route('/cord/<sequence_no>', methods=['POST'])
 def cord(sequence_no=1000):
@@ -255,4 +303,5 @@ def cord(sequence_no=1000):
 @app.route('/info', methods=['GET'])
 @app.route('/healthcheck', methods=['GET'])
 def healthcheck():
+    """A simple endpoint that reports the health of the application"""
     return jsonify({'status': 'OK'})

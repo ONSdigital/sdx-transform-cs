@@ -1,4 +1,5 @@
 ### Unreleased
+ - Added support for UKIS and CORA surveys
 
 ### 3.7.1 2018-12-20
  - Change option value for E-Commerce q-code 416 (r3)

@@ -31,6 +31,10 @@ def get_common_software_test_scenarios(output_type):
     return glob.glob("./tests/%s/common_software/*.json" % output_type)
 
 
+def get_cora_test_scenarios(output_type):
+    return glob.glob("./tests/%s/cora/*.json" % output_type)
+
+
 def get_cord_test_scenarios(output_type):
     return glob.glob("./tests/%s/cord/*.json" % output_type)
 
@@ -77,6 +81,7 @@ class TestTransformService(unittest.TestCase):
     # Provide a default batch no as url param
     transform_pck_endpoint = "/pck/30001"
     transform_cord_pck_endpoint = "/pck"
+    transform_cora_pck_endpoint = "/pck"
     transform_images_endpoint = "/images"
     transform_pdf_endpoint = "/pdf"
 
@@ -121,6 +126,29 @@ class TestTransformService(unittest.TestCase):
             print(expected_response)
 
             r = self.app.post(self.transform_pck_endpoint, data=payload)
+
+            actual_response = r.data.decode("UTF8")
+            print("Actual response")
+            print(actual_response)
+
+            self.assertEqual(actual_response, expected_response)
+
+    def test_cora_transforms_pck(self):
+        """Tests the pck transformation for responses that go to the CORA system."""
+
+        test_scenarios = get_cora_test_scenarios("pck")
+
+        print("Found %d cora pck scenarios" % len(test_scenarios))
+
+        for scenario_filename in test_scenarios:
+
+            print("Loading scenario %s " % scenario_filename)
+            payload = get_file_as_string(scenario_filename)
+            expected_response = get_expected_output(scenario_filename, "pck")
+            print("Expected response")
+            print(expected_response)
+
+            r = self.app.post(self.transform_cora_pck_endpoint, data=payload)
 
             actual_response = r.data.decode("UTF8")
             print("Actual response")
