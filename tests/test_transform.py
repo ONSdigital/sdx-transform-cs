@@ -116,9 +116,7 @@ class TestTransformService(unittest.TestCase):
         test_scenarios = get_common_software_test_scenarios("pck")
 
         print("Found %d pck scenarios" % len(test_scenarios))
-
         for scenario_filename in test_scenarios:
-
             print("Loading scenario %s " % scenario_filename)
             payload = get_file_as_string(scenario_filename)
             expected_response = get_expected_output(scenario_filename, "pck")
@@ -141,7 +139,6 @@ class TestTransformService(unittest.TestCase):
         print("Found %d cora pck scenarios" % len(test_scenarios))
 
         for scenario_filename in test_scenarios:
-
             print("Loading scenario %s " % scenario_filename)
             payload = get_file_as_string(scenario_filename)
             expected_response = get_expected_output(scenario_filename, "pck")

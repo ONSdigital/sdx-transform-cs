@@ -142,9 +142,11 @@ class UKISTransformer:
             "0220": self.checkbox_question("0220"),
             "0230": self.checkbox_question("0230"),
             "0240": self.checkbox_question("0240"),
-            "0410": self.checkbox_question("0410", catchall="d1"),
-            "0420": self.checkbox_question("0420", catchall="d1"),
-            "0430": self.checkbox_question("0430", catchall="d1"),
+            "0410": self.checkbox_question("0410"),
+            "0420": self.checkbox_question("0420"),
+            "0430": self.checkbox_question("0430"),
+            "0440": self.checkbox_question("0440"),
+
         }
 
         return answers
@@ -152,13 +154,13 @@ class UKISTransformer:
     def business_strategy_and_practices(self):
         """Transforms the 'Business strategy and practices' questions"""
         answers = {
-            "2310": self.checkbox_question("2310", catchall="d2"),
-            "2320": self.checkbox_question("2320", catchall="d2"),
-            "2330": self.checkbox_question("2330", catchall="d2"),
-            "2340": self.checkbox_question("2340", catchall="d2"),
-            "2350": self.checkbox_question("2350", catchall="d2"),
-            "2360": self.checkbox_question("2360", catchall="d2"),
-            "2370": self.checkbox_question("2370", catchall="d2"),
+            "2310": self.checkbox_question("2310", catchall="d1"),
+            "2320": self.checkbox_question("2320", catchall="d1"),
+            "2330": self.checkbox_question("2330", catchall="d1"),
+            "2340": self.checkbox_question("2340", catchall="d1"),
+            "2350": self.checkbox_question("2350", catchall="d1"),
+            "2360": self.checkbox_question("2360", catchall="d1"),
+            "2370": self.checkbox_question("2370", catchall="d1"),
         }
 
         return answers
@@ -224,9 +226,9 @@ class UKISTransformer:
     def constraints_on_innovation(self):
         """Transforms the 'Process innovation' questions"""
         answers = {
-            "1510": self.checkbox_question("1510", catchall="d3"),
-            "1520": self.checkbox_question("1520", catchall="d3"),
-            "1530": self.checkbox_question("1530", catchall="d3"),
+            "1510": self.checkbox_question("1510", catchall="d2"),
+            "1520": self.checkbox_question("1520", catchall="d2"),
+            "1530": self.checkbox_question("1530", catchall="d2"),
             "2657": self.importance_question("2657"),
             "2658": self.importance_question("2658"),
             "2659": self.importance_question("2659"),
@@ -288,46 +290,46 @@ class UKISTransformer:
     def cooperation_on_innovation(self):
         """Transforms the 'Co-operation on innovation' questions"""
         answers = {
-            "1811": self.checkbox_question("1811", checked="10", unchecked="01", dependent_qcodes=["1811", "1812", "1813", "1814"], catchall="d4"),
-            "1812": self.checkbox_question("1812", checked="10", unchecked="01", dependent_qcodes=["1811", "1812", "1813", "1814"], catchall="d4"),
-            "1813": self.checkbox_question("1813", checked="10", unchecked="01", dependent_qcodes=["1811", "1812", "1813", "1814"], catchall="d4"),
-            "1814": self.checkbox_question("1814", checked="10", unchecked="01", dependent_qcodes=["1811", "1812", "1813", "1814"], catchall="d4"),
-            "1821": self.checkbox_question("1821", checked="10", unchecked="01", dependent_qcodes=["1821", "1822", "1823", "1824"], catchall="d5"),
-            "1822": self.checkbox_question("1822", checked="10", unchecked="01", dependent_qcodes=["1821", "1822", "1823", "1824"], catchall="d5"),
-            "1823": self.checkbox_question("1823", checked="10", unchecked="01", dependent_qcodes=["1821", "1822", "1823", "1824"], catchall="d5"),
-            "1824": self.checkbox_question("1824", checked="10", unchecked="01", dependent_qcodes=["1821", "1822", "1823", "1824"], catchall="d5"),
-            "1881": self.checkbox_question("1881", checked="10", unchecked="01", dependent_qcodes=["1881", "1882", "1883", "1884"], catchall="d6"),
-            "1882": self.checkbox_question("1882", checked="10", unchecked="01", dependent_qcodes=["1881", "1882", "1883", "1884"], catchall="d6"),
-            "1883": self.checkbox_question("1883", checked="10", unchecked="01", dependent_qcodes=["1881", "1882", "1883", "1884"], catchall="d6"),
-            "1884": self.checkbox_question("1884", checked="10", unchecked="01", dependent_qcodes=["1881", "1882", "1883", "1884"], catchall="d6"),
-            "1891": self.checkbox_question("1891", checked="10", unchecked="01", dependent_qcodes=["1891", "1892", "1893", "1894"], catchall="d7"),
-            "1892": self.checkbox_question("1892", checked="10", unchecked="01", dependent_qcodes=["1891", "1892", "1893", "1894"], catchall="d7"),
-            "1893": self.checkbox_question("1893", checked="10", unchecked="01", dependent_qcodes=["1891", "1892", "1893", "1894"], catchall="d7"),
-            "1894": self.checkbox_question("1894", checked="10", unchecked="01", dependent_qcodes=["1891", "1892", "1893", "1894"], catchall="d7"),
-            "1841": self.checkbox_question("1841", checked="10", unchecked="01", dependent_qcodes=["1841", "1842", "1843", "1844"], catchall="d8"),
-            "1842": self.checkbox_question("1842", checked="10", unchecked="01", dependent_qcodes=["1841", "1842", "1843", "1844"], catchall="d8"),
-            "1843": self.checkbox_question("1843", checked="10", unchecked="01", dependent_qcodes=["1841", "1842", "1843", "1844"], catchall="d8"),
-            "1844": self.checkbox_question("1844", checked="10", unchecked="01", dependent_qcodes=["1841", "1842", "1843", "1844"], catchall="d8"),
-            "1851": self.checkbox_question("1851", checked="10", unchecked="01", dependent_qcodes=["1851", "1852", "1853", "1854"], catchall="d9"),
-            "1852": self.checkbox_question("1852", checked="10", unchecked="01", dependent_qcodes=["1851", "1852", "1853", "1854"], catchall="d9"),
-            "1853": self.checkbox_question("1853", checked="10", unchecked="01", dependent_qcodes=["1851", "1852", "1853", "1854"], catchall="d9"),
-            "1854": self.checkbox_question("1854", checked="10", unchecked="01", dependent_qcodes=["1851", "1852", "1853", "1854"], catchall="d9"),
-            "1861": self.checkbox_question("1861", checked="10", unchecked="01", dependent_qcodes=["1861", "1862", "1863", "1864"], catchall="d10"),
-            "1862": self.checkbox_question("1862", checked="10", unchecked="01", dependent_qcodes=["1861", "1862", "1863", "1864"], catchall="d10"),
-            "1863": self.checkbox_question("1863", checked="10", unchecked="01", dependent_qcodes=["1861", "1862", "1863", "1864"], catchall="d10"),
-            "1864": self.checkbox_question("1864", checked="10", unchecked="01", dependent_qcodes=["1861", "1862", "1863", "1864"], catchall="d10"),
-            "1871": self.checkbox_question("1871", checked="10", unchecked="01", dependent_qcodes=["1871", "1872", "1873", "1874"], catchall="d11"),
-            "1872": self.checkbox_question("1872", checked="10", unchecked="01", dependent_qcodes=["1871", "1872", "1873", "1874"], catchall="d11"),
-            "1873": self.checkbox_question("1873", checked="10", unchecked="01", dependent_qcodes=["1871", "1872", "1873", "1874"], catchall="d11"),
-            "1874": self.checkbox_question("1874", checked="10", unchecked="01", dependent_qcodes=["1871", "1872", "1873", "1874"], catchall="d11"),
-            "1875": self.checkbox_question("1875", checked="10", unchecked="01", dependent_qcodes=["1875", "1876", "1877", "1878"], catchall="d12"),
-            "1876": self.checkbox_question("1876", checked="10", unchecked="01", dependent_qcodes=["1875", "1876", "1877", "1878"], catchall="d12"),
-            "1877": self.checkbox_question("1877", checked="10", unchecked="01", dependent_qcodes=["1875", "1876", "1877", "1878"], catchall="d12"),
-            "1878": self.checkbox_question("1878", checked="10", unchecked="01", dependent_qcodes=["1875", "1876", "1877", "1878"], catchall="d12"),
-            "1879": self.checkbox_question("1879", checked="10", unchecked="01", dependent_qcodes=["1879", "1880", "1885", "1886"], catchall="d13"),
-            "1880": self.checkbox_question("1880", checked="10", unchecked="01", dependent_qcodes=["1879", "1880", "1885", "1886"], catchall="d13"),
-            "1885": self.checkbox_question("1885", checked="10", unchecked="01", dependent_qcodes=["1879", "1880", "1885", "1886"], catchall="d13"),
-            "1886": self.checkbox_question("1886", checked="10", unchecked="01", dependent_qcodes=["1879", "1880", "1885", "1886"], catchall="d13"),
+            "1811": self.checkbox_question("1811", checked="10", unchecked="01", dependent_qcodes=["1811", "1812", "1813", "1814"], catchall="d3"),
+            "1812": self.checkbox_question("1812", checked="10", unchecked="01", dependent_qcodes=["1811", "1812", "1813", "1814"], catchall="d3"),
+            "1813": self.checkbox_question("1813", checked="10", unchecked="01", dependent_qcodes=["1811", "1812", "1813", "1814"], catchall="d3"),
+            "1814": self.checkbox_question("1814", checked="10", unchecked="01", dependent_qcodes=["1811", "1812", "1813", "1814"], catchall="d3"),
+            "1821": self.checkbox_question("1821", checked="10", unchecked="01", dependent_qcodes=["1821", "1822", "1823", "1824"], catchall="d4"),
+            "1822": self.checkbox_question("1822", checked="10", unchecked="01", dependent_qcodes=["1821", "1822", "1823", "1824"], catchall="d4"),
+            "1823": self.checkbox_question("1823", checked="10", unchecked="01", dependent_qcodes=["1821", "1822", "1823", "1824"], catchall="d4"),
+            "1824": self.checkbox_question("1824", checked="10", unchecked="01", dependent_qcodes=["1821", "1822", "1823", "1824"], catchall="d4"),
+            "1881": self.checkbox_question("1881", checked="10", unchecked="01", dependent_qcodes=["1881", "1882", "1883", "1884"], catchall="d5"),
+            "1882": self.checkbox_question("1882", checked="10", unchecked="01", dependent_qcodes=["1881", "1882", "1883", "1884"], catchall="d5"),
+            "1883": self.checkbox_question("1883", checked="10", unchecked="01", dependent_qcodes=["1881", "1882", "1883", "1884"], catchall="d5"),
+            "1884": self.checkbox_question("1884", checked="10", unchecked="01", dependent_qcodes=["1881", "1882", "1883", "1884"], catchall="d5"),
+            "1891": self.checkbox_question("1891", checked="10", unchecked="01", dependent_qcodes=["1891", "1892", "1893", "1894"], catchall="d6"),
+            "1892": self.checkbox_question("1892", checked="10", unchecked="01", dependent_qcodes=["1891", "1892", "1893", "1894"], catchall="d6"),
+            "1893": self.checkbox_question("1893", checked="10", unchecked="01", dependent_qcodes=["1891", "1892", "1893", "1894"], catchall="d6"),
+            "1894": self.checkbox_question("1894", checked="10", unchecked="01", dependent_qcodes=["1891", "1892", "1893", "1894"], catchall="d6"),
+            "1841": self.checkbox_question("1841", checked="10", unchecked="01", dependent_qcodes=["1841", "1842", "1843", "1844"], catchall="d7"),
+            "1842": self.checkbox_question("1842", checked="10", unchecked="01", dependent_qcodes=["1841", "1842", "1843", "1844"], catchall="d7"),
+            "1843": self.checkbox_question("1843", checked="10", unchecked="01", dependent_qcodes=["1841", "1842", "1843", "1844"], catchall="d7"),
+            "1844": self.checkbox_question("1844", checked="10", unchecked="01", dependent_qcodes=["1841", "1842", "1843", "1844"], catchall="d7"),
+            "1851": self.checkbox_question("1851", checked="10", unchecked="01", dependent_qcodes=["1851", "1852", "1853", "1854"], catchall="d8"),
+            "1852": self.checkbox_question("1852", checked="10", unchecked="01", dependent_qcodes=["1851", "1852", "1853", "1854"], catchall="d8"),
+            "1853": self.checkbox_question("1853", checked="10", unchecked="01", dependent_qcodes=["1851", "1852", "1853", "1854"], catchall="d8"),
+            "1854": self.checkbox_question("1854", checked="10", unchecked="01", dependent_qcodes=["1851", "1852", "1853", "1854"], catchall="d8"),
+            "1861": self.checkbox_question("1861", checked="10", unchecked="01", dependent_qcodes=["1861", "1862", "1863", "1864"], catchall="d9"),
+            "1862": self.checkbox_question("1862", checked="10", unchecked="01", dependent_qcodes=["1861", "1862", "1863", "1864"], catchall="d9"),
+            "1863": self.checkbox_question("1863", checked="10", unchecked="01", dependent_qcodes=["1861", "1862", "1863", "1864"], catchall="d9"),
+            "1864": self.checkbox_question("1864", checked="10", unchecked="01", dependent_qcodes=["1861", "1862", "1863", "1864"], catchall="d9"),
+            "1871": self.checkbox_question("1871", checked="10", unchecked="01", dependent_qcodes=["1871", "1872", "1873", "1874"], catchall="d10"),
+            "1872": self.checkbox_question("1872", checked="10", unchecked="01", dependent_qcodes=["1871", "1872", "1873", "1874"], catchall="d10"),
+            "1873": self.checkbox_question("1873", checked="10", unchecked="01", dependent_qcodes=["1871", "1872", "1873", "1874"], catchall="d10"),
+            "1874": self.checkbox_question("1874", checked="10", unchecked="01", dependent_qcodes=["1871", "1872", "1873", "1874"], catchall="d10"),
+            "1875": self.checkbox_question("1875", checked="10", unchecked="01", dependent_qcodes=["1875", "1876", "1877", "1878"], catchall="d11"),
+            "1876": self.checkbox_question("1876", checked="10", unchecked="01", dependent_qcodes=["1875", "1876", "1877", "1878"], catchall="d11"),
+            "1877": self.checkbox_question("1877", checked="10", unchecked="01", dependent_qcodes=["1875", "1876", "1877", "1878"], catchall="d11"),
+            "1878": self.checkbox_question("1878", checked="10", unchecked="01", dependent_qcodes=["1875", "1876", "1877", "1878"], catchall="d11"),
+            "1879": self.checkbox_question("1879", checked="10", unchecked="01", dependent_qcodes=["1879", "1880", "1885", "1886"], catchall="d12"),
+            "1880": self.checkbox_question("1880", checked="10", unchecked="01", dependent_qcodes=["1879", "1880", "1885", "1886"], catchall="d12"),
+            "1885": self.checkbox_question("1885", checked="10", unchecked="01", dependent_qcodes=["1879", "1880", "1885", "1886"], catchall="d12"),
+            "1886": self.checkbox_question("1886", checked="10", unchecked="01", dependent_qcodes=["1879", "1880", "1885", "1886"], catchall="d12"),
             "2650": self.percentage_question("2650"),
             "2651": self.percentage_question("2651"),
             "2652": self.percentage_question("2652"),
@@ -342,9 +344,10 @@ class UKISTransformer:
     def public_financial_support_for_innovation(self):
         """Transforms the 'Public financial support for innovation' questions"""
         answers = {
-            "2668": self.checkbox_question("2668", catchall="d14"),
-            "2669": self.checkbox_question("2669", catchall="d14"),
-            "2670": self.checkbox_question("2670", catchall="d14"),
+            "2668": self.checkbox_question("2668"),
+            "2669": self.checkbox_question("2669"),
+            "2670": self.checkbox_question("2670"),
+            "2671": self.checkbox_question("2671"),
             "2672": self.checkbox_question("2672"),
             "2673": self.checkbox_question("2673"),
             "2674": self.checkbox_question("2674"),
@@ -387,11 +390,15 @@ class UKISTransformer:
         """Perform a transform on survey data."""
 
         transformed = {
+            "0001": '0',
+            "0002": '0',
+            "0003": '0',
             "2700": "1" if self.get_qcode("2700") else "0",  # 2700 is the additional comments question.
             "2801": self.get_qcode("2801", not_found_value=''),
             "2800": self.get_qcode("2800", not_found_value=''),
             "2900": self.yes_no_question("2900", yes_value="10", no_value="01"),
         }
+
         general_business_information = self.general_business_information()
         business_strategy_and_practices = self.business_strategy_and_practices()
         innovation_investment = self.innovation_investment()
