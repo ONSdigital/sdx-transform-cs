@@ -64,6 +64,14 @@
               "Turnover decreased"
           ]
         }, {
+          "text": "Did any of the following significant events or changes occur to the business?",
+          "question_id": "0440",
+          "number": "0440",
+          "type": "checkbox",
+          "options": [
+              "No significant changes occurred"
+          ]
+        },{
           "text": "Total employees",
           "question_id": "50"
       }]
@@ -907,6 +915,14 @@
           "type": "checkbox",
           "options": [
               "European (EU) institutions or programmes"
+          ]
+        },{
+          "text": "Did the business receive public financial support for innovation activities from the following levels of government?",
+          "question_id": "2671",
+          "number": "2671",
+          "type": "checkbox",
+          "options": [
+              "No public financial support was received for innovation activities from government"
           ]
         },{
           "text": "What kind of financial support was received by the business from UK central government",
