@@ -171,7 +171,7 @@ class UKISTransformer:
             "1310": self.yes_no_question("1310"),
             "2675": self.checkbox_question("2675"),
             "2676": self.checkbox_question("2676"),
-            "2677": self.checkbox_question("2678"),
+            "2677": self.checkbox_question("2677"),
             "1410": self.round_and_divide_by_one_thousand(self.get_qcode("1410")),
             "1320": self.yes_no_question("1320"),
             "1420": self.round_and_divide_by_one_thousand(self.get_qcode("1420")),
