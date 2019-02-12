@@ -1,0 +1,93 @@
+{
+    "title": "Quarterly Public Sector Employment Statistical Bulletin (QPSES) - Public Bodies",
+    "survey_id": "165",
+    "form_type": "0002",
+    "comments": "true",
+    "question_groups": [
+        {
+            "title": "Permanent Employees",
+            "questions": [
+                {
+                    "text": "Number of full-time male employees?",
+                    "question_id": "551",
+                    "number": "551"
+                },
+                {
+                    "text": "Number of part-time male employees?",
+                    "question_id": "552",
+                    "number": "552"
+                },
+                {
+                    "text": "Equivalent number of full-time male employees?",
+                    "question_id": "561",
+                    "number": "561"
+                },
+                {
+                    "text": "Number of full-time female employees?",
+                    "question_id": "553",
+                    "number": "553"
+                },
+                {
+                    "text": "Number of part-time female employees?",
+                    "question_id": "554",
+                    "number": "554"
+                },
+                {
+                    "text": "Equivalent number of full-time female employees?",
+                    "question_id": "562",
+                    "number": "562"
+                }
+            ]
+        },
+        {
+            "title": "Temporary and Casual Employees",
+            "questions": [
+                {
+                    "text": "Number of full-time temporary and casual male employees?",
+                    "question_id": "651",
+                    "number": "651"
+                },
+                {
+                    "text": "Number of part-time temporary and casual male employees?",
+                    "question_id": "652",
+                    "number": "652"
+                },
+                {
+                    "text": "Equivalent number of full-time temporary and casual male employees?",
+                    "question_id": "661",
+                    "number": "661"
+                },
+                {
+                    "text": "Number of full-time temporary and casual female employees?",
+                    "question_id": "653",
+                    "number": "653"
+                },
+                {
+                    "text": "Number of part-time temporary and casual female employees?",
+                    "question_id": "654",
+                    "number": "654"
+                },
+                {
+                    "text": "Equivalent number of temporary and casual full-time female employees?",
+                    "question_id": "662",
+                    "number": "662"
+                },
+                {
+                    "text": "Total number of employees?",
+                    "question_id": "50",
+                    "number": "50"
+                },
+                {
+                    "text": "Total number of full-time equivalent employees?",
+                    "question_id": "60",
+                    "number": "60"
+                },
+                {
+                    "text": "Any comments?",
+                    "question_id": "146",
+                    "type": "contains"
+                }
+            ]
+        }
+    ]
+}

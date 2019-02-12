@@ -6,41 +6,20 @@ from transform.transformers.common_software import PCKTransformer
 class TestPckTransformer(unittest.TestCase):
 
     def test_get_cs_form_id_passes(self):
-        survey = {'survey_id': '023'}
-        response = {'collection': {'instrument_id': '0102'}}
-        pck_transformer = PCKTransformer(survey, response)
-        form_id = pck_transformer.get_cs_form_id()
+        scenarios = [
+            ('023', '0102', 'RSI5B'),
+            ('139', '0001', 'Q01B'),
+            ('019', '0018', '0018'),
+            ('019', '0019', '0019'),
+            ('019', '0020', '0020')
+        ]
+        for survey_id, instrument_id, expected_form_id in scenarios:
+            survey = {'survey_id': survey_id}
+            response = {'collection': {'instrument_id': instrument_id}}
+            pck_transformer = PCKTransformer(survey, response)
+            form_id = pck_transformer.get_cs_form_id()
 
-        self.assertEqual(form_id, 'RSI5B', msg=None)
-
-        survey = {'survey_id': '139'}
-        response = {'collection': {'instrument_id': '0001'}}
-        pck_transformer = PCKTransformer(survey, response)
-        form_id = pck_transformer.get_cs_form_id()
-
-        self.assertEqual(form_id, 'Q01B', msg=None)
-
-        # QCAS
-        survey = {'survey_id': '019'}
-        response = {'collection': {'instrument_id': '0018'}}
-        pck_transformer = PCKTransformer(survey, response)
-        form_id = pck_transformer.get_cs_form_id()
-
-        self.assertEqual(form_id, '0018', msg=None)
-
-        survey = {'survey_id': '019'}
-        response = {'collection': {'instrument_id': '0019'}}
-        pck_transformer = PCKTransformer(survey, response)
-        form_id = pck_transformer.get_cs_form_id()
-
-        self.assertEqual(form_id, '0019', msg=None)
-
-        survey = {'survey_id': '019'}
-        response = {'collection': {'instrument_id': '0020'}}
-        pck_transformer = PCKTransformer(survey, response)
-        form_id = pck_transformer.get_cs_form_id()
-
-        self.assertEqual(form_id, '0020', msg=None)
+            assert form_id == expected_form_id
 
     def test_get_cs_form_id_invalid_survey(self):
         survey = {'survey_id': 23}
@@ -51,7 +30,7 @@ class TestPckTransformer(unittest.TestCase):
             form_id = pck_transformer.get_cs_form_id()
             self.assertEqual(form_id, None)
 
-            msg = "ERROR:transform.transformers.common_software.pck_transformer:Invalid survey id '23'"
+            msg = "ERROR:transform.transformers.common_software.pck_transformer:survey_id=23 event='Invalid survey id'"
             self.assertEqual(msg, cm.output[0])
 
     def test_get_cs_form_id_invalid_instrument(self):
@@ -63,7 +42,7 @@ class TestPckTransformer(unittest.TestCase):
             form_id = pck_transformer.get_cs_form_id()
             self.assertEqual(form_id, None)
 
-            msg = "ERROR:transform.transformers.common_software.pck_transformer:Invalid instrument id '000'"
+            msg = "ERROR:transform.transformers.common_software.pck_transformer:instrument_id='000' event='Invalid instrument id'"
             self.assertEqual(msg, cm.output[0])
 
         # QCAS
@@ -75,7 +54,7 @@ class TestPckTransformer(unittest.TestCase):
             form_id = pck_transformer.get_cs_form_id()
             self.assertEqual(form_id, None)
 
-            msg = "ERROR:transform.transformers.common_software.pck_transformer:Invalid instrument id '0021'"
+            msg = "ERROR:transform.transformers.common_software.pck_transformer:instrument_id='0021' event='Invalid instrument id'"
             self.assertEqual(msg, cm.output[0])
 
     def test_pck_transformer_cannot_change_the_data_it_is_passed(self):
@@ -87,7 +66,7 @@ class TestPckTransformer(unittest.TestCase):
         response = {'collection': {'instrument_id': '000'}, 'data': {'item1': 'value1'}}
         pck_transformer = PCKTransformer(survey, response)
         pck_transformer.data['item1'] = 'new value'
-        self.assertEqual(response['data']['item1'], 'value1')
+        assert response['data']['item1'] == 'value1'
 
     def test_pck_transformer_discards_qcas_confirmation_question(self):
         """
@@ -98,11 +77,11 @@ class TestPckTransformer(unittest.TestCase):
         response = {'collection': {'instrument_id': '000'}, 'data': {'681': '100', 'd681': 'Yes', 'd12': 'Yes'}}
         pck_transformer = PCKTransformer(survey, response)
 
-        self.assertEqual(pck_transformer.data, {'681': '100', 'd681': 'Yes', 'd12': 'Yes'})
+        assert pck_transformer.data == {'681': '100', 'd681': 'Yes', 'd12': 'Yes'}
 
         pck_transformer.evaluate_confirmation_questions()
 
-        self.assertEqual(pck_transformer.data, {'681': '100'})
+        assert pck_transformer.data == {'681': '100'}
 
     def test_pck_transformer_parse_negative_values(self):
         """If any values in the survey are negative, they should be replaced with an all 9's string that is 11 characters long
@@ -236,25 +215,56 @@ class TestPckTransformer(unittest.TestCase):
 
         pck_transformer = PCKTransformer(survey, response)
 
-        pck_transformer.round_currency_values()
+        pck_transformer.round_numeric_values()
 
-        self.assertEqual(pck_transformer.data['689'], '0')
-        self.assertEqual(pck_transformer.data['696'], '1')
-        self.assertEqual(pck_transformer.data['704'], '12')
-        self.assertEqual(pck_transformer.data['708'], '12346')
-        self.assertEqual(pck_transformer.data['710'], '-0')
-        self.assertEqual(pck_transformer.data['712'], '-12')
+        assert pck_transformer.data['689'] == '0'
+        assert pck_transformer.data['696'] == '1'
+        assert pck_transformer.data['704'] == '12'
+        assert pck_transformer.data['708'] == '12346'
+        assert pck_transformer.data['710'] == '-0'
+        assert pck_transformer.data['712'] == '-12'
 
         pck_transformer.calculate_total_playback()
 
         # Total value of acquisitions questions for only machinery and equipments section
-        self.assertEqual(pck_transformer.data['714'], '12')
+        assert pck_transformer.data['714'] == '12'
 
         # Total value of disposals questions for only machinery and equipments section
-        self.assertEqual(pck_transformer.data['715'], '12347')
+        assert pck_transformer.data['715'] == '12347'
 
         # Total value of all acquisitions questions
-        self.assertEqual(pck_transformer.data['692'], '11')
+        assert pck_transformer.data['692'] == '11'
 
         # Total value of all disposals questions (same as '715' since constructions section and minerals sections does not have disposals question)
-        self.assertEqual(pck_transformer.data['693'], '12347')
+        assert pck_transformer.data['693'] == '12347'
+
+    @staticmethod
+    def test_pck_transformer_round_numeric_values_qpses():
+        """
+        For QPSES, a number of values require rounding before being sent downstream.  These should round up on a .5 answer.
+        """
+        scenarios = ["160", "165", "169"]
+        for survey_id in scenarios:
+            survey = {'survey_id': survey_id}
+            response = {
+                "collection": {
+                    "instrument_id": "0020"
+                },
+                "data": {
+                    "60": 50.5,
+                    "561": 50.3,
+                    "562": 74.49,
+                    "661": 80.1,
+                    "662": 34.8,
+                    "146": "A lot of changes.",
+                }
+            }
+
+            pck_transformer = PCKTransformer(survey, response)
+            pck_transformer.round_numeric_values()
+
+            assert pck_transformer.data['60'] == '51'
+            assert pck_transformer.data['561'] == '50'
+            assert pck_transformer.data['562'] == '74'
+            assert pck_transformer.data['661'] == '80'
+            assert pck_transformer.data['662'] == '35'

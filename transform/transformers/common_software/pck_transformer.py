@@ -5,21 +5,24 @@ from decimal import Decimal, ROUND_HALF_UP
 import logging
 
 import dateutil.parser
+from structlog import wrap_logger
 
-logger = logging.getLogger(__name__)
+logger = wrap_logger(logging.getLogger(__name__))
 
 
 class PCKTransformer:
     comments_questions = ['147', '146a', '146b', '146c', '146d', '146e', '146f', '146g', '146h', '146i', '146j', '146k']
     rsi_turnover_questions = ["20", "21", "22", "23", "24", "25", "26"]
     rsi_currency_questions = rsi_turnover_questions + ["27"]
-    employee_questions = ["50", "51", "52", "53", "54"]
+    employee_questions = ["50", "51", "52", "53", "54"]  # Used by qbs and rsi surveys
 
     qcas_machinery_acquisitions_questions = ['688', '695', '703', '707', '709', '711']
     qcas_other_acquisitions_questions = ['681', '697']
     qcas_disposals_questions = ['689', '696', '704', '708', '710', '712']
     qcas_calculated_total = ['692', '693', '714', '715']  # Calculated summary values
     qcas_currency_questions = qcas_other_acquisitions_questions + qcas_disposals_questions + qcas_machinery_acquisitions_questions + qcas_calculated_total
+
+    qpses_decimal_questions = ["60", "561", "562", "661", "662"]
 
     form_types = {
         "019": {
@@ -37,12 +40,22 @@ class PCKTransformer:
         },
         "139": {
             "0001": "Q01B",
+        },
+        "160": {
+            "0002": "T26A",
+        },
+        "165": {
+            "0002": "T17A",
+        },
+        "169": {
+            "0003": "T18A",
         }
     }
 
     qcas_survey_id = "019"
     rsi_survey_id = "023"
     qbs_survey_id = "139"
+    qpses_survey_ids = ["160", "165", "169"]
 
     def __init__(self, survey, response_data):
         self.survey = survey
@@ -84,13 +97,13 @@ class PCKTransformer:
         try:
             form_type = self.form_types[self.survey['survey_id']]
         except KeyError:
-            logger.error("Invalid survey id '{}'".format(self.survey['survey_id']))
+            logger.error("Invalid survey id", survey_id=self.survey['survey_id'])
             return None
 
         try:
             form_id = form_type[instrument_id]
         except KeyError:
-            logger.error("Invalid instrument id '{}'".format(instrument_id))
+            logger.error("Invalid instrument id", instrument_id=instrument_id)
             return None
 
         return form_id
@@ -144,16 +157,22 @@ class PCKTransformer:
                 end_date = datetime.strptime(self.response['metadata']['ref_period_end_date'], "%Y-%m-%d")
                 self.data['12'] = end_date.strftime("%d/%m/%Y")
 
-    def round_currency_values(self):
+    def round_numeric_values(self):
         """For RSI Surveys, round the values of the currency fields.
         Rounds up if the value is .5
 
         For QCAS Surveys, round the values of the currency fields and divide
         by 1000 (i.e., 56100 would return 56)
+
+        For QPSES Surveys, round the value to the nearest whole number, rounding up on .5
         """
         if self.survey.get('survey_id') in [self.rsi_survey_id]:
             self.data.update({k: str(Decimal(v).quantize(Decimal('1.'), ROUND_HALF_UP))
                               for k, v in self.data.items() if k in self.rsi_currency_questions})
+
+        if self.survey.get('survey_id') in self.qpses_survey_ids:
+            self.data.update({k: str(Decimal(v).quantize(Decimal('1.'), ROUND_HALF_UP))
+                              for k, v in self.data.items() if k in self.qpses_decimal_questions})
 
         if self.survey.get('survey_id') in [self.qcas_survey_id]:
             self.data.update({k: str(self.round_to_nearest_thousand(v))
@@ -201,6 +220,7 @@ class PCKTransformer:
         """147 or any 146x indicates a special comment type that should not be shown
         in pck, but in image. Additionally should set 146 if unset.
         """
+
         if set(self.comments_questions) <= set(self.data.keys()) and '146' not in self.data.keys():
             self.data['146'] = 1
 
@@ -239,7 +259,7 @@ class PCKTransformer:
         except KeyError:
             logger.info("Missing metadata")
 
-        self.round_currency_values()
+        self.round_numeric_values()
         self.calculate_total_playback()
         self.parse_negative_values()
         self.evaluate_confirmation_questions()
