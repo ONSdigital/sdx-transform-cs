@@ -1,5 +1,7 @@
 ### Unreleased
  - Added support for QPSES survey
+
+### 3.8.0 2018-02-08
  - Added support for UKIS and CORA surveys
 
 ### 3.7.1 2018-12-20
