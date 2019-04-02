@@ -14,7 +14,6 @@ from transform.settings import (
 from transform.transformers.cord.cord_formatter import CORDFormatter
 from transform.transformers.survey import Survey
 from transform.transformers.image_transformer import ImageTransformer
-from transform.utilities.general import merge_dicts
 
 logger = wrap_logger(logging.getLogger(__name__))
 
@@ -312,13 +311,10 @@ class EcommerceTransformer:
 
         logger.info("Transforming data for {}".format(self.ids.ru_ref), tx_id=self.ids.tx_id,)
 
-        sections_to_transform = [
-            transformed, ict_specialists_and_skills, access_and_use_of_internet,
-            sharing_of_info_electronically_within_business, ict_security, e_commerce,
-            use_of_computers
-        ]
-
-        return merge_dicts(*sections_to_transform)
+        return {**transformed, **ict_specialists_and_skills,  # Merge Dictionaries
+                **access_and_use_of_internet, **sharing_of_info_electronically_within_business,
+                **ict_security, **e_commerce,
+                **use_of_computers}
 
     def create_pck(self, transformed_data):
         """Return a pck file using provided data"""

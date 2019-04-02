@@ -16,7 +16,6 @@ from transform.settings import (
 from transform.transformers.common_software.cs_formatter import CSFormatter
 from transform.transformers.survey import Survey
 from transform.transformers.image_transformer import ImageTransformer
-from transform.utilities.general import merge_dicts
 
 logger = wrap_logger(logging.getLogger(__name__))
 
@@ -273,9 +272,7 @@ class MBSTransformer:
 
         return {
             k: v
-            for k, v in merge_dicts(
-                transformed_data, employee_totals, turnover_totals, dates
-            ).items()
+            for k, v in {**transformed_data, **employee_totals, **turnover_totals, **dates}.items()
             if v is not None
         }
 

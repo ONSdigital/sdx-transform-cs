@@ -15,7 +15,6 @@ from transform.settings import (
 from transform.transformers.cora.cora_formatter import CORAFormatter
 from transform.transformers.survey import Survey
 from transform.transformers.image_transformer import ImageTransformer
-from transform.utilities.general import merge_dicts
 
 logger = wrap_logger(logging.getLogger(__name__))
 
@@ -414,18 +413,13 @@ class UKISTransformer:
 
         logger.info("Transforming data for {}".format(self.ids.ru_ref), tx_id=self.ids.tx_id,)
 
-        sections_to_transform = [
-            transformed, general_business_information, business_strategy_and_practices,
-            innovation_investment, goods_and_services_innovation, process_innovation,
-            constraints_on_innovation, factors_affecting_innovation, information_needed_for_innovation,
-            cooperation_on_innovation, public_financial_support_for_innovation,
-            turnover_and_exports, employees_and_skills
-        ]
-
-        return {
-            k: v
-            for k, v in merge_dicts(*sections_to_transform).items()
-        }
+        return {**transformed, **general_business_information,  # Merge Dictionaries
+                **business_strategy_and_practices,
+                **innovation_investment, **goods_and_services_innovation,
+                **process_innovation, **constraints_on_innovation,
+                **factors_affecting_innovation, **information_needed_for_innovation,
+                **cooperation_on_innovation, **public_financial_support_for_innovation,
+                **turnover_and_exports, **employees_and_skills}
 
     def create_pck(self, transformed_data):
         """Return a pck file using provided data"""
