@@ -1,4 +1,5 @@
 ### Unreleased
+ - Updated the dockerfile
  - Used Python 3.5 inbuilt dictionary merging instead of merge_dicts
 
 ### 3.9.0 2019-02-19
