@@ -1,5 +1,6 @@
 FROM onsdigital/flask-crypto-queue
 
+RUN sed -i '/jessie-updates/d' /etc/apt/sources.list
 RUN apt-get update && apt-get install -y poppler-utils
 
 COPY server.py /app/server.py
