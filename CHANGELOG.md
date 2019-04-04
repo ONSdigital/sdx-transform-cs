@@ -1,4 +1,5 @@
 ### Unreleased
+ - Update Pillow version
  - Updated the dockerfile
  - Used Python 3.5 inbuilt dictionary merging instead of merge_dicts
 
