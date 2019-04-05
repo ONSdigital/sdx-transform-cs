@@ -43,7 +43,7 @@ class TestExampleSubmission:
 
     def test_submission_output(self):
         with open('tests/replies/eq-ecommerce-expected-output.yaml', 'r') as fp:
-            expected_output = yaml.load(fp)
+            expected_output = yaml.load(fp, Loader=yaml.FullLoader)
 
         assert self.transformed_data == expected_output
 
