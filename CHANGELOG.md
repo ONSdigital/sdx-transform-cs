@@ -1,4 +1,5 @@
 ### Unreleased
+ - Update Jinja to 2.10.1 to fix a security issue.
  - Update Pillow and PyYAML versions
  - Updated the dockerfile
  - Used Python 3.5 inbuilt dictionary merging instead of merge_dicts
