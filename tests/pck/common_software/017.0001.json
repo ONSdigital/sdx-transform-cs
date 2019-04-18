@@ -1,0 +1,37 @@
+{
+	"case_id": "4e51b0ca-2749-4235-b632-abc63f3cb1f0",
+	"collection": {
+		"exercise_sid": "664dbdf4-02fb-4d68-b0cf-7f7402df00e5",
+		"instrument_id": "0001",
+		"period": "1904"
+	},
+	"data": {
+		"11": "1/2/2019",
+		"12": "28/3/2019",
+		"15": "Yes",
+		"65": "3500",
+		"66": "4500",
+		"139": "10010",
+		"140": "12000",
+		"144": "900",
+		"145": "950",
+		"146a": "Yes",
+		"146b": "Start or end of a long term project",
+		"146c": "End of accounting period or financial year",
+		"146": "This is a comment",
+		"149": "2800",
+		"150": "3700"
+	},
+	"flushed": false,
+	"metadata": {
+		"ru_ref": "15162882666F",
+		"user_id": "UNKNOWN"
+	},
+	"origin": "uk.gov.ons.edc.eq",
+	"started_at": "2019-04-17T13:11:24.224709",
+	"submitted_at": "2019-04-17T13:25:26.933601",
+	"survey_id": "017",
+	"tx_id": "308409e4-cf09-46cb-8988-f85e7116ade6",
+	"type": "uk.gov.ons.edc.eq:surveyresponse",
+	"version": "0.0.1"
+}

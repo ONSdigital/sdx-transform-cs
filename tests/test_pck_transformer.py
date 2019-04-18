@@ -268,3 +268,46 @@ class TestPckTransformer(unittest.TestCase):
             assert pck_transformer.data['562'] == '74'
             assert pck_transformer.data['661'] == '80'
             assert pck_transformer.data['662'] == '35'
+
+    @staticmethod
+    def test_pck_transformer_round_numeric_values_qsi():
+        """
+        For QSI (Stocks), a number of values require rounding before being sent downstream. These should
+        be rounded to the nearest thousand.
+        For example:
+            - 12100 -> 12000
+            - 12500 -> 13000
+            - 12501 -> 13000
+        """
+        scenarios = ["0001", "0002"]
+        for form_type in scenarios:
+            survey = {'survey_id': "017"}
+            response = {
+                "collection": {
+                    "instrument_id": form_type
+                },
+                "data": {
+                    "15": "Yes",
+                    "65": "311500",
+                    "66": "313103",
+                    "139": "7300",
+                    "140": "7680",
+                    "144": "2100",
+                    "145": "2205",
+                    "146": "A lot of changes.",
+                    "149": "1800",
+                    "150": "12205",
+                }
+            }
+
+            pck_transformer = PCKTransformer(survey, response)
+            pck_transformer.round_numeric_values()
+
+            assert pck_transformer.data['65'] == '312000'
+            assert pck_transformer.data['66'] == '313000'
+            assert pck_transformer.data['139'] == '7000'
+            assert pck_transformer.data['140'] == '8000'
+            assert pck_transformer.data['144'] == '2000'
+            assert pck_transformer.data['145'] == '2000'
+            assert pck_transformer.data['149'] == '2000'
+            assert pck_transformer.data['150'] == '12000'

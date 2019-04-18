@@ -24,11 +24,38 @@ class PCKTransformer:
 
     qpses_decimal_questions = ["60", "561", "562", "661", "662"]
 
+    # QSI (Stocks - survey_id 017) has 20 different formtypes where the majority of questions both numeric and in need of rounding.
+    # The list of answers that DON'T need rounding is much shorter.
+    qsi_non_currency_questions = ["11", "12", "15", "146", '146a', '146b', '146c', '146d', '146e', '146f', '146g', '146h']
+
     form_types = {
         "019": {
             "0018": "0018",
             "0019": "0019",
             "0020": "0020"
+        },
+        "017": {
+            "0001": "STP01",
+            "0002": "STP01",
+            "0003": "STQ03",
+            "0004": "STQ03",
+            "0005": "STE05",
+            "0006": "STE05",
+            "0007": "STE15",
+            "0008": "STE15",
+            "0009": "STE09",
+            "0010": "STE09",
+            "0011": "STE17",
+            "0012": "STE17",
+            "0013": "STE13",
+            "0014": "STE13",
+            "0033": "STC02",
+            "0034": "STC02",
+            "0051": "STW02",
+            "0052": "STW02",
+            "0057": "STM01",
+            "0058": "STM01",
+            "0061": "STM01"
         },
         "023": {
             "0102": "RSI5B",
@@ -53,6 +80,7 @@ class PCKTransformer:
     }
 
     qcas_survey_id = "019"
+    qsi_survey_id = "017"
     rsi_survey_id = "023"
     qbs_survey_id = "139"
     qpses_survey_ids = ["160", "165", "169"]
@@ -83,7 +111,7 @@ class PCKTransformer:
             try:
                 question_types[answer['question_id']] = answer['type']
             except KeyError:
-                logger.info("No type in answer.")
+                logger.debug("No type in answer.")
 
         return questions, question_types
 
@@ -158,13 +186,15 @@ class PCKTransformer:
                 self.data['12'] = end_date.strftime("%d/%m/%Y")
 
     def round_numeric_values(self):
-        """For RSI Surveys, round the values of the currency fields.
+        """For RSI, QPSES Surveys, round the values of the currency fields.
         Rounds up if the value is .5
+
+        For QSI (Stocks), round to the nearest thousand for every field EXCEPT a select list of
+        non-numeric fields.
 
         For QCAS Surveys, round the values of the currency fields and divide
         by 1000 (i.e., 56100 would return 56)
 
-        For QPSES Surveys, round the value to the nearest whole number, rounding up on .5
         """
         if self.survey.get('survey_id') in [self.rsi_survey_id]:
             self.data.update({k: str(Decimal(v).quantize(Decimal('1.'), ROUND_HALF_UP))
@@ -173,6 +203,11 @@ class PCKTransformer:
         if self.survey.get('survey_id') in self.qpses_survey_ids:
             self.data.update({k: str(Decimal(v).quantize(Decimal('1.'), ROUND_HALF_UP))
                               for k, v in self.data.items() if k in self.qpses_decimal_questions})
+
+        if self.survey.get('survey_id') in [self.qsi_survey_id]:
+            decimal.getcontext().rounding = ROUND_HALF_UP
+            self.data.update({k: str(Decimal(round(Decimal(float(v))) / 1000).quantize(1) * 1000)
+                              for k, v in self.data.items() if k not in self.qsi_non_currency_questions})
 
         if self.survey.get('survey_id') in [self.qcas_survey_id]:
             self.data.update({k: str(self.round_to_nearest_thousand(v))
@@ -249,6 +284,13 @@ class PCKTransformer:
             self.data['692'] = str(all_acquisitions_total)
             self.data['693'] = str(total_disposals)   # Construction and minerals do not have disposals answers.
 
+    def parse_estimation_question(self):
+        """
+        For QSI (Stocks), the estimation question needs to be converted from Yes/No to 1/0.
+        """
+        if self.survey.get('survey_id') == self.qsi_survey_id:
+            self.data['15'] = "1" if self.response["data"].get("15") == "Yes" else "0"
+
     def derive_answers(self):
         """Takes a loaded dict structure of survey data and answers sent
         in a request and derives values to use in response
@@ -263,6 +305,7 @@ class PCKTransformer:
         self.calculate_total_playback()
         self.parse_negative_values()
         self.evaluate_confirmation_questions()
+        self.parse_estimation_question()
 
         answers = self.preprocess_comments()
 
