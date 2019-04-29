@@ -115,7 +115,7 @@
             "title": "Significant changes",
             "questions": [
                 {
-                    "text": "Did any significant changes occur to the total retail turnover?",
+                    "text": "Did any significant changes occur to the total value of stocks for the business?",
                     "question_id": "146a",
                     "type": "radio",
                     "options": [
@@ -124,7 +124,7 @@
                     ]
                 },
                 {
-                    "text": "Please describe the changes in total retail turnover for in more detail",
+                    "text": "Explain any differences between this quarter's opening value and the previously returned closing value",
                     "question_id": "146",
                     "type": "contains"
                 }
