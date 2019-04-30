@@ -83,6 +83,27 @@ class TestPckTransformer(unittest.TestCase):
 
         assert pck_transformer.data == {'681': '100'}
 
+    @staticmethod
+    def test_pck_transformer_parse_estimation_question():
+        """
+        For QSI (Stocks), qcode 15 needs to converted from Yes/No to 1/0 for the pck.
+        """
+        survey = {'survey_id': '017'}
+
+        # qcode 15 = Yes case
+        response = {'collection': {'instrument_id': '0001'}, 'data': {'15': 'Yes', '146': 'Comment question', '139': '13900'}}
+        pck_transformer = PCKTransformer(survey, response)
+        assert pck_transformer.data == {'15': 'Yes', '146': 'Comment question', '139': '13900'}
+        pck_transformer.parse_estimation_question()
+        assert pck_transformer.data == {'15': '1', '146': 'Comment question', '139': '13900'}
+
+        # qcode 15 = No case
+        response = {'collection': {'instrument_id': '0001'}, 'data': {'15': 'No', '146': 'Comment question', '139': '13900'}}
+        pck_transformer = PCKTransformer(survey, response)
+        assert pck_transformer.data == {'15': 'No', '146': 'Comment question', '139': '13900'}
+        pck_transformer.parse_estimation_question()
+        assert pck_transformer.data == {'15': '0', '146': 'Comment question', '139': '13900'}
+
     def test_pck_transformer_parse_negative_values(self):
         """If any values in the survey are negative, they should be replaced with an all 9's string that is 11 characters long
         """
@@ -263,14 +284,16 @@ class TestPckTransformer(unittest.TestCase):
             pck_transformer = PCKTransformer(survey, response)
             pck_transformer.round_numeric_values()
 
-            assert pck_transformer.data['60'] == '51'
-            assert pck_transformer.data['561'] == '50'
-            assert pck_transformer.data['562'] == '74'
-            assert pck_transformer.data['661'] == '80'
-            assert pck_transformer.data['662'] == '35'
+            assert pck_transformer.data == {
+                '60': '51',
+                '146': 'A lot of changes.',
+                '561': '50',
+                '562': '74',
+                '661': '80',
+                '662': '35'
+            }
 
-    @staticmethod
-    def test_pck_transformer_round_numeric_values_qsi():
+    def test_pck_transformer_round_numeric_values_qsi(self):
         """
         For QSI (Stocks), a number of values require rounding before being sent downstream. These should
         be rounded to the nearest thousand.
@@ -292,7 +315,7 @@ class TestPckTransformer(unittest.TestCase):
                     "66": "313103",
                     "139": "7300",
                     "140": "7680",
-                    "144": "2100",
+                    "144": "2000",
                     "145": "2205",
                     "146": "A lot of changes.",
                     "149": "1800",
@@ -303,11 +326,15 @@ class TestPckTransformer(unittest.TestCase):
             pck_transformer = PCKTransformer(survey, response)
             pck_transformer.round_numeric_values()
 
-            assert pck_transformer.data['65'] == '312000'
-            assert pck_transformer.data['66'] == '313000'
-            assert pck_transformer.data['139'] == '7000'
-            assert pck_transformer.data['140'] == '8000'
-            assert pck_transformer.data['144'] == '2000'
-            assert pck_transformer.data['145'] == '2000'
-            assert pck_transformer.data['149'] == '2000'
-            assert pck_transformer.data['150'] == '12000'
+            assert pck_transformer.data == {
+                '15': "Yes",
+                '65': '312000',
+                '66': '313000',
+                '139': '7000',
+                '140': '8000',
+                '144': '2000',
+                '145': '2000',
+                '146': 'A lot of changes.',
+                '149': '2000',
+                '150': '12000'
+            }
