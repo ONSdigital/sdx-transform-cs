@@ -1,0 +1,36 @@
+{
+	"case_id": "73a71e71-da3b-41fc-81ae-9d000238f93f",
+	"collection": {
+		"exercise_sid": "664dbdf4-02fb-4d68-b0cf-7f7402df00e5",
+		"instrument_id": "0010",
+		"period": "1904"
+	},
+	"data": {
+		"15": "No",
+		"65": "12100",
+		"66": "12605",
+		"119": "20489",
+		"120": "11943",
+		"144": "12344",
+		"145": "12500",
+		"146a": "No",
+		"174": "10000",
+		"175": "11333",
+		"179": "5000",
+		"180": "5500",
+		"209": "7500",
+		"210": "10000"
+	},
+	"flushed": false,
+	"metadata": {
+		"ru_ref": "15162882666F",
+		"user_id": "UNKNOWN"
+	},
+	"origin": "uk.gov.ons.edc.eq",
+	"started_at": "2019-04-12T14:00:24.224709",
+	"submitted_at": "2019-04-12T14:10:26.933601",
+	"survey_id": "017",
+	"tx_id": "b7f78b30-1814-45ac-963d-8c997c091f90",
+	"type": "uk.gov.ons.edc.eq:surveyresponse",
+	"version": "0.0.1"
+}

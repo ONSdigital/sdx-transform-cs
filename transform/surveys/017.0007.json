@@ -1,0 +1,166 @@
+{
+    "title": "Quarterly Stocks Inquiry",
+    "survey_id": "017",
+    "form_type": "0007",
+    "comments": "true",
+    "question_groups": [
+        {
+            "title": "Reporting Period",
+            "questions": [
+                {
+                    "title": "What are the dates of the period that you will be reporting for?",
+                    "text": "From",
+                    "question_id": "11",
+                    "number": "11",
+                    "type": "date"
+                },
+                {
+                    "title": "What are the dates of the period that you will be reporting for?",
+                    "text": "To",
+                    "question_id": "12",
+                    "number": "12",
+                    "type": "date"
+                }
+            ]
+        },
+        {
+            "title": "Stock value",
+            "questions": [
+                {
+                    "text": "What was the value of stocks held for natural gas stocks? (Start of period)",
+                    "question_id": "204",
+                    "number": "204",
+                    "type": "currency"
+                },
+                {
+                    "text": "What was the value of stocks held for natural gas stocks? (End of period)",
+                    "question_id": "205",
+                    "number": "205",
+                    "type": "currency"
+                },
+                {
+                    "text": "What was the value of stocks held for other fuel stocks? (Start of period)",
+                    "question_id": "209",
+                    "number": "209",
+                    "type": "currency"
+                },
+                {
+                    "text": "What was the value of stocks held for other fuel stocks? (End of period)",
+                    "question_id": "210",
+                    "number": "210",
+                    "type": "currency"
+                },
+                {
+                    "text": "What was the value of stocks held for non-fuel stocks? (Start of period)",
+                    "question_id": "214",
+                    "number": "214",
+                    "type": "currency"
+                },
+                {
+                    "text": "What was the value of stocks held for non-fuel stocks? (End of period)",
+                    "question_id": "215",
+                    "number": "215",
+                    "type": "currency"
+                },
+                {
+                    "text": "What was the value of stocks held? (Start of period)",
+                    "question_id": "65",
+                    "number": "65",
+                    "type": "currency"
+                },
+                {
+                    "text": "What was the value of stocks held? (End of period)",
+                    "question_id": "66",
+                    "number": "66",
+                    "type": "currency"
+                },
+                {
+                    "text": "Are the end of period figures you have provided estimated?",
+                    "question_id": "15",
+                    "number": "15",
+                    "type": "currency"
+                }
+            ]
+        },
+        {
+            "title": "Significant changes",
+            "questions": [
+                {
+                    "text": "Did any significant changes occur to the total value of stocks for the business?",
+                    "question_id": "146a",
+                    "type": "radio",
+                    "options": [
+                        "Yes",
+                        "No"
+                    ]
+                },
+                {
+                    "text": "Explain any differences between this quarter's opening value and the previously returned closing value",
+                    "question_id": "146",
+                    "type": "contains"
+                }
+            ]
+        },
+        {
+            "title": "Please indicate the reasons for any changes",
+            "questions": [
+                {
+                    "text": "Select all that apply",
+                    "question_id": "146b",
+                    "type": "checkbox",
+                    "options": [
+                        "Start or end of long term project"
+                    ]
+                },
+                {
+                    "text": "Select all that apply",
+                    "question_id": "146c",
+                    "type": "checkbox",
+                    "options": [
+                        "End of accounting period or financial year"
+                    ]
+                },
+                {
+                    "text": "Select all that apply",
+                    "question_id": "146d",
+                    "type": "checkbox",
+                    "options": [
+                        "Normal movement for the time of year"
+                    ]
+                },
+                {
+                    "text": "Select all that apply",
+                    "question_id": "146e",
+                    "type": "checkbox",
+                    "options": [
+                        "Change of business structure, merger or takeover"
+                    ]
+                },
+                {
+                    "text": "Select all that apply",
+                    "question_id": "146f",
+                    "type": "checkbox",
+                    "options": [
+                        "One off increase in stocks"
+                    ]
+                },
+                {
+                    "text": "Select all that apply",
+                    "question_id": "146g",
+                    "type": "checkbox",
+                    "options": [
+                        "Introduction or removal of new legislation or incentive"
+                    ]
+                },
+                {
+                    "text": "Select all that apply",
+                    "question_id": "146h",
+                    "type": "checkbox",
+                    "options": [
+                        "Other"
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,153 @@
+{
+    "title": "Quarterly Stocks Inquiry",
+    "survey_id": "017",
+    "form_type": "0003",
+    "comments": "true",
+    "question_groups": [
+        {
+            "title": "Reporting Period",
+            "questions": [
+                {
+                    "title": "What are the dates of the period that you will be reporting for?",
+                    "text": "From",
+                    "question_id": "11",
+                    "number": "11",
+                    "type": "date"
+                },
+                {
+                    "title": "What are the dates of the period that you will be reporting for?",
+                    "text": "To",
+                    "question_id": "12",
+                    "number": "12",
+                    "type": "date"
+                }
+            ]
+        },
+        {
+            "title": "Stock value",
+            "questions": [
+                {
+                    "text": "What was the value of stocks held for raw materials and consumable stores? (Start of period)",
+                    "question_id": "319",
+                    "number": "319",
+                    "type": "currency"
+                },
+                {
+                    "text": "What was the value of stocks held for raw materials and consumable stores? (End of period)",
+                    "question_id": "320",
+                    "number": "320",
+                    "type": "currency"
+                },
+                {
+                    "text": "What was the value of all other stocks? (Start of period)",
+                    "question_id": "329",
+                    "number": "329",
+                    "type": "currency"
+                },
+                {
+                    "text": "What was the value of all other stocks? (End of period)",
+                    "question_id": "330",
+                    "number": "330",
+                    "type": "currency"
+                },
+                {
+                    "text": "What was the total value of stocks held? (Start of period)",
+                    "question_id": "65",
+                    "number": "65",
+                    "type": "currency"
+                },
+                {
+                    "text": "What was the total value of stocks held? (End of period)",
+                    "question_id": "66",
+                    "number": "66",
+                    "type": "currency"
+                },
+                {
+                    "text": "Are the end of period figures you have provided estimated?",
+                    "question_id": "15",
+                    "number": "15"
+                }
+            ]
+        },
+        {
+            "title": "Significant changes",
+            "questions": [
+                {
+                    "text": "Did any significant changes occur to the total value of stocks for the business?",
+                    "question_id": "146a",
+                    "type": "radio",
+                    "options": [
+                        "Yes",
+                        "No"
+                    ]
+                },
+                {
+                    "text": "Explain any differences between this quarter's opening value and the previously returned closing value",
+                    "question_id": "146",
+                    "type": "contains"
+                }
+            ]
+        },
+        {
+            "title": "Please indicate the reasons for any changes",
+            "questions": [
+                {
+                    "text": "Select all that apply",
+                    "question_id": "146b",
+                    "type": "checkbox",
+                    "options": [
+                        "Start or end of long term project"
+                    ]
+                },
+                {
+                    "text": "Select all that apply",
+                    "question_id": "146c",
+                    "type": "checkbox",
+                    "options": [
+                        "End of accounting period or financial year"
+                    ]
+                },
+                {
+                    "text": "Select all that apply",
+                    "question_id": "146d",
+                    "type": "checkbox",
+                    "options": [
+                        "Normal movement for the time of year"
+                    ]
+                },
+                {
+                    "text": "Select all that apply",
+                    "question_id": "146e",
+                    "type": "checkbox",
+                    "options": [
+                        "Change of business structure, merger or takeover"
+                    ]
+                },
+                {
+                    "text": "Select all that apply",
+                    "question_id": "146f",
+                    "type": "checkbox",
+                    "options": [
+                        "One off increase in stocks"
+                    ]
+                },
+                {
+                    "text": "Select all that apply",
+                    "question_id": "146g",
+                    "type": "checkbox",
+                    "options": [
+                        "Introduction or removal of new legislation or incentive"
+                    ]
+                },
+                {
+                    "text": "Select all that apply",
+                    "question_id": "146h",
+                    "type": "checkbox",
+                    "options": [
+                        "Other"
+                    ]
+                }
+            ]
+        }
+    ]
+}

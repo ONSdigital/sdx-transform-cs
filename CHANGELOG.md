@@ -5,6 +5,7 @@
  - Update Pillow and PyYAML versions
  - Updated the dockerfile
  - Used Python 3.5 inbuilt dictionary merging instead of merge_dicts
+ - Added support for QSI (Stocks) survey
 
 ### 3.9.0 2019-02-19
  - Added support for QPSES survey

@@ -1,0 +1,38 @@
+{
+	"case_id": "bb9eaf11-a729-40b5-8d17-d112e018c0d5",
+	"collection": {
+		"exercise_sid": "664dbdf4-02fb-4d68-b0cf-7f7402df00e5",
+		"instrument_id": "0033",
+		"period": "1904"
+	},
+	"data": {
+		"15": "No",
+		"146a": "Yes",
+		"146d": "Normal movement for the time of year",
+		"146": "This is a comment",
+		"219": "1500",
+		"220": "1520",
+		"229": "2000",
+		"230": "12904",
+		"249": "20900",
+		"250": "40039",
+		"259": "39800",
+		"260": "33004",
+		"298": "10000",
+		"299": "11000",
+		"398": "12349",
+		"399": "12000"
+	},
+	"flushed": false,
+	"metadata": {
+		"ru_ref": "15162882666F",
+		"user_id": "UNKNOWN"
+	},
+	"origin": "uk.gov.ons.edc.eq",
+	"started_at": "2019-04-01T14:00:24.224709",
+	"submitted_at": "2019-04-01T14:10:26.933601",
+	"survey_id": "017",
+	"tx_id": "1027a13a-c253-4e9d-9e78-d0f0cfdd3988",
+	"type": "uk.gov.ons.edc.eq:surveyresponse",
+	"version": "0.0.1"
+}
