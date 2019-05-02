@@ -1,4 +1,6 @@
 ### Unreleased
+
+### 3.10.0 2019-04-02
  - Update Jinja to 2.10.1 to fix a security issue.
  - Update Pillow and PyYAML versions
  - Updated the dockerfile
