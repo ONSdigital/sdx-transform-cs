@@ -259,6 +259,46 @@ class TestPckTransformer(unittest.TestCase):
         # Total value of all disposals questions (same as '715' since constructions section and minerals sections does not have disposals question)
         assert pck_transformer.data['693'] == '12347'
 
+    def test_pck_transformer_calculates_total_playback_qsi(self):
+        """
+        For QSI (Stocks), downstream needs to calculate the start and end of period totals.
+        The fields that are added together are defined in a dictionary in the pck_transformer
+        """
+        scenarios = ["0001", "0002"]
+        for form_type in scenarios:
+            survey = {'survey_id': "017"}
+            response = {
+                "collection": {
+                    "instrument_id": form_type
+                },
+                "data": {
+                    "15": "Yes",
+                    "139": "7300",
+                    "140": "7680",
+                    "144": "2000",
+                    "145": "2205",
+                    "146": "A lot of changes.",
+                    "149": "1800",
+                    "150": "12205",
+                }
+            }
+
+            pck_transformer = PCKTransformer(survey, response)
+            pck_transformer.calculate_total_playback()
+
+            assert pck_transformer.data == {
+                '15': "Yes",
+                '65': '11100',
+                '66': '22090',
+                '139': '7300',
+                '140': '7680',
+                '144': '2000',
+                '145': '2205',
+                '146': 'A lot of changes.',
+                '149': '1800',
+                '150': '12205'
+            }
+
     @staticmethod
     def test_pck_transformer_round_numeric_values_qpses():
         """
