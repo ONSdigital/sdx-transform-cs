@@ -259,7 +259,8 @@ class TestPckTransformer(unittest.TestCase):
         # Total value of all disposals questions (same as '715' since constructions section and minerals sections does not have disposals question)
         assert pck_transformer.data['693'] == '12347'
 
-    def test_pck_transformer_calculates_total_playback_qsi(self):
+    @staticmethod
+    def test_pck_transformer_calculates_total_playback_qsi():
         """
         For QSI (Stocks), downstream needs to calculate the start and end of period totals.
         The fields that are added together are defined in a dictionary in the pck_transformer
@@ -302,7 +303,7 @@ class TestPckTransformer(unittest.TestCase):
     def test_pck_transformer_total_playback_qsi_missing_data_from_mapping(self):
         """
         For QSI (Stocks), downstream needs to calculate the start and end of period totals.
-        It does this with a mapping in the pck_transformer.  If a new formtype is added but it's not 
+        It does this with a mapping in the pck_transformer.  If a new formtype is added but it's not
         added to the mapping or a 'start' or 'end' key isn't present then a KeyError exception is thrown.
         """
 
