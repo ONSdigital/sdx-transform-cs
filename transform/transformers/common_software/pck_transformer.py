@@ -400,10 +400,14 @@ class PCKTransformer:
         that have the qcode for the totals defined in the mapping.
         """
         instrument_id = self.response['collection']['instrument_id']
-        start_questions = self.qsi_questions[instrument_id]['start']
-        end_questions = self.qsi_questions[instrument_id]['end']
-        start_total_qcode = self.qsi_questions[instrument_id].get('start_total_qcode', '65')
-        end_total_qcode = self.qsi_questions[instrument_id].get('end_total_qcode', '66')
+        try:
+            start_questions = self.qsi_questions[instrument_id]['start']
+            end_questions = self.qsi_questions[instrument_id]['end']
+            start_total_qcode = self.qsi_questions[instrument_id].get('start_total_qcode', '65')
+            end_total_qcode = self.qsi_questions[instrument_id].get('end_total_qcode', '66')
+        except KeyError:
+            logger.exception("Missing key from mapping.  Is the mapping for the formtype correct?", formtype=instrument_id)
+            raise
 
         start_total = sum(Decimal(value) for q_code, value in self.data.items() if q_code in start_questions)
         end_total = sum(Decimal(value) for q_code, value in self.data.items() if q_code in end_questions)
@@ -417,10 +421,14 @@ class PCKTransformer:
         dwelling questions.
         """
         instrument_id = self.response['collection']['instrument_id']
-        non_dwelling_start_questions = self.qsi_questions[instrument_id]['non_dwelling_questions_start']
-        non_dwelling_end_questions = self.qsi_questions[instrument_id]['non_dwelling_questions_end']
-        dwelling_start_questions = self.qsi_questions[instrument_id]['dwelling_questions_start']
-        dwelling_end_questions = self.qsi_questions[instrument_id]['dwelling_questions_end']
+        try:
+            non_dwelling_start_questions = self.qsi_questions[instrument_id]['non_dwelling_questions_start']
+            non_dwelling_end_questions = self.qsi_questions[instrument_id]['non_dwelling_questions_end']
+            dwelling_start_questions = self.qsi_questions[instrument_id]['dwelling_questions_start']
+            dwelling_end_questions = self.qsi_questions[instrument_id]['dwelling_questions_end']
+        except KeyError:
+            logger.exception("Missing key from mapping.  Is the mapping for the formtype correct?", formtype=instrument_id)
+            raise
 
         non_dwelling_start_total = sum(Decimal(value) for q_code, value in self.data.items() if q_code in non_dwelling_start_questions)
         non_dwelling_end_total = sum(Decimal(value) for q_code, value in self.data.items() if q_code in non_dwelling_end_questions)

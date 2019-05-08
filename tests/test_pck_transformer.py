@@ -299,6 +299,41 @@ class TestPckTransformer(unittest.TestCase):
                 '150': '12205'
             }
 
+    def test_pck_transformer_total_playback_qsi_missing_data_from_mapping(self):
+        """
+        For QSI (Stocks), downstream needs to calculate the start and end of period totals.
+        It does this with a mapping in the pck_transformer.  If a new formtype is added but it's not 
+        added to the mapping or a 'start' or 'end' key isn't present then a KeyError exception is thrown.
+        """
+
+        scenarios = ["9999", "0033"]
+        for form_type in scenarios:
+            survey = {'survey_id': "017"}
+            response = {
+                "collection": {
+                    "instrument_id": form_type
+                },
+                "data": {
+                    "15": "Yes",
+                    "139": "7300",
+                    "140": "7680",
+                    "144": "2000",
+                    "145": "2205",
+                    "146": "A lot of changes.",
+                    "149": "1800",
+                    "150": "12205",
+                }
+            }
+
+            pck_transformer = PCKTransformer(survey, response)
+            pck_transformer.qsi_questions = {
+                "0033": {
+                    "end": ['140', '145', '150']
+                }
+            }
+            with self.assertRaises(KeyError):
+                pck_transformer.calculate_total_playback()
+
     @staticmethod
     def test_pck_transformer_round_numeric_values_qpses():
         """
