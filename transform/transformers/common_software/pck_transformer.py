@@ -28,6 +28,104 @@ class PCKTransformer:
     # The list of answers that DON'T need rounding is much shorter.
     qsi_non_currency_questions = ["11", "12", "15", "146", '146a', '146b', '146c', '146d', '146e', '146f', '146g', '146h']
 
+    # Mapping used to calculate totals and which qcode should hold the total value.
+    qsi_questions = {
+        "0001": {
+            "start": ['139', '144', '149'],
+            "end": ['140', '145', '150']
+        },
+        "0002": {
+            "start": ['139', '144', '149'],
+            "end": ['140', '145', '150']
+        },
+        "0003": {
+            "start": ['319', '329'],
+            "end": ['320', '330']
+        },
+        "0004": {
+            "start": ['319', '329'],
+            "end": ['320', '330']
+        },
+        "0005": {
+            "start": ['174', '179', '184', '189', '191'],
+            "end": ['175', '180', '185', '190', '192']
+        },
+        "0006": {
+            "start": ['174', '179', '184', '189', '191'],
+            "end": ['175', '180', '185', '190', '192']
+        },
+        "0007": {
+            "start": ['204', '209', '214'],
+            "end": ['205', '210', '215']
+        },
+        "0008": {
+            "start": ['204', '209', '214'],
+            "end": ['205', '210', '215']
+        },
+        "0009": {
+            "start": ['119', '144', '174', '179', '209'],
+            "end": ['120', '145', '175', '180', '210']
+        },
+        "0010": {
+            "start": ['119', '144', '174', '179', '209'],
+            "end": ['120', '145', '175', '180', '210']
+        },
+        "0011": {
+            "start": ['119', '144'],
+            "end": ['120', '145']
+        },
+        "0012": {
+            "start": ['119', '144'],
+            "end": ['120', '145']
+        },
+        "0013": {
+            "start": ['139', '144', '149'],
+            "end": ['140', '145', '150']
+        },
+        "0014": {
+            "start": ['139', '144', '149'],
+            "end": ['140', '145', '150']
+        },
+        "0033": {
+            "non_dwelling_questions_start": ['219', '229'],
+            "non_dwelling_questions_end": ['220', '230'],
+            "dwelling_questions_start": ['249', '259'],
+            "dwelling_questions_end": ['250', '260'],
+        },
+        "0034": {
+            "non_dwelling_questions_start": ['219', '229'],
+            "non_dwelling_questions_end": ['220', '230'],
+            "dwelling_questions_start": ['249', '259'],
+            "dwelling_questions_end": ['250', '260'],
+        },
+        "0051": {
+            "start": ['498'],
+            "end": ['499'],
+            "start_total_qcode": "498",
+            "end_total_qcode": "499"
+        },
+        "0052": {
+            "start": ['498'],
+            "end": ['499'],
+            "start_total_qcode": "498",
+            "end_total_qcode": "499"
+        },
+        "0057": {
+            "start": ['9', '193', '195'],
+            "end": ['10', '194', '196']
+        },
+        "0058": {
+            "start": ['9', '193', '195'],
+            "end": ['10', '194', '196']
+        },
+        "0061": {
+            "start": ['498'],
+            "end": ['499'],
+            "start_total_qcode": "498",
+            "end_total_qcode": "499"
+        }
+    }
+
     form_types = {
         "019": {
             "0018": "0018",
@@ -265,12 +363,18 @@ class PCKTransformer:
 
     def calculate_total_playback(self):
         """
+        For QCAS:
         Calculates the total value for both acquisitions and proceeds from disposals for machinery and equipment section
         as well as all sections.
         q_code - 692 - Total value of all acquisitions questions.
         q_code - 693 - Total value of all disposals questions.
         q_code - 714 - Total value of all acquisitions questions for only machinery and equipments sections.
         q_code - 715 - Total value of all disposals questions for only machinery and equipments sections.
+
+        For QSI (Stocks):
+        Calculates the total value of past and present stock values.  There are 20 different formtypes with different questions
+        so there is a map of what formtype uses for its past and present stock value questions. Formtypes 0033 and 0034 have multiple totals
+        which is why they're handled differently.
         """
         if self.survey.get('survey_id') == self.qcas_survey_id:
             all_acquisitions_questions = self.qcas_machinery_acquisitions_questions + self.qcas_other_acquisitions_questions
@@ -283,6 +387,57 @@ class PCKTransformer:
             self.data['715'] = str(total_disposals)
             self.data['692'] = str(all_acquisitions_total)
             self.data['693'] = str(total_disposals)   # Construction and minerals do not have disposals answers.
+        if self.survey.get('survey_id') == self.qsi_survey_id:
+            instrument_id = self.response['collection']['instrument_id']
+            if instrument_id in ['0033', '0034']:
+                self._compute_multiple_total_qsi_totals()
+            else:
+                self._compute_single_total_qsi_totals()
+
+    def _compute_single_total_qsi_totals(self):
+        """
+        Calculates the start and end stock values for QSI (Stocks).  Saves these to qcode 65 and 66 respectively except for a few types
+        that have the qcode for the totals defined in the mapping.
+        """
+        instrument_id = self.response['collection']['instrument_id']
+        try:
+            start_questions = self.qsi_questions[instrument_id]['start']
+            end_questions = self.qsi_questions[instrument_id]['end']
+            start_total_qcode = self.qsi_questions[instrument_id].get('start_total_qcode', '65')
+            end_total_qcode = self.qsi_questions[instrument_id].get('end_total_qcode', '66')
+        except KeyError:
+            logger.exception("Missing key from mapping.  Is the mapping for the formtype correct?", formtype=instrument_id)
+            raise
+
+        start_total = sum(Decimal(value) for q_code, value in self.data.items() if q_code in start_questions)
+        end_total = sum(Decimal(value) for q_code, value in self.data.items() if q_code in end_questions)
+        self.data[start_total_qcode] = str(start_total)
+        self.data[end_total_qcode] = str(end_total)
+
+    def _compute_multiple_total_qsi_totals(self):
+        """
+        Calculates the start and end stock values for QSI (Stocks).  This is used for the two formtypes that have two
+        totals to calculate. Saves the total values to 298 and 299 for the non-dwelling questions and 398 and 399 for the
+        dwelling questions.
+        """
+        instrument_id = self.response['collection']['instrument_id']
+        try:
+            non_dwelling_start_questions = self.qsi_questions[instrument_id]['non_dwelling_questions_start']
+            non_dwelling_end_questions = self.qsi_questions[instrument_id]['non_dwelling_questions_end']
+            dwelling_start_questions = self.qsi_questions[instrument_id]['dwelling_questions_start']
+            dwelling_end_questions = self.qsi_questions[instrument_id]['dwelling_questions_end']
+        except KeyError:
+            logger.exception("Missing key from mapping.  Is the mapping for the formtype correct?", formtype=instrument_id)
+            raise
+
+        non_dwelling_start_total = sum(Decimal(value) for q_code, value in self.data.items() if q_code in non_dwelling_start_questions)
+        non_dwelling_end_total = sum(Decimal(value) for q_code, value in self.data.items() if q_code in non_dwelling_end_questions)
+        dwelling_start_total = sum(Decimal(value) for q_code, value in self.data.items() if q_code in dwelling_start_questions)
+        dwelling_end_total = sum(Decimal(value) for q_code, value in self.data.items() if q_code in dwelling_end_questions)
+        self.data['298'] = str(non_dwelling_start_total)
+        self.data['299'] = str(non_dwelling_end_total)
+        self.data['398'] = str(dwelling_start_total)
+        self.data['399'] = str(dwelling_end_total)
 
     def parse_estimation_question(self):
         """
@@ -301,8 +456,10 @@ class PCKTransformer:
         except KeyError:
             logger.info("Missing metadata")
 
+        # Important: Round first, then calculate totals, otherwise the totals won't add up correctly
         self.round_numeric_values()
         self.calculate_total_playback()
+
         self.parse_negative_values()
         self.evaluate_confirmation_questions()
         self.parse_estimation_question()
