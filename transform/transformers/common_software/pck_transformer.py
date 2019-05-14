@@ -123,6 +123,12 @@ class PCKTransformer:
             "end": ['499'],
             "start_total_qcode": "498",
             "end_total_qcode": "499"
+        },
+        "0070": {
+            "start": ['598'],
+            "end": ['599'],
+            "start_total_qcode": "598",
+            "end_total_qcode": "599"
         }
     }
 
@@ -153,7 +159,8 @@ class PCKTransformer:
             "0052": "STW02",
             "0057": "STM01",
             "0058": "STM01",
-            "0061": "STM01"
+            "0061": "STM01",
+            "0070": "STS01"
         },
         "023": {
             "0102": "RSI5B",
