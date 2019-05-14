@@ -275,7 +275,7 @@ class PCKTransformer:
         """If questions 11 or 12 don't appear in the survey data, then populate
         them with the period start and end date found in the metadata
         """
-        if self.survey['survey_id'] in [self.rsi_survey_id, self.qcas_survey_id]:
+        if self.survey['survey_id'] in [self.rsi_survey_id, self.qcas_survey_id, self.qsi_survey_id]:
             if '11' not in self.data:
                 start_date = datetime.strptime(self.response['metadata']['ref_period_start_date'], "%Y-%m-%d")
                 self.data['11'] = start_date.strftime("%d/%m/%Y")
