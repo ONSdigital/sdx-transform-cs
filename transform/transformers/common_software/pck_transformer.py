@@ -302,16 +302,15 @@ class PCKTransformer:
 
         """
         if self.survey.get('survey_id') in [self.rsi_survey_id]:
-            self.data.update({k: str(Decimal(v).quantize(Decimal('1.'), ROUND_HALF_UP))
+            self.data.update({k: str(self.round_to_nearest_whole_number(v))
                               for k, v in self.data.items() if k in self.rsi_currency_questions})
 
         if self.survey.get('survey_id') in self.qpses_survey_ids:
-            self.data.update({k: str(Decimal(v).quantize(Decimal('1.'), ROUND_HALF_UP))
+            self.data.update({k: str(self.round_to_nearest_whole_number(v))
                               for k, v in self.data.items() if k in self.qpses_decimal_questions})
 
         if self.survey.get('survey_id') in [self.qsi_survey_id]:
-            decimal.getcontext().rounding = ROUND_HALF_UP
-            self.data.update({k: str(Decimal(round(Decimal(float(v))) / 1000).quantize(1) * 1000)
+            self.data.update({k: str(self.round_to_nearest_thousand(v))
                               for k, v in self.data.items() if k not in self.qsi_non_currency_questions})
 
         if self.survey.get('survey_id') in [self.qcas_survey_id]:
@@ -489,7 +488,10 @@ class PCKTransformer:
     @staticmethod
     def round_to_nearest_thousand(value):
         """QCAS rounding is done on a ROUND_HALF_UP basis and values are divided by 1000 for the pck"""
-
-        # Set the rounding context for Decimal objects to ROUND_HALF_UP
         decimal.getcontext().rounding = ROUND_HALF_UP
         return Decimal(round(Decimal(float(value))) / 1000).quantize(1)
+
+    @staticmethod
+    def round_to_nearest_whole_number(value):
+        """Rounds number to nearest whole number (101.4 -> 101, 250.5 -> 251)"""
+        return Decimal(value).quantize(Decimal('1.'), ROUND_HALF_UP)

@@ -2,6 +2,7 @@
  - Add calculated totals for QSI as the totals aren't passed to SDX
  - Fix missing date qcodes (11 and 12) for QSI
  - Add formtype 0070 for QSI (Stocks)
+ - Change rounding to stocks to divide by 1000 after rounding (like QCAS)
 
 ### 3.10.0 2019-04-02
  - Update Jinja to 2.10.1 to fix a security issue.
