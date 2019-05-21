@@ -493,5 +493,5 @@ class PCKTransformer:
 
     @staticmethod
     def round_to_nearest_whole_number(value):
-        """Rounds number to nearest whole number (101.4 -> 101, 250.5 -> 250)"""
+        """Rounds number to nearest whole number (101.4 -> 101, 250.5 -> 251)"""
         return Decimal(value).quantize(Decimal('1.'), ROUND_HALF_UP)
