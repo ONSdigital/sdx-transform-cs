@@ -5,6 +5,18 @@ from transform.transformers.common_software import PCKTransformer
 
 class TestPckTransformer(unittest.TestCase):
 
+    @staticmethod
+    def test_round_to_nearest_whole_number():
+        """Tests the round_to_nearest_whole_number function in PCKTransformer on a variety of numbers"""
+        scenarios = [
+            ('200', '200'),
+            ('1234.1', '1234'),
+            ('1004.5', '1005'),
+            ('34955.8', '34956')
+        ]
+        for input_value, output_value in scenarios:
+            assert str(PCKTransformer.round_to_nearest_whole_number(input_value)) == output_value
+
     def test_get_cs_form_id_passes(self):
         scenarios = [
             ('023', '0102', 'RSI5B'),
