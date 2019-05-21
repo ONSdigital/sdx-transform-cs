@@ -310,7 +310,6 @@ class PCKTransformer:
                               for k, v in self.data.items() if k in self.qpses_decimal_questions})
 
         if self.survey.get('survey_id') in [self.qsi_survey_id]:
-            decimal.getcontext().rounding = ROUND_HALF_UP
             self.data.update({k: str(self.round_to_nearest_thousand(v))
                               for k, v in self.data.items() if k not in self.qsi_non_currency_questions})
 
