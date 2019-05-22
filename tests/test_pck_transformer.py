@@ -98,7 +98,7 @@ class TestPckTransformer(unittest.TestCase):
     @staticmethod
     def test_pck_transformer_parse_estimation_question():
         """
-        For QSI (Stocks), qcode 15 needs to converted from Yes/No to 1/0 for the pck.
+        For QSS (Stocks), qcode 15 needs to converted from Yes/No to 1/0 for the pck.
         """
         survey = {'survey_id': '017'}
 
@@ -272,9 +272,9 @@ class TestPckTransformer(unittest.TestCase):
         assert pck_transformer.data['693'] == '12347'
 
     @staticmethod
-    def test_pck_transformer_calculates_total_playback_qsi():
+    def test_pck_transformer_calculates_total_playback_qss():
         """
-        For QSI (Stocks), downstream needs to calculate the start and end of period totals.
+        For QSS (Stocks), downstream needs to calculate the start and end of period totals.
         The fields that are added together are defined in a dictionary in the pck_transformer
         """
         scenarios = ["0001", "0002"]
@@ -312,9 +312,9 @@ class TestPckTransformer(unittest.TestCase):
                 '150': '12205'
             }
 
-    def test_pck_transformer_total_playback_qsi_missing_data_from_mapping(self):
+    def test_pck_transformer_total_playback_qss_missing_data_from_mapping(self):
         """
-        For QSI (Stocks), downstream needs to calculate the start and end of period totals.
+        For QSS (Stocks), downstream needs to calculate the start and end of period totals.
         It does this with a mapping in the pck_transformer.  If a new formtype is added but it's not
         added to the mapping or a 'start' or 'end' key isn't present then a KeyError exception is thrown.
         """
@@ -339,7 +339,7 @@ class TestPckTransformer(unittest.TestCase):
             }
 
             pck_transformer = PCKTransformer(survey, response)
-            pck_transformer.qsi_questions = {
+            pck_transformer.qss_questions = {
                 "0033": {
                     "end": ['140', '145', '150']
                 }
@@ -381,9 +381,9 @@ class TestPckTransformer(unittest.TestCase):
                 '662': '35'
             }
 
-    def test_pck_transformer_round_numeric_values_qsi(self):
+    def test_pck_transformer_round_numeric_values_qss(self):
         """
-        For QSI (Stocks), a number of values require rounding before being sent downstream. These should
+        For QSS (Stocks), a number of values require rounding before being sent downstream. These should
         be rounded to the nearest thousand.
         For example:
             - 12100 -> 12000
