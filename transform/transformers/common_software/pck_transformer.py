@@ -24,12 +24,12 @@ class PCKTransformer:
 
     qpses_decimal_questions = ["60", "561", "562", "661", "662"]
 
-    # QSI (Stocks - survey_id 017) has 20 different formtypes where the majority of questions both numeric and in need of rounding.
+    # QSS (Stocks - survey_id 017) has 20 different formtypes where the majority of questions both numeric and in need of rounding.
     # The list of answers that DON'T need rounding is much shorter.
-    qsi_non_currency_questions = ["11", "12", "15", "146", '146a', '146b', '146c', '146d', '146e', '146f', '146g', '146h']
+    qss_non_currency_questions = ["11", "12", "15", "146", '146a', '146b', '146c', '146d', '146e', '146f', '146g', '146h']
 
     # Mapping used to calculate totals and which qcode should hold the total value.
-    qsi_questions = {
+    qss_questions = {
         "0001": {
             "start": ['139', '144', '149'],
             "end": ['140', '145', '150']
@@ -185,7 +185,7 @@ class PCKTransformer:
     }
 
     qcas_survey_id = "019"
-    qsi_survey_id = "017"
+    qss_survey_id = "017"
     rsi_survey_id = "023"
     qbs_survey_id = "139"
     qpses_survey_ids = ["160", "165", "169"]
@@ -282,7 +282,7 @@ class PCKTransformer:
         """If questions 11 or 12 don't appear in the survey data, then populate
         them with the period start and end date found in the metadata
         """
-        if self.survey['survey_id'] in [self.rsi_survey_id, self.qcas_survey_id, self.qsi_survey_id]:
+        if self.survey['survey_id'] in [self.rsi_survey_id, self.qcas_survey_id, self.qss_survey_id]:
             if '11' not in self.data:
                 start_date = datetime.strptime(self.response['metadata']['ref_period_start_date'], "%Y-%m-%d")
                 self.data['11'] = start_date.strftime("%d/%m/%Y")
@@ -294,7 +294,7 @@ class PCKTransformer:
         """For RSI, QPSES Surveys, round the values of the currency fields.
         Rounds up if the value is .5
 
-        For QSI (Stocks), round to the nearest thousand for every field EXCEPT a select list of
+        For QSS (Stocks), round to the nearest thousand for every field EXCEPT a select list of
         non-numeric fields.
 
         For QCAS Surveys, round the values of the currency fields and divide
@@ -309,9 +309,9 @@ class PCKTransformer:
             self.data.update({k: str(self.round_to_nearest_whole_number(v))
                               for k, v in self.data.items() if k in self.qpses_decimal_questions})
 
-        if self.survey.get('survey_id') in [self.qsi_survey_id]:
+        if self.survey.get('survey_id') in [self.qss_survey_id]:
             self.data.update({k: str(self.round_to_nearest_thousand(v))
-                              for k, v in self.data.items() if k not in self.qsi_non_currency_questions})
+                              for k, v in self.data.items() if k not in self.qss_non_currency_questions})
 
         if self.survey.get('survey_id') in [self.qcas_survey_id]:
             self.data.update({k: str(self.round_to_nearest_thousand(v))
@@ -377,7 +377,7 @@ class PCKTransformer:
         q_code - 714 - Total value of all acquisitions questions for only machinery and equipments sections.
         q_code - 715 - Total value of all disposals questions for only machinery and equipments sections.
 
-        For QSI (Stocks):
+        For QSS (Stocks):
         Calculates the total value of past and present stock values.  There are 20 different formtypes with different questions
         so there is a map of what formtype uses for its past and present stock value questions. Formtypes 0033 and 0034 have multiple totals
         which is why they're handled differently.
@@ -393,24 +393,24 @@ class PCKTransformer:
             self.data['715'] = str(total_disposals)
             self.data['692'] = str(all_acquisitions_total)
             self.data['693'] = str(total_disposals)   # Construction and minerals do not have disposals answers.
-        if self.survey.get('survey_id') == self.qsi_survey_id:
+        if self.survey.get('survey_id') == self.qss_survey_id:
             instrument_id = self.response['collection']['instrument_id']
             if instrument_id in ['0033', '0034']:
-                self._compute_multiple_total_qsi_totals()
+                self._compute_multiple_total_qss_totals()
             else:
-                self._compute_single_total_qsi_totals()
+                self._compute_single_total_qss_totals()
 
-    def _compute_single_total_qsi_totals(self):
+    def _compute_single_total_qss_totals(self):
         """
-        Calculates the start and end stock values for QSI (Stocks).  Saves these to qcode 65 and 66 respectively except for a few types
+        Calculates the start and end stock values for QSS (Stocks).  Saves these to qcode 65 and 66 respectively except for a few types
         that have the qcode for the totals defined in the mapping.
         """
         instrument_id = self.response['collection']['instrument_id']
         try:
-            start_questions = self.qsi_questions[instrument_id]['start']
-            end_questions = self.qsi_questions[instrument_id]['end']
-            start_total_qcode = self.qsi_questions[instrument_id].get('start_total_qcode', '65')
-            end_total_qcode = self.qsi_questions[instrument_id].get('end_total_qcode', '66')
+            start_questions = self.qss_questions[instrument_id]['start']
+            end_questions = self.qss_questions[instrument_id]['end']
+            start_total_qcode = self.qss_questions[instrument_id].get('start_total_qcode', '65')
+            end_total_qcode = self.qss_questions[instrument_id].get('end_total_qcode', '66')
         except KeyError:
             logger.exception("Missing key from mapping.  Is the mapping for the formtype correct?", formtype=instrument_id)
             raise
@@ -420,18 +420,18 @@ class PCKTransformer:
         self.data[start_total_qcode] = str(start_total)
         self.data[end_total_qcode] = str(end_total)
 
-    def _compute_multiple_total_qsi_totals(self):
+    def _compute_multiple_total_qss_totals(self):
         """
-        Calculates the start and end stock values for QSI (Stocks).  This is used for the two formtypes that have two
+        Calculates the start and end stock values for QSS (Stocks).  This is used for the two formtypes that have two
         totals to calculate. Saves the total values to 298 and 299 for the non-dwelling questions and 398 and 399 for the
         dwelling questions.
         """
         instrument_id = self.response['collection']['instrument_id']
         try:
-            non_dwelling_start_questions = self.qsi_questions[instrument_id]['non_dwelling_questions_start']
-            non_dwelling_end_questions = self.qsi_questions[instrument_id]['non_dwelling_questions_end']
-            dwelling_start_questions = self.qsi_questions[instrument_id]['dwelling_questions_start']
-            dwelling_end_questions = self.qsi_questions[instrument_id]['dwelling_questions_end']
+            non_dwelling_start_questions = self.qss_questions[instrument_id]['non_dwelling_questions_start']
+            non_dwelling_end_questions = self.qss_questions[instrument_id]['non_dwelling_questions_end']
+            dwelling_start_questions = self.qss_questions[instrument_id]['dwelling_questions_start']
+            dwelling_end_questions = self.qss_questions[instrument_id]['dwelling_questions_end']
         except KeyError:
             logger.exception("Missing key from mapping.  Is the mapping for the formtype correct?", formtype=instrument_id)
             raise
@@ -447,9 +447,9 @@ class PCKTransformer:
 
     def parse_estimation_question(self):
         """
-        For QSI (Stocks), the estimation question needs to be converted from Yes/No to 1/0.
+        For QSS (Stocks), the estimation question needs to be converted from Yes/No to 1/0.
         """
-        if self.survey.get('survey_id') == self.qsi_survey_id:
+        if self.survey.get('survey_id') == self.qss_survey_id:
             self.data['15'] = "1" if self.response["data"].get("15") == "Yes" else "0"
 
     def derive_answers(self):

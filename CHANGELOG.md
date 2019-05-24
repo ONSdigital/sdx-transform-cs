@@ -1,7 +1,8 @@
 ### Unreleased
- - Add calculated totals for QSI as the totals aren't passed to SDX
- - Fix missing date qcodes (11 and 12) for QSI
- - Add formtype 0070 for QSI (Stocks)
+ - Renamed QSI (Quarterly Stocks Inquiry) to QSS (Quarterly Stocks Survey)
+ - Add calculated totals for QSS as the totals aren't passed to SDX
+ - Fix missing date qcodes (11 and 12) for QSS (Stocks)
+ - Add formtype 0070 for QSS (Stocks)
  - Change rounding to stocks to divide by 1000 after rounding (like QCAS)
 
 ### 3.10.0 2019-04-02
