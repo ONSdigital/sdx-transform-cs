@@ -1,4 +1,6 @@
 ### Unreleased
+
+### 3.11.0 2019-05-31
  - Renamed QSI (Quarterly Stocks Inquiry) to QSS (Quarterly Stocks Survey)
  - Add calculated totals for QSS as the totals aren't passed to SDX
  - Fix missing date qcodes (11 and 12) for QSS (Stocks)
