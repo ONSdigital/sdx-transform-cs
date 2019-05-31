@@ -6,7 +6,7 @@ from requests.adapters import HTTPAdapter
 app = Flask(__name__)
 
 from .views import main  # noqa
-__version__ = "3.10.0"
+__version__ = "3.11.0"
 
 # Configure the number of retries attempted before failing call
 session = requests.Session()
