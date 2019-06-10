@@ -1,4 +1,5 @@
 ### Unreleased
+ - Update structlog package version
 
 ### 3.11.0 2019-05-31
  - Renamed QSI (Quarterly Stocks Inquiry) to QSS (Quarterly Stocks Survey)

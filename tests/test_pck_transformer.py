@@ -41,9 +41,7 @@ class TestPckTransformer(unittest.TestCase):
         with self.assertLogs(level='ERROR') as cm:
             form_id = pck_transformer.get_cs_form_id()
             self.assertEqual(form_id, None)
-
-            msg = "ERROR:transform.transformers.common_software.pck_transformer:survey_id=23 event='Invalid survey id'"
-            self.assertEqual(msg, cm.output[0])
+            self.assertIn('Invalid survey id', cm.output[0])
 
     def test_get_cs_form_id_invalid_instrument(self):
         survey = {'survey_id': '023'}
@@ -53,9 +51,7 @@ class TestPckTransformer(unittest.TestCase):
         with self.assertLogs(level='ERROR') as cm:
             form_id = pck_transformer.get_cs_form_id()
             self.assertEqual(form_id, None)
-
-            msg = "ERROR:transform.transformers.common_software.pck_transformer:instrument_id='000' event='Invalid instrument id'"
-            self.assertEqual(msg, cm.output[0])
+            self.assertIn('Invalid instrument id', cm.output[0])
 
         # QCAS
         survey = {'survey_id': '019'}
@@ -65,9 +61,7 @@ class TestPckTransformer(unittest.TestCase):
         with self.assertLogs(level='ERROR') as cm:
             form_id = pck_transformer.get_cs_form_id()
             self.assertEqual(form_id, None)
-
-            msg = "ERROR:transform.transformers.common_software.pck_transformer:instrument_id='0021' event='Invalid instrument id'"
-            self.assertEqual(msg, cm.output[0])
+            self.assertIn("Invalid instrument id", cm.output[0])
 
     def test_pck_transformer_cannot_change_the_data_it_is_passed(self):
         """Tests that pck does not modify the data it is passed.
