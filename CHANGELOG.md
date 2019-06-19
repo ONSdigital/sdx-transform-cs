@@ -1,4 +1,6 @@
 ### Unreleased
+
+### 3.11.1 2019-06-19
  - Update structlog package version
  - Fix incorrect value in stocks formtype 0061
 
