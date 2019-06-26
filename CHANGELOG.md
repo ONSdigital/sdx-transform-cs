@@ -1,4 +1,5 @@
 ### Unreleased
+- Fix incorrect wording in stocks formtypes 0001 and 0002
 
 ### 3.11.1 2019-06-19
  - Update structlog package version
