@@ -57,7 +57,7 @@
                     "type": "currency"
                 },
                 {
-                    "text": "What was the value of stocks held for materials, stores and fuel? (End of period)",
+                    "text": "What was the value of stocks held for goods on hand for sale? (End of period)",
                     "question_id": "150",
                     "number": "150",
                     "type": "currency"
