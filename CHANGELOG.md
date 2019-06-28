@@ -1,4 +1,6 @@
 ### Unreleased
+
+### 3.11.2 2019-06-28
  - Fix incorrect value in stocks formtypes 0001 and 0002
 
 ### 3.11.1 2019-06-19
