@@ -2,13 +2,13 @@ import json
 import logging
 import os.path
 
-from flask import request, make_response, send_file, jsonify
+from flask import request, send_file, jsonify
 from jinja2 import Environment, PackageLoader
 from structlog import wrap_logger
 from transform.views.logger_config import logger_initial_config
 
 from transform import app, settings
-from transform.transformers import ImageTransformer, PDFTransformer
+from transform.transformers import ImageTransformer
 from transform.transformers.common_software import CSTransformer, MBSTransformer, MWSSTransformer, PCKTransformer
 from transform.transformers.cora import UKISTransformer
 from transform.transformers.cord import EcommerceTransformer
@@ -133,50 +133,6 @@ def render_idbr():
     logger.info("IDBR:SUCCESS")
 
     return template.render(response=response)
-
-
-@app.route('/html', methods=['POST'])
-def render_html():
-    response = request.get_json(force=True)
-    template = env.get_template('html.tmpl')
-
-    survey = get_survey(response)
-
-    if not survey:
-        return client_error("HTML:Unsupported survey/instrument id")
-
-    logger.info("HTML:SUCCESS")
-
-    return template.render(response=response, survey=survey)
-
-
-@app.route('/pdf', methods=['POST'])
-def render_pdf():
-    survey_response = request.get_json(force=True)
-
-    survey = get_survey(survey_response)
-
-    if not survey:
-        return client_error("PDF:Unsupported survey/instrument id")
-
-    try:
-        pdf = PDFTransformer(survey, survey_response)
-        rendered_pdf = pdf.render()
-
-    except IOError as e:
-        return client_error("PDF:Could not render pdf buffer: {0}".format(repr(e)))
-    except Exception as e:
-        survey_id = survey_response.get("survey_id")
-        tx_id = survey_response.get("tx_id")
-        logger.exception("PDF:Generation failed", survey_id=survey_id, tx_id=tx_id)
-        raise e
-
-    response = make_response(rendered_pdf)
-    response.mimetype = 'application/pdf'
-
-    logger.info("PDF:SUCCESS")
-
-    return response
 
 
 @app.route('/images', methods=['POST'])
