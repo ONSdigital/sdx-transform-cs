@@ -75,6 +75,12 @@ def get_survey(survey_response):
 @app.route('/pck', methods=['POST'])
 @app.route('/pck/<batch_number>', methods=['POST'])
 def render_pck(batch_number=False):
+    """
+    This endpoint will return the pck file from the supplied survey response.  Note this will
+    only return the pck file and none of the other files that are usually generated from a submission.
+    This endpoint can be called with an optional batch_number.  Batch numbers are only
+    used for common-software surveys.
+    """
     response = request.get_json(force=True)
     survey = get_survey(response)
 
