@@ -2,7 +2,6 @@
   "title": "Monthly Business Survey - Retail Sales Index",
   "survey_id": "023",
   "form_type": "0205",
-  "comments": "true",
   "question_groups": [
     {
         "title": "Changes in total retail turnover",
