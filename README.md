@@ -47,7 +47,7 @@ If you've built the image under docker, you can start using the following:
 
     docker run -p 5000:5000 sdx-transform-cs
 
-sdx-transform-cs by default binds to port 5000 on localhost. It exposes several endpoints for transforming to idbr, pck and html formats. It returns a response formatted in the type requested. Post requests are made aginst the uri endpoints /pck, /idbr, /html, /pdf, /images, /common-software or /cord. Responses are delivered in the format requested, except the /images, /common-software and /cord endpoints which return archived zips of requested data. There is also a health check endpoint (get /healtcheck), which returns a json response with a key/value pairs describing the service state.
+sdx-transform-cs by default binds to port 5000 on localhost. It exposes several endpoints for transforming to idbr, pck and html formats. It returns a response formatted in the type requested. Post requests are made aginst the uri endpoints /pck, /idbr, /images, /common-software or /cord. Responses are delivered in the format requested, except the /images, /common-software and /cord endpoints which return archived zips of requested data. There is also a health check endpoint (get /healtcheck), which returns a json response with a key/value pairs describing the service state.
 
 ### Example
 

@@ -83,7 +83,6 @@ class TestTransformService(unittest.TestCase):
     transform_cord_pck_endpoint = "/pck"
     transform_cora_pck_endpoint = "/pck"
     transform_images_endpoint = "/images"
-    transform_pdf_endpoint = "/pdf"
 
     def setUp(self):
 
@@ -226,10 +225,6 @@ class TestTransformService(unittest.TestCase):
         self.assertEqual(r.status_code, 400)
 
         r = self.app.post(self.transform_images_endpoint, data="rubbish")
-
-        self.assertEqual(r.status_code, 400)
-
-        r = self.app.post(self.transform_pdf_endpoint, data="rubbish")
 
         self.assertEqual(r.status_code, 400)
 

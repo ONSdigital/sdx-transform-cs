@@ -1,4 +1,5 @@
 ### Unreleased
+ - Remove unused `/html` and `/pdf` endpoints
 
 ### 3.11.2 2019-06-28
  - Fix incorrect value in stocks formtypes 0001 and 0002
