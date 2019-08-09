@@ -1,4 +1,6 @@
 ### Unreleased
+ - Update documentation
+ - Remove unused `comments` value in JSON files used for image generation
  - Remove unused `/html` and `/pdf` endpoints
 
 ### 3.11.2 2019-06-28

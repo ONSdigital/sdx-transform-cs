@@ -8,7 +8,9 @@ The sde-transform-cs app is used within the Office National of Statistics (ONS) 
 
 The service has a dependency on the pdf2ppm commandline tool bundled in the poppler package. You can install this on a mac using:
 
-    $ brew install poppler
+```bash
+brew install poppler
+```
 
 *It is recommended that this service is installed inside a virtualenv.*
 
@@ -35,19 +37,25 @@ A simple way to remove it is to do the following command `perl -pi -e 'chomp if 
 
 It's also possible to build sdx-transform-cs within a container using docker. From the sdx-transform-cs directory:
 
-    $ docker build -t sdx-transform-cs .
+```bash
+docker build -t sdx-transform-cs .
+```
 
 ## Usage
 
 To start sdx-transform-cs service locally, use the following command:
 
-    python server.py
+```bash
+python server.py
+```
 
 If you've built the image under docker, you can start using the following:
 
-    docker run -p 5000:5000 sdx-transform-cs
+```bash
+docker run -p 5000:5000 sdx-transform-cs
+```
 
-sdx-transform-cs by default binds to port 5000 on localhost. It exposes several endpoints for transforming to idbr, pck and html formats. It returns a response formatted in the type requested. Post requests are made aginst the uri endpoints /pck, /idbr, /images, /common-software or /cord. Responses are delivered in the format requested, except the /images, /common-software and /cord endpoints which return archived zips of requested data. There is also a health check endpoint (get /healtcheck), which returns a json response with a key/value pairs describing the service state.
+sdx-transform-cs by default binds to port 5000 on localhost. It exposes several endpoints for transforming to idbr and pck formats. It returns a response formatted in the type requested. Post requests are made aginst the uri endpoints /pck, /idbr, /images, /common-software or /cord. Responses are delivered in the format requested, except the /images, /common-software, /cord and /cora endpoints which return archived zips of requested data. There is also a health check endpoint (get /healtcheck), which returns a json response with a key/value pairs describing the service state.
 
 ### Example
 
@@ -98,7 +106,6 @@ r.data =
 '''FBFV03000012/03/16
 FV          
 RSI7B:12345678901A:0216'''
-
 ```
 
 ## Configuration
@@ -108,10 +115,39 @@ Some of important environment variables available for configuration are listed b
 | Environment Variable    | Default                               | Description
 |-------------------------|---------------------------------------|----------------
 | SDX_SEQUENCE_URL        | `http://sdx-sequence:5000`            | URL of the ``sdx-sequence`` service
-| FTP_PATH                | `\\\\NP3-------370\\SDX_preprod\\`    | FTP path
+| FTP_PATH                | `\\`                                  | FTP path
 | SDX_FTP_IMAGE_PATH      | `EDC_QImages`                         | Location of EDC Images
 
-### License
+## Image generation
+
+When hitting certain endpoints, a zip file that contains a number of JPG images that represent the submission will be returned.
+These images are produced with the help of JSON files that describe what the image should look like.  These can be found in
+`transform/surveys/*.json`
+
+The keys of these json files describe how the image should look and below is a guide on the what they do.
+
+- `title`: Full survey name, appears at the top as a header
+- `survey_id` : Id of the survey, appears below the title
+- `form_type` : Form type of the survey,
+- `question_groups`:  An array of sections.  Each section is comprised of a heading
+and a number of questions relating to that section.
+
+Each element of the question_groups is made up of the following:
+
+- `title`:  Name of the section, appears at the top of the section
+- `questions`: Array of questions.  Each question corresponds to a question the respondent would've filled out on EQ.
+
+Each element of questions is made up of the following:
+
+- `text`: This is the heading of the question.  This should be as close as possible to the question asked in EQ.
+- `question_id`: This is the qcode of the question.  The code in the data from EQ will be used to populate the answer of this field
+- `number`: Used to output the qcode of the question in the image.
+- `type`: Can be one of `currency`, `date`, `checkbox`, `radio`, `contains`, `positiveinteger` or `percentage`. None of these affect the image.
+The `contains` and `date` types affect the data added to the pck file.  The other types are there to aid in maintaining the survey.
+- `options`:  Doesn't affect the image.  It's used to add context to radio and checkbox fields as each possible answer will have its own qcode
+but needs to have the same question because of the way it needs to look in the image.
+
+## License
 
 Copyright © 2016, Office for National Statistics (https://www.ons.gov.uk)
 
