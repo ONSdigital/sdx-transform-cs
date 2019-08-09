@@ -9,11 +9,7 @@
           {
             "text": "Did any significant changes occur to the total retail turnover?",
             "question_id": "146a",
-            "type": "radio",
-            "options": [
-              "Yes",
-              "No"
-            ]
+            "type": "radio"
           },
           {
             "text": "Please describe the changes in total retail turnover for in more detail",
@@ -28,58 +24,37 @@
           {
             "text": "Select all that apply",
             "question_id": "146b",
-            "type": "checkbox",
-            "options": [
-              "In-store / online promotions"
-            ]
+            "type": "checkbox"
           },
           {
             "text": "Select all that apply",
             "question_id": "146c",
-            "type": "checkbox",
-            "options": [
-              "Special events (e.g. sporting events)"
-            ]
+            "type": "checkbox"
           },
           {
             "text": "Select all that apply",
             "question_id": "146d",
-            "type": "checkbox",
-            "options": [
-              "Calendar events (e.g. Christmas, Easter, Bank Holiday)"
-            ]
+            "type": "checkbox"
           },
           {
             "text": "Select all that apply",
             "question_id": "146e",
-            "type": "checkbox",
-            "options": [
-              "Weather"
-            ]
+            "type": "checkbox"
           },
           {
             "text": "Select all that apply",
             "question_id": "146f",
-            "type": "checkbox",
-            "options": [
-              "Store closures"
-            ]
+            "type": "checkbox"
           },
           {
             "text": "Select all that apply",
             "question_id": "146g",
-            "type": "checkbox",
-            "options": [
-              "Store openings"
-            ]
+            "type": "checkbox"
           },
           {
             "text": "Select all that apply",
             "question_id": "146h",
-            "type": "checkbox",
-            "options": [
-              "Other"
-            ]
+            "type": "checkbox"
           }
         ]
     },

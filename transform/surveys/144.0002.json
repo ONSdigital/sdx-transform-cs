@@ -621,58 +621,37 @@
           "text": "If the business co-operated on any innovation activities with suppliers of equipment, materials, services or software, what was their location?",
           "question_id": "1882",
           "number": "1882",
-          "type": "checkbox",
-          "options": [
-              "UK National"
-          ]
+          "type": "checkbox"
         },{
           "text": "If the business co-operated on any innovation activities with suppliers of equipment, materials, services or software, what was their location?",
           "question_id": "1883",
           "number": "1883",
-          "type": "checkbox",
-          "options": [
-              "European countries"
-          ]
+          "type": "checkbox"
         },{
           "text": "If the business co-operated on any innovation activities with suppliers of equipment, materials, services or software, what was their location?",
           "question_id": "1884",
           "number": "1884",
-          "type": "checkbox",
-          "options": [
-              "All other countries"
-          ]
+          "type": "checkbox"
         },{
           "text": "If the business co-operated on any innovation activities with clients or customers from the public sector, what was their location?",
           "question_id": "1891",
           "number": "1891",
-          "type": "checkbox",
-          "options": [
-              "UK regional within approximately 100 miles of this business"
-          ]
+          "type": "checkbox"
         },{
           "text": "If the business co-operated on any innovation activities with clients or customers from the public sector, what was their location?",
           "question_id": "1892",
           "number": "1892",
-          "type": "checkbox",
-          "options": [
-              "UK National"
-          ]
+          "type": "checkbox"
         },{
           "text": "If the business co-operated on any innovation activities with clients or customers from the public sector, what was their location?",
           "question_id": "1893",
           "number": "1893",
-          "type": "checkbox",
-          "options": [
-              "European countries"
-          ]
+          "type": "checkbox"
         },{
           "text": "If the business co-operated on any innovation activities with clients or customers from the public sector, what was their location?",
           "question_id": "1894",
           "number": "1894",
-          "type": "checkbox",
-          "options": [
-              "All other countries"
-          ]
+          "type": "checkbox"
         },{
           "text": "If the business co-operated on any innovation activities with competitors or other businesses in your industry, what was their location?",
           "question_id": "1841",
@@ -685,26 +664,17 @@
           "text": "If the business co-operated on any innovation activities with competitors or other businesses in your industry, what was their location?",
           "question_id": "1842",
           "number": "1842",
-          "type": "checkbox",
-          "options": [
-              "UK National"
-          ]
+          "type": "checkbox"
         },{
           "text": "If the business co-operated on any innovation activities with competitors or other businesses in your industry, what was their location?",
           "question_id": "1843",
           "number": "1843",
-          "type": "checkbox",
-          "options": [
-              "European countries"
-          ]
+          "type": "checkbox"
         },{
           "text": "If the business co-operated on any innovation activities with competitors or other businesses in your industry, what was their location?",
           "question_id": "1844",
           "number": "1844",
-          "type": "checkbox",
-          "options": [
-              "All other countries"
-          ]
+          "type": "checkbox"
         },{
           "text": "If the business co-operated on any innovation activities with consultants, commercial labs or private research and development institutes, what was their location?",
           "question_id": "1851",

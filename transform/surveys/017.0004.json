@@ -74,11 +74,7 @@
                 {
                     "text": "Did any significant changes occur to the total value of stocks for the business?",
                     "question_id": "146a",
-                    "type": "radio",
-                    "options": [
-                        "Yes",
-                        "No"
-                    ]
+                    "type": "radio"
                 },
                 {
                     "text": "Explain any differences between this quarter's opening value and the previously returned closing value",

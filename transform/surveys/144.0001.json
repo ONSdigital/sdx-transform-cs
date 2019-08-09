@@ -10,66 +10,42 @@
           "text": "In which geographic markets did the business offer goods and/or services",
           "question_id": "0210",
           "number": "0210",
-          "type": "checkbox",
-          "options": [
-              "UK regional within approximately 100 miles of this business"
-          ]
+          "type": "checkbox"
         }, {
           "text": "In which geographic markets did the business offer goods and/or services",
           "question_id": "0220",
           "number": "0220",
-          "type": "checkbox",
-          "options": [
-              "UK National"
-          ]
+          "type": "checkbox"
         }, {
           "text": "In which geographic markets did the business offer goods and/or services",
           "question_id": "0230",
           "number": "0230",
-          "type": "checkbox",
-          "options": [
-              "European countries"
-          ]
+          "type": "checkbox"
         }, {
           "text": "In which geographic markets did the business offer goods and/or services",
           "question_id": "0240",
           "number": "0240",
-          "type": "checkbox",
-          "options": [
-              "All other countries"
-          ]
+          "type": "checkbox"
         }, {
           "text": "Did any of the following significant events or changes occur to the business?",
           "question_id": "0410",
           "number": "0410",
-          "type": "checkbox",
-          "options": [
-              "The business was established"
-          ]
+          "type": "checkbox"
         }, {
           "text": "Did any of the following significant events or changes occur to the business?",
           "question_id": "0420",
           "number": "0420",
-          "type": "checkbox",
-          "options": [
-              "Turnover increased"
-          ]
+          "type": "checkbox"
         }, {
           "text": "Did any of the following significant events or changes occur to the business?",
           "question_id": "0430",
           "number": "0430",
-          "type": "checkbox",
-          "options": [
-              "Turnover decreased"
-          ]
+          "type": "checkbox"
         }, {
           "text": "Did any of the following significant events or changes occur to the business?",
           "question_id": "0440",
           "number": "0440",
-          "type": "checkbox",
-          "options": [
-              "No significant changes occurred"
-          ]
+          "type": "checkbox"
         },{
           "text": "Total employees",
           "question_id": "50"
@@ -82,10 +58,7 @@
           "text": "Did the business make changes in any of the following areas?",
           "question_id": "2310",
           "number": "2310",
-          "type": "checkbox",
-          "options": [
-              "New business practices"
-          ]
+          "type": "checkbox"
         }, {
           "text": "Did the business make changes in any of the following areas?",
           "question_id": "2320",
@@ -98,26 +71,17 @@
           "text": "Did the business make changes in any of the following areas?",
           "question_id": "2330",
           "number": "2330",
-          "type": "checkbox",
-          "options": [
-              "New methods of organising external relationships"
-          ]
+          "type": "checkbox"
         },{
           "text": "Did the business make changes in any of the following areas?",
           "question_id": "2340",
           "number": "2340",
-          "type": "checkbox",
-          "options": [
-              "Implementation of significant changes"
-          ]
+          "type": "checkbox"
         },{
           "text": "Did the business make changes in any of the following areas?",
           "question_id": "2350",
           "number": "2350",
-          "type": "checkbox",
-          "options": [
-              "Logistics, delivery or distribution methods"
-          ]
+          "type": "checkbox"
         },{
           "text": "Did the business make changes in any of the following areas?",
           "question_id": "2360",
