@@ -39,11 +39,7 @@
                     "text": "Did any significant changes occur?",
                     "question_id": "146",
                     "number": "146",
-                    "type": "radio",
-                    "options": [
-                        "Yes",
-                        "No"
-                    ]
+                    "type": "radio"
                 },
                 {
                     "text": "Did any significant changes occur?",
