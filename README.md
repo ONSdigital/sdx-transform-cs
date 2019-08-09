@@ -138,9 +138,11 @@ Each element of the question_groups is made up of the following:
 
 Each element of questions is made up of the following:
 `text`: This is the heading of the question.  This should be as close as possible to the question asked in EQ.
-`question_id`:
-`number`:
-`type`: Can be one of `currency`, `date`, `checkbox`, `radio`, `contains`.
+`question_id`: This is the qcode of the question.  The code in the data from EQ will be used to populate the answer of this field
+`number`: Used to output the qcode of the question in the image.
+`type`: Can be one of `currency`, `date`, `checkbox`, `radio`, `contains`, `positiveinteger` or `percentage`.
+`options`:  Doesn't affect the image.  It's used to add context to radio and checkbox fields as each possible answer will have its own qcode
+but needs to have the same question because of the way it needs to look in the image.
 
 ## License
 
