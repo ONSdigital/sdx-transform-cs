@@ -2,7 +2,7 @@
     "title": "Quarterly Stocks Survey",
     "survey_id": "017",
     "form_type": "0051",
-    "comments": "true",
+
     "question_groups": [
         {
             "title": "Reporting Period",
