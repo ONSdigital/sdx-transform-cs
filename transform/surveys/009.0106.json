@@ -2,7 +2,6 @@
     "title": "Monthly Business Survey",
     "survey_id": "009",
     "form_type": "0106",
-    "comments": "true",
     "question_groups": [
         {
             "title": "Reporting Period",
