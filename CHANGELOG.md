@@ -1,4 +1,6 @@
 ### Unreleased
+
+### 3.12.1 2019-09-04
  - Update documentation
  - Remove unused `comments` value in JSON files used for image generation
 
