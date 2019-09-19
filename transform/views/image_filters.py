@@ -7,10 +7,10 @@ def format_date(value, style='long'):
     """convert a datetime to a different format."""
 
     timezone = 'Europe/London'
-    if style is 'short':
+    if style == 'short':
         return arrow.get(value).to(timezone).format("YYYYMMDD")
-    else:
-        return arrow.get(value).to(timezone).format("DD/MM/YYYY HH:mm:ss")
+
+    return arrow.get(value).to(timezone).format("DD/MM/YYYY HH:mm:ss")
 
 
 def statistical_unit_id_filter(value):
