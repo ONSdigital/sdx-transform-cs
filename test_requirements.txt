@@ -1,6 +1,6 @@
-flake8==3.6.0
-pyflakes==2.0.0
-responses==0.10.5
-pytest==4.1.0
-pytest-cov==2.6.1
-pyyaml==5.1
+flake8==3.7.8
+pyflakes==2.1.1
+responses==0.10.6
+pytest==5.1.2
+pytest-cov==2.7.1
+pyyaml==5.1.2
