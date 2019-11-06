@@ -47,7 +47,7 @@ class CSFormatter(Formatter):
     def _pck_form_header(form_id, ru_ref, ru_check, period):
         """Generate a form header for PCK data."""
         form_id = "{0:04}".format(form_id) if isinstance(form_id, int) else form_id
-        return "{0}:{1}{2}:{3}".format(form_id, ru_ref, ru_check, period)
+        return f"{form_id}:{ru_ref}{ru_check}:{period}"
 
     @staticmethod
     def _pck_item(q, a):
@@ -55,4 +55,4 @@ class CSFormatter(Formatter):
         try:
             return "{0:04} {1:011}".format(int(q), CSFormatter._pck_value(a))
         except TypeError:
-            return "{0} ???????????".format(q)
+            return f"{q} ???????????"

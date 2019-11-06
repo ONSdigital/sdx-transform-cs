@@ -26,12 +26,10 @@ class EcommerceTransformer:
         self.response = response
         self.ids = Survey.identifiers(self.response, seq_nr=seq_nr, log=logger)
 
-        survey_file = "./transform/surveys/{}.{}.json".format(
-            self.ids.survey_id, self.ids.inst_id
-        )
+        survey_file = f"./transform/surveys/{self.ids.survey_id}.{self.ids.inst_id}.json"
 
         with open(survey_file) as fp:
-            logger.info("Loading {}".format(survey_file))
+            logger.info(f"Loading {survey_file}")
             self.survey = json.load(fp)
 
         self.image_transformer = ImageTransformer(
@@ -295,7 +293,6 @@ class EcommerceTransformer:
 
     def transform(self):
         """Perform a transform on survey data."""
-
         # 001 is the 'has anything changed' question that doesn't appear in eq.
         transformed = {
             "001": "0",
@@ -309,10 +306,11 @@ class EcommerceTransformer:
         ict_security = self.ict_security()
         e_commerce = self.e_commerce()
 
-        logger.info("Transforming data for {}".format(self.ids.ru_ref), tx_id=self.ids.tx_id,)
+        logger.info(f"Transforming data for {self.ids.ru_ref}", tx_id=self.ids.tx_id)
 
-        return {**transformed, **ict_specialists_and_skills,  # Merge Dictionaries
-                **access_and_use_of_internet, **sharing_of_info_electronically_within_business,
+        return {**transformed, **ict_specialists_and_skills,
+                **access_and_use_of_internet,
+                **sharing_of_info_electronically_within_business,
                 **ict_security, **e_commerce,
                 **use_of_computers}
 
@@ -369,3 +367,229 @@ class EcommerceTransformer:
         response_json_name = CORDFormatter.response_json_name(self.ids.survey_id, self.ids.seq_nr)
         self.image_transformer.zip.append(os.path.join(SDX_RESPONSE_JSON_PATH, response_json_name), json.dumps(self.response))
         bound_logger.info("Sucessfully added json response to zip")
+
+
+class Ecommerce2019Transformer(EcommerceTransformer):
+    """This class is used for the transformation of the 2019 E-commerce survey.  The class inherits from the first
+    one (the 2018 version of it) as the answers are transformed in the same way."""
+    def transform(self):
+        """Perform a transform on survey data."""
+        # 001 is the 'has anything changed' question that doesn't appear in eq.
+        transformed = {
+            "500": "1" if self.get_qcode("500") else "0",
+        }
+        use_of_computers = self.use_of_computers()
+        access_and_use_of_internet = self.access_and_use_of_internet()
+        e_commerce = self.e_commerce()
+        invoicing = self.invoicing()
+        use_of_cloud_computing_services = self.use_of_cloud_computing_services()
+        big_data_analysis = self.big_data_analysis()
+        ict_specialists_and_skills = self.ict_specialists_and_skills()
+        use_of_3d_printing_technologies = self.use_of_3d_printing_technologies()
+        use_of_robotics = self.use_of_robotics()
+
+        return {**transformed, **use_of_computers,
+                **access_and_use_of_internet,
+                **e_commerce, **invoicing,
+                **use_of_cloud_computing_services, **big_data_analysis,
+                **ict_specialists_and_skills,
+                **use_of_3d_printing_technologies,
+                **use_of_robotics}
+
+    def use_of_computers(self):
+        """
+        Transform the 'Use of computers section'
+        """
+        answers = {
+            "010": self.yes_no_question("010"),
+            "023": self.percentage_question("023")
+        }
+
+        return answers
+
+    def access_and_use_of_internet(self):
+        """
+        Transforms the 'Access and use of internet' questions
+
+        Note: There are negative playback codes that are in the form 'd[0-9]+'.  Each of these affects a set of questions
+        which are listed below
+        d1 - Which features does the business' site have? - 147, 202, 203, 205, 332 and 414
+        d2 - Does the bisness offer any of the following chat services? - 530 and 531
+        """
+        answers = {
+            "022": self.percentage_question("022"),
+            "038": self.yes_no_question("038"),
+            "080": self.yes_no_question("080"),
+            "356": self.yes_no_question("356"),
+            "452": self.yes_no_question("452"),
+
+            "277": self.radio_question_option("r1", "Less than 2Mbps"),
+            "278": self.radio_question_option("r1", "2Mbps or more, but less than 10Mbps"),
+            "279": self.radio_question_option("r1", "10Mbps or more, but less than 30Mbps"),
+            "280": self.radio_question_option("r1", "30Mbps or more, but less than 100Mbps"),
+            "497": self.radio_question_option("r1", "100Mbps or more, but less than 500Mbps"),
+            "498": self.radio_question_option("r1", "500Mbps or more, but less than 1000Mbps (1Gbps)"),
+            "499": self.radio_question_option("r1", "1000Mbps (1Gbps) or more"),
+
+            "147": self.negative_playback_question("147", "d1"),
+            "202": self.negative_playback_question("202", "d1"),
+            "203": self.negative_playback_question("203", "d1"),
+            "205": self.negative_playback_question("205", "d1"),
+            "332": self.negative_playback_question("332", "d1"),
+            "414": self.negative_playback_question("414", "d1"),
+
+            "530": self.negative_playback_question("530", "d2"),
+            "531": self.negative_playback_question("531", "d2")
+        }
+
+        return answers
+
+    def e_commerce(self):
+        """
+        Transform the 'Ecommerce' questions
+
+        Note: There are negative playback codes that are in the form 'd[0-9]+'.  Each of these affects a set of questions
+        which are listed below
+        """
+        answers = {
+            "234": self.yes_no_question("234"),
+            "235": self.percentage_question("235"),
+            "257": self.yes_no_question("257"),
+            "258": self.percentage_question("258"),
+            "310": self.checkbox_question("310", dependant_qcode="234"),
+            "311": self.checkbox_question("311", dependant_qcode="234"),
+            "312": self.checkbox_question("312", dependant_qcode="234"),
+            "313": self.checkbox_question("313", dependant_qcode="257"),
+            "314": self.checkbox_question("314", dependant_qcode="257"),
+            "315": self.checkbox_question("315", dependant_qcode="257"),
+            "348": self.percentage_question("348"),
+            "349": self.percentage_question("349"),
+            "458": self.checkbox_question("458", dependant_qcode="234"),
+            "459": self.checkbox_question("459", dependant_qcode="234"),
+            "460": self.percentage_question("460"),
+            "461": self.percentage_question("461"),
+            "505": self.checkbox_question("505", dependant_qcode="234"),
+            "506": self.checkbox_question("506", dependant_qcode="234"),
+            "507": self.percentage_question("507"),
+            "508": self.percentage_question("508"),
+            "509": self.percentage_question("509"),
+            "510": self.percentage_question("510"),
+            "511": self.percentage_question("511"),
+            "512": self.percentage_question("512"),
+            "513": self.percentage_question("513"),
+            "514": self.percentage_question("514")
+        }
+
+        return answers
+
+    def invoicing(self):
+        """
+        Transform the 'Invoicing' questions
+        Note: There are negative playback codes that are in the form 'd[0-9]+'.  Each of these affects a set of questions
+        which are listed below
+        d3 - Which of the following invoices did the business issue or send? - 478, 479, 480
+        """
+        answers = {
+            "478": self.negative_playback_question("478", "d3"),
+            "479": self.negative_playback_question("479", "d3"),
+            "480": self.negative_playback_question("480", "d3"),
+        }
+        return answers
+
+    def use_of_cloud_computing_services(self):
+        """
+        Transform the 'Use of cloud computing' questions
+        Note: There are negative playback codes that are in the form 'd[0-9]+'.  Each of these affects a set of questions
+        which are listed below
+        d4 - Which of the following cloud computing services does the business buy? - 359, 360, 361, 362, 363, 364, 365
+        """
+        answers = {
+            "358": self.yes_no_question("358"),
+            "359": self.negative_playback_question("359", "d4"),
+            "360": self.negative_playback_question("360", "d4"),
+            "361": self.negative_playback_question("361", "d4"),
+            "362": self.negative_playback_question("362", "d4"),
+            "363": self.negative_playback_question("363", "d4"),
+            "364": self.negative_playback_question("364", "d4"),
+            "365": self.negative_playback_question("365", "d4")
+        }
+        return answers
+
+    def big_data_analysis(self):
+        """
+        Transform the 'Big data analysis' questions
+        Note: There are negative playback codes that are in the form 'd[0-9]+'.  Each of these affects a set of questions
+        which are listed below
+        d5 - Did the business use any of the following sources to analyse big data - 431, 432, 433, 434
+        d6 - Did the business use any of the following methods to analyse big data? - 515, 516, 517
+        """
+        answers = {
+            "518": self.yes_no_question("518"),
+            "519": self.yes_no_question("519"),
+            "520": self.yes_no_question("520"),
+
+            "431": self.negative_playback_question("431", "d5"),
+            "432": self.negative_playback_question("432", "d5"),
+            "433": self.negative_playback_question("433", "d5"),
+            "434": self.negative_playback_question("434", "d5"),
+
+            "515": self.negative_playback_question("515", "d6"),
+            "516": self.negative_playback_question("516", "d6"),
+            "517": self.negative_playback_question("517", "d6"),
+        }
+        return answers
+
+    def ict_specialists_and_skills(self):
+        """Transforms the 'ICT specialists and skills' questions"""
+        answers = {
+            "154": self.yes_no_question("154"),
+            "155": self.yes_no_question("155"),
+            "156": self.yes_no_question("156"),
+            "165": self.checkbox_question("165"),
+            "316": self.checkbox_question("316"),
+            "495": self.radio_question_option("r2", "495"),
+            "496": self.radio_question_option("r2", "496")
+        }
+
+        return answers
+
+    def use_of_3d_printing_technologies(self):
+        """
+        Transform the 'Use of 3d printing technologies' questions
+        Note: There are negative playback codes that are in the form 'd[0-9]+'.  Each of these affects a set of questions
+        which are listed below
+        d7 - Why were the following 3D printing activities not selected? - 474, 475, 476, 477
+        """
+        answers = {
+            "532": self.yes_no_question("532"),
+            "472": self.checkbox_question("472"),
+            "473": self.checkbox_question("473"),
+
+            "474": self.negative_playback_question("474", "d7"),
+            "475": self.negative_playback_question("475", "d7"),
+            "476": self.negative_playback_question("476", "d7"),
+            "477": self.negative_playback_question("477", "d7")
+        }
+        return answers
+
+    def use_of_robotics(self):
+        """
+        Transform the 'Use of robotics' questions
+        Note: There are negative playback codes that are in the form 'd[0-9]+'.  Each of these affects a set of questions
+        which are listed below
+        d8 - Why were the following service robot activities not selected? - 523, 524, 525, 526, 527, 528, 529
+        """
+        answers = {
+            "521": self.yes_no_question("521"),
+            "522": self.yes_no_question("522"),
+
+            "523": self.negative_playback_question("523", "d8"),
+            "524": self.negative_playback_question("524", "d8"),
+            "525": self.negative_playback_question("525", "d8"),
+            "526": self.negative_playback_question("526", "d8"),
+            "527": self.negative_playback_question("527", "d8"),
+            "528": self.negative_playback_question("528", "d8"),
+            "529": self.negative_playback_question("529", "d8"),
+
+        }
+        return answers

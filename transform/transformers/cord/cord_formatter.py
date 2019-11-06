@@ -23,4 +23,4 @@ class CORDFormatter(Formatter):
     @staticmethod
     def _pck_lines(data, survey_id, ru_ref, period):
         """Return a list of lines in a PCK file."""
-        return ["{0}:{1}:{2}:{3}:{4}".format(ru_ref, survey_id, period, qcode, value) for qcode, value in sorted(data.items())]
+        return [f"{ru_ref}:{survey_id}:{period}:{qcode}:{value}" for qcode, value in sorted(data.items())]

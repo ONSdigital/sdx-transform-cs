@@ -1,4 +1,6 @@
 ### Unreleased
+ - Add E-commerce 2019 survey
+ - Update packages and fix security issue in Pillow
 
 ### 3.12.3 2019-11-08
  - Add python 3.8 to travis builds

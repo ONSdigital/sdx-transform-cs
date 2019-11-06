@@ -134,7 +134,7 @@ class MBSTransformer:
         )
 
         with open(survey_file) as fp:
-            logger.info("Loading {}".format(survey_file))
+            logger.info(f"Loading {survey_file}")
             self.survey = json.load(fp)
 
         self.image_transformer = ImageTransformer(
@@ -178,7 +178,7 @@ class MBSTransformer:
 
         for key, value in ids.items():
             if value is None:
-                logger.error("Missing value for: {0}".format(key))
+                logger.error(f"Missing value for: {key}")
                 return None
 
         return ids
@@ -201,7 +201,7 @@ class MBSTransformer:
                         self.response["data"].get(q_id)
                     )
                 except TypeError:
-                    logger.info("No answer supplied for {}. Skipping.".format(q_id))
+                    logger.info(f"No answer supplied for {q_id}. Skipping.")
 
             return employee_totals
 
@@ -221,7 +221,7 @@ class MBSTransformer:
                         self.response["data"].get(q_id)
                     )
                 except TypeError:
-                    logger.info("No answer supplied for {}. Skipping.".format(q_id))
+                    logger.info(f"No answer supplied for {q_id}. Skipping.")
 
             return turnover_totals
 
@@ -255,7 +255,7 @@ class MBSTransformer:
 
         logger.info(
             "Transforming data for {}".format(self.ids["ru_ref"]),
-            tx_id=self.ids["tx_id"],
+            tx_id=self.ids["tx_id"]
         )
 
         transformed_data = {
