@@ -293,6 +293,10 @@
           "options": [
               "Paper invoices"
           ]
+        },
+        {
+          "text": "Why were the following types of invoice not selected?",
+          "question_id": "d3"
         }]
     },
     {
@@ -367,7 +371,7 @@
         },
          {
           "text": "Why were the following cloud computing services not selected?",
-          "question_id": "165"
+          "question_id": "d4"
         }]
     },
     {
@@ -411,7 +415,7 @@
         },
         {
           "text": "Why were the following Big Data sources not selected?",
-          "question_id": "165"
+          "question_id": "d5"
         },
         {
           "text": "During 2019, did the business use any of the following methods to analyse Big Data?",
@@ -442,7 +446,7 @@
         },
         {
           "text": "Why were the following methods of Big Data analysis not selected?",
-          "question_id": "165"
+          "question_id": "d6"
         },
         {
           "text": "During 2019, did another business perform Big Data analysis for the business?",
@@ -555,7 +559,7 @@
         },
         {
           "text": "Why were the following 3D printing activites not selected?",
-          "question_id": "154"
+          "question_id": "d7"
         }]
     },
     {
@@ -634,7 +638,7 @@
         },
         {
           "text": "Why were the following service robot activites not selected?",
-          "question_id": "154"
+          "question_id": "d8"
         }]
     },
     {
