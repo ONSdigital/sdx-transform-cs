@@ -371,10 +371,10 @@ class EcommerceTransformer:
 
 class Ecommerce2019Transformer(EcommerceTransformer):
     """This class is used for the transformation of the 2019 E-commerce survey.  The class inherits from the first
-    one (the 2018 version of it) as the answers are transformed in the same way."""
+    one (the 2018 version of it) as the answers are transformed in the same way but has a different set of questions to answer."""
+
     def transform(self):
         """Perform a transform on survey data."""
-        # 001 is the 'has anything changed' question that doesn't appear in eq.
         transformed = {
             "500": "1" if self.get_qcode("500") else "0",
         }
