@@ -3,7 +3,9 @@ import datetime
 import json
 import logging
 
-logger = logging.getLogger(__name__)
+from structlog import wrap_logger
+
+logger = wrap_logger(logging.getLogger(__name__))
 
 
 class Survey:
@@ -42,7 +44,7 @@ class Survey:
             with open(file_name, encoding="utf-8") as fh:
                 content = fh.read()
         except FileNotFoundError:
-            logger.error("File not found {}".format(file_name))
+            logger.error("File not found", file_name=file_name)
             return None
         else:
             return json.loads(content)
@@ -135,7 +137,7 @@ class Survey:
             data.get("collection", {}).get("period")
         )
         if any(i is None for i in rv):
-            log.warning("Missing an id from {0}".format(rv))
+            log.warning(f"Missing an id from {rv}")
             return None
-        else:
-            return rv
+
+        return rv

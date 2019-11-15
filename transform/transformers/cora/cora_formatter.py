@@ -22,5 +22,5 @@ class CORAFormatter(Formatter):
     @staticmethod
     def _pck_lines(data, survey_id, ru_ref, page_identifier, period, instance):
         """Return a list of lines in a PCK file."""
-        return ["{0}:{1}:{2}:{3}:{4}:{5}:{6}".format(survey_id, ru_ref, page_identifier, period, instance, qcode, value)
+        return [f"{survey_id}:{ru_ref}:{page_identifier}:{period}:{instance}:{qcode}:{value}"
                 for qcode, value in sorted(data.items())]

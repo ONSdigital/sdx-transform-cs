@@ -1,4 +1,5 @@
 import json
+from json import JSONDecodeError
 import logging
 import os.path
 
@@ -11,7 +12,7 @@ from transform import app, settings
 from transform.transformers import ImageTransformer
 from transform.transformers.common_software import CSTransformer, MBSTransformer, MWSSTransformer, PCKTransformer
 from transform.transformers.cora import UKISTransformer
-from transform.transformers.cord import EcommerceTransformer
+from transform.transformers.cord import EcommerceTransformer, Ecommerce2019Transformer
 
 cord_surveys = ["187"]
 cora_surveys = ["144"]
@@ -54,22 +55,36 @@ def server_error(error=None):
 
 
 def get_survey(survey_response):
-    try:
-        form_id = survey_response['collection']['instrument_id']
-        survey_id = survey_response.get("survey_id", "N/A")
-        tx_id = survey_response.get("tx_id", "N/A")
-        logger.info("Loading survey", survey="{0}-{1}.json".format(survey_id, form_id), tx_id=tx_id)
+    """
+    Takes the survey and returns the file that represents the image of that survey from the
+    /transform/surveys directory.
 
-        fp = os.path.join(
-            ".", "transform", "surveys",
-            "{0}.{1}.json".format(survey_response['survey_id'], form_id)
-        )
-        logger.info("Opening file", file=fp, tx_id=tx_id)
-        with open(fp, 'r', encoding='utf-8') as json_file:
+    :param survey_response: The JSON response passed to us from EQ
+    :raises KeyError: Raised if survey_id or instrument_id is missing
+    :raises IOError: Raised if file cannot be opened
+    :raises JSONDecodeError:  Raised if returned file isn't valid JSON
+    :raises UnicodeDecodeError:
+    """
+    try:
+        tx_id = survey_response.get("tx_id", "N/A")
+        form_id = survey_response['collection']['instrument_id']
+        survey_id = survey_response['survey_id']
+    except KeyError:
+        logger.exception("Missing instrument_id or survey_id", tx_id=tx_id)
+        return None
+
+    try:
+        survey_file_name = f"{survey_id}.{form_id}.json"
+        file_path = os.path.join(".", "transform", "surveys", survey_file_name)
+        logger.info("Opening file", file=file_path, tx_id=tx_id)
+        with open(file_path, 'r', encoding='utf-8') as json_file:
             return json.load(json_file)
-    except (IOError, UnicodeDecodeError) as e:
-        logger.exception("Error opening file", file=fp, tx_id=tx_id, error=e)
-        return False
+    except (OSError, UnicodeDecodeError):
+        logger.exception("Error opening file", file=file_path, tx_id=tx_id)
+        return None
+    except JSONDecodeError:
+        logger.exception("File is not valid JSON", file=file_path, tx_id=tx_id)
+        return None
 
 
 @app.route('/pck', methods=['POST'])
@@ -88,10 +103,11 @@ def render_pck(batch_number=False):
         return client_error("PCK:Unsupported survey/instrument id")
 
     survey_id = survey.get("survey_id")
+    form_id = response['collection']['instrument_id']
     bound_logger = logger.bind(
         survey_id=survey_id,
         tx_id=response.get("tx_id"),
-        form_id=response['collection']['instrument_id']
+        form_id=form_id
     )
 
     if survey_id in cord_surveys:
@@ -99,7 +115,11 @@ def render_pck(batch_number=False):
         if batch_number:
             return client_error("PCK:CORD surveys don't support batch numbers")
 
-        transformer = EcommerceTransformer(response)
+        if form_id in ["0001", "0002"]:
+            transformer = Ecommerce2019Transformer(response)
+        else:
+            transformer = EcommerceTransformer(response)
+
         transformed_data = transformer.transform()
         bound_logger.info("PCK:SUCCESS")
         return transformer.create_pck(transformed_data)
@@ -247,7 +267,10 @@ def cord(sequence_no=1000):
     survey_id = survey_response.get("survey_id")
     try:
         if survey_id == "187":
-            transformer = EcommerceTransformer(survey_response, sequence_no)
+            if survey_response['collection']['instrument_id'] in ['0001', '0002']:
+                transformer = Ecommerce2019Transformer(survey_response, sequence_no)
+            else:
+                transformer = EcommerceTransformer(survey_response, sequence_no)
             transformer.create_zip()
         else:
             return client_error("CORD survey with survey id {} is not supported".format(survey_id))

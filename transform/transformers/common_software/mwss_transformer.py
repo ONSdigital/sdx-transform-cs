@@ -105,7 +105,7 @@ class MWSSTransformer:
         # Enforce that child classes have defn and pattern attributes
         for attr in ("defn", "pattern"):
             if not hasattr(self.__class__, attr):
-                raise UserWarning("Missing class attribute: {0}".format(attr))
+                raise UserWarning(f"Missing class attribute: {attr}")
 
         self.survey = Survey.load_survey(self.ids, self.pattern)
         self.image_transformer = ImageTransformer(self.log, self.survey, self.response,

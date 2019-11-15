@@ -1,3 +1,3 @@
-from .ecommerce_transformer import EcommerceTransformer
+from .ecommerce_transformer import EcommerceTransformer, Ecommerce2019Transformer
 
-__all__ = ['EcommerceTransformer']
+__all__ = ['EcommerceTransformer', 'Ecommerce2019Transformer']

@@ -255,11 +255,13 @@ class TestTransformerUnits:
         assert pck
 
     def test_idbr_receipt(self):
+        """Tests the content of the idbr receipt is as expected"""
         transformer = get_transformer(self.default_data)
         idbr = transformer.create_idbr_receipt()
         assert idbr == '12346789012:A:187:201605'
 
     def test_create_zip(self):
+        """Tests the filenames in the created zip are the ones we're expecting"""
         transformer = get_transformer(self.default_data)
 
         transformer.create_zip(img_seq=itertools.count())

@@ -27,12 +27,10 @@ class UKISTransformer:
         self.response = response
         self.ids = Survey.identifiers(self.response, seq_nr=seq_nr, log=logger)
 
-        survey_file = "./transform/surveys/{}.{}.json".format(
-            self.ids.survey_id, self.ids.inst_id
-        )
+        survey_file = f"./transform/surveys/{self.ids.survey_id}.{self.ids.inst_id}.json"
 
         with open(survey_file) as fp:
-            logger.info("Loading {}".format(survey_file))
+            logger.info(f"Loading {survey_file}")
             self.survey = json.load(fp)
 
         self.image_transformer = ImageTransformer(
@@ -411,7 +409,7 @@ class UKISTransformer:
         turnover_and_exports = self.turnover_and_exports()
         employees_and_skills = self.employees_and_skills()
 
-        logger.info("Transforming data for {}".format(self.ids.ru_ref), tx_id=self.ids.tx_id,)
+        logger.info(f"Transforming data for {self.ids.ru_ref}", tx_id=self.ids.tx_id)
 
         return {**transformed, **general_business_information,  # Merge Dictionaries
                 **business_strategy_and_practices,
