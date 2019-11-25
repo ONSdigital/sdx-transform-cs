@@ -1,4 +1,6 @@
 ### Unreleased
+
+### 3.13.0 2019-11-25
  - Add E-commerce 2019 survey
  - Update packages and fix security issue in Pillow
 
