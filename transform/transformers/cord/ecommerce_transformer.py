@@ -545,8 +545,8 @@ class Ecommerce2019Transformer(EcommerceTransformer):
             "156": self.yes_no_question("156"),
             "165": self.checkbox_question("165"),
             "316": self.checkbox_question("316"),
-            "495": self.radio_question_option("r2", "495"),
-            "496": self.radio_question_option("r2", "496")
+            "495": self.radio_question_option("r2", "Mainly performed by the business's own employees"),
+            "496": self.radio_question_option("r2", "Mainly performed by the external suppliers")
         }
 
         return answers
