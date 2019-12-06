@@ -462,8 +462,6 @@ class Ecommerce2019Transformer(EcommerceTransformer):
             "313": self.checkbox_question("313", dependant_qcode="257"),
             "314": self.checkbox_question("314", dependant_qcode="257"),
             "315": self.checkbox_question("315", dependant_qcode="257"),
-            "348": self.percentage_question("348"),
-            "349": self.percentage_question("349"),
             "458": self.checkbox_question("458", dependant_qcode="234"),
             "459": self.checkbox_question("459", dependant_qcode="234"),
             "460": self.percentage_question("460"),
