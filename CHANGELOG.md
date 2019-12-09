@@ -1,4 +1,5 @@
 ### Unreleased
+ - Fix transformation errors in e-commerce 0001 and 0002 formtypes
 
 ### 3.13.0 2019-11-25
  - Add E-commerce 2019 survey
