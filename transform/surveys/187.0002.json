@@ -639,6 +639,10 @@
         {
           "text": "Why were the following service robot activites not selected?",
           "question_id": "d8"
+        },
+        {
+          "text": "In the box below, please add any comments that you would like to make",
+          "question_id": "500"
         }]
     },
     {
