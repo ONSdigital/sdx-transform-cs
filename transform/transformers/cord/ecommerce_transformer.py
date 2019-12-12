@@ -560,8 +560,8 @@ class Ecommerce2019Transformer(EcommerceTransformer):
         """
         answers = {
             "532": self.yes_no_question("532"),
-            "472": self.checkbox_question("472"),
-            "473": self.checkbox_question("473"),
+            "472": self.checkbox_question("472", dependant_qcode="532"),
+            "473": self.checkbox_question("473", dependant_qcode="532"),
 
             "474": self.negative_playback_question("474", "d7"),
             "475": self.negative_playback_question("475", "d7"),
