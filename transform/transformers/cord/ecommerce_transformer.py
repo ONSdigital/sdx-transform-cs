@@ -112,7 +112,7 @@ class EcommerceTransformer:
         self.response = {"123": "words", "d1": "They weren’t experienced"}
         negative_playback_question("123", "d1") # "10"
         """
-        change_responses = ["They’re not used", "They weren’t experienced"]
+        change_responses = ["They’re not used", "They are not used", "They weren’t experienced"]
 
         if self.get_qcode(q_code):
             return "10"
@@ -545,7 +545,7 @@ class Ecommerce2019Transformer(EcommerceTransformer):
             "156": self.yes_no_question("156"),
             "165": self.checkbox_question("165"),
             "316": self.checkbox_question("316"),
-            "495": self.radio_question_option("r2", "Mainly performed by the business's own employees"),
+            "495": self.radio_question_option("r2", "Mainly performed by the business’s own employees"),
             "496": self.radio_question_option("r2", "Mainly performed by the external suppliers")
         }
 
@@ -560,8 +560,8 @@ class Ecommerce2019Transformer(EcommerceTransformer):
         """
         answers = {
             "532": self.yes_no_question("532"),
-            "472": self.checkbox_question("472"),
-            "473": self.checkbox_question("473"),
+            "472": self.checkbox_question("472", dependant_qcode="532"),
+            "473": self.checkbox_question("473", dependant_qcode="532"),
 
             "474": self.negative_playback_question("474", "d7"),
             "475": self.negative_playback_question("475", "d7"),
