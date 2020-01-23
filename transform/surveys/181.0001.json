@@ -7,11 +7,11 @@
       "title": "1. Vacancies",
       "questions": [
         {
-          "text": "How many vacancies do you have?",
+          "text": "What was the number of job vacancies for which you were actively seeking recruits from outside of the business?",
           "question_id": "10"
         },
         {
-          "text": "Any comments?",
+          "text": "Please explain any changes in your figures from the previous period",
           "question_id": "146",
           "type": "contains"
         }
