@@ -16,6 +16,7 @@ from transform.transformers.cord import EcommerceTransformer, Ecommerce2019Trans
 
 cord_surveys = ["187"]
 cora_surveys = ["144"]
+vacancies_surveys = ["182", "183", "184", "185"]
 env = Environment(loader=PackageLoader('transform', 'templates'))
 
 logger_initial_config(service_name='sdx-transform-cs',
@@ -100,7 +101,7 @@ def render_pck(batch_number=False):
 
     # There is a requirement for all variations of the vacancies survey to have the
     # survey_id be 181 when it goes downstream
-    if response['survey_id'] in ['182', '183', '184', '185']:
+    if response['survey_id'] in vacancies_surveys:
         logger.info("Vacancies survey detected, changing survey_id to 181")
         response['survey_id'] = '181'
 
