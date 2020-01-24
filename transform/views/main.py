@@ -207,7 +207,7 @@ def common_software(sequence_no=1000, batch_number=0):
 
     # There is a requirement for all variations of the vacancies survey to have the
     # survey_id be 181 when it goes downstream
-    if survey_response['survey_id'] in ['182', '183', '184', '185']:
+    if survey_response['survey_id'] in vacancies_surveys:
         logger.info("Vacancies survey detected, changing survey_id to 181")
         survey_response['survey_id'] = '181'
 
