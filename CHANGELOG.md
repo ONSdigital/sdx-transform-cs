@@ -1,4 +1,5 @@
 ### Unreleased
+ - Add Vacancies survey
 
 ### 3.13.1 2019-12-17
  - Fix transformation errors in e-commerce 0001 and 0002 formtypes
