@@ -202,9 +202,15 @@ class TestTransformService(unittest.TestCase):
             sub_date = dateutil.parser.parse(payload_object["submitted_at"])
             sub_date_str = sub_date.strftime("%Y%m%d")
 
-            filename = "EDC_{}_{}_1000.csv".format(payload_object["survey_id"], sub_date_str)
-
-            self.assertTrue(filename in z.namelist())
+            # Vacancies surveys are unique in that the csv file needs to refer to survey_id 181.  This is the same
+            # for the pck, but NOT the same for the IDBR receipt (don't ask why...it's complicated). For vacancies
+            # surveys we need the check to be slightly different then usual.
+            vacancies_surveys = ["182", "183", "184", "185"]
+            if payload_object["survey_id"] in vacancies_surveys:
+                filename = "EDC_181_{}_1000.csv".format(sub_date_str)
+            else:
+                filename = "EDC_{}_{}_1000.csv".format(payload_object["survey_id"], sub_date_str)
+            self.assertIn(filename, z.namelist())
 
             edc_file = z.open(filename)
 

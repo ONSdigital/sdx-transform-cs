@@ -27,9 +27,9 @@ class CSTransformer:
 
     def create_zip(self):
         """
-        Create a in memory zip
+        Create an in memory zip
         """
-        # add pck , idbr then images and index_file
+        # add pck, idbr then images and index_file
         pck_name = self._create_pck()
         idbr_name = self._create_idbr()
         response_io_name = self._create_response_json()
@@ -56,6 +56,15 @@ class CSTransformer:
 
     def _create_pck(self):
         template = env.get_template('pck.tmpl')
+        # Vacancy surveys have a requirement to go to common software as survey_id 181.
+        # IDBR has a requirement that it needs the original survey_id.  We change it here
+        # for the pck transformation, then put it back so the receipt generation can know
+        # what it originally was.
+        vacancies_surveys = ["182", "183", "184", "185"]
+        original_survey_id = None
+        if self._survey['survey_id'] in vacancies_surveys:
+            original_survey_id = self._survey['survey_id']
+            self._survey['survey_id'] = '181'
 
         pck_transformer = PCKTransformer(self._survey, self._response)
         answers = pck_transformer.derive_answers()
@@ -71,6 +80,8 @@ class CSTransformer:
         self._pck.seek(0)
 
         pck_name = "%s_%04d" % (self._survey['survey_id'], self._sequence_no)
+        if original_survey_id:
+            self._survey['survey_id'] = original_survey_id
         return pck_name
 
     def _create_idbr(self):
@@ -87,6 +98,8 @@ class CSTransformer:
         return idbr_name
 
     def _create_response_json(self):
+        self._logger.info(self._survey)
+        self._logger.info(self._response)
         original_json_name = "%s_%04d.json" % (self._survey['survey_id'], self._sequence_no)
         self._response_json.write(json.dumps(self._response))
         self._response_json.seek(0)

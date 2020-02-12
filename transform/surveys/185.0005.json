@@ -1,0 +1,21 @@
+{
+  "title": "Quarterly Vacancy Survey",
+  "survey_id": "185",
+  "form_type": "0005",
+  "question_groups": [
+    {
+      "title": "1. Vacancies",
+      "questions": [
+        {
+          "text": "What was the number of job vacancies for which you were actively seeking recruits from outside of the business?",
+          "question_id": "10"
+        },
+        {
+          "text": "Please explain any changes in your figures from the previous period",
+          "question_id": "146",
+          "type": "contains"
+        }
+      ]
+    }
+  ]
+}
