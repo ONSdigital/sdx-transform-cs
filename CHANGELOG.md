@@ -1,4 +1,5 @@
 ### Unreleased
+ - Changed filename generation in vacancies to match the downstream requirements (IDBR unchanged, everything else changed to survey id 181)
 
 ### 3.14.0 2020-01-30
  - Add Vacancies survey
