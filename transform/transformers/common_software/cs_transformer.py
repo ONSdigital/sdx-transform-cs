@@ -98,8 +98,6 @@ class CSTransformer:
         return idbr_name
 
     def _create_response_json(self):
-        self._logger.info(self._survey)
-        self._logger.info(self._response)
         original_json_name = "%s_%04d.json" % (self._survey['survey_id'], self._sequence_no)
         self._response_json.write(json.dumps(self._response))
         self._response_json.seek(0)
