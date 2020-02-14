@@ -56,16 +56,6 @@ class CSTransformer:
 
     def _create_pck(self):
         template = env.get_template('pck.tmpl')
-        # Vacancy surveys have a requirement to go to common software as survey_id 181.
-        # IDBR has a requirement that it needs the original survey_id.  We change it here
-        # for the pck transformation, then put it back so the receipt generation can know
-        # what it originally was.
-        vacancies_surveys = ["182", "183", "184", "185"]
-        original_survey_id = None
-        if self._survey['survey_id'] in vacancies_surveys:
-            original_survey_id = self._survey['survey_id']
-            self._survey['survey_id'] = '181'
-
         pck_transformer = PCKTransformer(self._survey, self._response)
         answers = pck_transformer.derive_answers()
         cs_form_id = pck_transformer.get_cs_form_id()
@@ -79,9 +69,15 @@ class CSTransformer:
         self._pck.write(template_output)
         self._pck.seek(0)
 
-        pck_name = "%s_%04d" % (self._survey['survey_id'], self._sequence_no)
-        if original_survey_id:
-            self._survey['survey_id'] = original_survey_id
+        # Vacancy surveys have a requirement to go to common software as survey_id 181.
+        # We only change the filename as the survey_id isn't included in the content of
+        # the pck file.
+        vacancies_surveys = ["182", "183", "184", "185"]
+        if self._survey['survey_id'] in vacancies_surveys:
+            pck_name = "%s_%04d" % ('181', self._sequence_no)
+        else:
+            pck_name = "%s_%04d" % (self._survey['survey_id'], self._sequence_no)
+
         return pck_name
 
     def _create_idbr(self):
