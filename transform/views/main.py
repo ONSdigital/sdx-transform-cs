@@ -16,7 +16,6 @@ from transform.transformers.cord import EcommerceTransformer, Ecommerce2019Trans
 
 cord_surveys = ["187"]
 cora_surveys = ["144"]
-vacancies_surveys = ["182", "183", "184", "185"]
 env = Environment(loader=PackageLoader('transform', 'templates'))
 
 logger_initial_config(service_name='sdx-transform-cs',
@@ -98,13 +97,6 @@ def render_pck(batch_number=False):
     used for common-software surveys.
     """
     response = request.get_json(force=True)
-
-    # There is a requirement for all variations of the vacancies survey to have the
-    # survey_id be 181 when it goes downstream
-    if response['survey_id'] in vacancies_surveys:
-        logger.info("Vacancies survey detected, changing survey_id to 181")
-        response['survey_id'] = '181'
-
     survey = get_survey(response)
 
     if not survey:
@@ -204,12 +196,6 @@ def common_software(sequence_no=1000, batch_number=0):
 
     if sequence_no:
         sequence_no = int(sequence_no)
-
-    # There is a requirement for all variations of the vacancies survey to have the
-    # survey_id be 181 when it goes downstream
-    if survey_response['survey_id'] in vacancies_surveys:
-        logger.info("Vacancies survey detected, changing survey_id to 181")
-        survey_response['survey_id'] = '181'
 
     survey = get_survey(survey_response)
     if not survey:

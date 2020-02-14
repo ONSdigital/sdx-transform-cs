@@ -45,6 +45,32 @@ class TestCSTransformService(unittest.TestCase):
         }
     }'''
 
+    vacancies_message = '''{
+        "collection": {
+            "exercise_sid": "c118471e-f243-484b-ba16-9f78a244c465",
+            "instrument_id": "0006",
+            "period": "2001"
+        },
+        "data": {
+            "10": "30",
+            "146": "This is a comment"
+        },
+        "flushed": false,
+        "metadata": {
+            "ref_period_end_date": "2019-01-30",
+            "ref_period_start_date": "2020-01-01",
+            "ru_ref": "49800108249D",
+            "user_id": "UNKNOWN"
+        },
+        "origin": "uk.gov.ons.edc.eq",
+        "started_at": "2020-01-05T10:54:11.548611+00:00",
+        "submitted_at": "2020-01-05T14:49:33.448608+00:00",
+        "type": "uk.gov.ons.edc.eq:surveyresponse",
+        "version": "0.0.1",
+        "survey_id": "182",
+        "case_id": "4d32d367-d725-49ba-8776-a14f5ae035ee"
+    }'''
+
     def setUp(self):
 
         # creates a test client
@@ -77,6 +103,25 @@ class TestCSTransformService(unittest.TestCase):
             'EDC_QImages/Images/S000000014.JPG',
             'EDC_QImages/Index/EDC_023_20160312_1000.csv',
             'EDC_QJson/023_1000.json'
+        ]
+
+        self.assertEqual(expected, ziplist)
+
+    @patch('transform.transformers.ImageTransformer._get_image_sequence_list', return_value=[13, 14])
+    def test_creates_vacancies_defaults(self, mock_sequence_no):  # pylint: disable=unused-argument
+
+        zip_contents = self.get_zip_file_contents(self.transform_cs_endpoint, msg_data=self.vacancies_message)
+        z = zipfile.ZipFile(zip_contents)
+        z.close()
+        ziplist = z.namelist()
+
+        # Check that all expected contents are listed in the zip
+        expected = [
+            'EDC_QData/181_1000',
+            'EDC_QReceipts/REC0501_1000.DAT',
+            'EDC_QImages/Images/S000000013.JPG',
+            'EDC_QImages/Index/EDC_181_20200105_1000.csv',
+            'EDC_QJson/182_1000.json'
         ]
 
         self.assertEqual(expected, ziplist)
