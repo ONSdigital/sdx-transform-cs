@@ -46,7 +46,7 @@ def get_2019transformer(data):
         'case_id': 'd9e9ce29-d755-4370-b96c-6c4176b722d1',
         'submitted_at': '2017-03-01T14:25:46.101447+00:00',
         'collection': {
-            'period': '202001',
+            'period': '2019',
             'exercise_sid': '82R1VDWN74',
             'instrument_id': '0001'
         },
