@@ -1,4 +1,6 @@
+
 ### Unreleased
+ - Added implicit percentages for a number of sets of questions in Ecommerce (0001, 0002)
  - Changed filename generation in vacancies to match the downstream requirements (IDBR unchanged, everything else changed to survey id 181)
 
 ### 3.14.0 2020-01-30
