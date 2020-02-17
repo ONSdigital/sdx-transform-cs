@@ -4,7 +4,7 @@ import yaml
 
 import pytest
 
-from transform.transformers.cord import EcommerceTransformer
+from transform.transformers.cord import EcommerceTransformer, Ecommerce2019Transformer
 
 
 def get_transformer(data):
@@ -30,6 +30,33 @@ def get_transformer(data):
     base_submission.update(data)
 
     transformer = EcommerceTransformer(base_submission)
+
+    return transformer
+
+
+def get_2019transformer(data):
+    base_submission = {
+        'metadata': {
+            'user_id': 'K5O86M2NU1',
+            'ru_ref': '12346789012A'
+        },
+        'origin': 'uk.gov.ons.edc.eq',
+        'survey_id': '187',
+        'tx_id': '40e659ec-013f-4888-9a31-ec1e0ad37888',
+        'case_id': 'd9e9ce29-d755-4370-b96c-6c4176b722d1',
+        'submitted_at': '2017-03-01T14:25:46.101447+00:00',
+        'collection': {
+            'period': '202001',
+            'exercise_sid': '82R1VDWN74',
+            'instrument_id': '0001'
+        },
+        'type': 'uk.gov.ons.edc.eq:surveyresponse',
+        'version': '0.0.1',
+    }
+
+    base_submission.update(data)
+
+    transformer = Ecommerce2019Transformer(base_submission)
 
     return transformer
 
@@ -248,6 +275,21 @@ class TestTransformerUnits:
         transformer = get_transformer(data)
 
         assert transformer.checkbox_question(qcode, dependant_qcode) == expected_output
+
+    @pytest.mark.parametrize('data, qcode, related_qcode, dependant_qcodes, expected_output', [
+        ({'505': 'UK'}, '507', '505', ['505', '506'], '1000'),
+        ({'506': 'Europe'}, '507', '505', ['505', '506'], '0'),
+        ({'505': 'UK', '506': 'Europe', '507': "10.2", '508': '89.8'}, '507', '505', ['505', '506'], '0102'),
+        ({'505': 'UK', '506': 'Europe', '507': '0', '508': '100.0'}, '507', '505', ['505', '506'], '0000'),
+    ])
+    def test_percentage_question_with_dependancies(self, data, qcode, related_qcode, dependant_qcodes, expected_output):
+        data = {
+            'data': data
+        }
+
+        transformer = get_2019transformer(data)
+
+        assert transformer.percentage_question_with_dependancies(qcode, related_qcode, dependant_qcodes) == expected_output
 
     def test_pck_file(self):
         transformer = get_transformer(self.default_data)
