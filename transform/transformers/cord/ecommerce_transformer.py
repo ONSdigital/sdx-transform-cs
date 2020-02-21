@@ -373,6 +373,46 @@ class Ecommerce2019Transformer(EcommerceTransformer):
     """This class is used for the transformation of the 2019 E-commerce survey.  The class inherits from the first
     one (the 2018 version of it) as the answers are transformed in the same way but has a different set of questions to answer."""
 
+    def percentage_question_with_dependancies(self, qcode, related_qcode, dependant_qcodes):
+        """
+        Percentage type question. Will transform to a four digit answer or 0 if blank.
+        There is a key difference between this and the regular precentage_question.  Answers to these questions are
+        implicitly 100 percent if only 1 of the dependant qcodes is marked as ticked and if it's related to the answer in
+        question.
+        In the survey, if more than 1 is ticked then they're asked another question about what percentage split the answer has.
+
+        Here is an example:
+        One of the questions was 'During 2019, what was the percentage breakdown of the turnover of orders received via a website or
+        ‘app’ from?'  This had 3 tickboxes (UK, Europe, Rest of world), these had the qcodes 310, 311, 312.  If multiple were ticked
+        then it would go to another screen asking what the split was (as a percentage that totals 100). These percentages have the qcodes
+        509, 510, 511.
+        If only 1 was ticked (for example UK, qcode 310) then calling:
+            self.percentage_question_with_dependancies("509", '310', ['310', '311', '312'])
+        would result in the qcode 509 being populated with '1000' if only 310 (our UK tickbox) had a value in it.
+
+        :param self: This object
+        :param qcode: The qcode of the value we're attempting to transform
+        :param releated_qcode: The qcode that, if is the only one with a value, will let us know that the qcode provided will need to have
+        the '1000' value.
+        :param dependant_qcodes: A list of qcodes that make up a question.  If only 1 has a value then this will cause the qcode
+        for this question to have a value of '1000'.
+        :returns: '1000' if the related_qcode is the the with a value in the dependant_qcode list.  A 4 digit number representing a percentage
+        if 2 or more dependant_qcodes have values.  And '0' if the previous condition is true, but this field is blank.
+
+        """
+        # First check how many of the dependant qcodes have been answered
+        completed_answers = 0
+        for dependant_qcode in dependant_qcodes:
+            if self.get_qcode(dependant_qcode):
+                completed_answers += 1
+
+        # If only 1 has been answered and it's the one that matches up to this answer, then
+        # we imply that the value of this question is 100 percent
+        if completed_answers == 1 and self.get_qcode(related_qcode):
+            return self.convert_percentage("100")
+
+        return self.percentage_question(qcode)
+
     def transform(self):
         """Perform a transform on survey data."""
         transformed = {
@@ -464,18 +504,18 @@ class Ecommerce2019Transformer(EcommerceTransformer):
             "315": self.checkbox_question("315", dependant_qcode="257"),
             "458": self.checkbox_question("458", dependant_qcode="234"),
             "459": self.checkbox_question("459", dependant_qcode="234"),
-            "460": self.percentage_question("460"),
-            "461": self.percentage_question("461"),
+            "460": self.percentage_question_with_dependancies("460", '458', ['458', '459']),
+            "461": self.percentage_question_with_dependancies("461", '459', ['458', '459']),
             "505": self.checkbox_question("505", dependant_qcode="234"),
             "506": self.checkbox_question("506", dependant_qcode="234"),
-            "507": self.percentage_question("507"),
-            "508": self.percentage_question("508"),
-            "509": self.percentage_question("509"),
-            "510": self.percentage_question("510"),
-            "511": self.percentage_question("511"),
-            "512": self.percentage_question("512"),
-            "513": self.percentage_question("513"),
-            "514": self.percentage_question("514")
+            "507": self.percentage_question_with_dependancies("507", '505', ['505', '506']),
+            "508": self.percentage_question_with_dependancies("508", '506', ['505', '506']),
+            "509": self.percentage_question_with_dependancies("509", '310', ['310', '311', '312']),
+            "510": self.percentage_question_with_dependancies("510", '311', ['310', '311', '312']),
+            "511": self.percentage_question_with_dependancies("511", '312', ['310', '311', '312']),
+            "512": self.percentage_question_with_dependancies("512", '313', ['313', '314', '315']),
+            "513": self.percentage_question_with_dependancies("513", '314', ['313', '314', '315']),
+            "514": self.percentage_question_with_dependancies("514", '315', ['313', '314', '315'])
         }
 
         return answers
