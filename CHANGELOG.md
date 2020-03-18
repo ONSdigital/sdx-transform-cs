@@ -1,5 +1,7 @@
 
 ### Unreleased
+ - Handle new comment field in QBS (139)
+
 ### 3.14.1 2020-03-03
  - Added implicit percentages for a number of sets of questions in Ecommerce (0001, 0002)
  - Changed filename generation in vacancies to match the downstream requirements (IDBR unchanged, everything else changed to survey id 181)
