@@ -21,7 +21,11 @@
         }, {
           "text": "Total employees",
           "question_id": "50"
-      }]
+        }, {
+          "text": "Please explain any changes in the figures from the previous return",
+          "question_id": "146",
+          "type": "contains"
+        }]
     },
     {
       "questions": [{
