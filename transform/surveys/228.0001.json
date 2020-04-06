@@ -43,16 +43,6 @@
                     "type": "contains"
                 },
                 {
-                    "text": "Which sector did the business carry out housing work for?",
-                    "question_id": "b",
-                    "number": "b"
-                },
-                {
-                    "text": "Which sector did the business carry out housing work for?",
-                    "question_id": "c",
-                    "number": "c"
-                },
-                {
                     "text": "What was the value of work carried out on new housing builds for public sector projects?",
                     "question_id": "201",
                     "number": "201",
@@ -111,21 +101,6 @@
                     "question_id": "903",
                     "number": "903",
                     "type": "contains"
-                },
-                {
-                    "text": "Which sector did the business carry out the other construction work for?",
-                    "question_id": "g",
-                    "number": "g"
-                },
-                {
-                    "text": "Which sector did the business carry out the other construction work for?",
-                    "question_id": "h",
-                    "number": "h"
-                },
-                {
-                    "text": "Which sector did the business carry out the other construction work for?",
-                    "question_id": "i",
-                    "number": "i"
                 },
                 {
                     "text": "What was the value of R&M carried out on other existing structures for public sector projects?",
