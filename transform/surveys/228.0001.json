@@ -1,7 +1,7 @@
 {
-    "title": "Quarterly Stocks Survey (NI)",
-    "survey_id": "017",
-    "form_type": "0004",
+    "title": "Construction survey",
+    "survey_id": "228",
+    "form_type": "0001",
     "question_groups": [
         {
             "title": "Reporting Period",
@@ -104,82 +104,92 @@
             ]
         },
         {
-            "title": "Significant changes",
+            "title": "Other construction work",
             "questions": [
                 {
-                    "text": "Did any significant changes occur to the total value of stocks for the business?",
-                    "question_id": "146a",
-                    "type": "radio",
-                    "options": [
-                        "Yes",
-                        "No"
-                    ]
+                    "text": "During the period, did the business carry out any other construction work?",
+                    "question_id": "903",
+                    "number": "903",
+                    "type": "contains"
                 },
                 {
-                    "text": "Explain any differences between this quarter's opening value and the previously returned closing value",
-                    "question_id": "146",
-                    "type": "contains"
+                    "text": "Which sector did the business carry out the other construction work for?",
+                    "question_id": "g",
+                    "number": "g"
+                },
+                {
+                    "text": "Which sector did the business carry out the other construction work for?",
+                    "question_id": "h",
+                    "number": "h"
+                },
+                {
+                    "text": "Which sector did the business carry out the other construction work for?",
+                    "question_id": "i",
+                    "number": "i"
+                },
+                {
+                    "text": "What was the value of R&M carried out on other existing structures for public sector projects?",
+                    "question_id": "232",
+                    "number": "232",
+                    "type": "currency"
+                },
+                {
+                    "text": "What was the value of work carried out on new structures for private commercial sector projects?",
+                    "question_id": "241",
+                    "number": "241",
+                    "type": "currency"
+                },
+                {
+                    "text": "what was the value of work carried out on new structures for private industrial sector projects?",
+                    "question_id": "242",
+                    "number": "242",
+                    "type": "currency"
+                },
+                {
+                    "text": "what was the value of R&M carried out on existing structures for private industrial and/or private commercial sector projects?",
+                    "question_id": "243",
+                    "number": "243",
+                    "type": "currency"
                 }
             ]
         },
         {
-            "title": "Please indicate the reasons for any changes",
+            "title": "Employment",
             "questions": [
                 {
-                    "text": "Select all that apply",
-                    "question_id": "146b",
-                    "type": "checkbox",
-                    "options": [
-                        "Start or end of long term project"
-                    ]
+                    "text": "During the period, what were the number of employees for the business?",
+                    "question_id": "50",
+                    "type": "number"
                 },
                 {
-                    "text": "Select all that apply",
-                    "question_id": "146c",
-                    "type": "checkbox",
-                    "options": [
-                        "End of accounting period or financial year"
-                    ]
+                    "text": "Number of male employees working less than 30 hours per week?",
+                    "question_id": "51",
+                    "type": "number"
                 },
                 {
-                    "text": "Select all that apply",
-                    "question_id": "146d",
-                    "type": "checkbox",
-                    "options": [
-                        "Normal movement for the time of year"
-                    ]
+                    "text": "Number of female employees working less than 30 hours per week?",
+                    "question_id": "52",
+                    "type": "number"
                 },
                 {
-                    "text": "Select all that apply",
-                    "question_id": "146e",
-                    "type": "checkbox",
-                    "options": [
-                        "Change of business structure, merger or takeover"
-                    ]
+                    "text": "Number of male employees working more than 30 hours per week?",
+                    "question_id": "53",
+                    "type": "number"
                 },
                 {
-                    "text": "Select all that apply",
-                    "question_id": "146f",
-                    "type": "checkbox",
-                    "options": [
-                        "One off increase in stocks"
-                    ]
-                },
+                    "text": "Number of female employees working more than 30 hours per week?",
+                    "question_id": "54",
+                    "type": "number"
+                }
+            ]
+        },
+        {
+            "title": "Explanation",
+            "questions": [
                 {
-                    "text": "Select all that apply",
-                    "question_id": "146g",
-                    "type": "checkbox",
-                    "options": [
-                        "Introduction or removal of new legislation or incentive"
-                    ]
-                },
-                {
-                    "text": "Select all that apply",
-                    "question_id": "146h",
-                    "type": "checkbox",
-                    "options": [
-                        "Other"
-                    ]
+                    "text": "Please explain any changes in your figures from the previous return, if applicable.",
+                    "question_id": "146",
+                    "type": "contains"
                 }
             ]
         }

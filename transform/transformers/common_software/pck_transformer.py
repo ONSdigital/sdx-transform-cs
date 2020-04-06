@@ -24,9 +24,13 @@ class PCKTransformer:
 
     qpses_decimal_questions = ["60", "561", "562", "661", "662"]
 
-    # QSS (Stocks - survey_id 017) has 20 different formtypes where the majority of questions both numeric and in need of rounding.
+    construction_currency_questions = ["201", "202", "211", "212", "221", "222", "232", "241", "242", "243"]
+
+    # QSS (Stocks - survey_id 017) has 20 different formtypes where the majority of questions both numeric and in need
+    # of rounding.
     # The list of answers that DON'T need rounding is much shorter.
-    qss_non_currency_questions = ["11", "12", "15", "146", '146a', '146b', '146c', '146d', '146e', '146f', '146g', '146h']
+    qss_non_currency_questions = ["11", "12", "15", "146", '146a', '146b', '146c', '146d', '146e', '146f', '146g',
+                                  '146h']
 
     # Mapping used to calculate totals and which qcode should hold the total value.
     qss_questions = {
@@ -194,6 +198,10 @@ class PCKTransformer:
         "185": {
             "0005": "VT5A",
         },
+        "228": {
+            "0001": "CA01A",
+            "0002": "CA01E",
+        },
     }
 
     qcas_survey_id = "019"
@@ -201,6 +209,7 @@ class PCKTransformer:
     rsi_survey_id = "023"
     qbs_survey_id = "139"
     qpses_survey_ids = ["160", "165", "169"]
+    construction_survey_id = "228"
 
     def __init__(self, survey, response_data):
         self.survey = survey
@@ -234,7 +243,8 @@ class PCKTransformer:
 
     def get_cs_form_id(self):
         """
-        Returns the formtype that common software uses from self.response data.  Also checks the form_type and intstrument_id are valid too.
+        Returns the formtype that common software uses from self.response data.  Also checks the form_type and
+        instru are valid too.
         :returns: Common software version of formtype, or None if either form_type or instrument_id are invalid.
         """
         instrument_id = self.response['collection']['instrument_id']
@@ -309,7 +319,7 @@ class PCKTransformer:
         For QSS (Stocks), round to the nearest thousand for every field EXCEPT a select list of
         non-numeric fields.
 
-        For QCAS Surveys, round the values of the currency fields and divide
+        For QCAS and Construction Surveys, round the values of the currency fields and divide
         by 1000 (i.e., 56100 would return 56)
 
         """
@@ -329,9 +339,13 @@ class PCKTransformer:
             self.data.update({k: str(self.round_to_nearest_thousand(v))
                               for k, v in self.data.items() if k in self.qcas_currency_questions})
 
+        if self.survey.get('survey_id') in [self.construction_survey_id]:
+            self.data.update({k: str(self.round_to_nearest_thousand(v))
+                              for k, v in self.data.items() if k in self.construction_currency_questions})
+
     def parse_negative_values(self):
         """If any number field contains a negative value then replace it with a number containing
-        the maxiumum number of 9's that downstream will allow
+        the maximum number of 9's that downstream will allow
         """
         for k, v in self.data.items():  # noqa
             try:
