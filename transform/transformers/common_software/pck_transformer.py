@@ -513,7 +513,11 @@ class PCKTransformer:
 
     @staticmethod
     def round_to_nearest_thousand(value):
-        """QCAS rounding is done on a ROUND_HALF_UP basis and values are divided by 1000 for the pck"""
+        """QCAS rounding is done on a ROUND_HALF_UP basis and values are divided by 1000 for the pck
+        Examples:
+            54400 -> 54
+            6611 -> 6
+        """
         decimal.getcontext().rounding = ROUND_HALF_UP
         return Decimal(round(Decimal(float(value))) / 1000).quantize(1)
 
