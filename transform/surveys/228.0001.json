@@ -1,0 +1,187 @@
+{
+    "title": "Quarterly Stocks Survey (NI)",
+    "survey_id": "017",
+    "form_type": "0004",
+    "question_groups": [
+        {
+            "title": "Reporting Period",
+            "questions": [
+                {
+                    "title": "What are the dates of the period that you will be reporting for?",
+                    "text": "From",
+                    "question_id": "11",
+                    "number": "11",
+                    "type": "date"
+                },
+                {
+                    "title": "What are the dates of the period that you will be reporting for?",
+                    "text": "To",
+                    "question_id": "12",
+                    "number": "12",
+                    "type": "date"
+                }
+            ]
+        },
+        {
+            "title": "Value of work",
+            "questions": [
+                {
+                    "text": "During the period, what was the total value of all construction work carried out by the business?",
+                    "question_id": "290",
+                    "number": "290",
+                    "type": "currency"
+                }
+            ]
+        },
+        {
+            "title": "Housing work",
+            "questions": [
+                {
+                    "text": "During the period, did the business carry out any work on housing?",
+                    "question_id": "902",
+                    "number": "902",
+                    "type": "contains"
+                },
+                {
+                    "text": "Which sector did the business carry out housing work for?",
+                    "question_id": "b",
+                    "number": "b"
+                },
+                {
+                    "text": "Which sector did the business carry out housing work for?",
+                    "question_id": "c",
+                    "number": "c"
+                },
+                {
+                    "text": "What was the value of work carried out on new housing builds for public sector projects?",
+                    "question_id": "201",
+                    "number": "201",
+                    "type": "currency"
+                },
+                {
+                    "text": "What was the value of repair and maintenance (R&M), improvements and major alterations carried out on existing housing for public sector projects?",
+                    "question_id": "202",
+                    "number": "202",
+                    "type": "currency"
+                },
+                {
+                    "text": "What was the value of work carried out on new housing builds for private sector projects?",
+                    "question_id": "211",
+                    "number": "211",
+                    "type": "currency"
+                },
+                {
+                    "text": "What was the value of R&M, improvements and major alterations carried out on existing housing for private sector projects?",
+                    "question_id": "212",
+                    "number": "212",
+                    "type": "currency"
+                }
+
+            ]
+        },
+        {
+            "title": "Infrastructure",
+            "questions": [
+                {
+                    "text": "During the period, did the business carry out any work on infrastructure?",
+                    "question_id": "903",
+                    "number": "903",
+                    "type": "contains"
+                },
+
+                {
+                    "text": "What was the value of work carried out on new infrastructure?",
+                    "question_id": "221",
+                    "number": "221",
+                    "type": "currency"
+                },
+                {
+                    "text": "What was the value of R&M carried out on existing infrastructure?",
+                    "question_id": "222",
+                    "number": "222",
+                    "type": "currency"
+                }
+            ]
+        },
+        {
+            "title": "Significant changes",
+            "questions": [
+                {
+                    "text": "Did any significant changes occur to the total value of stocks for the business?",
+                    "question_id": "146a",
+                    "type": "radio",
+                    "options": [
+                        "Yes",
+                        "No"
+                    ]
+                },
+                {
+                    "text": "Explain any differences between this quarter's opening value and the previously returned closing value",
+                    "question_id": "146",
+                    "type": "contains"
+                }
+            ]
+        },
+        {
+            "title": "Please indicate the reasons for any changes",
+            "questions": [
+                {
+                    "text": "Select all that apply",
+                    "question_id": "146b",
+                    "type": "checkbox",
+                    "options": [
+                        "Start or end of long term project"
+                    ]
+                },
+                {
+                    "text": "Select all that apply",
+                    "question_id": "146c",
+                    "type": "checkbox",
+                    "options": [
+                        "End of accounting period or financial year"
+                    ]
+                },
+                {
+                    "text": "Select all that apply",
+                    "question_id": "146d",
+                    "type": "checkbox",
+                    "options": [
+                        "Normal movement for the time of year"
+                    ]
+                },
+                {
+                    "text": "Select all that apply",
+                    "question_id": "146e",
+                    "type": "checkbox",
+                    "options": [
+                        "Change of business structure, merger or takeover"
+                    ]
+                },
+                {
+                    "text": "Select all that apply",
+                    "question_id": "146f",
+                    "type": "checkbox",
+                    "options": [
+                        "One off increase in stocks"
+                    ]
+                },
+                {
+                    "text": "Select all that apply",
+                    "question_id": "146g",
+                    "type": "checkbox",
+                    "options": [
+                        "Introduction or removal of new legislation or incentive"
+                    ]
+                },
+                {
+                    "text": "Select all that apply",
+                    "question_id": "146h",
+                    "type": "checkbox",
+                    "options": [
+                        "Other"
+                    ]
+                }
+            ]
+        }
+    ]
+}

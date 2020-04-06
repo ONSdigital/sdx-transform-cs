@@ -1,5 +1,6 @@
 
 ### Unreleased
+ - Add construction survey
 
 ### 3.15.0 2020-03-20
  - Handle new comment field in QBS (139)
