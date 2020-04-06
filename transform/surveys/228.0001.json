@@ -154,36 +154,6 @@
             ]
         },
         {
-            "title": "Employment",
-            "questions": [
-                {
-                    "text": "During the period, what were the number of employees for the business?",
-                    "question_id": "50",
-                    "type": "number"
-                },
-                {
-                    "text": "Number of male employees working less than 30 hours per week?",
-                    "question_id": "51",
-                    "type": "number"
-                },
-                {
-                    "text": "Number of female employees working less than 30 hours per week?",
-                    "question_id": "52",
-                    "type": "number"
-                },
-                {
-                    "text": "Number of male employees working more than 30 hours per week?",
-                    "question_id": "53",
-                    "type": "number"
-                },
-                {
-                    "text": "Number of female employees working more than 30 hours per week?",
-                    "question_id": "54",
-                    "type": "number"
-                }
-            ]
-        },
-        {
             "title": "Explanation",
             "questions": [
                 {
