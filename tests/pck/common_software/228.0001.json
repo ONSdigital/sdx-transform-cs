@@ -1,6 +1,12 @@
 {
-  "submission": {
     "case_id": "03de2d14-9cd7-4e0a-a8a2-5ded5a0fde69",
+    "origin": "uk.gov.ons.edc.eq",
+    "started_at": "2020-04-06T12:29:30.520410",
+    "submitted_at": "2020-04-06T12:43:55.142758",
+    "survey_id": "228",
+    "tx_id": "e697cbd5-d05b-4359-a3ba-897cf7823108",
+    "type": "uk.gov.ons.edc.eq:surveyresponse",
+    "version": "0.0.1",
     "collection": {
       "exercise_sid": "db496c9f-2ec5-4676-9cd4-c6ba6c051c5f",
       "instrument_id": "0001",
@@ -27,12 +33,7 @@
       "901": "Yes, I can report for this period",
       "902": "Yes, we carried out work on housing",
       "903": "Yes, we carried out work on infrastructure",
-      "904": "Yes, we carried out other construction work",
-      "b": "Public sector projects",
-      "c": "Private sector projects",
-      "g": "Public sector projects",
-      "h": "Private commercial sector projects",
-      "i": "Private industrial sector projects"
+      "904": "Yes, we carried out other construction work"
     },
     "flushed": false,
     "metadata": {
@@ -40,13 +41,5 @@
       "ref_period_start_date": "2016-05-01",
       "ru_ref": "48514665167x",
       "user_id": "UNKNOWN"
-    },
-    "origin": "uk.gov.ons.edc.eq",
-    "started_at": "2020-04-06T12:29:30.520410",
-    "submitted_at": "2020-04-06T12:43:55.142758",
-    "survey_id": "228",
-    "tx_id": "e697cbd5-d05b-4359-a3ba-897cf7823108",
-    "type": "uk.gov.ons.edc.eq:surveyresponse",
-    "version": "0.0.1"
-  }
+    }
 }
