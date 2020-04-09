@@ -24,7 +24,7 @@ class PCKTransformer:
 
     qpses_decimal_questions = ["60", "561", "562", "661", "662"]
 
-    construction_currency_questions = ["201", "202", "211", "212", "221", "222", "232", "241", "242", "243", "290"]
+    construction_currency_questions = ["201", "202", "211", "212", "221", "222", "231", "232", "241", "242", "243", "290"]
 
     # QSS (Stocks - survey_id 017) has 20 different formtypes where the majority of questions both numeric and in need
     # of rounding.
