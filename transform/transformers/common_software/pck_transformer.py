@@ -363,6 +363,8 @@ class PCKTransformer:
         For RSI and QBS Surveys, impute breakdown values as zero if the total
         provided was zero.
         For QCAS, the confirmation questions are not needed for transformation.
+        For Construction, there are 2 sets of checkboxes that are used only for navigation.  It's not possible
+        for checkboxes to not send a qcode with the answer to us so we'll discard it if it's present.
         """
         if self.survey.get('survey_id') == self.rsi_survey_id:
             if 'd20' in self.data:
@@ -380,6 +382,13 @@ class PCKTransformer:
 
             if 'd681' in self.data:
                 del self.data['d681']
+
+        if self.survey.get('survey_id') == self.construction_survey_id:
+            if 'd1' in self.data:
+                del self.data['d1']
+
+            if 'd2' in self.data:
+                del self.data['d2']
 
     def preprocess_comments(self):
         """147 or any 146x indicates a special comment type that should not be shown
