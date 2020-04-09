@@ -109,6 +109,12 @@
                     "type": "contains"
                 },
                 {
+                    "text": "What was the value of work carried out on other new structures for public sector projects?",
+                    "question_id": "231",
+                    "number": "231",
+                    "type": "currency"
+                },
+                {
                     "text": "What was the value of R&M carried out on other existing structures for public sector projects?",
                     "question_id": "232",
                     "number": "232",
