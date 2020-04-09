@@ -20,10 +20,6 @@
       "212": "2887.32",
       "221": "7114.88",
       "222": "4014.87",
-      "232": "3555.55",
-      "241": "4191.02",
-      "242": "2200.33",
-      "243": "1919.55",
       "290": "569234.33",
       "50": "56",
       "51": "23",
@@ -34,8 +30,7 @@
       "902": "Yes, we carried out work on housing",
       "903": "Yes, we carried out work on infrastructure",
       "904": "Yes, we carried out other construction work",
-      "d1":"['Public sector projects', 'Private sector projects']",
-      "d2":"['Public sector projects', 'Private commercial sector projects', 'Private industrial sector projects']"
+      "d1":"['Public sector projects', 'Private sector projects']"
     },
     "flushed": false,
     "metadata": {
