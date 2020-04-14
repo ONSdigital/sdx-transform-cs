@@ -518,7 +518,19 @@ class PCKTransformer:
             if int(k) in self.form_questions:
                 derived.append((int(k), self.get_derived_value(k, v)))
 
+        derived = self.add_change_of_address_question(derived)
+
         return sorted(derived)
+
+    def add_change_of_address_question(self, derived):
+        """The construction survey has a 'Did your address change?' question with a qcode 0001.
+        This always needs to be defaulted to false (2).
+        If the current survey isn't Construction then no changes are applied.
+        """
+        if self.survey.get('survey_id') == self.construction_survey_id:
+            value = "2".zfill(11)
+            derived.append((1, value))
+        return derived
 
     @staticmethod
     def round_to_nearest_thousand(value):
