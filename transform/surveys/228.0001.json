@@ -10,7 +10,7 @@
                     "text": "Are you able to report for the two period dates?",
                     "question_id": "901",
                     "number": "901",
-                    "type": "contains"
+                    "type": "radio"
                 },
                 {
                     "title": "What are the dates of the period that you will be reporting for?",
@@ -46,7 +46,7 @@
                     "text": "During the period, did the business carry out any work on housing?",
                     "question_id": "902",
                     "number": "902",
-                    "type": "contains"
+                    "type": "radio"
                 },
                 {
                     "text": "What was the value of work carried out on new housing builds for public sector projects?",
@@ -82,7 +82,7 @@
                     "text": "During the period, did the business carry out any work on infrastructure?",
                     "question_id": "903",
                     "number": "903",
-                    "type": "contains"
+                    "type": "radio"
                 },
 
                 {
@@ -106,7 +106,7 @@
                     "text": "During the period, did the business carry out any other construction work?",
                     "question_id": "904",
                     "number": "904",
-                    "type": "contains"
+                    "type": "radio"
                 },
                 {
                     "text": "What was the value of work carried out on other new structures for public sector projects?",

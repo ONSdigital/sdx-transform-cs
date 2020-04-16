@@ -480,12 +480,20 @@ class PCKTransformer:
         self.data['398'] = str(dwelling_start_total)
         self.data['399'] = str(dwelling_end_total)
 
-    def parse_estimation_question(self):
+    def parse_yes_no_questions(self):
         """
         For QSS (Stocks), the estimation question needs to be converted from Yes/No to 1/0.
+        For Construction, some of the section questions need to be converted from Yes/No to 1/2.  The actual question
+        text is much longer, but searching for 'Yes' is a good enough test.
         """
         if self.survey.get('survey_id') == self.qss_survey_id:
             self.data['15'] = "1" if self.response["data"].get("15") == "Yes" else "0"
+
+        if self.survey.get('survey_id') == self.construction_survey_id:
+            self.data['901'] = "1" if "Yes" in self.response["data"].get("901") else "2"
+            self.data['902'] = "1" if "Yes" in self.response["data"].get("902") else "2"
+            self.data['903'] = "1" if "Yes" in self.response["data"].get("903") else "2"
+            self.data['904'] = "1" if "Yes" in self.response["data"].get("904") else "2"
 
     def derive_answers(self):
         """Takes a loaded dict structure of survey data and answers sent
@@ -503,7 +511,7 @@ class PCKTransformer:
 
         self.parse_negative_values()
         self.evaluate_confirmation_questions()
-        self.parse_estimation_question()
+        self.parse_yes_no_questions()
 
         answers = self.preprocess_comments()
 

@@ -90,7 +90,7 @@ class TestPckTransformer(unittest.TestCase):
         assert pck_transformer.data == {'681': '100'}
 
     @staticmethod
-    def test_pck_transformer_parse_estimation_question():
+    def test_pck_transformer_parse_yes_no_questions():
         """
         For QSS (Stocks), qcode 15 needs to converted from Yes/No to 1/0 for the pck.
         """
@@ -100,14 +100,14 @@ class TestPckTransformer(unittest.TestCase):
         response = {'collection': {'instrument_id': '0001'}, 'data': {'15': 'Yes', '146': 'Comment question', '139': '13900'}}
         pck_transformer = PCKTransformer(survey, response)
         assert pck_transformer.data == {'15': 'Yes', '146': 'Comment question', '139': '13900'}
-        pck_transformer.parse_estimation_question()
+        pck_transformer.parse_yes_no_questions()
         assert pck_transformer.data == {'15': '1', '146': 'Comment question', '139': '13900'}
 
         # qcode 15 = No case
         response = {'collection': {'instrument_id': '0001'}, 'data': {'15': 'No', '146': 'Comment question', '139': '13900'}}
         pck_transformer = PCKTransformer(survey, response)
         assert pck_transformer.data == {'15': 'No', '146': 'Comment question', '139': '13900'}
-        pck_transformer.parse_estimation_question()
+        pck_transformer.parse_yes_no_questions()
         assert pck_transformer.data == {'15': '0', '146': 'Comment question', '139': '13900'}
 
     def test_pck_transformer_parse_negative_values(self):
