@@ -1,0 +1,32 @@
+{
+  "case_id": "ee4a8191-3dc3-4abb-b141-b4fe5ff64746",
+  "collection": {
+    "exercise_sid": "76aa6dc6-6166-4be4-9ee2-c09310e1a097",
+    "instrument_id": "0001",
+    "period": "201605"
+  },
+  "data": {
+    "146": "Comment",
+    "201": "0",
+    "202": "0",
+    "211": "0",
+    "212": "0",
+    "290": "0",
+    "901": "Yes, I can report for this period",
+    "d1": "['Public sector projects', 'Private sector projects']"
+  },
+  "flushed": false,
+  "metadata": {
+    "ref_period_end_date": "2016-05-31",
+    "ref_period_start_date": "2016-05-01",
+    "ru_ref": "36115566525A",
+    "user_id": "UNKNOWN"
+  },
+  "origin": "uk.gov.ons.edc.eq",
+  "started_at": "2020-04-16T13:28:29.936472",
+  "submitted_at": "2020-04-16T13:29:21.619596",
+  "survey_id": "228",
+  "tx_id": "6a4fb31e-1dc4-4186-bf81-3269f7724c6f",
+  "type": "uk.gov.ons.edc.eq:surveyresponse",
+  "version": "0.0.1"
+}

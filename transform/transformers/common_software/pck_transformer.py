@@ -490,10 +490,10 @@ class PCKTransformer:
             self.data['15'] = "1" if self.response["data"].get("15") == "Yes" else "0"
 
         if self.survey.get('survey_id') == self.construction_survey_id:
-            self.data['901'] = "1" if "Yes" in self.response["data"].get("901") else "2"
-            self.data['902'] = "1" if "Yes" in self.response["data"].get("902") else "2"
-            self.data['903'] = "1" if "Yes" in self.response["data"].get("903") else "2"
-            self.data['904'] = "1" if "Yes" in self.response["data"].get("904") else "2"
+            self.data['901'] = "1" if self.data.get('901') and "Yes" in self.response["data"].get("901") else "2"
+            self.data['902'] = "1" if self.data.get('902') and "Yes" in self.response["data"].get("902") else "2"
+            self.data['903'] = "1" if self.data.get('903') and "Yes" in self.response["data"].get("903") else "2"
+            self.data['904'] = "1" if self.data.get('904') and "Yes" in self.response["data"].get("904") else "2"
 
     def derive_answers(self):
         """Takes a loaded dict structure of survey data and answers sent

@@ -110,6 +110,72 @@ class TestPckTransformer(unittest.TestCase):
         pck_transformer.parse_yes_no_questions()
         assert pck_transformer.data == {'15': '0', '146': 'Comment question', '139': '13900'}
 
+    @staticmethod
+    def test_pck_transformer_parse_yes_no_construction_questions():
+        survey = {'survey_id': '228'}
+
+        # q code 902, 903, 904 yes
+        response = {'collection': {'instrument_id': '0001'}, 'data': {'901': 'Yes, I can report for this period',
+                                                                      '902': 'Yes, we carried out work on housing',
+                                                                      '903': 'Yes, we carried out work on infrastructure',
+                                                                      '904': 'Yes, we carried out other construction work'}}
+
+        pck_transformer = PCKTransformer(survey, response)
+        assert pck_transformer.data == {'901': 'Yes, I can report for this period',
+                                        '902': 'Yes, we carried out work on housing',
+                                        '903': 'Yes, we carried out work on infrastructure',
+                                        '904': 'Yes, we carried out other construction work'}
+
+        pck_transformer.parse_yes_no_questions()
+        assert pck_transformer.data == {'901': '1',
+                                        '902': '1',
+                                        '903': '1',
+                                        '904': '1'}
+
+        # q code 902, 903, 904 no
+        response = {'collection': {'instrument_id': '0001'}, 'data': {'901': 'Yes, I can report for this period',
+                                                                      '902': 'No, we did not carry out work on housing',
+                                                                      '903': 'No, we did not carry out work on infrastructure',
+                                                                      '904': 'No, we did not carry out other construction work'}}
+        pck_transformer = PCKTransformer(survey, response)
+        assert pck_transformer.data == {'901': 'Yes, I can report for this period',
+                                        '902': 'No, we did not carry out work on housing',
+                                        '903': 'No, we did not carry out work on infrastructure',
+                                        '904': 'No, we did not carry out other construction work'}
+
+        pck_transformer.parse_yes_no_questions()
+        assert pck_transformer.data == {'901': '1',
+                                        '902': '2',
+                                        '903': '2',
+                                        '904': '2'}
+        # q code 902, 903, 904 missing
+        response = {'collection': {'instrument_id': '0001'}, 'data': {'901': 'Yes, I can report for this period'}}
+        pck_transformer = PCKTransformer(survey, response)
+        assert pck_transformer.data == {'901': 'Yes, I can report for this period'}
+        pck_transformer.parse_yes_no_questions()
+        assert pck_transformer.data == {'901': '1',
+                                        '902': '2',
+                                        '903': '2',
+                                        '904': '2'}
+
+        # q code 902, 903 no 904 yes
+        response = {'collection': {'instrument_id': '0001'}, 'data': {'901': 'Yes, I can report for this period',
+                                                                      '902': 'No, we did not carry out work on housing',
+                                                                      '903': 'No, we did not carry out work on infrastructure',
+                                                                      '904': 'Yes, we carried out other construction work'}}
+
+        pck_transformer = PCKTransformer(survey, response)
+        assert pck_transformer.data == {'901': 'Yes, I can report for this period',
+                                        '902': 'No, we did not carry out work on housing',
+                                        '903': 'No, we did not carry out work on infrastructure',
+                                        '904': 'Yes, we carried out other construction work'}
+
+        pck_transformer.parse_yes_no_questions()
+        assert pck_transformer.data == {'901': '1',
+                                        '902': '2',
+                                        '903': '2',
+                                        '904': '1'}
+
     def test_pck_transformer_parse_negative_values(self):
         """If any values in the survey are negative, they should be replaced with an all 9's string that is 11 characters long
         """
