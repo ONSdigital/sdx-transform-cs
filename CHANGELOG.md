@@ -1,5 +1,6 @@
 
 ### Unreleased
+ - Fix construction transformation when total value is zero and missing qcodes 902-904 
 
 ### 3.16.0 2020-04-17
  - Add construction survey
