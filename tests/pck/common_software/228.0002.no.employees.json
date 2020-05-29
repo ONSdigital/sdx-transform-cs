@@ -1,0 +1,39 @@
+{
+    "case_id": "fb98b525-3a99-4a7f-8ba2-c2da2e1361a3",
+    "collection": {
+        "exercise_sid": "402d59c2-c950-4e6c-9819-c61ce7814684",
+        "instrument_id": "0002",
+        "period": "201605"
+    },
+    "data": {
+        "146": "made it all up!",
+        "211": "31000",
+        "212": "25000",
+        "221": "4000",
+        "222": "8000",
+        "241": "3000.00",
+        "243": "1000",
+        "290": "72000",
+        "50": "0",
+        "901": "Yes, I can report for this period",
+        "902": "Yes, we carried out work on housing",
+        "903": "Yes, we carried out work on infrastructure",
+        "904": "Yes, we carried out other construction work",
+        "d1": "['Private sector projects']",
+        "d2": "['Private commercial sector projects']"
+    },
+    "flushed": false,
+    "metadata": {
+        "ref_period_end_date": "2016-05-31",
+        "ref_period_start_date": "2016-05-01",
+        "ru_ref": "14785844082K",
+        "user_id": "UNKNOWN"
+    },
+    "origin": "uk.gov.ons.edc.eq",
+    "started_at": "2020-05-28T10:27:48.109801",
+    "submitted_at": "2020-05-28T10:33:05.040521",
+    "survey_id": "228",
+    "tx_id": "21dffc18-fe28-4320-851c-b1815d69b7be",
+    "type": "uk.gov.ons.edc.eq:surveyresponse",
+    "version": "0.0.1"
+}
