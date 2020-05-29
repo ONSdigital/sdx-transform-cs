@@ -147,31 +147,31 @@
                     "text": "For the employment date, what was the total number of employees for the business?",
                     "question_id": "50",
                     "number": "50",
-                    "type": "numeric"
+                    "type": "positiveinteger"
                 },
                 {
                     "text": "How many male employees worked more than 30 hours per week?",
                     "question_id": "51",
                     "number": "51",
-                    "type": "numeric"
+                    "type": "positiveinteger"
                 },
                 {
                     "text": "How many male employees worked 30 hours or less per week?",
                     "question_id": "52",
                     "number": "52",
-                    "type": "numeric"
+                    "type": "positiveinteger"
                 },
                 {
                     "text": "How many female employees worked more than 30 hours per week?",
                     "question_id": "53",
                     "number": "53",
-                    "type": "numeric"
+                    "type": "positiveinteger"
                 },
                 {
                     "text": "How many female employees worked 30 hours or less per week?",
                     "question_id": "54",
                     "number": "54",
-                    "type": "numeric"
+                    "type": "positiveinteger"
                 }
             ]
         },
