@@ -1,5 +1,6 @@
 ### Unreleased
  - Add construction formtype 0002
+ - Remove Cloudfoundry deployment files
 
 ### 3.17.1 2020-05-21
  - Updated packages
