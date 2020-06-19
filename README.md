@@ -4,32 +4,38 @@
 
 The sde-transform-cs app is used within the Office National of Statistics (ONS) for transforming Survey Data Exchange (SDX) Surveys to formats in use in Common Software.
 
+## Prerequisites
+The service has a dependency on the `pdf2ppm` commandline tool bundled in the poppler package. 
+To check whether this is already installed, run:
+```bash
+$ make check-dependencies
+```
+
+To install `pdf2ppm` on a Mac, use:
+
+```bash
+$ brew install poppler
+```
+
 ## Installation
+This application presently installs required packages from requirements files:
+- `requirements.txt`: packages for the application, with hashes for all packages: see https://pypi.org/project/hashin/
+- `test-requirements.txt`: packages for testing and linting
 
-The service has a dependency on the pdf2ppm commandline tool bundled in the poppler package. You can install this on a mac using:
+It's also best to use `pyenv` and `pyenv-virtualenv`, to build in a virtual environment with the currently recommended version of Python.  To install these, see:
+- https://github.com/pyenv/pyenv
+- https://github.com/pyenv/pyenv-virtualenv
+- (Note that the homebrew version of `pyenv` is easiest to install, but can lag behind the latest release of Python.)
 
-```bash
-brew install poppler
+### Getting started
+Once your virtual environment is set, install the requirements:
+```shell
+$ make build
 ```
 
-*It is recommended that this service is installed inside a virtualenv.*
-
-To install, use:
-
-```bash
-make build
-```
-
-To install using local sdx-common repo (requires SDX_HOME environment variable), use:
-
-```bash
-make dev
-```
-
-To run the test suite, use:
-
-```bash
-make test
+To test, first run `make build` as above, then run:
+```shell
+$ make test
 ```
 
 NOTE: .pck and .nobatch test files are required to not have a newline character at the end of the file.
@@ -38,7 +44,7 @@ A simple way to remove it is to do the following command `perl -pi -e 'chomp if 
 It's also possible to build sdx-transform-cs within a container using docker. From the sdx-transform-cs directory:
 
 ```bash
-docker build -t sdx-transform-cs .
+$ docker build -t sdx-transform-cs .
 ```
 
 ## Usage
@@ -46,13 +52,13 @@ docker build -t sdx-transform-cs .
 To start sdx-transform-cs service locally, use the following command:
 
 ```bash
-python server.py
+$ python server.py
 ```
 
 If you've built the image under docker, you can start using the following:
 
 ```bash
-docker run -p 5000:5000 sdx-transform-cs
+$ docker run -p 5000:5000 sdx-transform-cs
 ```
 
 sdx-transform-cs by default binds to port 5000 on localhost. It exposes several endpoints for transforming to idbr and pck formats. It returns a response formatted in the type requested. Post requests are made aginst the uri endpoints /pck, /idbr, /images, /common-software or /cord. Responses are delivered in the format requested, except the /images, /common-software, /cord and /cora endpoints which return archived zips of requested data. There is also a health check endpoint (get /healtcheck), which returns a json response with a key/value pairs describing the service state.
