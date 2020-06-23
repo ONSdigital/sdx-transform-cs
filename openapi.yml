@@ -196,7 +196,7 @@ components:
   parameters:
     SequenceNumber:
       name: sequence_no
-      description: sequence
+      description: Sequence number
       in: path
       required: true
       schema:
@@ -204,7 +204,7 @@ components:
         example: 0
     BatchNumber:
       name: batch_number
-      description: batch
+      description: Batch number
       in: path
       required: true
       schema:
