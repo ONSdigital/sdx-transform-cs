@@ -31,30 +31,30 @@ paths:
   /info:
     $ref: '#/paths/~1health'
 
+  /pck:
+    post:
+      summary: Convert to pck.
+      description: Converts the supplied survey response into pck format.
+      requestBody:
+        $ref: '#/components/requestBodies/SurveyResponse'
+      responses:
+        200:
+          $ref: '#/components/responses/Pck'
+        400:
+          $ref: '#/components/responses/ClientError'
+        500:
+          $ref: '#/components/responses/ServerError'
   /pck/{batch_number}:
     post:
       summary: Convert to pck.
       description: Converts the supplied survey response into pck format.
       parameters:
-        - name: batch_number
-          in: path
-          description: Batch numbers are only used for common-software surveys.
-          required: false
-          schema:
-            type: string
+        - $ref: '#/components/parameters/BatchNumber'
       requestBody:
-        description: survey response
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SurveyResponse'
+        $ref: '#/components/requestBodies/SurveyResponse'
       responses:
         200:
-          description: Returned pck.
-          content:
-            text/html:
-              schema:
-                $ref: '#/components/schemas/PckFormat'
+          $ref: '#/components/responses/Pck'
         400:
           $ref: '#/components/responses/ClientError'
         500:
@@ -65,53 +65,127 @@ paths:
       summary: Convert to idbr.
       description: Converts the supplied survey response into idbr format.
       requestBody:
-        description: survey response
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SurveyResponse'
+        $ref: '#/components/requestBodies/SurveyResponse'
       responses:
         200:
-          description: Returned idbr.
-          content:
-            text/html:
-              schema:
-                $ref: '#/components/schemas/IdbrFormat'
+          $ref: '#/components/responses/Idbr'
         400:
           $ref: '#/components/responses/ClientError'
         500:
           $ref: '#/components/responses/ServerError'
 
+  /images:
+    post:
+      summary: Convert to image.
+      description: Converts the supplied survey response into images.
+      requestBody:
+        $ref: '#/components/requestBodies/SurveyResponse'
+      responses:
+        200:
+          $ref: '#/components/responses/Zip'
+        400:
+          $ref: '#/components/responses/ClientError'
+        500:
+          $ref: '#/components/responses/ServerError'
+
+  /common-software:
+    post:
+      summary: Convert to a set of images for common software.
+      description: Returns a zip file that contains a number of JPG images that represent the submission.
+      requestBody:
+        $ref: '#/components/requestBodies/SurveyResponse'
+      responses:
+        200:
+          $ref: '#/components/responses/Zip'
+        400:
+          $ref: '#/components/responses/ClientError'
+        500:
+          $ref: '#/components/responses/ServerError'
+  /common-software/{sequence_no}:
+    post:
+      summary: Convert to a set of images for common software.
+      description: Returns a zip file that contains a number of JPG images that represent the submission.
+      parameters:
+        - $ref: '#/components/parameters/SequenceNumber'
+      requestBody:
+        $ref: '#/components/requestBodies/SurveyResponse'
+      responses:
+        200:
+          $ref: '#/components/responses/Zip'
+        400:
+          $ref: '#/components/responses/ClientError'
+        500:
+          $ref: '#/components/responses/ServerError'
   /common-software/{sequence_no}/{batch_number}:
     post:
       summary: Convert to a set of images for common software.
       description: Returns a zip file that contains a number of JPG images that represent the submission.
       parameters:
-        - name: sequence_no
-          in: path
-          required: false
-          schema:
-            type: integer
-        - name: batch_number
-            in: path
-            required: false
-            schema:
-              type: integer
+        - $ref: '#/components/parameters/SequenceNumber'
+        - $ref: '#/components/parameters/BatchNumber'
       requestBody:
-        description: survey response
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SurveyResponse'
+        $ref: '#/components/requestBodies/SurveyResponse'
       responses:
         200:
-          description: Returned zip.
-          produces:
-            - application/zip
-          content:
-            text/html:
-              schema:
-                type: file
+          $ref: '#/components/responses/Zip'
+        400:
+          $ref: '#/components/responses/ClientError'
+        500:
+          $ref: '#/components/responses/ServerError'
+
+  /cora:
+    post:
+      summary: Convert to a set of images for cora.
+      description: Returns a zip file that contains a number of JPG images that represent the submission.
+      requestBody:
+        $ref: '#/components/requestBodies/SurveyResponse'
+      responses:
+        200:
+          $ref: '#/components/responses/Zip'
+        400:
+          $ref: '#/components/responses/ClientError'
+        500:
+          $ref: '#/components/responses/ServerError'
+  /cora/{sequence_no}:
+    post:
+      summary: Convert to a set of images for cord.
+      description: Returns a zip file that contains a number of JPG images that represent the submission.
+      parameters:
+        - $ref: '#/components/parameters/SequenceNumber'
+      requestBody:
+        $ref: '#/components/requestBodies/SurveyResponse'
+      responses:
+        200:
+          $ref: '#/components/responses/Zip'
+        400:
+          $ref: '#/components/responses/ClientError'
+        500:
+          $ref: '#/components/responses/ServerError'
+
+  /cord:
+    post:
+      summary: Convert to a set of images for common software.
+      description: Returns a zip file that contains a number of JPG images that represent the submission.
+      requestBody:
+        $ref: '#/components/requestBodies/SurveyResponse'
+      responses:
+        200:
+          $ref: '#/components/responses/Zip'
+        400:
+          $ref: '#/components/responses/ClientError'
+        500:
+          $ref: '#/components/responses/ServerError'
+  /comrd/{sequence_no}:
+    post:
+      summary: Convert to a set of images for common software.
+      description: Returns a zip file that contains a number of JPG images that represent the submission.
+      parameters:
+        - $ref: '#/components/parameters/SequenceNumber'
+      requestBody:
+        $ref: '#/components/requestBodies/SurveyResponse'
+      responses:
+        200:
+          $ref: '#/components/responses/Zip'
         400:
           $ref: '#/components/responses/ClientError'
         500:
@@ -119,6 +193,23 @@ paths:
 
 
 components:
+  parameters:
+    SequenceNumber:
+      name: sequence_no
+      description: sequence
+      in: path
+      required: true
+      schema:
+        type: integer
+        example: 0
+    BatchNumber:
+      name: batch_number
+      description: batch
+      in: path
+      required: true
+      schema:
+        type: integer
+        example: 0
   responses:
     ClientError:
       description: Client error
@@ -151,63 +242,84 @@ components:
                 type: string
                 example: "Internal server error ..."
 
-  schemas:
-    SurveyResponse:
-      type: object
-      properties:
-        type:
-          type: string
-          example: "uk.gov.ons.edc.eq:surveyresponse"
-        origin:
-          type: string
-          example: "uk.gov.ons.edc.eq"
-        survey_id:
-          type: string
-          example: "023",
-        version:
-          type: string
-          example: "0.0.1",
-        collection:
-          type: object
-          properties:
-            exercise_sid:
-              type: string
-              example: "hfjdskf",
-            instrument_id:
-              type: string
-              example: "0203",
-            period:
-              type: string
-              example: "0216"
-        submitted_at:
-          type: string
-          example: "2016-03-12T10:39:40Z",
-        metadata:
-          type: object
-          properties:
-            user_id:
-              type: string
-              example: "789473423",
-            ru_ref:
-              type: string
-              example: "12345678901A"
-        data:
-          type: object
-          example: '"11": "01/04/2016",
-                    "12": "31/10/2016",
-                    "20": "1800000",
-                    "51": "84",
-                    "146": "some comment"'
-    PckFormat:
-      type: string
-      example: "FV
-                RSI7B:12345678901A:0216
-                0001 00000000002
-                0011 00000010416
-                0012 00000311016
-                0020 00001800000
-                0146 00000000001"
-    IdbrFormat:
-      type: string
-      example: "12345678901:A:023:200216"
+    Pck:
+      description: Returned pck.
+      content:
+        text/html:
+          schema:
+            type: string
+            example: "FV
+                      RSI7B:12345678901A:0216
+                      0001 00000000002
+                      0011 00000010416
+                      0012 00000311016
+                      0020 00001800000
+                      0146 00000000001"
 
+    Idbr:
+      description: Returned idbr.
+      content:
+        text/html:
+          schema:
+            type: string
+            example: "12345678901:A:023:200216"
+
+    Zip:
+      description: Returned zip.
+      content:
+        application/zip:
+          schema:
+            type: string
+            format: binary
+
+  requestBodies:
+    SurveyResponse:
+      description: survey response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              type:
+                type: string
+                example: "uk.gov.ons.edc.eq:surveyresponse"
+              origin:
+                type: string
+                example: "uk.gov.ons.edc.eq"
+              survey_id:
+                type: string
+                example: "023",
+              version:
+                type: string
+                example: "0.0.1",
+              collection:
+                type: object
+                properties:
+                  exercise_sid:
+                    type: string
+                    example: "hfjdskf",
+                  instrument_id:
+                    type: string
+                    example: "0203",
+                  period:
+                    type: string
+                    example: "0216"
+              submitted_at:
+                type: string
+                example: "2016-03-12T10:39:40Z",
+              metadata:
+                type: object
+                properties:
+                  user_id:
+                    type: string
+                    example: "789473423",
+                  ru_ref:
+                    type: string
+                    example: "12345678901A"
+              data:
+                type: object
+                example: '"11": "01/04/2016",
+                          "12": "31/10/2016",
+                          "20": "1800000",
+                          "51": "84",
+                          "146": "some comment"'
