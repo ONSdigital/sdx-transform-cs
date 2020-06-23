@@ -9,7 +9,7 @@ servers:
   - url: http://localhost:8083/
 
 paths:
-  /health:
+  /healthcheck:
     get:
       summary: Healthcheck.
       description: Simple endpoint that reports the health of the application.
@@ -33,7 +33,7 @@ paths:
 
   /pck:
     post:
-      summary: Convert to pck.
+      summary: Convert to pck format.
       description: Converts the supplied survey response into pck format.
       requestBody:
         $ref: '#/components/requestBodies/SurveyResponse'
@@ -46,7 +46,7 @@ paths:
           $ref: '#/components/responses/ServerError'
   /pck/{batch_number}:
     post:
-      summary: Convert to pck.
+      summary: Convert to pck format.
       description: Converts the supplied survey response into pck format.
       parameters:
         - $ref: '#/components/parameters/BatchNumber'
@@ -62,7 +62,7 @@ paths:
 
   /idbr:
     post:
-      summary: Convert to idbr.
+      summary: Convert to idbr format.
       description: Converts the supplied survey response into idbr format.
       requestBody:
         $ref: '#/components/requestBodies/SurveyResponse'
@@ -76,8 +76,8 @@ paths:
 
   /images:
     post:
-      summary: Convert to image.
-      description: Converts the supplied survey response into images.
+      summary: Convert to images in jpg format.
+      description: Returns a zip file containing the response in jpg format and a csv describing the order of the images.
       requestBody:
         $ref: '#/components/requestBodies/SurveyResponse'
       responses:
@@ -90,8 +90,8 @@ paths:
 
   /common-software:
     post:
-      summary: Convert to a set of images for common software.
-      description: Returns a zip file that contains a number of JPG images that represent the submission.
+      summary: Convert to a zip of required files for Common Software.
+      description: Returns a zip file containing a number files required by Common Software, including images, receipts, and the data in json and pck formats.
       requestBody:
         $ref: '#/components/requestBodies/SurveyResponse'
       responses:
@@ -103,8 +103,8 @@ paths:
           $ref: '#/components/responses/ServerError'
   /common-software/{sequence_no}:
     post:
-      summary: Convert to a set of images for common software.
-      description: Returns a zip file that contains a number of JPG images that represent the submission.
+      summary: Convert to a zip of required files for Common Software.
+      description: Returns a zip file containing a number files required by Common Software, including images, receipts, and the data in json and pck formats.
       parameters:
         - $ref: '#/components/parameters/SequenceNumber'
       requestBody:
@@ -118,8 +118,8 @@ paths:
           $ref: '#/components/responses/ServerError'
   /common-software/{sequence_no}/{batch_number}:
     post:
-      summary: Convert to a set of images for common software.
-      description: Returns a zip file that contains a number of JPG images that represent the submission.
+      summary: Convert to a zip of required files for Common Software.
+      description: Returns a zip file containing a number files required by Common Software, including images, receipts, and the data in json and pck formats.
       parameters:
         - $ref: '#/components/parameters/SequenceNumber'
         - $ref: '#/components/parameters/BatchNumber'
@@ -135,8 +135,8 @@ paths:
 
   /cora:
     post:
-      summary: Convert to a set of images for cora.
-      description: Returns a zip file that contains a number of JPG images that represent the submission.
+      summary: Convert to a zip of required files for CORA.
+      description: Returns a zip file containing a number files required by CORA, including images, receipts, and the data in json and colon seperated formats.
       requestBody:
         $ref: '#/components/requestBodies/SurveyResponse'
       responses:
@@ -148,8 +148,8 @@ paths:
           $ref: '#/components/responses/ServerError'
   /cora/{sequence_no}:
     post:
-      summary: Convert to a set of images for cord.
-      description: Returns a zip file that contains a number of JPG images that represent the submission.
+      summary: Convert to a zip of required files for CORA.
+      description: Returns a zip file containing a number files required by CORA, including images, receipts, and the data in json and colon seperated formats.
       parameters:
         - $ref: '#/components/parameters/SequenceNumber'
       requestBody:
@@ -164,8 +164,8 @@ paths:
 
   /cord:
     post:
-      summary: Convert to a set of images for common software.
-      description: Returns a zip file that contains a number of JPG images that represent the submission.
+      summary: Convert to a zip of required files for CORD.
+      description: Returns a zip file containing a number files required by CORD, including images, receipts, and the data in json and colon seperated formats.
       requestBody:
         $ref: '#/components/requestBodies/SurveyResponse'
       responses:
@@ -175,10 +175,10 @@ paths:
           $ref: '#/components/responses/ClientError'
         500:
           $ref: '#/components/responses/ServerError'
-  /comrd/{sequence_no}:
+  /cord/{sequence_no}:
     post:
-      summary: Convert to a set of images for common software.
-      description: Returns a zip file that contains a number of JPG images that represent the submission.
+      summary: Convert to a zip of required files for CORD.
+      description: Returns a zip file containing a number files required by CORD, including images, receipts, and the data in json and colon seperated formats.
       parameters:
         - $ref: '#/components/parameters/SequenceNumber'
       requestBody:
@@ -288,31 +288,31 @@ components:
                 example: "uk.gov.ons.edc.eq"
               survey_id:
                 type: string
-                example: "023",
+                example: "023"
               version:
                 type: string
-                example: "0.0.1",
+                example: "0.0.1"
               collection:
                 type: object
                 properties:
                   exercise_sid:
                     type: string
-                    example: "hfjdskf",
+                    example: "hfjdskf"
                   instrument_id:
                     type: string
-                    example: "0203",
+                    example: "0203"
                   period:
                     type: string
                     example: "0216"
               submitted_at:
                 type: string
-                example: "2016-03-12T10:39:40Z",
+                example: "2016-03-12T10:39:40Z"
               metadata:
                 type: object
                 properties:
                   user_id:
                     type: string
-                    example: "789473423",
+                    example: "789473423"
                   ru_ref:
                     type: string
                     example: "12345678901A"
