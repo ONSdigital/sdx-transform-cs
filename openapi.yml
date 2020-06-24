@@ -29,7 +29,7 @@ paths:
         500:
           $ref: '#/components/responses/ServerError'
   /info:
-    $ref: '#/paths/~1health'
+    $ref: '#/paths/~1healthcheck'
 
   /pck:
     post:
