@@ -1,0 +1,52 @@
+@startuml
+
+class Formatter
+class CSFormatter
+class CORAFormatter
+class CORDFormatter
+
+Formatter <|-- CSFormatter
+Formatter <|-- CORAFormatter
+Formatter <|-- CORDFormatter
+
+class MWSSTransformer
+class MBSTransformer
+class CSTransformer
+class PCKTransformer
+class UKISTransformer
+class EcommerceTransformer
+class Ecommerce2019Transformer
+
+CSFormatter -- MWSSTransformer : uses <
+CSFormatter -- MBSTransformer : uses <
+CORAFormatter -- UKISTransformer : uses <
+CORDFormatter -- EcommerceTransformer : uses <
+
+EcommerceTransformer <|-- Ecommerce2019Transformer
+
+class ImageTransformer
+class InMemoryZip
+class IndexFile
+class PDFTransformer
+class Processor
+class Survey
+
+IndexFile - ImageTransformer : uses <
+ImageTransformer o-- InMemoryZip
+ImageTransformer - PDFTransformer : uses >
+
+MWSSTransformer - Survey : uses >
+MBSTransformer - Survey : uses >
+Survey - UKISTransformer : uses <
+Survey - EcommerceTransformer : uses >
+MWSSTransformer -- Processor : uses >
+
+MWSSTransformer o-- ImageTransformer
+MBSTransformer o-- ImageTransformer
+UKISTransformer o-- ImageTransformer
+EcommerceTransformer o-- ImageTransformer
+ImageTransformer --o CSTransformer
+
+PCKTransformer - CSTransformer : uses <
+
+@enduml

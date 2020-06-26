@@ -1,0 +1,9 @@
+@startuml
+
+(*)  -->[receive http request] "lookup survey \n definition json" as A1
+--> "select appropriate transformer" as A2
+--> "execute transformation"
+--> "send zip file"
+-->(*)
+
+@enduml
