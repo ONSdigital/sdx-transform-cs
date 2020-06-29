@@ -1,8 +1,10 @@
 @startuml
 
+hide empty members
+
 'notes
 
-note "The 2 abstract classes do not\n actually exist and are only\n present to make the diagram\n easier to understand." as n1
+note "The 2 abstract classes do not\n actually exist and are only\n present to make the diagram\n easier to read." as n1
 
 'classes
 
@@ -12,7 +14,7 @@ class CORAFormatter
 class CORDFormatter
 
 abstract Transformer
-Transformer : create_zip
+Transformer : create_zip()
 
 abstract SurveyTransformer
 

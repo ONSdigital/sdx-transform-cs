@@ -1,13 +1,21 @@
 @startuml
 
-(*)  -->[receive http request] "lookup survey \n definition json" as A1
---> "select appropriate transformer" as A2
+(*)  -->[receive http request] "lookup survey \n definition json"
+--> "select appropriate transformer"
 --> "execute transformation"
 --> "create pck file"
 --> "create IDBR receipt"
---> "create image files"
+--> "create pdf"
+--> "get sequence list" as sl
+partition sdx-sequence #LightSkyBlue {
+sl -> "generate numbers" as ss
+ss -> sl
+}
+
+sl --> "build image names"
+--> "create index"
+--> "build zip"
 --> "add original json"
---> zip and return"
 --> "send zip file"
 -->(*)
 
