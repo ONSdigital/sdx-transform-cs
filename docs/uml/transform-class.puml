@@ -1,13 +1,20 @@
 @startuml
 
+'notes
+
+note "The 2 abstract classes do not\n actually exist and are only\n present to make the diagram\n easier to understand." as n1
+
+'classes
+
 class Formatter
 class CSFormatter
 class CORAFormatter
 class CORDFormatter
 
-Formatter <|-- CSFormatter
-Formatter <|-- CORAFormatter
-Formatter <|-- CORDFormatter
+abstract Transformer
+Transformer : create_zip
+
+abstract SurveyTransformer
 
 class MWSSTransformer
 class MBSTransformer
@@ -17,36 +24,67 @@ class UKISTransformer
 class EcommerceTransformer
 class Ecommerce2019Transformer
 
-CSFormatter -- MWSSTransformer : uses <
-CSFormatter -- MBSTransformer : uses <
-CORAFormatter -- UKISTransformer : uses <
-CORDFormatter -- EcommerceTransformer : uses <
-
-EcommerceTransformer <|-- Ecommerce2019Transformer
-
 class ImageTransformer
+ImageTransformer : get_zipped_images()
+ImageTransformer : get_zip()
+
 class InMemoryZip
+InMemoryZip : append()
+InMemoryZip : rewind()
+InMemoryZip : get_filenames()
+
 class IndexFile
+IndexFile : rewind()
+
 class PDFTransformer
+PDFTransformer : render_pages()
+
 class Processor
+Processor : round_towards()
+Processor : aggregate()
+Processor : evaluate()
+Processor : boolean()
+Processor : mean()
+Processor : events()
+Processor : survey_string()
+Processor : unsigned_integer()
+Processor : percentage()
+
 class Survey
+Survey : load_survey()
+Survey : bind_logger()
+Survey : parse_timestamp()
+Survey : identifiers()
 
-IndexFile - ImageTransformer : uses <
-ImageTransformer o-- InMemoryZip
-ImageTransformer - PDFTransformer : uses >
 
-MWSSTransformer - Survey : uses >
-MBSTransformer - Survey : uses >
-Survey - UKISTransformer : uses <
-Survey - EcommerceTransformer : uses >
+'inheritence
+
+Formatter <|-u- CSFormatter
+Formatter <|-u- CORAFormatter
+Formatter <|-u- CORDFormatter
+
+Transformer <|-- CSTransformer
+Transformer <|-- SurveyTransformer
+SurveyTransformer <|-- MWSSTransformer
+SurveyTransformer <|-- MBSTransformer
+SurveyTransformer <|-- UKISTransformer
+SurveyTransformer <|-- EcommerceTransformer
+EcommerceTransformer <|-U- Ecommerce2019Transformer
+
+'aggregations
+Transformer o-L ImageTransformer
+
+CSFormatter -u- MWSSTransformer : uses <
+CSFormatter -u- MBSTransformer : uses <
+CORAFormatter -u- UKISTransformer : uses <
+CORDFormatter -u- EcommerceTransformer : uses <
+
+IndexFile --o ImageTransformer
+ImageTransformer o-U- InMemoryZip
+ImageTransformer -L PDFTransformer : uses >
+
+SurveyTransformer -L Survey : uses >
 MWSSTransformer -- Processor : uses >
-
-MWSSTransformer o-- ImageTransformer
-MBSTransformer o-- ImageTransformer
-UKISTransformer o-- ImageTransformer
-EcommerceTransformer o-- ImageTransformer
-ImageTransformer --o CSTransformer
-
-PCKTransformer - CSTransformer : uses <
+CSTransformer -d- PCKTransformer : uses >
 
 @enduml

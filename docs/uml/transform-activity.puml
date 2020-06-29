@@ -3,6 +3,11 @@
 (*)  -->[receive http request] "lookup survey \n definition json" as A1
 --> "select appropriate transformer" as A2
 --> "execute transformation"
+--> "create pck file"
+--> "create IDBR receipt"
+--> "create image files"
+--> "add original json"
+--> zip and return"
 --> "send zip file"
 -->(*)
 
