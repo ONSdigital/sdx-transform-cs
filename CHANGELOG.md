@@ -1,5 +1,6 @@
 ### Unreleased
  - Add openapi.yml
+ - Add uml diagrams
 
 ### 3.18.0 2020-06-09
  - Add construction formtype 0002

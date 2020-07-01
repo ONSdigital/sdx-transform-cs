@@ -1,0 +1,22 @@
+@startuml
+
+(*)  -->[receive http request] "lookup survey \n definition json"
+--> "select appropriate transformer"
+--> "execute transformation"
+--> "create pck file"
+--> "create IDBR receipt"
+--> "create pdf"
+--> "get sequence list" as sl
+partition sdx-sequence #LightSkyBlue {
+sl -> "generate numbers" as ss
+ss -> sl
+}
+
+sl --> "build image names"
+--> "create index"
+--> "build zip"
+--> "add original json"
+--> "send zip file"
+-->(*)
+
+@enduml
