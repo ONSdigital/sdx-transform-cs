@@ -1,4 +1,5 @@
 ### Unreleased
+ - Remove Vacancies formtype mapping to 181 for indices  
  - Add openapi.yml
  - Add uml diagrams
 

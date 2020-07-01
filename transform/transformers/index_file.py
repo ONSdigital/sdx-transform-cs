@@ -23,12 +23,6 @@ class IndexFile:
             'short': format_date(current_time, 'short'),
             'long': format_date(current_time)
         }
-        # Vacancy surveys have a requirement to have the pck and images sent to
-        # common softare as survey_id 181.
-        vacancies_surveys = ["182", "183", "184", "185"]
-        if self._response['survey_id'] in vacancies_surveys:
-            self._response['survey_id'] = "181"
-
         self.index_name = self._get_index_name(self._response, sequence_no)
         self._current_time = current_time  # used to test if current_time gets set to a default value in init definition
         self._build_index(image_names)

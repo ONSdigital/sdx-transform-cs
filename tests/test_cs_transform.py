@@ -120,7 +120,7 @@ class TestCSTransformService(unittest.TestCase):
             'EDC_QData/181_1000',
             'EDC_QReceipts/REC0501_1000.DAT',
             'EDC_QImages/Images/S000000013.JPG',
-            'EDC_QImages/Index/EDC_181_20200105_1000.csv',
+            'EDC_QImages/Index/EDC_182_20200105_1000.csv',
             'EDC_QJson/182_1000.json'
         ]
 
