@@ -1,4 +1,6 @@
 ### Unreleased
+
+### 3.19.0 2020-07-07
  - Remove Vacancies formtype mapping to 181 for indices  
  - Add openapi.yml
  - Add uml diagrams
