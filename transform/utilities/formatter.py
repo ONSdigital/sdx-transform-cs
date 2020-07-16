@@ -23,4 +23,5 @@ class Formatter:
     @staticmethod
     def _idbr_receipt(survey_id, ru_ref, ru_check, period):
         """Format a receipt in IDBR format."""
+        period = "20" + period if len(period) == 4 else period
         return "{0}:{1}:{2:03}:{3}".format(ru_ref, ru_check, int(survey_id), period)
