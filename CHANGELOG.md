@@ -1,4 +1,5 @@
 ### Unreleased
+ - Ensure IDBR receipts have a 6 digit period
 
 ### 3.19.0 2020-07-07
  - Remove Vacancies formtype mapping to 181 for indices  

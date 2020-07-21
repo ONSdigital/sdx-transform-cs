@@ -51,8 +51,15 @@ class BatchFileTests(unittest.TestCase):
         self.reply["tx_id"] = "27923934-62de-475c-bc01-433c09fd38b8"
         ids = Survey.identifiers(self.reply, batch_nr=3866)
         id_dict = ids._asdict()
-        rv = CSFormatter._idbr_receipt(id_dict["survey_id"], id_dict["ru_ref"], id_dict["ru_check"],
-                                       id_dict["period"])
+        rv = CSFormatter.get_idbr(id_dict["survey_id"], id_dict["ru_ref"], id_dict["ru_check"], id_dict["period"])
+        self.assertEqual("12346789012:A:134:201605", rv)
+
+    def test_idbr_receipt_four_digit_period(self):
+        self.reply["tx_id"] = "27923934-62de-475c-bc01-433c09fd38b8"
+        ids = Survey.identifiers(self.reply, batch_nr=3866)
+        id_dict = ids._asdict()
+        period = "1605"
+        rv = CSFormatter.get_idbr(id_dict["survey_id"], id_dict["ru_ref"], id_dict["ru_check"], period)
         self.assertEqual("12346789012:A:134:201605", rv)
 
     def test_identifiers(self):
