@@ -24,3 +24,10 @@ class CORDFormatter(Formatter):
     def _pck_lines(data, survey_id, ru_ref, period):
         """Return a list of lines in a PCK file."""
         return [f"{ru_ref}:{survey_id}:{period}:{qcode}:{value}" for qcode, value in sorted(data.items())]
+
+    @staticmethod
+    def get_idbr(survey_id, ru_ref, ru_check, period):
+        """Write an IDBR file."""
+        # the period requires a 12 to be prefixed (to represent the month)
+        period = period + "12" if len(period) == 4 else period
+        return "{0}:{1}:{2:03}:{3}".format(ru_ref, ru_check, int(survey_id), period)
