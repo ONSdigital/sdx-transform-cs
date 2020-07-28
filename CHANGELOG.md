@@ -1,4 +1,6 @@
 ### Unreleased
+
+### 3.20.0 2020-07-28
  - Ensure IDBR receipts have a 6 digit period
 
 ### 3.19.0 2020-07-07
