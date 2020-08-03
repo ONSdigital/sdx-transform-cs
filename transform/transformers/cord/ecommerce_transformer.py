@@ -19,11 +19,25 @@ logger = wrap_logger(logging.getLogger(__name__))
 
 
 class EcommerceTransformer:
-    """Perform the transforms and formatting for the MBS survey."""
+    """Perform the transforms and formatting for the MBS survey.
+
+    The period for Ecommerce is different to other surveys and comes in as YYYY (e.g. 2019).
+    This is the required form for pck file.
+    However, the ImageTransformer and IDBR receipt formatter will prefix it with a 20, to make 202019.
+    The required value for both is actually YYYY12 (e.g. 201912) where the 12 represents the month.
+    To adjust for this the period is changed to YYMM before further processing takes place and the initial
+    YYYY period used only for creating the pck
+    """
 
     def __init__(self, response, seq_nr=0):
 
+        period = response['collection']['period']
+        if len(period) == 4:
+            response['collection']['period'] = period[2:] + '12'
+
+        self.period = period
         self.response = response
+
         self.ids = Survey.identifiers(self.response, seq_nr=seq_nr, log=logger)
 
         survey_file = f"./transform/surveys/{self.ids.survey_id}.{self.ids.inst_id}.json"
@@ -320,7 +334,7 @@ class EcommerceTransformer:
             transformed_data,
             self.ids.survey_id,
             self.ids.ru_ref,
-            self.ids.period,
+            self.period,
         )
         return pck
 
