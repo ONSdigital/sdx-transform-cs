@@ -290,3 +290,36 @@ def cord(sequence_no=1000):
 def healthcheck():
     """A simple endpoint that reports the health of the application"""
     return jsonify({'status': 'OK'})
+
+
+@app.route('/transform/<sequence_no>', methods=['POST'])
+def transform(sequence_no=1000):
+
+    survey_response = request.get_json(force=True)
+
+    if sequence_no:
+        sequence_no = int(sequence_no)
+
+    survey = get_survey(survey_response)
+    if not survey:
+        return client_error("CS:Unsupported survey/instrument id")
+
+    survey_id = survey_response.get("survey_id")
+    try:
+        if survey_id == "009":
+            transformer = MBSTransformer(survey_response, sequence_no)
+        elif survey_id == "134":
+            transformer = MWSSTransformer(survey_response, sequence_no, log=logger)
+        else:
+            transformer = CSTransformer(logger, survey, survey_response, batch_number, sequence_no)
+
+        transformer.create_zip()
+
+    except Exception as e:
+        tx_id = survey_response.get("tx_id")
+        logger.exception("CS:could not create files for survey", survey_id=survey_id, tx_id=tx_id)
+        return server_error(e)
+
+    logger.info("CS:SUCCESS")
+
+    return send_file(transformer.image_transformer.get_zip(), mimetype='application/zip', add_etags=False)
