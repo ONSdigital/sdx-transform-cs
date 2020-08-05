@@ -1,4 +1,6 @@
 ### Unreleased
+
+### 3.21.0 2020-08-05
  - Fix E-commerce index file period 
 
 ### 3.20.0 2020-07-28
