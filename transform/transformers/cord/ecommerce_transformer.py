@@ -1,24 +1,20 @@
-from decimal import Decimal
 import json
 import logging
-import os
+from decimal import Decimal
 
 from structlog import wrap_logger
 
-from transform.settings import (
-    SDX_FTP_DATA_PATH,
-    SDX_FTP_IMAGE_PATH,
-    SDX_FTP_RECEIPT_PATH,
-    SDX_RESPONSE_JSON_PATH,
-)
+from transform.settings import SDX_FTP_IMAGE_PATH
+
 from transform.transformers.cord.cord_formatter import CORDFormatter
-from transform.transformers.survey import Survey
 from transform.transformers.image_transformer import ImageTransformer
+from transform.transformers.survey import Survey
+from transform.transformers.transformer import Transformer
 
 logger = wrap_logger(logging.getLogger(__name__))
 
 
-class EcommerceTransformer:
+class EcommerceTransformer(Transformer):
     """Perform the transforms and formatting for the MBS survey.
 
     The period for Ecommerce is different to other surveys and comes in as YYYY (e.g. 2019).
@@ -328,7 +324,7 @@ class EcommerceTransformer:
                 **ict_security, **e_commerce,
                 **use_of_computers}
 
-    def create_pck(self, transformed_data):
+    def _create_pck(self, transformed_data):
         """Return a pck file using provided data"""
         pck = CORDFormatter.get_pck(
             transformed_data,
@@ -338,7 +334,7 @@ class EcommerceTransformer:
         )
         return pck
 
-    def create_idbr_receipt(self):
+    def _create_idbr_receipt(self):
         """Return a idbr receipt file"""
         idbr = CORDFormatter.get_idbr(
             self.ids.survey_id,
@@ -348,14 +344,7 @@ class EcommerceTransformer:
         )
         return idbr
 
-    def create_image_files(self, img_seq=None):
-        """Creates image files and adds it to in-memory zip file"""
-        self.image_transformer.get_zipped_images(img_seq)
-
-    def create_zip(self, img_seq=None):
-        """Perform transformation on the survey data
-        and pack the output into a zip file exposed by the image transformer
-        """
+    def create_pck(self):
         bound_logger = logger.bind(ru_ref=self.ids.ru_ref, tx_id=self.ids.tx_id)
         bound_logger.info("Transforming data for processing")
         transformed_data = self.transform()
@@ -363,24 +352,17 @@ class EcommerceTransformer:
 
         bound_logger.info("Creating PCK")
         pck_name = CORDFormatter.pck_name(self.ids.survey_id, self.ids.seq_nr)
-        pck = self.create_pck(transformed_data)
-        self.image_transformer.zip.append(os.path.join(SDX_FTP_DATA_PATH, pck_name), pck)
+        pck = self._create_pck(transformed_data)
         bound_logger.info("Successfully created PCK")
+        return pck_name, pck
 
+    def create_receipt(self):
+        bound_logger = logger.bind(ru_ref=self.ids.ru_ref, tx_id=self.ids.tx_id)
         bound_logger.info("Creating IDBR receipt")
         idbr_name = CORDFormatter.idbr_name(self.ids.user_ts, self.ids.seq_nr)
-        idbr = self.create_idbr_receipt()
-        self.image_transformer.zip.append(os.path.join(SDX_FTP_RECEIPT_PATH, idbr_name), idbr)
+        idbr = self._create_idbr_receipt()
         bound_logger.info("Successfully created IDBR receipt")
-
-        bound_logger.info("Creating image files")
-        self.create_image_files(img_seq)
-        bound_logger.info("Successfully created image files")
-
-        bound_logger.info("Adding json response to zip")
-        response_json_name = CORDFormatter.response_json_name(self.ids.survey_id, self.ids.seq_nr)
-        self.image_transformer.zip.append(os.path.join(SDX_RESPONSE_JSON_PATH, response_json_name), json.dumps(self.response))
-        bound_logger.info("Sucessfully added json response to zip")
+        return idbr_name, idbr
 
 
 class Ecommerce2019Transformer(EcommerceTransformer):

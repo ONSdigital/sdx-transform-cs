@@ -2,25 +2,22 @@ import datetime
 import decimal
 import json
 import logging
-import os
+
 from decimal import ROUND_HALF_UP, Decimal
 
 from structlog import wrap_logger
 
-from transform.settings import (
-    SDX_FTP_DATA_PATH,
-    SDX_FTP_IMAGE_PATH,
-    SDX_FTP_RECEIPT_PATH,
-    SDX_RESPONSE_JSON_PATH,
-)
+from transform.settings import SDX_FTP_IMAGE_PATH
+
 from transform.transformers.common_software.cs_formatter import CSFormatter
 from transform.transformers.survey import Survey
 from transform.transformers.image_transformer import ImageTransformer
+from transform.transformers.transformer import Transformer
 
 logger = wrap_logger(logging.getLogger(__name__))
 
 
-class MBSTransformer:
+class MBSTransformer(Transformer):
     """Perform the transforms and formatting for the MBS survey."""
 
     @staticmethod
@@ -247,7 +244,7 @@ class MBSTransformer:
 
         return {"11": start_date, "12": end_date}
 
-    def transform(self):
+    def _transform(self):
         """Perform a transform on survey data."""
         employee_totals = self.check_employee_totals()
         turnover_totals = self.check_turnover_totals()
@@ -276,14 +273,10 @@ class MBSTransformer:
             if v is not None
         }
 
-    def create_zip(self, img_seq=None):
-        """Perform transformation on the survey data
-        and pack the output into a zip file exposed by the image transformer
-        """
-
+    def create_pck(self, img_seq=None):
         logger.info("Creating PCK", ru_ref=self.ids["ru_ref"])
         pck_name = CSFormatter.pck_name(self.ids["survey_id"], self.ids["seq_nr"])
-        transformed_data = self.transform()
+        transformed_data = self._transform()
         pck = CSFormatter.get_pck(
             transformed_data,
             self.idbr_ref[self.ids["instrument_id"]],
@@ -292,6 +285,9 @@ class MBSTransformer:
             self.ids["period"],
         )
 
+        return pck, pck_name
+
+    def create_receipt(self):
         logger.info("Creating IDBR receipt", ru_ref=self.ids["ru_ref"])
         idbr_name = CSFormatter.idbr_name(self.ids["submitted_at"], self.ids["seq_nr"])
         idbr = CSFormatter.get_idbr(
@@ -301,9 +297,4 @@ class MBSTransformer:
             self.ids["period"],
         )
 
-        response_json_name = CSFormatter.response_json_name(self.ids["survey_id"], self.ids["seq_nr"])
-
-        self.image_transformer.zip.append(os.path.join(SDX_FTP_DATA_PATH, pck_name), pck)
-        self.image_transformer.zip.append(os.path.join(SDX_FTP_RECEIPT_PATH, idbr_name), idbr)
-        self.image_transformer.get_zipped_images(img_seq)
-        self.image_transformer.zip.append(os.path.join(SDX_RESPONSE_JSON_PATH, response_json_name), json.dumps(self.response))
+        return idbr_name, idbr

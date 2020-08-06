@@ -1,9 +1,7 @@
 from collections import OrderedDict
 from decimal import Decimal, ROUND_DOWN, ROUND_HALF_UP
 from functools import partial
-import json
 import logging
-import os.path
 
 import itertools
 import re
@@ -13,15 +11,17 @@ from transform.transformers.common_software.cs_formatter import CSFormatter
 from transform.transformers.image_transformer import ImageTransformer
 from transform.transformers.processor import Processor
 from transform.transformers.survey import Survey
-from transform.settings import SDX_FTP_DATA_PATH, SDX_FTP_IMAGE_PATH, SDX_FTP_RECEIPT_PATH, SDX_RESPONSE_JSON_PATH
+from transform.settings import SDX_FTP_IMAGE_PATH
 
 __doc__ = """Transform MWSS survey data into formats required downstream.
 
 The class API is used by the SDX transform service.
 """
 
+from transform.transformers.transformer import Transformer
 
-class MWSSTransformer:
+
+class MWSSTransformer(Transformer):
     """Perform the transforms and formatting for the MWSS survey.
 
     Weights = A sequence of 2-tuples giving the weight value for each question in the group.
@@ -163,29 +163,15 @@ class MWSSTransformer:
             for qNr in (rng if isinstance(rng, range) else [rng])
         ])
 
-    def create_zip(self, img_seq=None):
-        """Perform transformation on the survey data
-        and pack the output into a zip file exposed by the image transformer
-        """
-
+    def create_pck(self):
         data = self.transform(self.response["data"], self.survey)
-
         id_dict = self.ids._asdict()
-
         pck_name = CSFormatter.pck_name(id_dict["survey_id"], id_dict["seq_nr"])
-
         pck = CSFormatter.get_pck(data, id_dict["inst_id"], id_dict["ru_ref"], id_dict["ru_check"], id_dict["period"])
+        return pck_name, pck
 
+    def create_receipt(self):
+        id_dict = self.ids._asdict()
         idbr_name = CSFormatter.idbr_name(id_dict["user_ts"], id_dict["seq_nr"])
-
         idbr = CSFormatter.get_idbr(id_dict["survey_id"], id_dict["ru_ref"], id_dict["ru_check"], id_dict["period"])
-
-        response_json_name = CSFormatter.response_json_name(id_dict["survey_id"], id_dict["seq_nr"])
-
-        self.image_transformer.zip.append(os.path.join(SDX_FTP_DATA_PATH, pck_name), pck)
-        self.image_transformer.zip.append(os.path.join(SDX_FTP_RECEIPT_PATH, idbr_name), idbr)
-
-        self.image_transformer.get_zipped_images(img_seq)
-
-        self.image_transformer.zip.append(os.path.join(SDX_RESPONSE_JSON_PATH, response_json_name),
-                                          json.dumps(self.response))
+        return idbr_name, idbr

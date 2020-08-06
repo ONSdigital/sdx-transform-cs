@@ -1,16 +1,18 @@
-import dateutil.parser
 import json
 from io import StringIO
-import os.path
+
+import dateutil.parser
 from jinja2 import Environment, PackageLoader
+
+from transform.settings import SDX_FTP_IMAGE_PATH
 from transform.transformers import ImageTransformer
 from transform.transformers.common_software.pck_transformer import PCKTransformer
-from transform.settings import SDX_FTP_IMAGE_PATH, SDX_FTP_DATA_PATH, SDX_FTP_RECEIPT_PATH, SDX_RESPONSE_JSON_PATH
+from transform.transformers.transformer import Transformer
 
 env = Environment(loader=PackageLoader('transform', 'templates'))
 
 
-class CSTransformer:
+class CSTransformer(Transformer):
 
     def __init__(self, logger, survey, response_data, batch_number=False, sequence_no=1000):
         self._logger = logger
@@ -24,25 +26,6 @@ class CSTransformer:
         self.image_transformer = ImageTransformer(self._logger, self._survey, self._response,
                                                   sequence_no=self._sequence_no, base_image_path=SDX_FTP_IMAGE_PATH)
         self._setup_logger()
-
-    def create_zip(self):
-        """
-        Create an in memory zip
-        """
-        # add pck, idbr then images and index_file
-        pck_name = self._create_pck()
-        idbr_name = self._create_idbr()
-        response_io_name = self._create_response_json()
-
-        self.image_transformer.zip.append(os.path.join(SDX_FTP_DATA_PATH, pck_name), self._pck.read())
-        self.image_transformer.zip.append(os.path.join(SDX_FTP_RECEIPT_PATH, idbr_name), self._idbr.read())
-
-        self.image_transformer.get_zipped_images()
-
-        self.image_transformer.zip.append(os.path.join(SDX_RESPONSE_JSON_PATH, response_io_name),
-                                          self._response_json.read())
-
-        self.image_transformer.zip.rewind()
 
     def _setup_logger(self):
         if self._survey:
@@ -98,3 +81,13 @@ class CSTransformer:
         self._response_json.write(json.dumps(self._response))
         self._response_json.seek(0)
         return original_json_name
+
+    def create_pck(self):
+        pck_name = self._create_pck()
+        pck = self._pck.read()
+        return pck_name, pck
+
+    def create_receipt(self):
+        idbr_name = self._create_idbr()
+        idbr = self._idbr.read()
+        return idbr_name, idbr
