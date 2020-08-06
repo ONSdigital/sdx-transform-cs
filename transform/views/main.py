@@ -6,11 +6,13 @@ import os.path
 from flask import request, send_file, jsonify
 from jinja2 import Environment, PackageLoader
 from structlog import wrap_logger
+
+from transform.transformers.builder import Builder
 from transform.views.logger_config import logger_initial_config
 
 from transform import app, settings
 from transform.transformers import ImageTransformer
-from transform.transformers.common_software import CSTransformer, MBSTransformer, MWSSTransformer, PCKTransformer
+from transform.transformers.common_software import CSTransformer, PCKTransformer
 from transform.transformers.cora import UKISTransformer
 from transform.transformers.cord import EcommerceTransformer, Ecommerce2019Transformer
 
@@ -203,23 +205,19 @@ def common_software(sequence_no=1000, batch_number=0):
 
     survey_id = survey_response.get("survey_id")
     try:
-        if survey_id == "009":
-            transformer = MBSTransformer(survey_response, sequence_no)
-        elif survey_id == "134":
-            transformer = MWSSTransformer(survey_response, sequence_no, log=logger)
+        if survey_id == "009" or survey_id == "134":
+            builder = Builder(survey_response, sequence_no)
+            builder.create_zip()
+            return send_file(builder.get_zip(), mimetype='application/zip', add_etags=False)
         else:
             transformer = CSTransformer(logger, survey, survey_response, batch_number, sequence_no)
-
-        transformer.create_zip()
+            transformer.create_zip()
+            return send_file(transformer.image_transformer.get_zip(), mimetype='application/zip', add_etags=False)
 
     except Exception as e:
         tx_id = survey_response.get("tx_id")
         logger.exception("CS:could not create files for survey", survey_id=survey_id, tx_id=tx_id)
         return server_error(e)
-
-    logger.info("CS:SUCCESS")
-
-    return send_file(transformer.image_transformer.get_zip(), mimetype='application/zip', add_etags=False)
 
 
 @app.route('/cora', methods=['POST'])
@@ -290,36 +288,3 @@ def cord(sequence_no=1000):
 def healthcheck():
     """A simple endpoint that reports the health of the application"""
     return jsonify({'status': 'OK'})
-
-
-@app.route('/transform/<sequence_no>', methods=['POST'])
-def transform(sequence_no=1000):
-
-    survey_response = request.get_json(force=True)
-
-    if sequence_no:
-        sequence_no = int(sequence_no)
-
-    survey = get_survey(survey_response)
-    if not survey:
-        return client_error("CS:Unsupported survey/instrument id")
-
-    survey_id = survey_response.get("survey_id")
-    try:
-        if survey_id == "009":
-            transformer = MBSTransformer(survey_response, sequence_no)
-        elif survey_id == "134":
-            transformer = MWSSTransformer(survey_response, sequence_no, log=logger)
-        else:
-            transformer = CSTransformer(logger, survey, survey_response, batch_number, sequence_no)
-
-        transformer.create_zip()
-
-    except Exception as e:
-        tx_id = survey_response.get("tx_id")
-        logger.exception("CS:could not create files for survey", survey_id=survey_id, tx_id=tx_id)
-        return server_error(e)
-
-    logger.info("CS:SUCCESS")
-
-    return send_file(transformer.image_transformer.get_zip(), mimetype='application/zip', add_etags=False)

@@ -285,7 +285,7 @@ class MBSTransformer(Transformer):
             self.ids["period"],
         )
 
-        return pck, pck_name
+        return pck_name, pck
 
     def create_receipt(self):
         logger.info("Creating IDBR receipt", ru_ref=self.ids["ru_ref"])

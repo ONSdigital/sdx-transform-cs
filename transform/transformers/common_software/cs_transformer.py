@@ -1,10 +1,11 @@
 import json
+import os
 from io import StringIO
 
 import dateutil.parser
 from jinja2 import Environment, PackageLoader
 
-from transform.settings import SDX_FTP_IMAGE_PATH
+from transform.settings import SDX_FTP_IMAGE_PATH, SDX_RESPONSE_JSON_PATH, SDX_FTP_RECEIPT_PATH, SDX_FTP_DATA_PATH
 from transform.transformers import ImageTransformer
 from transform.transformers.common_software.pck_transformer import PCKTransformer
 from transform.transformers.transformer import Transformer
@@ -26,6 +27,25 @@ class CSTransformer(Transformer):
         self.image_transformer = ImageTransformer(self._logger, self._survey, self._response,
                                                   sequence_no=self._sequence_no, base_image_path=SDX_FTP_IMAGE_PATH)
         self._setup_logger()
+
+    def create_zip(self):
+        """
+        Create an in memory zip
+        """
+        # add pck, idbr then images and index_file
+        pck_name = self._create_pck()
+        idbr_name = self._create_idbr()
+        response_io_name = self._create_response_json()
+
+        self.image_transformer.zip.append(os.path.join(SDX_FTP_DATA_PATH, pck_name), self._pck.read())
+        self.image_transformer.zip.append(os.path.join(SDX_FTP_RECEIPT_PATH, idbr_name), self._idbr.read())
+
+        self.image_transformer.get_zipped_images()
+
+        self.image_transformer.zip.append(os.path.join(SDX_RESPONSE_JSON_PATH, response_io_name),
+                                          self._response_json.read())
+
+        self.image_transformer.zip.rewind()
 
     def _setup_logger(self):
         if self._survey:
