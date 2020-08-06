@@ -3,6 +3,7 @@ import json
 
 import pytest
 
+from transform.transformers.builder import Builder
 from transform.transformers.cora import UKISTransformer
 
 
@@ -162,19 +163,19 @@ class TestTransformerUnits:
 
     def test_pck_file(self):
         transformer = get_transformer(self.default_data)
-        pck = transformer.create_pck(transformer.transform())
+        pck = transformer.create_pck()
         assert pck
 
     def test_idbr_receipt(self):
         transformer = get_transformer(self.default_data)
-        idbr = transformer.create_idbr_receipt()
+        name, idbr = transformer.create_receipt()
         assert idbr == '15162882666:f:144:201605'
 
     def test_create_zip(self):
-        transformer = get_transformer(self.default_data)
+        builder = Builder(self.default_data)
 
-        transformer.create_zip(img_seq=itertools.count())
-        actual = transformer.image_transformer.zip.get_filenames()
+        builder.create_zip(img_seq=itertools.count())
+        actual = builder.image_transformer.zip.get_filenames()
 
         expected = [
             'EDC_QData/144_0000',

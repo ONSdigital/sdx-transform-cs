@@ -4,6 +4,7 @@ import yaml
 
 import pytest
 
+from transform.transformers.builder import Builder
 from transform.transformers.cord import EcommerceTransformer, Ecommerce2019Transformer
 
 
@@ -293,21 +294,21 @@ class TestTransformerUnits:
 
     def test_pck_file(self):
         transformer = get_transformer(self.default_data)
-        pck = transformer.create_pck(transformer.transform())
+        pck = transformer.create_pck()
         assert pck
 
     def test_idbr_receipt(self):
         """Tests the content of the idbr receipt is as expected"""
         transformer = get_transformer(self.default_data)
-        idbr = transformer.create_idbr_receipt()
+        name, idbr = transformer.create_receipt()
         assert idbr == '12346789012:A:187:201605'
 
     def test_create_zip(self):
         """Tests the filenames in the created zip are the ones we're expecting"""
-        transformer = get_transformer(self.default_data)
+        builder = Builder(self.default_data)
 
-        transformer.create_zip(img_seq=itertools.count())
-        actual = transformer.image_transformer.zip.get_filenames()
+        builder.create_zip(img_seq=itertools.count())
+        actual = builder.image_transformer.zip.get_filenames()
 
         expected = [
             'EDC_QData/187_0000',
