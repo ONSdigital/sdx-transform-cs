@@ -15,6 +15,7 @@ class TestCSTransformService(unittest.TestCase):
         "origin": "uk.gov.ons.edc.eq",
         "survey_id": "023",
         "version": "0.0.1",
+        "tx_id": "123-456-654-321",
         "collection": {
             "exercise_sid": "hfjdskf",
             "instrument_id": "0203",
@@ -68,6 +69,7 @@ class TestCSTransformService(unittest.TestCase):
         "type": "uk.gov.ons.edc.eq:surveyresponse",
         "version": "0.0.1",
         "survey_id": "182",
+        "tx_id": "123-456-654-321",
         "case_id": "4d32d367-d725-49ba-8776-a14f5ae035ee"
     }'''
 

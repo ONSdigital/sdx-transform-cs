@@ -1,20 +1,19 @@
 import json
-from json import JSONDecodeError
 import logging
 import os.path
+from json import JSONDecodeError
 
 from flask import request, send_file, jsonify
 from jinja2 import Environment, PackageLoader
 from structlog import wrap_logger
 
-from transform.transformers.builder import Builder
-from transform.views.logger_config import logger_initial_config
-
 from transform import app, settings
 from transform.transformers import ImageTransformer
-from transform.transformers.common_software import CSTransformer, PCKTransformer
+from transform.transformers.builder import Builder
+from transform.transformers.common_software import PCKTransformer
 from transform.transformers.cora import UKISTransformer
 from transform.transformers.cord import EcommerceTransformer, Ecommerce2019Transformer
+from transform.views.logger_config import logger_initial_config
 
 cord_surveys = ["187"]
 cora_surveys = ["144"]
@@ -189,35 +188,24 @@ def render_images():
 
 @app.route('/common-software', methods=['POST'])
 @app.route('/common-software/<sequence_no>', methods=['POST'])
-@app.route('/common-software/<sequence_no>/<batch_number>', methods=['POST'])
-def common_software(sequence_no=1000, batch_number=0):
+def common_software(sequence_no=1000):
     survey_response = request.get_json(force=True)
-
-    if batch_number:
-        batch_number = int(batch_number)
 
     if sequence_no:
         sequence_no = int(sequence_no)
 
-    survey = get_survey(survey_response)
-    if not survey:
-        return client_error("CS:Unsupported survey/instrument id")
-
     survey_id = survey_response.get("survey_id")
     try:
-        if survey_id == "009" or survey_id == "134":
-            builder = Builder(survey_response, sequence_no)
-            builder.create_zip()
-            return send_file(builder.get_zip(), mimetype='application/zip', add_etags=False)
-        else:
-            transformer = CSTransformer(logger, survey, survey_response, batch_number, sequence_no)
-            transformer.create_zip()
-            return send_file(transformer.image_transformer.get_zip(), mimetype='application/zip', add_etags=False)
-
+        builder = Builder(survey_response, sequence_no)
+        builder.create_zip()
     except Exception as e:
         tx_id = survey_response.get("tx_id")
         logger.exception("CS:could not create files for survey", survey_id=survey_id, tx_id=tx_id)
         return server_error(e)
+
+    logger.info("CS:SUCCESS")
+
+    return send_file(builder.get_zip(), mimetype='application/zip', add_etags=False)
 
 
 @app.route('/cora', methods=['POST'])
@@ -228,17 +216,10 @@ def cora(sequence_no=1000):
     if sequence_no:
         sequence_no = int(sequence_no)
 
-    survey = get_survey(survey_response)
-    if not survey:
-        return client_error("CORA:Unsupported survey/instrument id")
-
     survey_id = survey_response.get("survey_id")
     try:
-        if survey_id == "144":
-            transformer = UKISTransformer(survey_response, sequence_no)
-            transformer.create_zip()
-        else:
-            return client_error("CORA survey with survey id {} is not supported".format(survey_id))
+        builder = Builder(survey_response, sequence_no)
+        builder.create_zip()
 
     except Exception as e:
         tx_id = survey_response.get("tx_id")
@@ -247,7 +228,7 @@ def cora(sequence_no=1000):
 
     logger.info("CORA:SUCCESS")
 
-    return send_file(transformer.image_transformer.get_zip(), mimetype='application/zip', add_etags=False)
+    return send_file(builder.get_zip(), mimetype='application/zip', add_etags=False)
 
 
 @app.route('/cord', methods=['POST'])
@@ -258,20 +239,10 @@ def cord(sequence_no=1000):
     if sequence_no:
         sequence_no = int(sequence_no)
 
-    survey = get_survey(survey_response)
-    if not survey:
-        return client_error("CS:Unsupported survey/instrument id")
-
     survey_id = survey_response.get("survey_id")
     try:
-        if survey_id == "187":
-            if survey_response['collection']['instrument_id'] in ['0001', '0002']:
-                transformer = Ecommerce2019Transformer(survey_response, sequence_no)
-            else:
-                transformer = EcommerceTransformer(survey_response, sequence_no)
-            transformer.create_zip()
-        else:
-            return client_error("CORD survey with survey id {} is not supported".format(survey_id))
+        builder = Builder(survey_response, sequence_no)
+        builder.create_zip()
 
     except Exception as e:
         tx_id = survey_response.get("tx_id")
@@ -280,7 +251,7 @@ def cord(sequence_no=1000):
 
     logger.info("CORD:SUCCESS")
 
-    return send_file(transformer.image_transformer.get_zip(), mimetype='application/zip', add_etags=False)
+    return send_file(builder.get_zip(), mimetype='application/zip', add_etags=False)
 
 
 @app.route('/info', methods=['GET'])

@@ -19,12 +19,12 @@ class Builder:
 
     def __init__(self, survey_response, sequence_no=0) -> None:
         self.survey_response = survey_response
-        self._logger = logger
+        self.logger = logger
         self.sequence_no = sequence_no
         self.ids = Survey.identifiers(survey_response, seq_nr=sequence_no)
         pattern = "./transform/surveys/{survey_id}.{inst_id}.json"
-        survey = Survey.load_survey(self.ids, pattern)
-        self.image_transformer = ImageTransformer(self._logger, survey, self.survey_response,
+        self.survey = Survey.load_survey(self.ids, pattern)
+        self.image_transformer = ImageTransformer(self.logger, self.survey, self.survey_response,
                                                   sequence_no=self.sequence_no, base_image_path=SDX_FTP_IMAGE_PATH)
         self.transformer = self._select_transformer()
 
