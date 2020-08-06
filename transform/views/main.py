@@ -10,9 +10,6 @@ from structlog import wrap_logger
 from transform import app, settings
 from transform.transformers import ImageTransformer
 from transform.transformers.builder import Builder
-from transform.transformers.common_software import PCKTransformer
-from transform.transformers.cora import UKISTransformer
-from transform.transformers.cord import EcommerceTransformer, Ecommerce2019Transformer
 from transform.views.logger_config import logger_initial_config
 
 cord_surveys = ["187"]
@@ -111,55 +108,24 @@ def render_pck(batch_number=False):
         form_id=form_id
     )
 
-    if survey_id in cord_surveys:
-        bound_logger.info("PCK:CORD survey detected")
-        if batch_number:
-            return client_error("PCK:CORD surveys don't support batch numbers")
-
-        if form_id in ["0001", "0002"]:
-            transformer = Ecommerce2019Transformer(response)
-        else:
-            transformer = EcommerceTransformer(response)
-
-        transformed_data = transformer.transform()
-        bound_logger.info("PCK:SUCCESS")
-        return transformer.create_pck(transformed_data)
-
-    if survey_id in cora_surveys:
-        bound_logger.info("PCK:CORA survey detected")
-        if batch_number:
-            return client_error("PCK:CORA surveys don't support batch numbers")
-
-        transformer = UKISTransformer(response)
-        transformed_data = transformer.transform()
-        bound_logger.info("PCK:SUCCESS")
-
-        return transformer.create_pck(transformed_data)
-
-    template = env.get_template('pck.tmpl')
-    if batch_number:
-        batch_number = int(batch_number)
-
-    pck_transformer = PCKTransformer(survey, response)
-    answers = pck_transformer.derive_answers()
-    cs_form_id = pck_transformer.get_cs_form_id()
-    sub_date_str = pck_transformer.get_subdate_str()
+    builder = Builder(response)
+    name, pck = builder.transformer.create_pck()
 
     bound_logger.info("PCK:SUCCESS")
 
-    return template.render(response=response, submission_date=sub_date_str,
-                           batch_number=batch_number, form_id=cs_form_id,
-                           answers=answers)
+    return pck
 
 
 @app.route('/idbr', methods=['POST'])
 def render_idbr():
     response = request.get_json(force=True)
-    template = env.get_template('idbr.tmpl')
+
+    builder = Builder(response)
+    name, idbr = builder.transformer.create_receipt()
 
     logger.info("IDBR:SUCCESS")
 
-    return template.render(response=response)
+    return idbr
 
 
 @app.route('/images', methods=['POST'])
