@@ -118,7 +118,7 @@ class TestTransformService(unittest.TestCase):
         for scenario_filename in test_scenarios:
             print("Loading scenario %s " % scenario_filename)
             payload = get_file_as_string(scenario_filename)
-            expected_response = get_expected_output(scenario_filename, "pck")
+            expected_response = get_expected_output(scenario_filename, "nobatch")
             print("Expected response")
             print(expected_response)
 

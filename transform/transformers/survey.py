@@ -137,7 +137,9 @@ class Survey:
             data.get("collection", {}).get("period")
         )
         if any(i is None for i in rv):
-            log.warning(f"Missing an id from {rv}")
-            return None
+            for k, v in rv._asdict().items():
+                if v is None:
+                    log.warning(f"Missing {k} from {rv}")
+                    raise Exception(f"Missing {k} from {rv}")
 
         return rv
