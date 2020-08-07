@@ -12,8 +12,6 @@ from transform.transformers import ImageTransformer
 from transform.transformers.builder import Builder
 from transform.views.logger_config import logger_initial_config
 
-cord_surveys = ["187"]
-cora_surveys = ["144"]
 env = Environment(loader=PackageLoader('transform', 'templates'))
 
 logger_initial_config(service_name='sdx-transform-cs',

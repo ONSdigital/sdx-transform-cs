@@ -1,10 +1,8 @@
-import itertools
 import json
-import yaml
 
 import pytest
+import yaml
 
-from transform.transformers.builder import Builder
 from transform.transformers.cord import EcommerceTransformer, Ecommerce2019Transformer
 
 
@@ -76,7 +74,7 @@ class TestExampleSubmission:
         assert self.transformed_data == expected_output
 
     def test_dummy_qcodes_not_in_output(self):
-        pck = self.transformer.create_pck(self.transformed_data)
+        pck = self.transformer.create_pck()
         assert pck
 
 
@@ -302,26 +300,3 @@ class TestTransformerUnits:
         transformer = get_transformer(self.default_data)
         name, idbr = transformer.create_receipt()
         assert idbr == '12346789012:A:187:201605'
-
-    def test_create_zip(self):
-        """Tests the filenames in the created zip are the ones we're expecting"""
-        builder = Builder(self.default_data)
-
-        builder.create_zip(img_seq=itertools.count())
-        actual = builder.image_transformer.zip.get_filenames()
-
-        expected = [
-            'EDC_QData/187_0000',
-            'EDC_QReceipts/REC0103_0000.DAT',
-            'EDC_QImages/Images/S000000000.JPG',
-            'EDC_QImages/Images/S000000001.JPG',
-            'EDC_QImages/Images/S000000002.JPG',
-            'EDC_QImages/Images/S000000003.JPG',
-            'EDC_QImages/Images/S000000004.JPG',
-            'EDC_QImages/Images/S000000005.JPG',
-            'EDC_QImages/Images/S000000006.JPG',
-            'EDC_QImages/Images/S000000007.JPG',
-            'EDC_QImages/Index/EDC_187_20170301_0000.csv',
-            'EDC_QJson/187_0000.json'
-        ]
-        assert expected == actual
