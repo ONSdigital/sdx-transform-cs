@@ -8,6 +8,10 @@ from structlog import wrap_logger
 logger = wrap_logger(logging.getLogger(__name__))
 
 
+class MissingIdsException(Exception):
+    pass
+
+
 class Survey:
     """Provide operations and accessors to survey data."""
 
@@ -140,6 +144,6 @@ class Survey:
             for k, v in rv._asdict().items():
                 if v is None:
                     log.warning(f"Missing {k} from {rv}")
-                    raise Exception(f"Missing {k} from {rv}")
+                    raise MissingIdsException(f"Missing {k} from {rv}")
 
         return rv

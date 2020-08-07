@@ -12,7 +12,7 @@ from transform.transformers.builder import Builder
 from transform.transformers.common_software.cs_formatter import CSFormatter
 from transform.transformers.common_software.mwss_transformer import MWSSTransformer
 from transform.transformers.processor import Processor
-from transform.transformers.survey import Survey
+from transform.transformers.survey import Survey, MissingIdsException
 
 
 class SurveyTests(unittest.TestCase):
@@ -1027,7 +1027,7 @@ class PackingTests(unittest.TestCase):
 
         """
         self.assertRaises(
-            UserWarning,
+            MissingIdsException,
             MWSSTransformer,
             {},
             seq_nr=0
