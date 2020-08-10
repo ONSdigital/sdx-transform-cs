@@ -15,6 +15,8 @@ class MissingIdsException(Exception):
 class Survey:
     """Provide operations and accessors to survey data."""
 
+    file_pattern = "./transform/surveys/{survey_id}.{inst_id}.json"
+
     #: A named tuple type to capture ids and discriminators from a survey response.
     Identifiers = namedtuple("Identifiers", [
         "batch_nr", "seq_nr", "ts", "tx_id", "survey_id", "inst_id",
@@ -22,7 +24,7 @@ class Survey:
     ])
 
     @staticmethod
-    def load_survey(ids, pattern):
+    def load_survey(ids, pattern=file_pattern):
         """Retrieve the survey definition by id.
 
         This function takes metadata from a survey reply, finds the JSON definition of

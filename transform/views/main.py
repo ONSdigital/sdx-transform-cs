@@ -9,7 +9,7 @@ from structlog import wrap_logger
 
 from transform import app, settings
 from transform.transformers import ImageTransformer
-from transform.transformers.builder import Builder
+from transform.transformers.transform_selector import get_transformer
 from transform.views.logger_config import logger_initial_config
 
 env = Environment(loader=PackageLoader('transform', 'templates'))
@@ -106,8 +106,8 @@ def render_pck(batch_number=False):
         form_id=form_id
     )
 
-    builder = Builder(response)
-    name, pck = builder.transformer.create_pck()
+    transformer = get_transformer(response)
+    name, pck = transformer.create_pck()
 
     bound_logger.info("PCK:SUCCESS")
 
@@ -118,8 +118,8 @@ def render_pck(batch_number=False):
 def render_idbr():
     response = request.get_json(force=True)
 
-    builder = Builder(response)
-    name, idbr = builder.transformer.create_receipt()
+    transformer = get_transformer(response)
+    name, idbr = transformer.create_receipt()
 
     logger.info("IDBR:SUCCESS")
 
@@ -160,16 +160,14 @@ def common_software(sequence_no=1000):
 
     survey_id = survey_response.get("survey_id")
     try:
-        builder = Builder(survey_response, sequence_no)
-        builder.create_zip()
+        transformer = get_transformer(survey_response, sequence_no)
+        zip_file = transformer.get_zip()
+        logger.info("CS:SUCCESS")
+        return send_file(zip_file, mimetype='application/zip', add_etags=False)
     except Exception as e:
         tx_id = survey_response.get("tx_id")
         logger.exception("CS:could not create files for survey", survey_id=survey_id, tx_id=tx_id)
         return server_error(e)
-
-    logger.info("CS:SUCCESS")
-
-    return send_file(builder.get_zip(), mimetype='application/zip', add_etags=False)
 
 
 @app.route('/cora', methods=['POST'])
@@ -182,17 +180,15 @@ def cora(sequence_no=1000):
 
     survey_id = survey_response.get("survey_id")
     try:
-        builder = Builder(survey_response, sequence_no)
-        builder.create_zip()
+        transformer = get_transformer(survey_response, sequence_no)
+        zip_file = transformer.get_zip()
+        logger.info("CORA:SUCCESS")
+        return send_file(zip_file, mimetype='application/zip', add_etags=False)
 
     except Exception as e:
         tx_id = survey_response.get("tx_id")
         logger.exception("CORA:could not create files for survey", survey_id=survey_id, tx_id=tx_id)
         return server_error(e)
-
-    logger.info("CORA:SUCCESS")
-
-    return send_file(builder.get_zip(), mimetype='application/zip', add_etags=False)
 
 
 @app.route('/cord', methods=['POST'])
@@ -205,17 +201,15 @@ def cord(sequence_no=1000):
 
     survey_id = survey_response.get("survey_id")
     try:
-        builder = Builder(survey_response, sequence_no)
-        builder.create_zip()
+        transformer = get_transformer(survey_response, sequence_no)
+        zip_file = transformer.get_zip()
+        logger.info("CORD:SUCCESS")
+        return send_file(zip_file, mimetype='application/zip', add_etags=False)
 
     except Exception as e:
         tx_id = survey_response.get("tx_id")
         logger.exception("CORD:could not create files for survey", survey_id=survey_id, tx_id=tx_id)
         return server_error(e)
-
-    logger.info("CORD:SUCCESS")
-
-    return send_file(builder.get_zip(), mimetype='application/zip', add_etags=False)
 
 
 @app.route('/info', methods=['GET'])

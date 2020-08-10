@@ -1,18 +1,18 @@
-from collections import OrderedDict
 import datetime
 import itertools
 import json
 import os.path
 import unittest
 import zipfile
+from collections import OrderedDict
 
 import pkg_resources
 
-from transform.transformers.builder import Builder
 from transform.transformers.common_software.cs_formatter import CSFormatter
 from transform.transformers.common_software.mwss_transformer import MWSSTransformer
 from transform.transformers.processor import Processor
 from transform.transformers.survey import Survey, MissingIdsException
+from transform.transformers.transform_selector import get_transformer
 
 
 class SurveyTests(unittest.TestCase):
@@ -1054,10 +1054,10 @@ class PackingTests(unittest.TestCase):
         }
         seq_nr = 12345
 
-        builder = Builder(response, sequence_no=seq_nr)
-        builder.create_zip(img_seq=itertools.count())
+        transformer = get_transformer(response, sequence_no=seq_nr)
+        transformer.create_zip(img_seq=itertools.count())
 
-        funct = next(i for i in builder.image_transformer.zip.get_filenames() if os.path.splitext(i)[1] == ".csv")
+        funct = next(i for i in transformer.image_transformer.zip.get_filenames() if os.path.splitext(i)[1] == ".csv")
         bits = os.path.splitext(funct)[0].split("_")
 
         self.assertEqual(seq_nr, int(bits[-1]))
@@ -1080,10 +1080,10 @@ class PackingTests(unittest.TestCase):
         }
         seq_nr = 12345
 
-        builder = Builder(expected_json_data, sequence_no=seq_nr)
-        builder.create_zip(img_seq=itertools.count())
+        transformer = get_transformer(expected_json_data, sequence_no=seq_nr)
+        transformer.create_zip(img_seq=itertools.count())
 
-        z = zipfile.ZipFile(builder.image_transformer.zip.in_memory_zip)
+        z = zipfile.ZipFile(transformer.image_transformer.zip.in_memory_zip)
         zfile = z.open('EDC_QJson/134_12345.json', 'r')
         actual_json_data = json.loads(zfile.read().decode('utf-8'))
         z.close()

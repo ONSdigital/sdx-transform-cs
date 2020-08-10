@@ -3,7 +3,7 @@ import json
 
 import pytest
 
-from transform.transformers.builder import Builder
+from transform.transformers.transform_selector import get_transformer
 
 
 class TestExampleSubmission:
@@ -16,10 +16,10 @@ class TestExampleSubmission:
 
     def test_create_zip(self, submission):
         """Tests the filenames in the created zip are the ones we're expecting"""
-        builder = Builder(submission)
+        transformer = get_transformer(submission)
 
-        builder.create_zip(img_seq=itertools.count())
-        actual = builder.image_transformer.zip.get_filenames()
+        transformer.get_zip(img_seq=itertools.count())
+        actual = transformer.image_transformer.zip.get_filenames()
 
         expected = [
             'EDC_QData/187_0000',

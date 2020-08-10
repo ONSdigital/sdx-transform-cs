@@ -1,15 +1,10 @@
 import decimal
-import json
 import logging
 from decimal import Decimal, ROUND_HALF_UP
 
 from structlog import wrap_logger
 
-from transform.settings import SDX_FTP_IMAGE_PATH
-
 from transform.transformers.cora.cora_formatter import CORAFormatter
-from transform.transformers.image_transformer import ImageTransformer
-from transform.transformers.survey import Survey
 from transform.transformers.transformer import Transformer
 
 logger = wrap_logger(logging.getLogger(__name__))
@@ -19,23 +14,7 @@ class UKISTransformer(Transformer):
     """Perform the transforms and formatting for the UKIS survey."""
 
     def __init__(self, response, seq_nr=0):
-
-        self.response = response
-        self.ids = Survey.identifiers(self.response, seq_nr=seq_nr, log=logger)
-
-        survey_file = f"./transform/surveys/{self.ids.survey_id}.{self.ids.inst_id}.json"
-
-        with open(survey_file) as fp:
-            logger.info(f"Loading {survey_file}")
-            self.survey = json.load(fp)
-
-        self.image_transformer = ImageTransformer(
-            logger,
-            self.survey,
-            self.response,
-            sequence_no=self.ids.seq_nr,
-            base_image_path=SDX_FTP_IMAGE_PATH,
-        )
+        super().__init__(response, seq_nr)
 
     def get_qcode(self, qcode, lowercase=False, not_found_value=None):
         """ Return the value of a qcode from the 'data' key of the response.

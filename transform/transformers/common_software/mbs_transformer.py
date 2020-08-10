@@ -1,17 +1,12 @@
 import datetime
 import decimal
-import json
 import logging
-
 from decimal import ROUND_HALF_UP, Decimal
 
 from structlog import wrap_logger
 
-from transform.settings import SDX_FTP_IMAGE_PATH
-
 from transform.transformers.common_software.cs_formatter import CSFormatter
 from transform.transformers.survey import Survey
-from transform.transformers.image_transformer import ImageTransformer
 from transform.transformers.transformer import Transformer
 
 logger = wrap_logger(logging.getLogger(__name__))
@@ -96,6 +91,8 @@ class MBSTransformer(Transformer):
 
     def __init__(self, response, seq_nr=0):
 
+        super().__init__(response, seq_nr)
+
         self.employment_questions = ("51", "52", "53", "54")
         self.turnover_questions = ("49",)
 
@@ -122,25 +119,6 @@ class MBSTransformer(Transformer):
             "0867": "T867G",
             "0873": "T873G",
         }
-
-        self.response = response
-        self.ids = self.get_identifiers(seq_nr=seq_nr)
-
-        survey_file = "./transform/surveys/{}.{}.json".format(
-            self.ids["survey_id"], self.ids["instrument_id"]
-        )
-
-        with open(survey_file) as fp:
-            logger.info(f"Loading {survey_file}")
-            self.survey = json.load(fp)
-
-        self.image_transformer = ImageTransformer(
-            logger,
-            self.survey,
-            self.response,
-            sequence_no=self.ids["seq_nr"],
-            base_image_path=SDX_FTP_IMAGE_PATH,
-        )
 
     def get_identifiers(self, batch_nr=0, seq_nr=0):
         """Parse common metadata from the survey.
@@ -251,8 +229,8 @@ class MBSTransformer(Transformer):
         dates = self.survey_dates()
 
         logger.info(
-            "Transforming data for {}".format(self.ids["ru_ref"]),
-            tx_id=self.ids["tx_id"]
+            "Transforming data for {}".format(self.ids.ru_ref),
+            tx_id=self.ids.tx_id
         )
 
         transformed_data = {

@@ -1,14 +1,9 @@
-import json
 import logging
 from decimal import Decimal
 
 from structlog import wrap_logger
 
-from transform.settings import SDX_FTP_IMAGE_PATH
-
 from transform.transformers.cord.cord_formatter import CORDFormatter
-from transform.transformers.image_transformer import ImageTransformer
-from transform.transformers.survey import Survey
 from transform.transformers.transformer import Transformer
 
 logger = wrap_logger(logging.getLogger(__name__))
@@ -27,28 +22,13 @@ class EcommerceTransformer(Transformer):
 
     def __init__(self, response, seq_nr=0):
 
+        super().__init__(response, seq_nr)
+
         period = response['collection']['period']
         if len(period) == 4:
             response['collection']['period'] = period[2:] + '12'
 
         self.period = period
-        self.response = response
-
-        self.ids = Survey.identifiers(self.response, seq_nr=seq_nr, log=logger)
-
-        survey_file = f"./transform/surveys/{self.ids.survey_id}.{self.ids.inst_id}.json"
-
-        with open(survey_file) as fp:
-            logger.info(f"Loading {survey_file}")
-            self.survey = json.load(fp)
-
-        self.image_transformer = ImageTransformer(
-            logger,
-            self.survey,
-            self.response,
-            sequence_no=self.ids.seq_nr,
-            base_image_path=SDX_FTP_IMAGE_PATH,
-        )
 
     def get_qcode(self, qcode):
         """ Return the value of a qcode, or if it isn't present, then return None
@@ -77,8 +57,8 @@ class EcommerceTransformer(Transformer):
 
     @staticmethod
     def convert_percentage(percentage):
-        """ Converts a percentage with possible decimal places into a 0 padded string of length 4. The final string should
-        represent 1 decimal place. All inputs will be rounded to 1 decimal place.
+        """ Converts a percentage with possible decimal places into a 0 padded string of length 4. The final string
+        should represent 1 decimal place. All inputs will be rounded to 1 decimal place.
 
             e.g. 10 -> 0100, 0.1 -> 0001, 23.4 -> 0234, 29.949 -> 0299, 29.950 -> 0300
 
@@ -104,7 +84,7 @@ class EcommerceTransformer(Transformer):
         """
         Transform a question that has its answer changed by the result of a negative playback page.
         :param q_code: The q_code of the question being transformed
-        :param playback_q_code: The code from the negative playback page that affects the result of the q_code passed in.
+        :param playback_q_code: The code from the negative playback page that affects the result of the q_code passed in
         The regex form of this code would typically be 'd[0-9]+'.
         :returns: "10" if the q_code value in the response data has a true value.  "01" if the q_code response value is false
         BUT the playback_q_code response value is 'They're not used' or 'They weren’t experienced'.  Otherwise "00".

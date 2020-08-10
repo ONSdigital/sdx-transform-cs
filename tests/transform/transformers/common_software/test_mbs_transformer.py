@@ -4,9 +4,9 @@ import json
 import unittest
 from copy import deepcopy
 
-from transform.transformers.builder import Builder
 from transform.transformers.common_software import MBSTransformer
 from transform.transformers.common_software.cs_formatter import CSFormatter
+from transform.transformers.transform_selector import get_transformer
 
 
 class LogicTests(unittest.TestCase):
@@ -497,10 +497,10 @@ class TestTransform(unittest.TestCase):
 
     def test_mbs_create_zip(self):
         response = deepcopy(self.response)
-        builder = Builder(response)
+        transformer = get_transformer(response)
 
-        builder.create_zip(img_seq=itertools.count())
-        actual = builder.image_transformer.zip.get_filenames()
+        transformer.create_zip(img_seq=itertools.count())
+        actual = transformer.image_transformer.zip.get_filenames()
 
         expected = [
             'EDC_QData/009_0000',

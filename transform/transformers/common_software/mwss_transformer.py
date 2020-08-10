@@ -1,17 +1,11 @@
+import itertools
+import re
 from collections import OrderedDict
 from decimal import Decimal, ROUND_DOWN, ROUND_HALF_UP
 from functools import partial
-import logging
-
-import itertools
-import re
-from structlog import wrap_logger
 
 from transform.transformers.common_software.cs_formatter import CSFormatter
-from transform.transformers.image_transformer import ImageTransformer
 from transform.transformers.processor import Processor
-from transform.transformers.survey import Survey
-from transform.settings import SDX_FTP_IMAGE_PATH
 
 __doc__ = """Transform MWSS survey data into formats required downstream.
 
@@ -91,25 +85,13 @@ class MWSSTransformer(Transformer):
 
     def __init__(self, response, seq_nr=0, log=None):
         """Create a transformer object to process a survey response."""
-        self.response = response
-        self.ids = Survey.identifiers(response, seq_nr=seq_nr)
 
-        if self.ids is None:
-            raise UserWarning("Missing identifiers")
-
-        if log is None:
-            self.log = wrap_logger(logging.getLogger(__name__))
-        else:
-            self.log = Survey.bind_logger(log, self.ids)
+        super().__init__(response, seq_nr)
 
         # Enforce that child classes have defn and pattern attributes
         for attr in ("defn", "pattern"):
             if not hasattr(self.__class__, attr):
                 raise UserWarning(f"Missing class attribute: {attr}")
-
-        self.survey = Survey.load_survey(self.ids, self.pattern)
-        self.image_transformer = ImageTransformer(self.log, self.survey, self.response,
-                                                  sequence_no=self.ids.seq_nr, base_image_path=SDX_FTP_IMAGE_PATH)
 
     @staticmethod
     def transform(data, survey=None):
