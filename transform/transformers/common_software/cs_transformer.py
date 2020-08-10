@@ -7,14 +7,14 @@ from jinja2 import Environment, PackageLoader
 from structlog import wrap_logger
 
 from transform.transformers.common_software.pck_transformer import PCKTransformer
-from transform.transformers.transformer import Transformer
+from transform.transformers.survey_transformer import SurveyTransformer
 
 logger = wrap_logger(logging.getLogger(__name__))
 
 env = Environment(loader=PackageLoader('transform', 'templates'))
 
 
-class CSTransformer(Transformer):
+class CSTransformer(SurveyTransformer):
 
     def __init__(self, response, sequence_no=1000):
         super().__init__(response, sequence_no)

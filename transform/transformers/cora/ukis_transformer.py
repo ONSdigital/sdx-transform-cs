@@ -5,12 +5,12 @@ from decimal import Decimal, ROUND_HALF_UP
 from structlog import wrap_logger
 
 from transform.transformers.cora.cora_formatter import CORAFormatter
-from transform.transformers.transformer import Transformer
+from transform.transformers.survey_transformer import SurveyTransformer
 
 logger = wrap_logger(logging.getLogger(__name__))
 
 
-class UKISTransformer(Transformer):
+class UKISTransformer(SurveyTransformer):
     """Perform the transforms and formatting for the UKIS survey."""
 
     def __init__(self, response, seq_nr=0):

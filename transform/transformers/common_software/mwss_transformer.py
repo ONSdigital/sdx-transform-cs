@@ -12,10 +12,10 @@ __doc__ = """Transform MWSS survey data into formats required downstream.
 The class API is used by the SDX transform service.
 """
 
-from transform.transformers.transformer import Transformer
+from transform.transformers.survey_transformer import SurveyTransformer
 
 
-class MWSSTransformer(Transformer):
+class MWSSTransformer(SurveyTransformer):
     """Perform the transforms and formatting for the MWSS survey.
 
     Weights = A sequence of 2-tuples giving the weight value for each question in the group.

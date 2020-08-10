@@ -7,12 +7,12 @@ from structlog import wrap_logger
 
 from transform.transformers.common_software.cs_formatter import CSFormatter
 from transform.transformers.survey import Survey
-from transform.transformers.transformer import Transformer
+from transform.transformers.survey_transformer import SurveyTransformer
 
 logger = wrap_logger(logging.getLogger(__name__))
 
 
-class MBSTransformer(Transformer):
+class MBSTransformer(SurveyTransformer):
     """Perform the transforms and formatting for the MBS survey."""
 
     @staticmethod

@@ -12,8 +12,8 @@ from transform.utilities.formatter import Formatter
 logger = wrap_logger(logging.getLogger(__name__))
 
 
-class Transformer:
-    """Superclass for transformers.
+class SurveyTransformer:
+    """Superclass for specific survey transformers.
 
     Common functionality for transformer classes.
     Subclasses must provide their own implementations for create_pck() and create_receipt().

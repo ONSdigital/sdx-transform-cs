@@ -4,12 +4,12 @@ from decimal import Decimal
 from structlog import wrap_logger
 
 from transform.transformers.cord.cord_formatter import CORDFormatter
-from transform.transformers.transformer import Transformer
+from transform.transformers.survey_transformer import SurveyTransformer
 
 logger = wrap_logger(logging.getLogger(__name__))
 
 
-class EcommerceTransformer(Transformer):
+class EcommerceTransformer(SurveyTransformer):
     """Perform the transforms and formatting for the MBS survey.
 
     The period for Ecommerce is different to other surveys and comes in as YYYY (e.g. 2019).
