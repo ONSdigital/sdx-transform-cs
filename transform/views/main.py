@@ -9,7 +9,7 @@ from structlog import wrap_logger
 
 from transform import app, settings
 from transform.transformers import ImageTransformer
-from transform.transformers.survey import MissingSurveyException
+from transform.transformers.survey import MissingSurveyException, Survey
 from transform.transformers.transform_selector import get_transformer
 from transform.views.logger_config import logger_initial_config
 
@@ -84,55 +84,13 @@ def get_survey(survey_response):
         return None
 
 
-@app.route('/pck', methods=['POST'])
-@app.route('/pck/<batch_number>', methods=['POST'])
-def render_pck(batch_number=False):
-    """
-    This endpoint will return the pck file from the supplied survey response.  Note this will
-    only return the pck file and none of the other files that are usually generated from a submission.
-    This endpoint can be called with an optional batch_number.  Batch numbers are only
-    used for common-software surveys.
-    """
-    response = request.get_json(force=True)
-    survey = get_survey(response)
-
-    if not survey:
-        return client_error("PCK:Unsupported survey/instrument id")
-
-    survey_id = survey.get("survey_id")
-    form_id = response['collection']['instrument_id']
-    bound_logger = logger.bind(
-        survey_id=survey_id,
-        tx_id=response.get("tx_id"),
-        form_id=form_id
-    )
-
-    transformer = get_transformer(response)
-    name, pck = transformer.create_pck()
-
-    bound_logger.info("PCK:SUCCESS")
-
-    return pck
-
-
-@app.route('/idbr', methods=['POST'])
-def render_idbr():
-    response = request.get_json(force=True)
-
-    transformer = get_transformer(response)
-    name, idbr = transformer.create_receipt()
-
-    logger.info("IDBR:SUCCESS")
-
-    return idbr
-
-
 @app.route('/images', methods=['POST'])
 def render_images():
 
     survey_response = request.get_json(force=True)
 
-    survey = get_survey(survey_response)
+    ids = Survey.identifiers(survey_response)
+    survey = Survey.load_survey(ids)
 
     if not survey:
         return client_error("IMAGES:Unsupported survey/instrument id")
