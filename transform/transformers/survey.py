@@ -132,7 +132,9 @@ class Survey:
         ru_ref = data.get("metadata", {}).get("ru_ref", "")
         ts = datetime.datetime.now(datetime.timezone.utc)
         rv = Survey.Identifiers(
-            batch_nr, seq_nr, ts,
+            batch_nr,
+            seq_nr,
+            ts,
             data.get("tx_id"),
             data.get("survey_id"),
             data.get("collection", {}).get("instrument_id"),

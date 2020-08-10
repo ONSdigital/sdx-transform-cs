@@ -17,7 +17,7 @@ env = Environment(loader=PackageLoader('transform', 'templates'))
 class CSTransformer(Transformer):
 
     def __init__(self, response, sequence_no=1000):
-        super().__init__(response, seq_nr=sequence_no)
+        super().__init__(response, sequence_no)
         self._logger = logger
         self._batch_number = False
         self._idbr = StringIO()

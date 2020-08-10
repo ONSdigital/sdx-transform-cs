@@ -499,7 +499,8 @@ class TestTransform(unittest.TestCase):
         response = deepcopy(self.response)
         transformer = get_transformer(response)
 
-        transformer.create_zip(img_seq=itertools.count())
+        transformer.get_zip(img_seq=itertools.count())
+
         actual = transformer.image_transformer.zip.get_filenames()
 
         expected = [

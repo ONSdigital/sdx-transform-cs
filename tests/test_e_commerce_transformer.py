@@ -1,3 +1,4 @@
+import itertools
 import json
 
 import pytest
@@ -300,3 +301,30 @@ class TestTransformerUnits:
         transformer = get_transformer(self.default_data)
         name, idbr = transformer.create_receipt()
         assert idbr == '12346789012:A:187:201605'
+
+    def test_create_zip(self):
+        """Tests the filenames in the created zip are the ones we're expecting"""
+
+        with open('tests/replies/eq-ecommerce-test-submission.json', 'r') as fp:
+            response = json.load(fp)
+
+        transformer = get_transformer(response)
+
+        transformer.get_zip(img_seq=itertools.count())
+        actual = transformer.image_transformer.zip.get_filenames()
+
+        expected = [
+            'EDC_QData/187_0000',
+            'EDC_QReceipts/REC0103_0000.DAT',
+            'EDC_QImages/Images/S000000000.JPG',
+            'EDC_QImages/Images/S000000001.JPG',
+            'EDC_QImages/Images/S000000002.JPG',
+            'EDC_QImages/Images/S000000003.JPG',
+            'EDC_QImages/Images/S000000004.JPG',
+            'EDC_QImages/Images/S000000005.JPG',
+            'EDC_QImages/Images/S000000006.JPG',
+            'EDC_QImages/Images/S000000007.JPG',
+            'EDC_QImages/Index/EDC_187_20170301_0000.csv',
+            'EDC_QJson/187_0000.json'
+        ]
+        assert expected == actual

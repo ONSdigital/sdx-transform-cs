@@ -1054,8 +1054,8 @@ class PackingTests(unittest.TestCase):
         }
         seq_nr = 12345
 
-        transformer = get_transformer(response, sequence_no=seq_nr)
-        transformer.create_zip(img_seq=itertools.count())
+        transformer = get_transformer(response, seq_nr)
+        transformer.get_zip(img_seq=itertools.count())
 
         funct = next(i for i in transformer.image_transformer.zip.get_filenames() if os.path.splitext(i)[1] == ".csv")
         bits = os.path.splitext(funct)[0].split("_")
@@ -1081,9 +1081,9 @@ class PackingTests(unittest.TestCase):
         seq_nr = 12345
 
         transformer = get_transformer(expected_json_data, sequence_no=seq_nr)
-        transformer.create_zip(img_seq=itertools.count())
+        result = transformer.get_zip(img_seq=itertools.count())
 
-        z = zipfile.ZipFile(transformer.image_transformer.zip.in_memory_zip)
+        z = zipfile.ZipFile(result)
         zfile = z.open('EDC_QJson/134_12345.json', 'r')
         actual_json_data = json.loads(zfile.read().decode('utf-8'))
         z.close()

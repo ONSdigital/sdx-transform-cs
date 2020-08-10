@@ -252,27 +252,27 @@ class MBSTransformer(Transformer):
         }
 
     def create_pck(self, img_seq=None):
-        logger.info("Creating PCK", ru_ref=self.ids["ru_ref"])
-        pck_name = CSFormatter.pck_name(self.ids["survey_id"], self.ids["seq_nr"])
+        logger.info("Creating PCK", ru_ref=self.ids.ru_ref)
+        pck_name = CSFormatter.pck_name(self.ids.survey_id, self.ids.seq_nr)
         transformed_data = self._transform()
         pck = CSFormatter.get_pck(
             transformed_data,
-            self.idbr_ref[self.ids["instrument_id"]],
-            self.ids["ru_ref"],
-            self.ids["ru_check"],
-            self.ids["period"],
+            self.idbr_ref[self.ids.inst_id],
+            self.ids.ru_ref,
+            self.ids.ru_check,
+            self.ids.period,
         )
 
         return pck_name, pck
 
     def create_receipt(self):
-        logger.info("Creating IDBR receipt", ru_ref=self.ids["ru_ref"])
-        idbr_name = CSFormatter.idbr_name(self.ids["submitted_at"], self.ids["seq_nr"])
+        logger.info("Creating IDBR receipt", ru_ref=self.ids.ru_ref)
+        idbr_name = CSFormatter.idbr_name(self.ids.user_ts, self.ids.seq_nr)
         idbr = CSFormatter.get_idbr(
-            self.ids["survey_id"],
-            self.ids["ru_ref"],
-            self.ids["ru_check"],
-            self.ids["period"],
+            self.ids.survey_id,
+            self.ids.ru_ref,
+            self.ids.ru_check,
+            self.ids.period
         )
 
         return idbr_name, idbr
