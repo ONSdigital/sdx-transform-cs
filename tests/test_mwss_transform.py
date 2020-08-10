@@ -7,11 +7,12 @@ import zipfile
 from collections import OrderedDict
 
 import pkg_resources
+import pytest
 
 from transform.transformers.common_software.cs_formatter import CSFormatter
 from transform.transformers.common_software.mwss_transformer import MWSSTransformer
 from transform.transformers.processor import Processor
-from transform.transformers.survey import Survey, MissingIdsException
+from transform.transformers.survey import Survey, MissingIdsException, MissingSurveyException
 from transform.transformers.transform_selector import get_transformer
 
 
@@ -112,7 +113,7 @@ class OpTests(unittest.TestCase):
             "survey_id": "134",
             "tx_id": "27923934-62de-475c-bc01-433c09fd38b8",
             "collection": {
-                "instrument_id": "0001",
+                "instrument_id": "0005",
                 "period": "201704"
             },
             "metadata": {
@@ -894,8 +895,9 @@ class BatchFileTests(unittest.TestCase):
                 "ru_ref": "12345678901A"
             }
         }, batch_nr=0, seq_nr=0)
-        return_value = Survey.load_survey(ids, MWSSTransformer.pattern)
-        self.assertIsNone(return_value)
+
+        with pytest.raises(MissingSurveyException):
+            Survey.load_survey(ids, MWSSTransformer.pattern)
 
     def test_pck_lines(self):
         """
