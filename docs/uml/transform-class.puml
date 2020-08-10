@@ -2,9 +2,6 @@
 
 hide empty members
 
-'notes
-
-note "The 2 abstract classes do not\n actually exist and are only\n present to make the diagram\n easier to read." as n1
 
 'classes
 
@@ -13,10 +10,11 @@ class CSFormatter
 class CORAFormatter
 class CORDFormatter
 
-abstract Transformer
-Transformer : create_zip()
-
 abstract SurveyTransformer
+SurveyTransformer : create_pck
+SurveyTransformer : create_receipt
+SurveyTransformer : create_images
+SurveyTransformer : get_zip
 
 class MWSSTransformer
 class MBSTransformer
@@ -65,8 +63,7 @@ Formatter <|-u- CSFormatter
 Formatter <|-u- CORAFormatter
 Formatter <|-u- CORDFormatter
 
-Transformer <|-- CSTransformer
-Transformer <|-- SurveyTransformer
+SurveyTransformer <|-- CSTransformer
 SurveyTransformer <|-- MWSSTransformer
 SurveyTransformer <|-- MBSTransformer
 SurveyTransformer <|-- UKISTransformer
@@ -74,7 +71,7 @@ SurveyTransformer <|-- EcommerceTransformer
 EcommerceTransformer <|-U- Ecommerce2019Transformer
 
 'aggregations
-Transformer o-L ImageTransformer
+SurveyTransformer o-L ImageTransformer
 
 CSFormatter -u- MWSSTransformer : uses <
 CSFormatter -u- MBSTransformer : uses <
@@ -85,7 +82,7 @@ IndexFile --o ImageTransformer
 ImageTransformer o-U- InMemoryZip
 ImageTransformer -L PDFTransformer : uses >
 
-SurveyTransformer -L Survey : uses >
+SurveyTransformer -R Survey : uses >
 MWSSTransformer -- Processor : uses >
 CSTransformer -d- PCKTransformer : uses >
 
