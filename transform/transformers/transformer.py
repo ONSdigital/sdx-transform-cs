@@ -13,6 +13,12 @@ logger = wrap_logger(logging.getLogger(__name__))
 
 
 class Transformer:
+    """Superclass for transformers.
+
+    Common functionality for transformer classes.
+    Subclasses must provide their own implementations for create_pck() and create_receipt().
+
+    """
 
     def __init__(self, response, sequence_no):
         self.response = response
@@ -24,12 +30,25 @@ class Transformer:
                                                   sequence_no=self.sequence_no, base_image_path=SDX_FTP_IMAGE_PATH)
 
     def create_pck(self):
-        pass
+        """
+        Returns a tuple containing the pck name, and the pck itself as string.
+        """
+        pck_name = ""
+        pck = ""
+        return pck_name, pck
 
     def create_receipt(self):
-        pass
+        """
+        Returns a tuple containing the pck name, and the pck itself as string.
+        """
+        receipt_name = ""
+        receipt = ""
+        return receipt_name, receipt
 
     def create_images(self, img_seq=None):
+        """
+        Create the image files within the zip.
+        """
         self.image_transformer.get_zipped_images(img_seq)
 
     def get_zip(self, img_seq=None):

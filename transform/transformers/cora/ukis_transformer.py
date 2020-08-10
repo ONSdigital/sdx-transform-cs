@@ -34,7 +34,8 @@ class UKISTransformer(Transformer):
         :param qcode: The qcode to search for form the response
         :param yes_value: What should be returned if the answer value is 'Yes' (defaults to '1')
         :param no_value: What should be returned if the answer value is 'No' (defaults to an empty string)
-        :returns: '1' or None (if the return values haven't been modified).  If the answer isn't either 'Yes' or 'No' then an empty string is returned
+        :returns: '1' or None (if the return values haven't been modified).  If the answer isn't either 'Yes' or 'No'
+        then an empty string is returned.
         """
         answer = self.get_qcode(qcode, lowercase=True)
         if answer:

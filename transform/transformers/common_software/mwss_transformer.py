@@ -112,7 +112,7 @@ class MWSSTransformer(Transformer):
             for i in (pattern.match(key) for key in data)
             if i is not None
         ))
-        mandatory = set([Decimal("130"), Decimal("131"), Decimal("132")])
+        mandatory = {Decimal("130"), Decimal("131"), Decimal("132")}
 
         if 'd50' in data or 'd50f' in data:
             mandatory.update([Decimal("50"), Decimal("60"), Decimal("70"), Decimal("80")])
