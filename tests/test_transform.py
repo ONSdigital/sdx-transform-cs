@@ -1,16 +1,17 @@
 import csv
-from datetime import datetime
-import dateutil
 import glob
 import io
 import json
 import os
 import unittest
 import zipfile
+from datetime import datetime
+from unittest.mock import patch
+
+import dateutil
 
 from transform import app
 from transform.views.image_filters import format_date
-from unittest.mock import patch
 
 
 def get_file_as_string(filename):
@@ -21,6 +22,13 @@ def get_file_as_string(filename):
     f.close()
 
     return contents
+
+
+def get_file_as_dict(filename):
+
+    with open(filename, encoding="utf-8") as fh:
+        content = fh.read()
+        return json.loads(content)
 
 
 def get_test_scenarios(output_type):
@@ -76,13 +84,8 @@ def modify_csv_time(csv_content, creation_time):
 
 class TestTransformService(unittest.TestCase):
 
-    transform_idbr_endpoint = "/idbr"
     transform_images_endpoint = "/images"
-    # Provide a default batch no as url param
-    transform_pck_endpoint = "/pck/30001"
-    transform_cord_pck_endpoint = "/pck"
-    transform_cora_pck_endpoint = "/pck"
-    transform_images_endpoint = "/images"
+    transform_endpoint = "/transform/30001"
 
     def setUp(self):
 
@@ -91,89 +94,6 @@ class TestTransformService(unittest.TestCase):
 
         # propagate the exceptions to the test client
         self.app.testing = True
-
-    def test_transforms_idbr(self):
-
-        test_scenarios = get_test_scenarios("idbr")
-
-        print("Found %d idbr scenarios" % len(test_scenarios))
-
-        for scenario_filename in test_scenarios:
-
-            print("Loading scenario %s " % scenario_filename)
-            payload = get_file_as_string(scenario_filename)
-            expected_response = get_expected_output(scenario_filename, "idbr")
-
-            r = self.app.post(self.transform_idbr_endpoint, data=payload)
-
-            actual_response = r.data.decode("UTF8")
-
-            self.assertEqual(actual_response, expected_response)
-
-    def test_transforms_pck(self):
-
-        test_scenarios = get_common_software_test_scenarios("pck")
-
-        print("Found %d pck scenarios" % len(test_scenarios))
-        for scenario_filename in test_scenarios:
-            print("Loading scenario %s " % scenario_filename)
-            payload = get_file_as_string(scenario_filename)
-            expected_response = get_expected_output(scenario_filename, "nobatch")
-            print("Expected response")
-            print(expected_response)
-
-            r = self.app.post(self.transform_pck_endpoint, data=payload)
-
-            actual_response = r.data.decode("UTF8")
-            print("Actual response")
-            print(actual_response)
-
-            self.assertEqual(actual_response, expected_response)
-
-    def test_cora_transforms_pck(self):
-        """Tests the pck transformation for responses that go to the CORA system."""
-
-        test_scenarios = get_cora_test_scenarios("pck")
-
-        print("Found %d cora pck scenarios" % len(test_scenarios))
-
-        for scenario_filename in test_scenarios:
-            print("Loading scenario %s " % scenario_filename)
-            payload = get_file_as_string(scenario_filename)
-            expected_response = get_expected_output(scenario_filename, "pck")
-            print("Expected response")
-            print(expected_response)
-
-            r = self.app.post(self.transform_cora_pck_endpoint, data=payload)
-
-            actual_response = r.data.decode("UTF8")
-            print("Actual response")
-            print(actual_response)
-
-            self.assertEqual(actual_response, expected_response)
-
-    def test_cord_transforms_pck(self):
-        """Tests the pck transformation for responses that go to the CORD system."""
-
-        test_scenarios = get_cord_test_scenarios("pck")
-
-        print("Found %d cord pck scenarios" % len(test_scenarios))
-
-        for scenario_filename in test_scenarios:
-
-            print("Loading scenario %s " % scenario_filename)
-            payload = get_file_as_string(scenario_filename)
-            expected_response = get_expected_output(scenario_filename, "pck")
-            print("Expected response")
-            print(expected_response)
-
-            r = self.app.post(self.transform_cord_pck_endpoint, data=payload)
-
-            actual_response = r.data.decode("UTF8")
-            print("Actual response")
-            print(actual_response)
-
-            self.assertEqual(actual_response, expected_response)
 
     @patch("transform.transformers.ImageTransformer._get_image_sequence_list", return_value=[1, 2])
     def test_transforms_csv(self, mock_sequence_no):
@@ -214,25 +134,17 @@ class TestTransformService(unittest.TestCase):
             self.assertEqual(expected_csv, modified_csv)
 
     def test_invalid_input(self):
-        r = self.app.post(self.transform_pck_endpoint, data="rubbish")
-
-        self.assertEqual(r.status_code, 400)
-
-        r = self.app.post(self.transform_idbr_endpoint, data="rubbish")
-
-        self.assertEqual(r.status_code, 400)
-
-        r = self.app.post(self.transform_images_endpoint, data="rubbish")
+        r = self.app.post(self.transform_endpoint, data="rubbish")
 
         self.assertEqual(r.status_code, 400)
 
     def test_invalid_survey_id(self):
-        # Create an invlid survey id payload
+        # Create an invalid survey id payload
         payload_str = get_file_as_string("./tests/pck/common_software/023.0203.json")
         payload_object = json.loads(payload_str)
         payload_object["survey_id"] = "666"
         payload = json.dumps(payload_object)
 
-        r = self.app.post(self.transform_pck_endpoint, data=payload)
+        r = self.app.post(self.transform_endpoint, data=payload)
 
         self.assertEqual(r.status_code, 400)

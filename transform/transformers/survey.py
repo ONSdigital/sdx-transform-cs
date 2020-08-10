@@ -2,6 +2,7 @@ from collections import namedtuple
 import datetime
 import json
 import logging
+from json import JSONDecodeError
 
 from structlog import wrap_logger
 
@@ -9,6 +10,10 @@ logger = wrap_logger(logging.getLogger(__name__))
 
 
 class MissingIdsException(Exception):
+    pass
+
+
+class MissingSurveyException(Exception):
     pass
 
 
@@ -32,9 +37,6 @@ class Survey:
 
         :param ids: Survey response ids.
         :type ids: :py:class:`sdx.common.survey.Survey.Identifiers`
-        :param str package: The name of the Python package where the survey is to be found,
-                            eg: `"sdx.common"`. Within standalone apps which do not declare
-                            themselves as Python packages, pass in the variable `__name__`.
         :param str pattern: A query for the survey definition. This will be
                             a file path relative to the package location which uniquely
                             identifies the survey definition file. It accepts keyword
@@ -42,6 +44,9 @@ class Survey:
                             :py:class:`sdx.common.survey.Survey.Identifiers`.
 
                             For example: `"surveys/{survey_id}.{inst_id}.json"`.
+        :raises IOError: Raised if file cannot be opened
+        :raises JSONDecodeError:  Raised if returned file isn't valid JSON
+        :raises UnicodeDecodeError:
         :rtype: dict
 
         """
@@ -49,11 +54,16 @@ class Survey:
             file_name = pattern.format(**ids._asdict())
             with open(file_name, encoding="utf-8") as fh:
                 content = fh.read()
+                return json.loads(content)
         except FileNotFoundError:
             logger.error("File not found", file_name=file_name)
-            return None
-        else:
-            return json.loads(content)
+            raise MissingSurveyException()
+        except (OSError, UnicodeDecodeError):
+            logger.exception("Error opening file", file=file_name)
+            raise Exception("Error opening file")
+        except JSONDecodeError:
+            logger.exception("File is not valid JSON", file=file_name)
+            raise Exception("invalid file")
 
     @staticmethod
     def bind_logger(log, ids):

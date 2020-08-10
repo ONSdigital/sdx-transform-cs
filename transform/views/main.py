@@ -9,6 +9,7 @@ from structlog import wrap_logger
 
 from transform import app, settings
 from transform.transformers import ImageTransformer
+from transform.transformers.survey import MissingSurveyException
 from transform.transformers.transform_selector import get_transformer
 from transform.views.logger_config import logger_initial_config
 
@@ -158,14 +159,18 @@ def common_software(sequence_no=1000):
     if sequence_no:
         sequence_no = int(sequence_no)
 
-    survey_id = survey_response.get("survey_id")
     try:
         transformer = get_transformer(survey_response, sequence_no)
         zip_file = transformer.get_zip()
         logger.info("CS:SUCCESS")
         return send_file(zip_file, mimetype='application/zip', add_etags=False)
+
+    except MissingSurveyException:
+        return client_error("Unsupported survey/instrument id")
+
     except Exception as e:
         tx_id = survey_response.get("tx_id")
+        survey_id = survey_response.get("survey_id")
         logger.exception("CS:could not create files for survey", survey_id=survey_id, tx_id=tx_id)
         return server_error(e)
 
@@ -178,15 +183,18 @@ def cora(sequence_no=1000):
     if sequence_no:
         sequence_no = int(sequence_no)
 
-    survey_id = survey_response.get("survey_id")
     try:
         transformer = get_transformer(survey_response, sequence_no)
         zip_file = transformer.get_zip()
         logger.info("CORA:SUCCESS")
         return send_file(zip_file, mimetype='application/zip', add_etags=False)
 
+    except MissingSurveyException:
+        return client_error("Unsupported survey/instrument id")
+
     except Exception as e:
         tx_id = survey_response.get("tx_id")
+        survey_id = survey_response.get("survey_id")
         logger.exception("CORA:could not create files for survey", survey_id=survey_id, tx_id=tx_id)
         return server_error(e)
 
@@ -199,15 +207,18 @@ def cord(sequence_no=1000):
     if sequence_no:
         sequence_no = int(sequence_no)
 
-    survey_id = survey_response.get("survey_id")
     try:
         transformer = get_transformer(survey_response, sequence_no)
         zip_file = transformer.get_zip()
         logger.info("CORD:SUCCESS")
         return send_file(zip_file, mimetype='application/zip', add_etags=False)
 
+    except MissingSurveyException:
+        return client_error("Unsupported survey/instrument id")
+
     except Exception as e:
         tx_id = survey_response.get("tx_id")
+        survey_id = survey_response.get("survey_id")
         logger.exception("CORD:could not create files for survey", survey_id=survey_id, tx_id=tx_id)
         return server_error(e)
 
@@ -217,3 +228,27 @@ def cord(sequence_no=1000):
 def healthcheck():
     """A simple endpoint that reports the health of the application"""
     return jsonify({'status': 'OK'})
+
+
+@app.route('/transform', methods=['POST'])
+@app.route('/transform/<sequence_no>', methods=['POST'])
+def transform(sequence_no=1000):
+    survey_response = request.get_json(force=True)
+
+    if sequence_no:
+        sequence_no = int(sequence_no)
+
+    try:
+        transformer = get_transformer(survey_response, sequence_no)
+        zip_file = transformer.get_zip()
+        logger.info("TRANSFORM:SUCCESS")
+        return send_file(zip_file, mimetype='application/zip', add_etags=False)
+
+    except MissingSurveyException:
+        return client_error("Unsupported survey/instrument id")
+
+    except Exception as e:
+        tx_id = survey_response.get("tx_id")
+        survey_id = survey_response.get("survey_id")
+        logger.exception("TRANSFORM:could not create files for survey", survey_id=survey_id, tx_id=tx_id)
+        return server_error(e)
