@@ -158,6 +158,6 @@ class Survey:
             for k, v in rv._asdict().items():
                 if v is None:
                     log.warning(f"Missing {k} from {rv}")
-                    raise MissingIdsException(f"Missing {k} from {rv}")
+                    raise MissingIdsException(f"Missing field {k} from response")
 
         return rv

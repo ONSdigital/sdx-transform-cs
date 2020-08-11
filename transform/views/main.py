@@ -5,8 +5,7 @@ from jinja2 import Environment, PackageLoader
 from structlog import wrap_logger
 
 from transform import app, settings
-from transform.transformers import ImageTransformer
-from transform.transformers.survey import MissingSurveyException, Survey
+from transform.transformers.survey import MissingSurveyException, MissingIdsException
 from transform.transformers.transform_selector import get_transformer
 from transform.views.logger_config import logger_initial_config
 
@@ -48,31 +47,6 @@ def server_error(error=None):
     return resp
 
 
-@app.route('/images', methods=['POST'])
-def render_images():
-
-    survey_response = request.get_json(force=True)
-
-    ids = Survey.identifiers(survey_response)
-    survey = Survey.load_survey(ids)
-
-    if not survey:
-        return client_error("IMAGES:Unsupported survey/instrument id")
-
-    transformer = ImageTransformer(logger, survey, survey_response)
-
-    try:
-        zipfile = transformer.get_zipped_images()
-    except IOError as e:
-        return client_error("IMAGES:Could not create zip buffer: {0}".format(repr(e)))
-    except Exception as e:
-        logger.exception("IMAGES: Error {0}".format(repr(e)))
-        return server_error(e)
-    logger.info("IMAGES:SUCCESS")
-
-    return send_file(zipfile.in_memory_zip, mimetype='application/zip', add_etags=False)
-
-
 @app.route('/common-software', methods=['POST'])
 @app.route('/common-software/<sequence_no>', methods=['POST'])
 def common_software(sequence_no=1000):
@@ -104,6 +78,9 @@ def transform(sequence_no=1000):
         zip_file = transformer.get_zip()
         logger.info("TRANSFORM:SUCCESS")
         return send_file(zip_file, mimetype='application/zip', add_etags=False)
+
+    except MissingIdsException as mie:
+        return client_error(repr(mie))
 
     except MissingSurveyException:
         return client_error("Unsupported survey/instrument id")
