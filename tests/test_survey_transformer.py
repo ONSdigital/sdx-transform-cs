@@ -35,6 +35,18 @@ def get_test_scenarios(output_type):
     return glob.glob("./tests/%s/*.json" % output_type)
 
 
+def get_common_software_test_scenarios(output_type):
+    return glob.glob("./tests/%s/common_software/*.json" % output_type)
+
+
+def get_cora_test_scenarios(output_type):
+    return glob.glob("./tests/%s/cora/*.json" % output_type)
+
+
+def get_cord_test_scenarios(output_type):
+    return glob.glob("./tests/%s/cord/*.json" % output_type)
+
+
 def get_expected_file(filename, output_type):
     filename, _ = os.path.splitext(filename)
     return "%s.%s" % (filename, output_type)
@@ -72,8 +84,64 @@ def modify_csv_time(csv_content, creation_time):
 
 class TestSurveyTransformer(unittest.TestCase):
 
+    def transform_pck(self, test_scenarios, output_extension):
+
+        for scenario_filename in test_scenarios:
+            print("Loading scenario %s " % scenario_filename)
+            payload = get_file_as_dict(scenario_filename)
+            expected_response = get_expected_output(scenario_filename, output_extension)
+            print("Expected response")
+            print(expected_response)
+
+            transformer = get_transformer(payload)
+            pck_name, pck = transformer.create_pck()
+
+            actual_response = pck
+            print("Actual response")
+            print(actual_response)
+
+            self.assertEqual(actual_response, expected_response)
+
+    def test_create_cs_pck(self):
+        test_scenarios = get_common_software_test_scenarios("pck")
+        print("Found %d cs pck scenarios" % len(test_scenarios))
+        self.transform_pck(test_scenarios, "nobatch")
+
+    def test_create_cora_pck(self):
+        """Tests the pck transformation for responses that go to the CORA system."""
+
+        test_scenarios = get_cora_test_scenarios("pck")
+        print("Found %d cora pck scenarios" % len(test_scenarios))
+        self.transform_pck(test_scenarios, "pck")
+
+    def test_create_cord_pck(self):
+        """Tests the pck transformation for responses that go to the CORD system."""
+
+        test_scenarios = get_cord_test_scenarios("pck")
+        print("Found %d cord pck scenarios" % len(test_scenarios))
+        self.transform_pck(test_scenarios, "pck")
+
+    def test_create_receipt(self):
+
+        test_scenarios = get_test_scenarios("idbr")
+
+        print("Found %d idbr scenarios" % len(test_scenarios))
+
+        for scenario_filename in test_scenarios:
+
+            print("Loading scenario %s " % scenario_filename)
+            payload = get_file_as_dict(scenario_filename)
+            expected_response = get_expected_output(scenario_filename, "idbr")
+
+            transformer = get_transformer(payload)
+            receipt_name, receipt = transformer.create_receipt()
+
+            actual_response = receipt
+
+            self.assertEqual(actual_response, expected_response)
+
     @patch("transform.transformers.ImageTransformer._get_image_sequence_list", return_value=[1, 2])
-    def test_transforms_csv(self, mock_sequence_no):
+    def test_create_index(self, mock_sequence_no):
         test_scenarios = get_test_scenarios("csv")
 
         print("Found %d csv scenarios" % len(test_scenarios))
@@ -85,9 +153,8 @@ class TestSurveyTransformer(unittest.TestCase):
             payload_object = json.loads(payload)
 
             transformer = get_transformer(payload_object, 1000)
-            transformer.create_images()
 
-            z = zipfile.ZipFile(transformer.get_zip())
+            z = zipfile.ZipFile(transformer.image_transformer.get_zipped_images().in_memory_zip)
 
             expected_content = get_expected_output(scenario_filename, "csv")
             expected_csv = list(csv.reader(io.StringIO(expected_content)))
@@ -97,7 +164,7 @@ class TestSurveyTransformer(unittest.TestCase):
             sub_date = dateutil.parser.parse(payload_object["submitted_at"])
             sub_date_str = sub_date.strftime("%Y%m%d")
 
-            filename = "EDC_{}_{}_1000.csv".format(payload_object["survey_id"], sub_date_str)
+            filename = "EDC_QImages/Index/EDC_{}_{}_1000.csv".format(payload_object["survey_id"], sub_date_str)
             self.assertIn(filename, z.namelist())
 
             edc_file = z.open(filename)
