@@ -6,7 +6,6 @@ import unittest
 import zipfile
 from collections import OrderedDict
 
-import pkg_resources
 import pytest
 
 from transform.transformers.common_software.cs_formatter import CSFormatter
@@ -846,6 +845,8 @@ class TransformTests(unittest.TestCase):
 
 class BatchFileTests(unittest.TestCase):
 
+    replies_dir = 'tests/replies/'
+
     def test_pck_form_header(self):
         """
         Test package form header
@@ -928,8 +929,9 @@ class BatchFileTests(unittest.TestCase):
         Tests inter-departmental business register receipt
 
         """
-        src = pkg_resources.resource_string(__name__, "replies/eq-mwss.json")
-        reply = json.loads(src.decode("utf-8"))
+        f = open(self.replies_dir + "eq-mwss.json", "r")
+        reply = json.loads(f.read())
+        f.close()
         reply["tx_id"] = "27923934-62de-475c-bc01-433c09fd38b8"
         ids = Survey.identifiers(reply, batch_nr=3866, seq_nr=0)
         id_dict = ids._asdict()
@@ -943,8 +945,9 @@ class BatchFileTests(unittest.TestCase):
         Tests identifiers are valid
 
         """
-        src = pkg_resources.resource_string(__name__, "replies/eq-mwss.json")
-        reply = json.loads(src.decode("utf-8"))
+        f = open(self.replies_dir + "eq-mwss.json", "r")
+        reply = json.loads(f.read())
+        f.close()
         reply["tx_id"] = "27923934-62de-475c-bc01-433c09fd38b8"
         reply["collection"]["period"] = "200911"
         ids = Survey.identifiers(reply, batch_nr=0, seq_nr=0)
@@ -964,8 +967,9 @@ class BatchFileTests(unittest.TestCase):
         Test package from untransformed data is correct
 
         """
-        src = pkg_resources.resource_string(__name__, "replies/eq-mwss.json")
-        reply = json.loads(src.decode("utf-8"))
+        f = open(self.replies_dir + "eq-mwss.json", "r")
+        reply = json.loads(f.read())
+        f.close()
         reply["tx_id"] = "27923934-62de-475c-bc01-433c09fd38b8"
         reply["survey_id"] = "134"
         reply["collection"]["period"] = "200911"
@@ -992,8 +996,9 @@ class BatchFileTests(unittest.TestCase):
         Test package from transformer returned data correctly
 
         """
-        src = pkg_resources.resource_string(__name__, "replies/eq-mwss.json")
-        reply = json.loads(src.decode("utf-8"))
+        f = open(self.replies_dir + "eq-mwss.json", "r")
+        reply = json.loads(f.read())
+        f.close()
         reply["tx_id"] = "27923934-62de-475c-bc01-433c09fd38b8"
         reply["survey_id"] = "134"
         reply["collection"]["period"] = "200911"
