@@ -4,7 +4,7 @@ from transform.transformers.cora import UKISTransformer
 from transform.transformers.cord import Ecommerce2019Transformer, EcommerceTransformer
 
 
-def get_transformer(response, sequence_no=0):
+def get_transformer(response, sequence_no=1000):
     survey_id = response['survey_id']
 
     # CORA

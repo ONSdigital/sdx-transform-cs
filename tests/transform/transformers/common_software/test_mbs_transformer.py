@@ -497,7 +497,7 @@ class TestTransform(unittest.TestCase):
 
     def test_mbs_create_zip(self):
         response = deepcopy(self.response)
-        transformer = get_transformer(response)
+        transformer = get_transformer(response, 0)
 
         transformer.get_zip(img_seq=itertools.count())
 

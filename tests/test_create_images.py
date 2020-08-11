@@ -84,7 +84,7 @@ class TestSurveyTransformer(unittest.TestCase):
             payload = get_file_as_string(scenario_filename)
             payload_object = json.loads(payload)
 
-            transformer = get_transformer(payload_object)
+            transformer = get_transformer(payload_object, 1000)
             transformer.create_images()
 
             z = zipfile.ZipFile(transformer.get_zip())
