@@ -34,7 +34,7 @@ class SurveyTransformer:
         Returns a tuple containing the pck name, and the pck itself as string.
         """
         pck_name = ""
-        pck = ""
+        pck = None
         return pck_name, pck
 
     def create_receipt(self):
@@ -42,7 +42,7 @@ class SurveyTransformer:
         Returns a tuple containing the pck name, and the pck itself as string.
         """
         receipt_name = ""
-        receipt = ""
+        receipt = None
         return receipt_name, receipt
 
     def create_images(self, img_seq=None):
@@ -54,10 +54,12 @@ class SurveyTransformer:
     def get_zip(self, img_seq=None):
 
         pck_name, pck = self.create_pck()
-        self.image_transformer.zip.append(os.path.join(SDX_FTP_DATA_PATH, pck_name), pck)
+        if pck is not None:
+            self.image_transformer.zip.append(os.path.join(SDX_FTP_DATA_PATH, pck_name), pck)
 
-        idbr_name, idbr = self.create_receipt()
-        self.image_transformer.zip.append(os.path.join(SDX_FTP_RECEIPT_PATH, idbr_name), idbr)
+        receipt_name, receipt = self.create_receipt()
+        if receipt is not None:
+            self.image_transformer.zip.append(os.path.join(SDX_FTP_RECEIPT_PATH, receipt_name), receipt)
 
         self.create_images(img_seq)
 
