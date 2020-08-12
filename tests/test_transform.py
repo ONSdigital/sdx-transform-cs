@@ -1,4 +1,3 @@
-import glob
 import json
 import os
 import unittest
@@ -14,29 +13,6 @@ def get_file_as_string(filename):
     f.close()
 
     return contents
-
-
-def get_file_as_dict(filename):
-
-    with open(filename, encoding="utf-8") as fh:
-        content = fh.read()
-        return json.loads(content)
-
-
-def get_test_scenarios(output_type):
-    return glob.glob("./tests/%s/*.json" % output_type)
-
-
-def get_common_software_test_scenarios(output_type):
-    return glob.glob("./tests/%s/common_software/*.json" % output_type)
-
-
-def get_cora_test_scenarios(output_type):
-    return glob.glob("./tests/%s/cora/*.json" % output_type)
-
-
-def get_cord_test_scenarios(output_type):
-    return glob.glob("./tests/%s/cord/*.json" % output_type)
 
 
 def get_expected_file(filename, output_type):

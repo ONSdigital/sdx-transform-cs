@@ -1,6 +1,7 @@
 import json
 import logging
 import os
+from abc import ABC, abstractmethod
 
 from structlog import wrap_logger
 
@@ -12,8 +13,8 @@ from transform.utilities.formatter import Formatter
 logger = wrap_logger(logging.getLogger(__name__))
 
 
-class SurveyTransformer:
-    """Superclass for specific survey transformers.
+class SurveyTransformer(ABC):
+    """Abstract baseclass for specific survey transformers.
 
     Common functionality for transformer classes.
     Subclasses must provide their own implementations for create_pck() and create_receipt().
@@ -29,23 +30,25 @@ class SurveyTransformer:
         self.image_transformer = ImageTransformer(self.logger, self.survey, self.response,
                                                   sequence_no=self.sequence_no, base_image_path=SDX_FTP_IMAGE_PATH)
 
+    @abstractmethod
     def create_pck(self):
         """
-        Returns a tuple containing the pck name, and the pck itself as string.
+        Must return a tuple containing the pck name, and the pck itself as string.
         """
         pck_name = ""
         pck = None
         return pck_name, pck
 
+    @abstractmethod
     def create_receipt(self):
         """
-        Returns a tuple containing the pck name, and the pck itself as string.
+        Must return a tuple containing the receipt name, and the receipt itself as string.
         """
         receipt_name = ""
         receipt = None
         return receipt_name, receipt
 
-    def create_images(self, img_seq=None):
+    def _create_images(self, img_seq=None):
         """
         Create the image files within the zip.
         """
@@ -61,8 +64,9 @@ class SurveyTransformer:
         if receipt is not None:
             self.image_transformer.zip.append(os.path.join(SDX_FTP_RECEIPT_PATH, receipt_name), receipt)
 
-        self.create_images(img_seq)
+        self._create_images(img_seq)
 
+        # add original json to zip
         response_json_name = Formatter.response_json_name(self.ids.survey_id, self.ids.seq_nr)
         self.image_transformer.zip.append(os.path.join(SDX_RESPONSE_JSON_PATH, response_json_name),
                                           json.dumps(self.response))

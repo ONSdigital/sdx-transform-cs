@@ -49,22 +49,10 @@ def server_error(error=None):
 
 @app.route('/common-software', methods=['POST'])
 @app.route('/common-software/<sequence_no>', methods=['POST'])
-def common_software(sequence_no=1000):
-    return transform(sequence_no)
-
-
 @app.route('/cora', methods=['POST'])
 @app.route('/cora/<sequence_no>', methods=['POST'])
-def cora(sequence_no=1000):
-    return transform(sequence_no)
-
-
 @app.route('/cord', methods=['POST'])
 @app.route('/cord/<sequence_no>', methods=['POST'])
-def cord(sequence_no=1000):
-    return transform(sequence_no)
-
-
 @app.route('/transform', methods=['POST'])
 @app.route('/transform/<sequence_no>', methods=['POST'])
 def transform(sequence_no=1000):
@@ -76,11 +64,11 @@ def transform(sequence_no=1000):
     try:
         transformer = get_transformer(survey_response, sequence_no)
         zip_file = transformer.get_zip()
-        logger.info("TRANSFORM:SUCCESS")
+        logger.info("Transformation was a success, returning zip file")
         return send_file(zip_file, mimetype='application/zip', add_etags=False)
 
-    except MissingIdsException as mie:
-        return client_error(repr(mie))
+    except MissingIdsException as e:
+        return client_error(repr(e))
 
     except MissingSurveyException:
         return client_error("Unsupported survey/instrument id")

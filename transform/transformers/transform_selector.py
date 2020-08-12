@@ -2,9 +2,20 @@
 from transform.transformers.common_software import MBSTransformer, MWSSTransformer, CSTransformer
 from transform.transformers.cora import UKISTransformer
 from transform.transformers.cord import Ecommerce2019Transformer, EcommerceTransformer
+from transform.transformers.survey import MissingIdsException
 
 
 def get_transformer(response, sequence_no=1000):
+    """Returns the appropriate survey transformer based on survey_id
+
+    :param dict response: A dictionary like object representing the survey response
+    :param int sequence_no: A number used by the transformer for naming files
+    :raises MissingIdsException if no survey_id
+    """
+
+    if 'survey_id' not in response:
+        raise MissingIdsException("Missing field survey_id from response")
+
     survey_id = response['survey_id']
 
     # CORA
