@@ -56,3 +56,16 @@ class TestTransformService(unittest.TestCase):
         r = self.app.post(self.transform_endpoint, data=payload)
 
         self.assertEqual(r.status_code, 400)
+        self.assertEqual(json.loads(r.data.decode('UTF-8'))['message'], 'Unsupported survey/instrument id')
+
+    def test_missing_survey_id(self):
+        # Create a survey with missing survey id
+        payload_str = get_file_as_string("./tests/pck/common_software/023.0203.json")
+        payload_object = json.loads(payload_str)
+        del payload_object["survey_id"]
+        payload = json.dumps(payload_object)
+
+        r = self.app.post(self.transform_endpoint, data=payload)
+
+        self.assertEqual(r.status_code, 400)
+        self.assertEqual(json.loads(r.data.decode('UTF-8'))['message'], 'Missing field survey_id from response')

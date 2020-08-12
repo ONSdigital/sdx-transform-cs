@@ -68,7 +68,7 @@ def transform(sequence_no=1000):
         return send_file(zip_file, mimetype='application/zip', add_etags=False)
 
     except MissingIdsException as e:
-        return client_error(repr(e))
+        return client_error(str(e))
 
     except MissingSurveyException:
         return client_error("Unsupported survey/instrument id")
