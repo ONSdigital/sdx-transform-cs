@@ -1,45 +1,20 @@
-from decimal import Decimal, ROUND_HALF_UP
 import decimal
-import json
 import logging
-import os
+from decimal import Decimal, ROUND_HALF_UP
 
 from structlog import wrap_logger
 
-from transform.settings import (
-    SDX_FTP_DATA_PATH,
-    SDX_FTP_IMAGE_PATH,
-    SDX_FTP_RECEIPT_PATH,
-    SDX_RESPONSE_JSON_PATH,
-)
 from transform.transformers.cora.cora_formatter import CORAFormatter
-from transform.transformers.survey import Survey
-from transform.transformers.image_transformer import ImageTransformer
+from transform.transformers.survey_transformer import SurveyTransformer
 
 logger = wrap_logger(logging.getLogger(__name__))
 
 
-class UKISTransformer:
+class UKISTransformer(SurveyTransformer):
     """Perform the transforms and formatting for the UKIS survey."""
 
     def __init__(self, response, seq_nr=0):
-
-        self.response = response
-        self.ids = Survey.identifiers(self.response, seq_nr=seq_nr, log=logger)
-
-        survey_file = f"./transform/surveys/{self.ids.survey_id}.{self.ids.inst_id}.json"
-
-        with open(survey_file) as fp:
-            logger.info(f"Loading {survey_file}")
-            self.survey = json.load(fp)
-
-        self.image_transformer = ImageTransformer(
-            logger,
-            self.survey,
-            self.response,
-            sequence_no=self.ids.seq_nr,
-            base_image_path=SDX_FTP_IMAGE_PATH,
-        )
+        super().__init__(response, seq_nr)
 
     def get_qcode(self, qcode, lowercase=False, not_found_value=None):
         """ Return the value of a qcode from the 'data' key of the response.
@@ -59,7 +34,8 @@ class UKISTransformer:
         :param qcode: The qcode to search for form the response
         :param yes_value: What should be returned if the answer value is 'Yes' (defaults to '1')
         :param no_value: What should be returned if the answer value is 'No' (defaults to an empty string)
-        :returns: '1' or None (if the return values haven't been modified).  If the answer isn't either 'Yes' or 'No' then an empty string is returned
+        :returns: '1' or None (if the return values haven't been modified).  If the answer isn't either 'Yes' or 'No'
+        then an empty string is returned.
         """
         answer = self.get_qcode(qcode, lowercase=True)
         if answer:
@@ -419,7 +395,7 @@ class UKISTransformer:
                 **cooperation_on_innovation, **public_financial_support_for_innovation,
                 **turnover_and_exports, **employees_and_skills}
 
-    def create_pck(self, transformed_data):
+    def _create_pck(self, transformed_data):
         """Return a pck file using provided data"""
         pck = CORAFormatter.get_pck(
             transformed_data,
@@ -431,7 +407,7 @@ class UKISTransformer:
         )
         return pck
 
-    def create_idbr_receipt(self):
+    def _create_idbr_receipt(self):
         """Return a idbr receipt file"""
         idbr = CORAFormatter.get_idbr(
             self.ids.survey_id,
@@ -441,36 +417,19 @@ class UKISTransformer:
         )
         return idbr
 
-    def create_image_files(self, img_seq=None):
-        """Creates image files and adds it to in-memory zip file"""
-        self.image_transformer.get_zipped_images(img_seq)
-
-    def create_zip(self, img_seq=None):
-        """Perform transformation on the survey data
-        and pack the output into a zip file exposed by the image transformer
-        """
+    def create_pck(self):
         bound_logger = logger.bind(ru_ref=self.ids.ru_ref, tx_id=self.ids.tx_id)
         bound_logger.info("Transforming data for processing")
         transformed_data = self.transform()
         bound_logger.info("Data successfully transformed")
-
-        bound_logger.info("Creating PCK")
         pck_name = CORAFormatter.pck_name(self.ids.survey_id, self.ids.seq_nr)
-        pck = self.create_pck(transformed_data)
-        self.image_transformer.zip.append(os.path.join(SDX_FTP_DATA_PATH, pck_name), pck)
-        bound_logger.info("Successfully created PCK")
+        pck = self._create_pck(transformed_data)
+        return pck_name, pck
 
+    def create_receipt(self):
+        bound_logger = logger.bind(ru_ref=self.ids.ru_ref, tx_id=self.ids.tx_id)
         bound_logger.info("Creating IDBR receipt")
         idbr_name = CORAFormatter.idbr_name(self.ids.user_ts, self.ids.seq_nr)
-        idbr = self.create_idbr_receipt()
-        self.image_transformer.zip.append(os.path.join(SDX_FTP_RECEIPT_PATH, idbr_name), idbr)
+        idbr = self._create_idbr_receipt()
         bound_logger.info("Successfully created IDBR receipt")
-
-        bound_logger.info("Creating image files")
-        self.create_image_files(img_seq)
-        bound_logger.info("Successfully created image files")
-
-        bound_logger.info("Adding json response to zip")
-        response_json_name = CORAFormatter.response_json_name(self.ids.survey_id, self.ids.seq_nr)
-        self.image_transformer.zip.append(os.path.join(SDX_RESPONSE_JSON_PATH, response_json_name), json.dumps(self.response))
-        bound_logger.info("Sucessfully added json response to zip")
+        return idbr_name, idbr

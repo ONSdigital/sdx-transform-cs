@@ -3,15 +3,17 @@ import itertools
 import json
 import unittest
 from copy import deepcopy
+
 from transform.transformers.common_software import MBSTransformer
 from transform.transformers.common_software.cs_formatter import CSFormatter
+from transform.transformers.transform_selector import get_transformer
 
 
 class LogicTests(unittest.TestCase):
     with open("tests/replies/009.0255.json", "r") as fp:
         response = json.load(fp)
 
-    transformed_data = MBSTransformer(response).transform()
+    transformed_data = MBSTransformer(response)._transform()
 
     # To test default values this creates a transformed dict with no keys for 51:54
     # and a key:val pair of 'd50': 'Yes'
@@ -20,7 +22,7 @@ class LogicTests(unittest.TestCase):
         del default_response["data"][k]
 
     default_response["data"]["d50"] = "Yes"
-    transformed_default_data = MBSTransformer(default_response).transform()
+    transformed_default_data = MBSTransformer(default_response)._transform()
 
     # When no values are supplied for q_codes 51:54 no entries should be present
     # in the PCK file
@@ -31,7 +33,7 @@ class LogicTests(unittest.TestCase):
     del default_response["data"]["12"]
     default_response["d12"] = "Yes"
 
-    transformed_no_default_data = MBSTransformer(default_response).transform()
+    transformed_no_default_data = MBSTransformer(default_response)._transform()
 
     def test_potable_water(self):
         """
@@ -63,7 +65,7 @@ class LogicTests(unittest.TestCase):
 
         no_turnover_response = dict.copy(self.response)
         no_turnover_response["data"]["146"] = "No"
-        no_turnover_transformed = MBSTransformer(no_turnover_response).transform()
+        no_turnover_transformed = MBSTransformer(no_turnover_response)._transform()
 
         self.assertEqual(no_turnover_transformed["146"], False)
 
@@ -79,7 +81,7 @@ class LogicTests(unittest.TestCase):
         """
         rounded_up_response = dict.copy(self.response)
         rounded_up_response["data"]["40"] = "100501.00"
-        rounded_up_transformed = MBSTransformer(rounded_up_response).transform()
+        rounded_up_transformed = MBSTransformer(rounded_up_response)._transform()
         self.assertEqual(rounded_up_transformed["40"], 101)
 
     def test_turnover_excluding_vat_rounds_half_up_when_equal(self):
@@ -88,7 +90,7 @@ class LogicTests(unittest.TestCase):
         """
         rounded_up_response = dict.copy(self.response)
         rounded_up_response["data"]["40"] = "1234500.00"
-        rounded_up_transformed = MBSTransformer(rounded_up_response).transform()
+        rounded_up_transformed = MBSTransformer(rounded_up_response)._transform()
         self.assertEqual(rounded_up_transformed["40"], 1235)
 
     def test_turnover_excluding_vat_rounds_half_up(self):
@@ -97,7 +99,7 @@ class LogicTests(unittest.TestCase):
         """
         rounded_up_response = dict.copy(self.response)
         rounded_up_response["data"]["40"] = "10499.50"
-        rounded_up_transformed = MBSTransformer(rounded_up_response).transform()
+        rounded_up_transformed = MBSTransformer(rounded_up_response)._transform()
         self.assertEqual(rounded_up_transformed["40"], 11)
 
     def test_value_of_exports(self):
@@ -495,10 +497,11 @@ class TestTransform(unittest.TestCase):
 
     def test_mbs_create_zip(self):
         response = deepcopy(self.response)
-        transformed = MBSTransformer(response)
+        transformer = get_transformer(response, 0)
 
-        transformed.create_zip(img_seq=itertools.count())
-        actual = transformed.image_transformer.zip.get_filenames()
+        transformer.get_zip(img_seq=itertools.count())
+
+        actual = transformer.image_transformer.zip.get_filenames()
 
         expected = [
             'EDC_QData/009_0000',

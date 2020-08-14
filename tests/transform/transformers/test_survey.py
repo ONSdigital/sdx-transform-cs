@@ -1,7 +1,9 @@
 import datetime
 import unittest
 
-from transform.transformers.survey import Survey
+import pytest
+
+from transform.transformers.survey import Survey, MissingSurveyException
 
 
 class SurveyTests(unittest.TestCase):
@@ -62,5 +64,5 @@ class SurveyTests(unittest.TestCase):
                 "ru_ref": "12345678901A"
             }
         })
-        rv = Survey.load_survey(ids, "./tests/data/{survey_id}.{inst_id}.json")
-        self.assertIsNone(rv)
+        with pytest.raises(MissingSurveyException):
+            Survey.load_survey(ids, "./tests/data/{survey_id}.{inst_id}.json")

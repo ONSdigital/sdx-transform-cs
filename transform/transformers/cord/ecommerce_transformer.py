@@ -1,24 +1,15 @@
-from decimal import Decimal
-import json
 import logging
-import os
+from decimal import Decimal
 
 from structlog import wrap_logger
 
-from transform.settings import (
-    SDX_FTP_DATA_PATH,
-    SDX_FTP_IMAGE_PATH,
-    SDX_FTP_RECEIPT_PATH,
-    SDX_RESPONSE_JSON_PATH,
-)
 from transform.transformers.cord.cord_formatter import CORDFormatter
-from transform.transformers.survey import Survey
-from transform.transformers.image_transformer import ImageTransformer
+from transform.transformers.survey_transformer import SurveyTransformer
 
 logger = wrap_logger(logging.getLogger(__name__))
 
 
-class EcommerceTransformer:
+class EcommerceTransformer(SurveyTransformer):
     """Perform the transforms and formatting for the MBS survey.
 
     The period for Ecommerce is different to other surveys and comes in as YYYY (e.g. 2019).
@@ -31,28 +22,13 @@ class EcommerceTransformer:
 
     def __init__(self, response, seq_nr=0):
 
+        super().__init__(response, seq_nr)
+
         period = response['collection']['period']
         if len(period) == 4:
             response['collection']['period'] = period[2:] + '12'
 
         self.period = period
-        self.response = response
-
-        self.ids = Survey.identifiers(self.response, seq_nr=seq_nr, log=logger)
-
-        survey_file = f"./transform/surveys/{self.ids.survey_id}.{self.ids.inst_id}.json"
-
-        with open(survey_file) as fp:
-            logger.info(f"Loading {survey_file}")
-            self.survey = json.load(fp)
-
-        self.image_transformer = ImageTransformer(
-            logger,
-            self.survey,
-            self.response,
-            sequence_no=self.ids.seq_nr,
-            base_image_path=SDX_FTP_IMAGE_PATH,
-        )
 
     def get_qcode(self, qcode):
         """ Return the value of a qcode, or if it isn't present, then return None
@@ -81,8 +57,8 @@ class EcommerceTransformer:
 
     @staticmethod
     def convert_percentage(percentage):
-        """ Converts a percentage with possible decimal places into a 0 padded string of length 4. The final string should
-        represent 1 decimal place. All inputs will be rounded to 1 decimal place.
+        """ Converts a percentage with possible decimal places into a 0 padded string of length 4. The final string
+        should represent 1 decimal place. All inputs will be rounded to 1 decimal place.
 
             e.g. 10 -> 0100, 0.1 -> 0001, 23.4 -> 0234, 29.949 -> 0299, 29.950 -> 0300
 
@@ -108,9 +84,10 @@ class EcommerceTransformer:
         """
         Transform a question that has its answer changed by the result of a negative playback page.
         :param q_code: The q_code of the question being transformed
-        :param playback_q_code: The code from the negative playback page that affects the result of the q_code passed in.
+        :param playback_q_code: The code from the negative playback page that affects the result of the q_code passed in
         The regex form of this code would typically be 'd[0-9]+'.
-        :returns: "10" if the q_code value in the response data has a true value.  "01" if the q_code response value is false
+        :returns: "10" if the q_code value in the response data has a true value.
+        "01" if the q_code response value is false
         BUT the playback_q_code response value is 'They're not used' or 'They weren’t experienced'.  Otherwise "00".
 
         Examples:
@@ -179,8 +156,8 @@ class EcommerceTransformer:
         """
         Transforms the 'Access and use of internet' questions
 
-        Note: There are negative playback codes that are in the form 'd[0-9]+'.  Each of these affects a set of questions
-        which are listed below
+        Note: There are negative playback codes that are in the form 'd[0-9]+'.  Each of these affects a set of
+        questions which are listed below
         d1 - Which features does the business' site have? - 147, 202, 203, 205, 332 and 414
         d2 - Which social media does <company> use for purposes other than posting paid averts? - 386, 387, 388, 389
         d3 - How does the business use social media? - 341, 342, 343, 344, 345, 346
@@ -233,8 +210,8 @@ class EcommerceTransformer:
         """
         Transforms the 'ICT Security' questions
 
-        Note: There are negative playback codes that are in the form 'd[0-9]+'.  Each of these affects a set of questions
-        which are listed below
+        Note: There are negative playback codes that are in the form 'd[0-9]+'.  Each of these affects a set of
+        questions which are listed below
         d4 - Which ICT security measures does <company> use? - 272, 482, 483, 484 and 485
         d5 - Which ICT security procedures does the business use? - 274, 275, 481, 486 and 487
 
@@ -256,9 +233,12 @@ class EcommerceTransformer:
             "266": self.yes_no_question("266"),
             "267": self.yes_no_question("267"),
 
-            "415": self.radio_question_option("r3", "Within the last 12 months", checked="10", unchecked="01", unanswered="00"),
-            "416": self.radio_question_option("r3", "More than 12 months ago and up to 24 months ago", checked="10", unchecked="01", unanswered="00"),
-            "417": self.radio_question_option("r3", "More than 24 months ago", checked="10", unchecked="01", unanswered="00"),
+            "415": self.radio_question_option("r3", "Within the last 12 months", checked="10", unchecked="01",
+                                              unanswered="00"),
+            "416": self.radio_question_option("r3", "More than 12 months ago and up to 24 months ago", checked="10",
+                                              unchecked="01", unanswered="00"),
+            "417": self.radio_question_option("r3", "More than 24 months ago", checked="10", unchecked="01",
+                                              unanswered="00"),
             "488": self.checkbox_question("488"),
             "489": self.checkbox_question("489"),
             "490": self.yes_no_question("490"),
@@ -273,8 +253,8 @@ class EcommerceTransformer:
         """
         Transform the 'Ecommerce' questions
 
-        Note: There are negative playback codes that are in the form 'd[0-9]+'.  Each of these affects a set of questions
-        which are listed below
+        Note: There are negative playback codes that are in the form 'd[0-9]+'.  Each of these affects a set of
+        questions which are listed below
         d6 - During 2018, did the business experience any of the following difficulties
         when selling to other EU countries via a website or 'app'? - 462, 463, 464, 465 and 466
 
@@ -328,7 +308,7 @@ class EcommerceTransformer:
                 **ict_security, **e_commerce,
                 **use_of_computers}
 
-    def create_pck(self, transformed_data):
+    def _create_pck(self, transformed_data):
         """Return a pck file using provided data"""
         pck = CORDFormatter.get_pck(
             transformed_data,
@@ -338,7 +318,7 @@ class EcommerceTransformer:
         )
         return pck
 
-    def create_idbr_receipt(self):
+    def _create_idbr_receipt(self):
         """Return a idbr receipt file"""
         idbr = CORDFormatter.get_idbr(
             self.ids.survey_id,
@@ -348,14 +328,7 @@ class EcommerceTransformer:
         )
         return idbr
 
-    def create_image_files(self, img_seq=None):
-        """Creates image files and adds it to in-memory zip file"""
-        self.image_transformer.get_zipped_images(img_seq)
-
-    def create_zip(self, img_seq=None):
-        """Perform transformation on the survey data
-        and pack the output into a zip file exposed by the image transformer
-        """
+    def create_pck(self):
         bound_logger = logger.bind(ru_ref=self.ids.ru_ref, tx_id=self.ids.tx_id)
         bound_logger.info("Transforming data for processing")
         transformed_data = self.transform()
@@ -363,54 +336,51 @@ class EcommerceTransformer:
 
         bound_logger.info("Creating PCK")
         pck_name = CORDFormatter.pck_name(self.ids.survey_id, self.ids.seq_nr)
-        pck = self.create_pck(transformed_data)
-        self.image_transformer.zip.append(os.path.join(SDX_FTP_DATA_PATH, pck_name), pck)
+        pck = self._create_pck(transformed_data)
         bound_logger.info("Successfully created PCK")
+        return pck_name, pck
 
+    def create_receipt(self):
+        bound_logger = logger.bind(ru_ref=self.ids.ru_ref, tx_id=self.ids.tx_id)
         bound_logger.info("Creating IDBR receipt")
         idbr_name = CORDFormatter.idbr_name(self.ids.user_ts, self.ids.seq_nr)
-        idbr = self.create_idbr_receipt()
-        self.image_transformer.zip.append(os.path.join(SDX_FTP_RECEIPT_PATH, idbr_name), idbr)
+        idbr = self._create_idbr_receipt()
         bound_logger.info("Successfully created IDBR receipt")
-
-        bound_logger.info("Creating image files")
-        self.create_image_files(img_seq)
-        bound_logger.info("Successfully created image files")
-
-        bound_logger.info("Adding json response to zip")
-        response_json_name = CORDFormatter.response_json_name(self.ids.survey_id, self.ids.seq_nr)
-        self.image_transformer.zip.append(os.path.join(SDX_RESPONSE_JSON_PATH, response_json_name), json.dumps(self.response))
-        bound_logger.info("Sucessfully added json response to zip")
+        return idbr_name, idbr
 
 
 class Ecommerce2019Transformer(EcommerceTransformer):
     """This class is used for the transformation of the 2019 E-commerce survey.  The class inherits from the first
-    one (the 2018 version of it) as the answers are transformed in the same way but has a different set of questions to answer."""
+    one (the 2018 version of it) as the answers are transformed in the same way but has a different set of questions
+    to answer.
+    """
 
     def percentage_question_with_dependancies(self, qcode, related_qcode, dependant_qcodes):
         """
         Percentage type question. Will transform to a four digit answer or 0 if blank.
         There is a key difference between this and the regular precentage_question.  Answers to these questions are
-        implicitly 100 percent if only 1 of the dependant qcodes is marked as ticked and if it's related to the answer in
-        question.
-        In the survey, if more than 1 is ticked then they're asked another question about what percentage split the answer has.
+        implicitly 100 percent if only 1 of the dependant qcodes is marked as ticked and if it's related to the answer
+        in question.
+        In the survey, if more than 1 is ticked then they're asked another question about what percentage split the
+        answer has.
 
         Here is an example:
-        One of the questions was 'During 2019, what was the percentage breakdown of the turnover of orders received via a website or
-        ‘app’ from?'  This had 3 tickboxes (UK, Europe, Rest of world), these had the qcodes 310, 311, 312.  If multiple were ticked
-        then it would go to another screen asking what the split was (as a percentage that totals 100). These percentages have the qcodes
-        509, 510, 511.
+        One of the questions was 'During 2019, what was the percentage breakdown of the turnover of orders received via
+        a website or ‘app’ from?'  This had 3 tickboxes (UK, Europe, Rest of world), these had the qcodes 310, 311, 312.
+        If multiple were ticked then it would go to another screen asking what the split was
+        (as a percentage that totals 100). These percentages have the qcodes 509, 510, 511.
         If only 1 was ticked (for example UK, qcode 310) then calling:
             self.percentage_question_with_dependancies("509", '310', ['310', '311', '312'])
         would result in the qcode 509 being populated with '1000' if only 310 (our UK tickbox) had a value in it.
 
         :param self: This object
         :param qcode: The qcode of the value we're attempting to transform
-        :param releated_qcode: The qcode that, if is the only one with a value, will let us know that the qcode provided will need to have
-        the '1000' value.
-        :param dependant_qcodes: A list of qcodes that make up a question.  If only 1 has a value then this will cause the qcode
-        for this question to have a value of '1000'.
-        :returns: '1000' if the related_qcode is the the with a value in the dependant_qcode list.  A 4 digit number representing a percentage
+        :param related_qcode: The qcode that, if is the only one with a value, will let us know that the qcode provided
+        will need to have the '1000' value.
+        :param dependant_qcodes: A list of qcodes that make up a question.  If only 1 has a value then this will cause
+        the qcode for this question to have a value of '1000'.
+        :returns: '1000' if the related_qcode is the the with a value in the dependant_qcode list.  A 4 digit number
+        representing a percentage
         if 2 or more dependant_qcodes have values.  And '0' if the previous condition is true, but this field is blank.
 
         """
@@ -465,8 +435,8 @@ class Ecommerce2019Transformer(EcommerceTransformer):
         """
         Transforms the 'Access and use of internet' questions
 
-        Note: There are negative playback codes that are in the form 'd[0-9]+'.  Each of these affects a set of questions
-        which are listed below
+        Note: There are negative playback codes that are in the form 'd[0-9]+'.  Each of these affects a set of
+        questions which are listed below
         d1 - Which features does the business' site have? - 147, 202, 203, 205, 332 and 414
         d2 - Does the bisness offer any of the following chat services? - 530 and 531
         """
@@ -502,8 +472,8 @@ class Ecommerce2019Transformer(EcommerceTransformer):
         """
         Transform the 'Ecommerce' questions
 
-        Note: There are negative playback codes that are in the form 'd[0-9]+'.  Each of these affects a set of questions
-        which are listed below
+        Note: There are negative playback codes that are in the form 'd[0-9]+'.  Each of these affects a set of
+        questions which are listed below
         """
         answers = {
             "234": self.yes_no_question("234"),
@@ -537,8 +507,8 @@ class Ecommerce2019Transformer(EcommerceTransformer):
     def invoicing(self):
         """
         Transform the 'Invoicing' questions
-        Note: There are negative playback codes that are in the form 'd[0-9]+'.  Each of these affects a set of questions
-        which are listed below
+        Note: There are negative playback codes that are in the form 'd[0-9]+'.  Each of these affects a set of
+        questions which are listed below
         d3 - Which of the following invoices did the business issue or send? - 478, 479, 480
         """
         answers = {
@@ -551,8 +521,8 @@ class Ecommerce2019Transformer(EcommerceTransformer):
     def use_of_cloud_computing_services(self):
         """
         Transform the 'Use of cloud computing' questions
-        Note: There are negative playback codes that are in the form 'd[0-9]+'.  Each of these affects a set of questions
-        which are listed below
+        Note: There are negative playback codes that are in the form 'd[0-9]+'.  Each of these affects a set of
+        questions which are listed below
         d4 - Which of the following cloud computing services does the business buy? - 359, 360, 361, 362, 363, 364, 365
         """
         answers = {
@@ -570,8 +540,8 @@ class Ecommerce2019Transformer(EcommerceTransformer):
     def big_data_analysis(self):
         """
         Transform the 'Big data analysis' questions
-        Note: There are negative playback codes that are in the form 'd[0-9]+'.  Each of these affects a set of questions
-        which are listed below
+        Note: There are negative playback codes that are in the form 'd[0-9]+'.  Each of these affects a set of
+        questions which are listed below
         d5 - Did the business use any of the following sources to analyse big data - 431, 432, 433, 434
         d6 - Did the business use any of the following methods to analyse big data? - 515, 516, 517
         """
@@ -599,8 +569,10 @@ class Ecommerce2019Transformer(EcommerceTransformer):
             "156": self.yes_no_question("156"),
             "165": self.checkbox_question("165"),
             "316": self.checkbox_question("316"),
-            "495": self.radio_question_option("r2", "Mainly performed by the business's own employees", checked="10", unchecked="01", unanswered="00"),
-            "496": self.radio_question_option("r2", "Mainly performed by the external suppliers", checked="10", unchecked="01", unanswered="00")
+            "495": self.radio_question_option("r2", "Mainly performed by the business's own employees", checked="10",
+                                              unchecked="01", unanswered="00"),
+            "496": self.radio_question_option("r2", "Mainly performed by the external suppliers", checked="10",
+                                              unchecked="01", unanswered="00")
         }
 
         return answers
@@ -608,8 +580,8 @@ class Ecommerce2019Transformer(EcommerceTransformer):
     def use_of_3d_printing_technologies(self):
         """
         Transform the 'Use of 3d printing technologies' questions
-        Note: There are negative playback codes that are in the form 'd[0-9]+'.  Each of these affects a set of questions
-        which are listed below
+        Note: There are negative playback codes that are in the form 'd[0-9]+'.  Each of these affects a set of
+        questions which are listed below
         d7 - Why were the following 3D printing activities not selected? - 474, 475, 476, 477
         """
         answers = {
@@ -627,8 +599,8 @@ class Ecommerce2019Transformer(EcommerceTransformer):
     def use_of_robotics(self):
         """
         Transform the 'Use of robotics' questions
-        Note: There are negative playback codes that are in the form 'd[0-9]+'.  Each of these affects a set of questions
-        which are listed below
+        Note: There are negative playback codes that are in the form 'd[0-9]+'.  Each of these affects a set of
+        questions which are listed below
         d8 - Why were the following service robot activities not selected? - 523, 524, 525, 526, 527, 528, 529
         """
         answers = {

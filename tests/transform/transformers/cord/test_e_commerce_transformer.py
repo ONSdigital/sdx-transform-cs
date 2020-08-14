@@ -1,8 +1,8 @@
 import itertools
 import json
-import yaml
 
 import pytest
+import yaml
 
 from transform.transformers.cord import EcommerceTransformer, Ecommerce2019Transformer
 
@@ -75,7 +75,7 @@ class TestExampleSubmission:
         assert self.transformed_data == expected_output
 
     def test_dummy_qcodes_not_in_output(self):
-        pck = self.transformer.create_pck(self.transformed_data)
+        pck = self.transformer.create_pck()
         assert pck
 
 
@@ -293,20 +293,24 @@ class TestTransformerUnits:
 
     def test_pck_file(self):
         transformer = get_transformer(self.default_data)
-        pck = transformer.create_pck(transformer.transform())
+        pck = transformer.create_pck()
         assert pck
 
     def test_idbr_receipt(self):
         """Tests the content of the idbr receipt is as expected"""
         transformer = get_transformer(self.default_data)
-        idbr = transformer.create_idbr_receipt()
+        name, idbr = transformer.create_receipt()
         assert idbr == '12346789012:A:187:201605'
 
     def test_create_zip(self):
         """Tests the filenames in the created zip are the ones we're expecting"""
-        transformer = get_transformer(self.default_data)
 
-        transformer.create_zip(img_seq=itertools.count())
+        with open('tests/replies/eq-ecommerce-test-submission.json', 'r') as fp:
+            response = json.load(fp)
+
+        transformer = get_transformer(response)
+
+        transformer.get_zip(img_seq=itertools.count())
         actual = transformer.image_transformer.zip.get_filenames()
 
         expected = [

@@ -1,17 +1,18 @@
-from collections import OrderedDict
 import datetime
 import itertools
 import json
 import os.path
 import unittest
 import zipfile
+from collections import OrderedDict
 
-import pkg_resources
+import pytest
 
 from transform.transformers.common_software.cs_formatter import CSFormatter
 from transform.transformers.common_software.mwss_transformer import MWSSTransformer
 from transform.transformers.processor import Processor
-from transform.transformers.survey import Survey
+from transform.transformers.survey import Survey, MissingIdsException, MissingSurveyException
+from transform.transformers.transform_selector import get_transformer
 
 
 class SurveyTests(unittest.TestCase):
@@ -111,7 +112,7 @@ class OpTests(unittest.TestCase):
             "survey_id": "134",
             "tx_id": "27923934-62de-475c-bc01-433c09fd38b8",
             "collection": {
-                "instrument_id": "0001",
+                "instrument_id": "0005",
                 "period": "201704"
             },
             "metadata": {
@@ -844,6 +845,8 @@ class TransformTests(unittest.TestCase):
 
 class BatchFileTests(unittest.TestCase):
 
+    replies_dir = 'tests/replies/'
+
     def test_pck_form_header(self):
         """
         Test package form header
@@ -893,8 +896,9 @@ class BatchFileTests(unittest.TestCase):
                 "ru_ref": "12345678901A"
             }
         }, batch_nr=0, seq_nr=0)
-        return_value = Survey.load_survey(ids, MWSSTransformer.pattern)
-        self.assertIsNone(return_value)
+
+        with pytest.raises(MissingSurveyException):
+            Survey.load_survey(ids, MWSSTransformer.pattern)
 
     def test_pck_lines(self):
         """
@@ -925,8 +929,9 @@ class BatchFileTests(unittest.TestCase):
         Tests inter-departmental business register receipt
 
         """
-        src = pkg_resources.resource_string(__name__, "replies/eq-mwss.json")
-        reply = json.loads(src.decode("utf-8"))
+        f = open(self.replies_dir + "eq-mwss.json", "r")
+        reply = json.loads(f.read())
+        f.close()
         reply["tx_id"] = "27923934-62de-475c-bc01-433c09fd38b8"
         ids = Survey.identifiers(reply, batch_nr=3866, seq_nr=0)
         id_dict = ids._asdict()
@@ -940,8 +945,9 @@ class BatchFileTests(unittest.TestCase):
         Tests identifiers are valid
 
         """
-        src = pkg_resources.resource_string(__name__, "replies/eq-mwss.json")
-        reply = json.loads(src.decode("utf-8"))
+        f = open(self.replies_dir + "eq-mwss.json", "r")
+        reply = json.loads(f.read())
+        f.close()
         reply["tx_id"] = "27923934-62de-475c-bc01-433c09fd38b8"
         reply["collection"]["period"] = "200911"
         ids = Survey.identifiers(reply, batch_nr=0, seq_nr=0)
@@ -961,8 +967,9 @@ class BatchFileTests(unittest.TestCase):
         Test package from untransformed data is correct
 
         """
-        src = pkg_resources.resource_string(__name__, "replies/eq-mwss.json")
-        reply = json.loads(src.decode("utf-8"))
+        f = open(self.replies_dir + "eq-mwss.json", "r")
+        reply = json.loads(f.read())
+        f.close()
         reply["tx_id"] = "27923934-62de-475c-bc01-433c09fd38b8"
         reply["survey_id"] = "134"
         reply["collection"]["period"] = "200911"
@@ -989,8 +996,9 @@ class BatchFileTests(unittest.TestCase):
         Test package from transformer returned data correctly
 
         """
-        src = pkg_resources.resource_string(__name__, "replies/eq-mwss.json")
-        reply = json.loads(src.decode("utf-8"))
+        f = open(self.replies_dir + "eq-mwss.json", "r")
+        reply = json.loads(f.read())
+        f.close()
         reply["tx_id"] = "27923934-62de-475c-bc01-433c09fd38b8"
         reply["survey_id"] = "134"
         reply["collection"]["period"] = "200911"
@@ -1026,7 +1034,7 @@ class PackingTests(unittest.TestCase):
 
         """
         self.assertRaises(
-            UserWarning,
+            MissingIdsException,
             MWSSTransformer,
             {},
             seq_nr=0
@@ -1053,8 +1061,8 @@ class PackingTests(unittest.TestCase):
         }
         seq_nr = 12345
 
-        transformer = MWSSTransformer(response, seq_nr=seq_nr)
-        transformer.create_zip(img_seq=itertools.count())
+        transformer = get_transformer(response, seq_nr)
+        transformer.get_zip(img_seq=itertools.count())
 
         funct = next(i for i in transformer.image_transformer.zip.get_filenames() if os.path.splitext(i)[1] == ".csv")
         bits = os.path.splitext(funct)[0].split("_")
@@ -1079,10 +1087,10 @@ class PackingTests(unittest.TestCase):
         }
         seq_nr = 12345
 
-        transformer = MWSSTransformer(expected_json_data, seq_nr=seq_nr)
-        transformer.create_zip(img_seq=itertools.count())
+        transformer = get_transformer(expected_json_data, sequence_no=seq_nr)
+        result = transformer.get_zip(img_seq=itertools.count())
 
-        z = zipfile.ZipFile(transformer.image_transformer.zip.in_memory_zip)
+        z = zipfile.ZipFile(result)
         zfile = z.open('EDC_QJson/134_12345.json', 'r')
         actual_json_data = json.loads(zfile.read().decode('utf-8'))
         z.close()

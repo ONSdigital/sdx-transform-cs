@@ -2,14 +2,25 @@ from collections import namedtuple
 import datetime
 import json
 import logging
+from json import JSONDecodeError
 
 from structlog import wrap_logger
 
 logger = wrap_logger(logging.getLogger(__name__))
 
 
+class MissingIdsException(Exception):
+    pass
+
+
+class MissingSurveyException(Exception):
+    pass
+
+
 class Survey:
     """Provide operations and accessors to survey data."""
+
+    file_pattern = "./transform/surveys/{survey_id}.{inst_id}.json"
 
     #: A named tuple type to capture ids and discriminators from a survey response.
     Identifiers = namedtuple("Identifiers", [
@@ -18,7 +29,7 @@ class Survey:
     ])
 
     @staticmethod
-    def load_survey(ids, pattern):
+    def load_survey(ids, pattern=file_pattern):
         """Retrieve the survey definition by id.
 
         This function takes metadata from a survey reply, finds the JSON definition of
@@ -26,9 +37,6 @@ class Survey:
 
         :param ids: Survey response ids.
         :type ids: :py:class:`sdx.common.survey.Survey.Identifiers`
-        :param str package: The name of the Python package where the survey is to be found,
-                            eg: `"sdx.common"`. Within standalone apps which do not declare
-                            themselves as Python packages, pass in the variable `__name__`.
         :param str pattern: A query for the survey definition. This will be
                             a file path relative to the package location which uniquely
                             identifies the survey definition file. It accepts keyword
@@ -36,6 +44,9 @@ class Survey:
                             :py:class:`sdx.common.survey.Survey.Identifiers`.
 
                             For example: `"surveys/{survey_id}.{inst_id}.json"`.
+        :raises IOError: Raised if file cannot be opened
+        :raises JSONDecodeError:  Raised if returned file isn't valid JSON
+        :raises UnicodeDecodeError:
         :rtype: dict
 
         """
@@ -43,11 +54,16 @@ class Survey:
             file_name = pattern.format(**ids._asdict())
             with open(file_name, encoding="utf-8") as fh:
                 content = fh.read()
+                return json.loads(content)
         except FileNotFoundError:
             logger.error("File not found", file_name=file_name)
-            return None
-        else:
-            return json.loads(content)
+            raise MissingSurveyException()
+        except (OSError, UnicodeDecodeError):
+            logger.exception("Error opening file", file=file_name)
+            raise Exception("Error opening file")
+        except JSONDecodeError:
+            logger.exception("File is not valid JSON", file=file_name)
+            raise Exception("invalid file")
 
     @staticmethod
     def bind_logger(log, ids):
@@ -126,7 +142,9 @@ class Survey:
         ru_ref = data.get("metadata", {}).get("ru_ref", "")
         ts = datetime.datetime.now(datetime.timezone.utc)
         rv = Survey.Identifiers(
-            batch_nr, seq_nr, ts,
+            batch_nr,
+            seq_nr,
+            ts,
             data.get("tx_id"),
             data.get("survey_id"),
             data.get("collection", {}).get("instrument_id"),
@@ -137,7 +155,9 @@ class Survey:
             data.get("collection", {}).get("period")
         )
         if any(i is None for i in rv):
-            log.warning(f"Missing an id from {rv}")
-            return None
+            for k, v in rv._asdict().items():
+                if v is None:
+                    log.warning(f"Missing {k} from {rv}")
+                    raise MissingIdsException(f"Missing field {k} from response")
 
         return rv
