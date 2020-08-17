@@ -263,15 +263,3 @@ class MBSTransformer(SurveyTransformer):
         )
 
         return pck_name, pck
-
-    def create_receipt(self):
-        logger.info("Creating IDBR receipt", ru_ref=self.ids.ru_ref)
-        idbr_name = CSFormatter.idbr_name(self.ids.user_ts, self.ids.seq_nr)
-        idbr = CSFormatter.get_idbr(
-            self.ids.survey_id,
-            self.ids.ru_ref,
-            self.ids.ru_check,
-            self.ids.period
-        )
-
-        return idbr_name, idbr

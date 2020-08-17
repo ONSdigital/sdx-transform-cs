@@ -39,14 +39,18 @@ class SurveyTransformer(ABC):
         pck = None
         return pck_name, pck
 
-    @abstractmethod
     def create_receipt(self):
-        """
-        Must return a tuple containing the receipt name, and the receipt itself as string.
-        """
-        receipt_name = ""
-        receipt = None
-        return receipt_name, receipt
+        bound_logger = self.logger.bind(ru_ref=self.ids.ru_ref, tx_id=self.ids.tx_id)
+        bound_logger.info("Creating IDBR receipt")
+        idbr_name = Formatter.idbr_name(self.ids.user_ts, self.ids.seq_nr)
+        idbr = Formatter.get_idbr(
+            self.ids.survey_id,
+            self.ids.ru_ref,
+            self.ids.ru_check,
+            self.ids.period,
+        )
+        bound_logger.info("Successfully created IDBR receipt")
+        return idbr_name, idbr
 
     def _create_images(self, img_seq=None):
         """

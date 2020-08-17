@@ -1,5 +1,6 @@
 
 from transform.transformers.common_software import MBSTransformer, MWSSTransformer, CSTransformer
+from transform.transformers.common_software.epe_transformer import EPETransformer
 from transform.transformers.cora import UKISTransformer
 from transform.transformers.cord import Ecommerce2019Transformer, EcommerceTransformer
 from transform.transformers.survey import MissingIdsException
@@ -34,6 +35,8 @@ def get_transformer(response, sequence_no=1000):
         transformer = MBSTransformer(response, sequence_no)
     elif survey_id == "134":
         transformer = MWSSTransformer(response, sequence_no)
+    elif survey_id == "147":
+        transformer = EPETransformer(response, sequence_no)
     else:
         transformer = CSTransformer(response, sequence_no)
 

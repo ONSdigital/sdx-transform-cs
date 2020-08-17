@@ -318,16 +318,6 @@ class EcommerceTransformer(SurveyTransformer):
         )
         return pck
 
-    def _create_idbr_receipt(self):
-        """Return a idbr receipt file"""
-        idbr = CORDFormatter.get_idbr(
-            self.ids.survey_id,
-            self.ids.ru_ref,
-            self.ids.ru_check,
-            self.ids.period,
-        )
-        return idbr
-
     def create_pck(self):
         bound_logger = logger.bind(ru_ref=self.ids.ru_ref, tx_id=self.ids.tx_id)
         bound_logger.info("Transforming data for processing")
@@ -339,14 +329,6 @@ class EcommerceTransformer(SurveyTransformer):
         pck = self._create_pck(transformed_data)
         bound_logger.info("Successfully created PCK")
         return pck_name, pck
-
-    def create_receipt(self):
-        bound_logger = logger.bind(ru_ref=self.ids.ru_ref, tx_id=self.ids.tx_id)
-        bound_logger.info("Creating IDBR receipt")
-        idbr_name = CORDFormatter.idbr_name(self.ids.user_ts, self.ids.seq_nr)
-        idbr = self._create_idbr_receipt()
-        bound_logger.info("Successfully created IDBR receipt")
-        return idbr_name, idbr
 
 
 class Ecommerce2019Transformer(EcommerceTransformer):
