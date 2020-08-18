@@ -407,16 +407,6 @@ class UKISTransformer(SurveyTransformer):
         )
         return pck
 
-    def _create_idbr_receipt(self):
-        """Return a idbr receipt file"""
-        idbr = CORAFormatter.get_idbr(
-            self.ids.survey_id,
-            self.ids.ru_ref,
-            self.ids.ru_check,
-            self.ids.period,
-        )
-        return idbr
-
     def create_pck(self):
         bound_logger = logger.bind(ru_ref=self.ids.ru_ref, tx_id=self.ids.tx_id)
         bound_logger.info("Transforming data for processing")
@@ -425,11 +415,3 @@ class UKISTransformer(SurveyTransformer):
         pck_name = CORAFormatter.pck_name(self.ids.survey_id, self.ids.seq_nr)
         pck = self._create_pck(transformed_data)
         return pck_name, pck
-
-    def create_receipt(self):
-        bound_logger = logger.bind(ru_ref=self.ids.ru_ref, tx_id=self.ids.tx_id)
-        bound_logger.info("Creating IDBR receipt")
-        idbr_name = CORAFormatter.idbr_name(self.ids.user_ts, self.ids.seq_nr)
-        idbr = self._create_idbr_receipt()
-        bound_logger.info("Successfully created IDBR receipt")
-        return idbr_name, idbr

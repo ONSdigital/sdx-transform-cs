@@ -151,9 +151,3 @@ class MWSSTransformer(SurveyTransformer):
         pck_name = CSFormatter.pck_name(id_dict["survey_id"], id_dict["seq_nr"])
         pck = CSFormatter.get_pck(data, id_dict["inst_id"], id_dict["ru_ref"], id_dict["ru_check"], id_dict["period"])
         return pck_name, pck
-
-    def create_receipt(self):
-        id_dict = self.ids._asdict()
-        idbr_name = CSFormatter.idbr_name(id_dict["user_ts"], id_dict["seq_nr"])
-        idbr = CSFormatter.get_idbr(id_dict["survey_id"], id_dict["ru_ref"], id_dict["ru_check"], id_dict["period"])
-        return idbr_name, idbr
