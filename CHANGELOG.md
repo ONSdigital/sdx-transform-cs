@@ -1,4 +1,6 @@
 ### Unreleased
+
+### 4.0.0 2020-09-07
  - Major refactor
  - Add EPE transformer
  - Moved logging setup
