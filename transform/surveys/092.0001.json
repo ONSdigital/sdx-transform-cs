@@ -1,0 +1,21 @@
+{
+  "title": "Management Expectations Survey",
+  "survey_id": "092",
+  "form_type": "0001",
+  "question_groups": [
+    {
+      "title": "General Business Information",
+      "questions": [
+        {
+          "text": "Proportion of managers with degree",
+          "question_id": "1208",
+          "number": "1208",
+          "type": "checkbox",
+          "options": [
+            "a","b","c","d","e","f"
+          ]
+        }
+      ]
+    }
+  ]
+}
