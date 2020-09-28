@@ -4,7 +4,7 @@
   "form_type": "0001",
   "question_groups": [
     {
-      "title": "General Business Information",
+      "title": "Management practices and Business characteristics",
       "questions": [
         {
           "title": "Approximately, what was the workforce size of the business during the following periods?",
@@ -21,7 +21,8 @@
           "type": "positiveinteger"
         },
         {
-          "text": "In the first quarter of 2019, approximately what was the number of managers at the business?",
+          "title": "In the first quarter of 2019, approximately what was the number of managers at the business?",
+          "text": "Number of managers",
           "question_id": "1159",
           "number": "1159",
           "type": "positiveinteger"
@@ -436,7 +437,8 @@
           ]
         },
         {
-          "text": "In 2019, which of the following best describes the timeframe that action was taken to address under-performance among managers within the business?",
+          "title": "In 2019, which of the following best describes the timeframe that action was taken to address under-performance among managers within the business?",
+          "text": "Within 6 months of identifying under-performanceAfter 6 months of identifying under-performanceNo action was taken to address under-performanceThere was no under-performance",
           "question_id": "1184",
           "number": "1184",
           "type": "radio"
@@ -478,7 +480,8 @@
           ]
         },
         {
-          "text": "In 2019, approximately what share of your managers and non-managers mainly worked remotely?",
+          "title": "In 2019, approximately what share of your managers and non-managers mainly worked remotely?",
+          "text": "Managers",
           "question_id": "1280",
           "number": "1280",
           "type": "percentage"
@@ -491,7 +494,8 @@
           "type": "percentage"
         },
         {
-          "text": "As of now, approximately what share of your managers and non-managers mainly work remotely?",
+          "title": "As of now, approximately what share of your managers and non-managers mainly work remotely?",
+          "text": "Managers",
           "question_id": "1282",
           "number": "1282",
           "type": "percentage"
@@ -504,7 +508,8 @@
           "type": "percentage"
         },
         {
-          "text": "In December 2021, approximately what share of your managers and non-managers do you expect to be mainly working remotely?",
+          "title": "In December 2021, approximately what share of your managers and non-managers do you expect to be mainly working remotely?",
+          "text": "Managers",
           "question_id": "1284",
           "number": "1284",
           "type": "percentage"
@@ -515,7 +520,12 @@
           "question_id": "1285",
           "number": "1285",
           "type": "percentage"
-        },
+        }
+      ]
+    },
+    {
+      "title": "Organisation",
+      "questions": [
         {
           "text": "In 2019, did the business operate across multiple sites in Great Britain?",
           "question_id": "1188",
@@ -556,15 +566,21 @@
           "number": "1170",
           "type": "radio",
           "options": [
-            "Under \u00a31000",
-            "\u00a31000 to \u00a39999",
-            "\u00a310,000 to \u00a399,999",
-            "\u00a3100,000 to \u00a3999,999",
-            "\u00a31 million or more"
+            "Under £1000",
+            "£1000 to £9999",
+            "£10,000 to £99,999",
+            "£100,000 to £999,999",
+            "£1 million or more"
           ]
-        },
+        }
+      ]
+    },
+    {
+      "title": "Expectations",
+      "questions": [
         {
-          "text": "What dates in the calendar year 2019 will you be reporting for?",
+          "title": "What dates in the calendar year 2019 will you be reporting for?",
+          "text": "To",
           "question_id": "1164",
           "number": "1164",
           "type": "radio"
@@ -577,7 +593,8 @@
           "type": "radio"
         },
         {
-          "text": "What was the business's turnover for the following periods?",
+          "title": "What was the business's turnover for the following periods?",
+          "text": "2019 turnover",
           "question_id": "1086",
           "number": "1086",
           "type": "radio"
@@ -590,7 +607,8 @@
           "type": "radio"
         },
         {
-          "text": "Approximately, what percentage of the business's turnover came from online sales in the following periods?",
+          "title": "Approximately, what percentage of the business's turnover came from online sales in the following periods?",
+          "text": "2019 approximate percentage from online sales",
           "question_id": "1191",
           "number": "1191",
           "type": "percentage"
@@ -603,7 +621,8 @@
           "type": "percentage"
         },
         {
-          "text": "How does turnover in 2020 compare to what was expected at the start of the year?",
+          "title": "How does turnover in 2020 compare to what was expected at the start of the year?",
+          "text": "Select all that apply",
           "question_id": "",
           "number": "",
           "type": "checkbox"
@@ -644,19 +663,22 @@
           "type": "checkbox"
         },
         {
-          "text": "Approximately, how much higher do you estimate turnover is in 2020 relative to expectations at the beginning of the year?",
+          "title": "Approximately, how much higher do you estimate turnover is in 2020 relative to expectations at the beginning of the year?",
+          "text": "Estimated percentage higher than expected",
           "question_id": "1193",
           "number": "1193",
           "type": "percentage"
         },
         {
-          "text": "Approximately, how much lower do you estimate turnover is in 2020 relative to expectations at the beginning of the year?",
+          "title": "Approximately, how much lower do you estimate turnover is in 2020 relative to expectations at the beginning of the year?",
+          "text": "Estimated percentage lower than expected",
           "question_id": "1194",
           "number": "1194",
           "type": "percentage"
         },
         {
-          "text": "Looking ahead to the 2021 calendar year, what is the approximate turnover you would anticipate for this business in the following scenarios?",
+          "title": "Looking ahead to the 2021 calendar year, what is the approximate turnover you would anticipate for this business in the following scenarios?",
+          "text": "Lowest turnover",
           "question_id": "1088",
           "number": "1088",
           "type": "currency"
@@ -690,7 +712,8 @@
           "type": "currency"
         },
         {
-          "text": "For the approximate turnover values you have just given for 2021, how likely do you think each scenario is to occur?",
+          "title": "For the approximate turnover values you have just given for 2021, how likely do you think each scenario is to occur?",
+          "text": "Likelihood of lowest turnover occurring",
           "question_id": "1089",
           "number": "1089",
           "type": "percentage"
@@ -724,7 +747,8 @@
           "type": "percentage"
         },
         {
-          "text": "What was the business's total expenditure on energy, goods, materials and services for the following periods?",
+          "title": "What was the business's total expenditure on energy, goods, materials and services for the following periods?",
+          "text": "2019 expenditure",
           "question_id": "1099",
           "number": "1099",
           "type": "currency"
@@ -737,19 +761,22 @@
           "type": "currency"
         },
         {
-          "text": "In 2019, approximately how many suppliers did the business use to get energy, goods, material and services?",
+          "title": "In 2019, approximately how many suppliers did the business use to get energy, goods, material and services?",
+          "text": "Number of suppliers",
           "question_id": "1195",
           "number": "1195",
           "type": "positiveinteger"
         },
         {
-          "text": "In 2019, approximately what share of the [Number of suppliers] suppliers were internationally-based businesses?",
+          "title": "In 2019, approximately what share of the [Number of suppliers] suppliers were internationally-based businesses?",
+          "text": "Percentage of internationally-based businesses",
           "question_id": "1198",
           "number": "1198",
           "type": "percentage"
         },
         {
-          "text": "How has the business's supplier network changed during 2020?",
+          "title": "How has the business's supplier network changed during 2020?",
+          "text": "Select all that apply",
           "question_id": "",
           "number": "",
           "type": "checkbox"
@@ -790,7 +817,8 @@
           "type": "checkbox"
         },
         {
-          "text": "Why did your supplier network change in 2020?",
+          "title": "Why did your supplier network change in 2020?",
+          "text": "Select all that apply",
           "question_id": "",
           "number": "",
           "type": "checkbox"
@@ -858,7 +886,8 @@
           ]
         },
         {
-          "text": "What was the business's total capital expenditure for the following periods?",
+          "title": "What was the business's total capital expenditure for the following periods?",
+          "text": "2019 total capital expenditure",
           "question_id": "1125",
           "number": "1125",
           "type": "currency"
@@ -871,7 +900,8 @@
           "type": "currency"
         },
         {
-          "text": "How has the business's capital expenditure changed during 2020, relative to what was expected at the beginning of the year?",
+          "title": "How has the business's capital expenditure changed during 2020, relative to what was expected at the beginning of the year?",
+          "text": "Select all that apply",
           "question_id": "",
           "number": "",
           "type": "checkbox"
@@ -919,19 +949,22 @@
           "type": "checkbox"
         },
         {
-          "text": "Approximately, how much higher than expected is capital expenditure in 2020?",
+          "title": "Approximately, how much higher than expected is capital expenditure in 2020?",
+          "text": "Estimated percentage higher than expected",
           "question_id": "1201",
           "number": "1201",
           "type": "percentage"
         },
         {
-          "text": "Approximately, how much lower than expected is capital expenditure in 2020?",
+          "title": "Approximately, how much lower than expected is capital expenditure in 2020?",
+          "text": "Estimated percentage lower than expected",
           "question_id": "1202",
           "number": "1202",
           "type": "percentage"
         },
         {
-          "text": "Looking ahead, approximately how many employees would you anticipate to be on the business's payroll in December 2021 in the following scenarios?",
+          "title": "Looking ahead, approximately how many employees would you anticipate to be on the business's payroll in December 2021 in the following scenarios?",
+          "text": "Lowest scenario",
           "question_id": "1114",
           "number": "1114",
           "type": "positiveinteger"
@@ -965,7 +998,8 @@
           "type": "positiveinteger"
         },
         {
-          "text": "For the approximate number of employees you have just given for December 2021, how likely do you think each scenario is to occur?",
+          "title": "For the approximate number of employees you have just given for December 2021, how likely do you think each scenario is to occur?",
+          "text": "Likelihood of lowest number of employees occurring",
           "question_id": "1115",
           "number": "1115",
           "type": "percentage"
@@ -999,7 +1033,8 @@
           "type": "percentage"
         },
         {
-          "text": "What likelihood would you give to the following scenarios happening to the UK economy growth rate (GDP), for 2021?",
+          "title": "What likelihood would you give to the following scenarios happening to the UK economy growth rate (GDP), for 2021?",
+          "text": "Strong decline",
           "question_id": "1138",
           "number": "1138",
           "type": "percentage"
@@ -1045,7 +1080,12 @@
           "question_id": "1144",
           "number": "1144",
           "type": "percentage"
-        },
+        }
+      ]
+    },
+    {
+      "title": "Feedback",
+      "questions": [
         {
           "text": "Would you like to receive the business's management practices score?",
           "question_id": "1190",
@@ -1057,7 +1097,8 @@
           ]
         },
         {
-          "text": "How long did it take you to complete this questionnaire?",
+          "title": "How long did it take you to complete this questionnaire?",
+          "text": "Hours",
           "question_id": "1149",
           "number": "1149",
           "type": "positiveinteger"
@@ -1070,10 +1111,10 @@
           "type": "positiveinteger"
         },
         {
-          "text": "Please provide any additional information that will help us understand the answers you have provided",
+          "title": "Please provide any additional information that will help us understand the answers you have provided",
+          "text": "Comments",
           "question_id": "1163",
-          "number": "1163",
-          "type": "positiveinteger"
+          "number": "1163"
         }
       ]
     }
