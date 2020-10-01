@@ -1114,7 +1114,8 @@
           "title": "Please provide any additional information that will help us understand the answers you have provided",
           "text": "Comments",
           "question_id": "1163",
-          "number": "1163"
+          "number": "1163",
+          "type": "textarea"
         }
       ]
     }

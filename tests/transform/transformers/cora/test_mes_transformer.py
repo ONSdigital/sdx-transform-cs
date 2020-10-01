@@ -2,8 +2,10 @@ import unittest
 from transform.transformers.cora.mes_transformer import MESTransformer
 
 
-def get_transformer(data):
-    base_submission = {
+def get_transformer(data=None):
+    if data is None:
+        data = {}
+    submission = {
         'metadata': {
             'user_id': 'K5O86M2NU1',
             'ru_ref': '12346789012A'
@@ -20,24 +22,46 @@ def get_transformer(data):
         },
         'type': 'uk.gov.ons.edc.eq:surveyresponse',
         'version': '0.0.1',
+        'data': data
     }
 
-    base_submission.update(data)
-    transformer = MESTransformer(base_submission)
+    transformer = MESTransformer(submission)
     return transformer
 
 
 class TestMesTransformer(unittest.TestCase):
 
-    def test_mes_pck(self):
-        d = {
-            'data': {
-                '1208': 'b'
-            }
-        }
-
-        transformer = get_transformer(d)
-
-        expected = "092:12346789012:1:201605:00000:1208:0010"
-
+    def test_no_transform(self):
+        transformer = get_transformer({'1171': '123'})
+        expected = '092:12346789012:1:201605:00000:1171:123'
         self.assertEqual(expected, transformer.create_pck()[1])
+
+    def test_cb1(self):
+        transformer = get_transformer({'1208': 'e'})
+        expected = '092:12346789012:1:201605:00000:1208:0101'
+        self.assertEqual(expected, transformer.create_pck()[1])
+
+    def test_cb2(self):
+        transformer = get_transformer({'1174': 'a'})
+        expected = '092:12346789012:1:201605:00000:1174:1000'
+        self.assertEqual(expected, transformer.create_pck()[1])
+
+    def test_cb3(self):
+        transformer = get_transformer({'1020': 'c'})
+        expected = '092:12346789012:1:201605:00000:1020:00100'
+        self.assertEqual(expected, transformer.create_pck()[1])
+
+    def test_pounds_thousands(self):
+        transformer = get_transformer({'1086': '5500'})
+        expected = '092:12346789012:1:201605:00000:1086:5500'
+        self.assertEqual(expected, transformer.create_pck()[1])
+
+    def test_comments(self):
+        transformer = get_transformer({'1163': 'my comment'})
+        expected = '092:12346789012:1:201605:00000:1163:1'
+        self.assertEqual(expected, transformer.create_pck()[1])
+
+    def test_receipt(self):
+        transformer = get_transformer()
+        name, receipt = transformer.create_receipt()
+        self.assertEqual('12346789012:A:092:201605', receipt)

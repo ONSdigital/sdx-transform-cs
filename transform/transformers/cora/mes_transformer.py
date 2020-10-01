@@ -30,7 +30,7 @@ cb1_dict = {'a': '0001',
 
 
 def cb1(v):
-    return cb1_dict.get(v)
+    return cb1_dict.get(v) or ''
 
 
 cb2_dict = {'a': '1000',
@@ -40,7 +40,7 @@ cb2_dict = {'a': '1000',
 
 
 def cb2(v):
-    return cb2_dict.get(v)
+    return cb2_dict.get(v) or ''
 
 
 cb3_dict = {'a': '10000',
@@ -51,11 +51,16 @@ cb3_dict = {'a': '10000',
 
 
 def cb3(v):
-    return cb3_dict.get(v)
+    return cb3_dict.get(v) or ''
 
 
 def pounds_thousands(v):
-    return round(int(v), -3)
+    # no transformation currently needed!
+    return v
+
+
+def comments(v):
+    return '1' if not v == "" else ''
 
 
 class MESTransformer(SurveyTransformer):
@@ -184,7 +189,7 @@ class MESTransformer(SurveyTransformer):
         '1190': yes_no,
         '1149': no_transform,
         '1150': no_transform,
-        '1163': yes,
+        '1163': comments,
     }
 
     def __init__(self, response, seq_nr=0):
