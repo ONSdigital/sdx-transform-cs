@@ -7,60 +7,195 @@ from transform.transformers.survey_transformer import SurveyTransformer
 
 logger = wrap_logger(logging.getLogger(__name__))
 
-
-def no_transform(v):
-    return v
-
-
-def yes(v):
-    return '1' if v.lower() == "yes" else ''
-
-
-def yes_no(v):
-    return '10' if v.lower() == "yes" else '01'
-
-
-cb1_dict = {'a': '0001',
-            'b': '0010',
-            'c': '0011',
-            'd': '0100',
-            'e': '0101',
-            'f': '0110',
-            'g': '0111'}
-
-
-def cb1(v):
-    return cb1_dict.get(v) or ''
-
-
-cb2_dict = {'a': '1000',
-            'b': '0100',
-            'c': '0010',
-            'd': '0001'}
-
-
-def cb2(v):
-    return cb2_dict.get(v) or ''
-
-
-cb3_dict = {'a': '10000',
-            'b': '01000',
-            'c': '00100',
-            'd': '00010',
-            'e': '00001'}
-
-
-def cb3(v):
-    return cb3_dict.get(v) or ''
-
-
-def pounds_thousands(v):
-    # no transformation currently needed!
-    return v
-
-
-def comments(v):
-    return '1' if not v == "" else ''
+transforms = {
+    '1171': 'None',
+    '1203': 'None',
+    '1159': 'None',
+    '1208': {'None': '0001', 'Fewer than 20%': '0010', '20 to 49%': '0011', '50 to 80%': '0100',
+             'More than 80%': '0101', 'All': '0110'},
+    '1207': {'None': '0001', 'Fewer than 20%': '0010', '20 to 49%': '0011', '50 to 80%': '0100',
+             'More than 80%': '0101', 'All': '0110'},
+    '1174': {'The owner founded it': '1000', 'A relative of the founder owned it': '0100',
+             'A family not related to the founder owned it': '0010', 'Not a family-owned business': '0001'},
+    '1206': {'Yes': '10', 'No': '01'},
+    '1001': {'We resolved the problems but did not take further action': '1000',
+             'We resolved the problems and took action to try to ensure they do not happen again': '0100',
+             'We resolved the problems and had a continuous improvement process to anticipate similar problems in advance': '0010',
+             'No action was taken': '0001'},
+    '1172': {'We resolve the problems but do not take further action': '1000',
+             'We resolve the problems and take action to try to ensure they do not happen again': '0100',
+             'We resolve the problems and have a continuous improvement process to anticipate similar problems in advance': '0010',
+             'No action is taken': '0001'},
+    '1005': {'1-2 key performance indicators': '1000', '3-9 key performance indicators': '0100',
+             '10 or more key performance indicators': '0010', 'No key performance indicators': '0001'},
+    '1211': {'Annually': '0001', 'Quarterly': '0010', 'Monthly': '0011', 'Weekly': '0100', 'Daily': '0101',
+             'Hourly or more frequently': '0110', 'Never': '0111'},
+    '1210': {'Annually': '0001', 'Quarterly': '0010', 'Monthly': '0011', 'Weekly': '0100', 'Daily': '0101',
+             'Hourly or more frequently': '0110', 'Never': '0111'},
+    '1173': {'1-2 key performance indicators': '1000', '3-9 key performance indicators': '0100',
+             '10 or more key performance indicators': '0010', 'No key performance indicators': '0001'},
+    '1175': {'Annually': '0001', 'Quarterly': '0010', 'Monthly': '0011', 'Weekly': '0100', 'Daily': '0101',
+             'Hourly or more frequently': '0110', 'Never': '0111'},
+    '1205': {'Annually': '0001', 'Quarterly': '0010', 'Monthly': '0011', 'Weekly': '0100', 'Daily': '0101',
+             'Hourly or more frequently': '0110', 'Never': '0111'},
+    '1016': {'Main timeframe was less than one year': '1000', 'Main timeframe was one year or more': '0100',
+             'Combination of timeframes of less than and more than a year': '0010', 'There were no targets': '0001'},
+    '1020': {'Very easy': '10000', 'Quite easy': '01000', 'Neither easy nor difficult': '00100',
+             'Quite difficult': '00010', 'Very difficult': '00001'},
+    '1230': {'All': '1000', 'Most': '0100', 'Some': '0010', 'None': '0001'},
+    '1229': {'All': '1000', 'Most': '0100', 'Some': '0010', 'None': '0001'},
+    '1176': {'Main timeframe is less than one year': '1000', 'Main timeframe is one year or more': '0100',
+             'Combination of timeframes of less than and more than a year': '0010', 'There are no targets': '0001'},
+    '1177': {'Very easy': '10000', 'Quite easy': '01000', 'Neither easy nor difficult': '00100',
+             'Quite difficult': '00010', 'Very difficult': '00001'},
+    '1178': {'All': '1000', 'Most': '0100', 'Some': '0010', 'None': '0001'},
+    '1179': {'All': '1000', 'Most': '0100', 'Some': '0010', 'None': '0001'},
+    '1231': {'Their own performance as measured by targets': '0001',
+             "Their team's or shift's performance as measured by targets": '0010',
+             "Their site's performance as measured by targets": '0011',
+             "The business's performance as measured by targets": '0100',
+             'Performance bonuses were not related to targets': '0101', 'No performance bonuses': '0110'},
+    '1232': {'Their own performance as measured by targets': '0001',
+             "Their team's or shift's performance as measured by targets": '0010',
+             "Their site's performance as measured by targets": '0011',
+             "The business's performance as measured by targets": '0100',
+             'Performance bonuses were not related to targets': '0101', 'There are no performance bonuses': '0110'},
+    '1233': {'Their own performance as measured by targets': '0001',
+             "Their team's or shift's performance as measured by targets": '0010',
+             "Their site's performance as measured by targets": '0011',
+             "The business's performance as measured by targets": '0100',
+             'Performance bonuses were not related to targets': '0101', 'There were no performance bonuses': '0110'},
+    '1234': {'Their own performance as measured by targets': '0001',
+             "Their team's or shift's performance as measured by targets": '0010',
+             "Their site's performance as measured by targets": '0011',
+             "The business's performance as measured by targets": '0100',
+             'Performance bonuses were not related to targets': '0101', 'There are no performance bonuses': '0110'},
+    '1235': {'Based solely on performance or ability': '1000',
+             'Based partly on performance or ability, and partly on other factors': '0100',
+             'Based mainly on factors other than performance or ability': '0010', 'No managers were promoted': '0001'},
+    '1236': {'Based solely on performance or ability': '1000',
+             'Based partly on performance or ability, and partly on other factors': '0100',
+             'Based mainly on factors other than performance or ability': '0010', 'No managers are promoted': '0001'},
+    '1237': {'Based solely on performance or ability': '1000',
+             'Based partly on performance or ability, and partly on other factors': '0100',
+             'Based mainly on factors other than performance or ability': '0010',
+             'No non-managers were promoted': '0001'},
+    '1238': {'Based solely on performance or ability': '1000',
+             'Based partly on performance or ability, and partly on other factors': '0100',
+             'Based mainly on factors other than performance or ability': '0010',
+             'No non-managers are promoted': '0001'},
+    '1180': {'Less than a day': '10000', '1 day': '01000', '2 to 4 days': '00100', '5 to 10 days': '00010',
+             'More than 10 days': '00001'},
+    '1181': {'Less than a day': '10000', '1 day': '01000', '2 to 4 days': '00100', '5 to 10 days': '00010',
+             'More than 10 days': '00001'},
+    '1182': {'Less than a day': '10000', '1 day': '01000', '2 to 4 days': '00100', '5 to 10 days': '00010',
+             'More than 10 days': '00001'},
+    '1183': {'Less than a day': '10000', '1 day': '01000', '2 to 4 days': '00100', '5 to 10 days': '00010',
+             'More than 10 days': '00001'},
+    '1184': {'Within 6 months of identifying under-performance': '1000',
+             'After 6 months of identifying under-performance': '0100',
+             'No action was taken to address under-performance': '0010',
+             'There was no under-performance': '0001'},
+    '1185': {'Within 6 months of identifying under-performance': '1000',
+             'After 6 months of identifying under-performance': '0100',
+             'No action was taken to address under-performance': '0010',
+             'There was no under-performance': '0001'},
+    '1186': {'Within 6 months of identifying under-performance': '1000',
+             'After 6 months of identifying under-performance': '0100',
+             'No action was taken to address under-performance': '0010',
+             'There was no under-performance': '0001'},
+    '1187': {'Within 6 months of identifying under-performance': '1000',
+             'After 6 months of identifying under-performance': '0100',
+             'No action was taken to address under-performance': '0010',
+             'There was no under-performance': '0001'},
+    '1280': 'None',
+    '1281': 'None',
+    '1282': 'None',
+    '1283': 'None',
+    '1284': 'None',
+    '1285': 'None',
+    '1188': {'Yes': '10', 'No': '01'},
+    '1166': {'Only at individual sites': '1000', 'Only at headquarters': '0100',
+             'Both at individual sites and at headquarters': '0010',
+             'Other': '0001'},
+    '1189': {'Only at individual sites': '1000', 'Only at headquarters': '0100',
+             'Both at individual sites and at headquarters': '0010', 'Other': '0001'},
+    '1170': {'Under £1000': '10000', '£1000 to £9999': '01000', '£10,000 to £99,999': '00100',
+             '£100,000 to £999,999': '00010', '£1 million or more': '00001'},
+    '1164': 'None',
+    '1165': 'None',
+    '1086': 'None',
+    '1087': 'None',
+    '1191': 'None',
+    '1192': 'None',
+    '1286': {'Turnover in 2020 is higher than expected': '1'},
+    '1287': {'Turnover in 2020 is lower than expected': '1'},
+    '1288': {
+        'Turnover derived from some types of product or activities is higher than expected while others lower than expected': '1'},
+    '1289': {'Turnover derived from types of product or service not expected at the start of 2020': '1'},
+    '1290': {'Turnover in 2020 is as expected': '1'}, '1193': 'None', '1194': 'None', '1088': {'': "£'000"},
+    '1090': 'None',
+    '1092': 'None',
+    '1094': 'None',
+    '1096': 'None',
+    '1089': 'None',
+    '1091': 'None',
+    '1093': 'None',
+    '1095': 'None',
+    '1097': 'None',
+    '1099': 'None',
+    '1100': 'None',
+    '1195': 'None',
+    '1198': 'None',
+    '1291': {'We used some new domestic suppliers': '1'},
+    '1292': {'We stopped using some domestic suppliers': '1'},
+    '1293': {'We used some new international suppliers': '1'},
+    '1294': {'We stopped using some international suppliers': '1'},
+    '1295': {'We did not change our suppliers': '1'},
+    '1296': {'Previous suppliers were operational, but unable to fulfil our requirements': '1'},
+    '1297': {'Logistical problems with previous suppliers': '1'},
+    '1298': {'Previous suppliers were temporarily closed or out of business': '1'},
+    '1299': {'New suppliers were more price competitive': '1'},
+    '1300': {'New suppliers offered superior products or service': '1'},
+    '1301': {'Product requirements changed': '1'},
+    '1302': {'Other': '1'},
+    '1303': {'Large positive impacts': '10000',
+             'Small positive impacts': '01000',
+             'Minimal or no impacts': '00100',
+             'Small negative impacts': '00010',
+             'Large negative impacts': '00001'},
+    '1125': 'None',
+    '1126': 'None',
+    '1308': {'Capital expenditure in 2020 is higher than expected': '1'},
+    '1309': {'Capital expenditure in 2020 is lower than expected': '1'},
+    '1310': {'Expenditure on some types of capital increased while others decreased': '1'},
+    '1311': {'Capital expenditure projects cancelled': '1'},
+    '1312': {'Capital expenditure in types and activities new to the business': '1'},
+    '1313': {'Capital expenditure did not change': '1'},
+    '1201': 'None',
+    '1202': 'None',
+    '1114': 'None',
+    '1116': 'None',
+    '1118': 'None',
+    '1120': 'None',
+    '1122': 'None',
+    '1115': 'None',
+    '1117': 'None',
+    '1119': 'None',
+    '1121': 'None',
+    '1123': 'None',
+    '1138': 'None',
+    '1139': 'None',
+    '1140': 'None',
+    '1141': 'None',
+    '1142': 'None',
+    '1143': 'None',
+    '1144': 'None',
+    '1190': {'Yes, I would like to receive feedback': '10', 'No, I would prefer not to receive feedback': '01'},
+    '1149': 'None',
+    '1150': 'None',
+    '1163': {'': '1'}
+}
 
 
 class MESTransformer(SurveyTransformer):
@@ -69,137 +204,22 @@ class MESTransformer(SurveyTransformer):
     instance = '00000'
     page = '1'
 
-    transforms = {
-        '1171': no_transform,
-        '1203': no_transform,
-        '1159': no_transform,
-        '1208': cb1,
-        '1207': cb1,
-        '1174': cb2,
-        '1206': yes_no,
-        '1001': cb2,
-        '1172': cb2,
-        '1005': cb2,
-        '1211': cb1,
-        '1210': cb1,
-        '1173': cb2,
-        '1175': cb1,
-        '1205': cb1,
-        '1016': cb2,
-        '1020': cb3,
-        '1230': cb2,
-        '1229': cb2,
-        '1176': cb2,
-        '1177': cb3,
-        '1178': cb2,
-        '1179': cb2,
-        '1231': cb1,
-        '1232': cb1,
-        '1233': cb1,
-        '1234': cb1,
-        '1235': cb2,
-        '1236': cb2,
-        '1237': cb2,
-        '1238': cb2,
-        '1180': cb3,
-        '1181': cb3,
-        '1182': cb3,
-        '1183': cb3,
-        '1184': cb2,
-        '1185': cb2,
-        '1186': cb2,
-        '1187': cb2,
-        '1280': no_transform,
-        '1281': no_transform,
-        '1282': no_transform,
-        '1283': no_transform,
-        '1284': no_transform,
-        '1285': no_transform,
-        '1188': yes_no,
-        '1166': cb2,
-        '1189': cb2,
-        '1170': cb3,
-        '1164': no_transform,
-        '1165': no_transform,
-        '1086': pounds_thousands,
-        '1087': pounds_thousands,
-        '1191': no_transform,
-        '1192': no_transform,
-        '1286': yes,
-        '1287': yes,
-        '1288': yes,
-        '1289': yes,
-        '1290': yes,
-        '1193': no_transform,
-        '1194': no_transform,
-        '1088': pounds_thousands,
-        '1090': pounds_thousands,
-        '1092': pounds_thousands,
-        '1094': pounds_thousands,
-        '1096': pounds_thousands,
-        '1089': no_transform,
-        '1091': no_transform,
-        '1093': no_transform,
-        '1095': no_transform,
-        '1097': no_transform,
-        '1099': pounds_thousands,
-        '1100': pounds_thousands,
-        '1195': no_transform,
-        '1198': no_transform,
-        '1291': yes,
-        '1292': yes,
-        '1293': yes,
-        '1294': yes,
-        '1295': yes,
-        '1296': yes,
-        '1297': yes,
-        '1298': yes,
-        '1299': yes,
-        '1300': yes,
-        '1301': yes,
-        '1302': yes,
-        '1303': cb3,
-        '1125': pounds_thousands,
-        '1126': pounds_thousands,
-        '1308': yes,
-        '1309': yes,
-        '1310': yes,
-        '1311': yes,
-        '1312': yes,
-        '1313': yes,
-        '1201': no_transform,
-        '1202': no_transform,
-        '1114': no_transform,
-        '1116': no_transform,
-        '1118': no_transform,
-        '1120': no_transform,
-        '1122': no_transform,
-        '1115': no_transform,
-        '1117': no_transform,
-        '1119': no_transform,
-        '1121': no_transform,
-        '1123': no_transform,
-        '1138': no_transform,
-        '1139': no_transform,
-        '1140': no_transform,
-        '1141': no_transform,
-        '1142': no_transform,
-        '1143': no_transform,
-        '1144': no_transform,
-        '1190': yes_no,
-        '1149': no_transform,
-        '1150': no_transform,
-        '1163': comments,
-    }
-
     def __init__(self, response, seq_nr=0):
         super().__init__(response, seq_nr)
 
     def transform(self):
         result = {}
-        for qcode, value in self.response['data'].items():
-            if qcode in self.transforms.keys():
-                result[qcode] = self.transforms.get(qcode)(value)
+        for q_code, tran in transforms.items():
+            value = self.response['data'].get(q_code)
+            if value is None:
+                t = ''
+            else:
+                if tran == 'None':
+                    t = value
+                else:
+                    t = tran.get(value) or ''
+
+            result[q_code] = t
 
         return result
 
