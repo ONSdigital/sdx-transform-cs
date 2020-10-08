@@ -194,7 +194,7 @@ transforms = {
     '1190': {'Yes, I would like to receive feedback': '10', 'No, I would prefer not to receive feedback': '01'},
     '1149': 'None',
     '1150': 'None',
-    '1163': {'': '1'}
+    '1163': 'Comment'
 }
 
 
@@ -216,6 +216,8 @@ class MESTransformer(SurveyTransformer):
             else:
                 if tran == 'None':
                     t = value
+                elif tran == 'Comment':
+                    t = '1' if value != "" else ''
                 else:
                     t = tran.get(value) or ''
 
