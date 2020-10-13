@@ -2,6 +2,7 @@
 from transform.transformers.common_software import MBSTransformer, MWSSTransformer, CSTransformer
 from transform.transformers.common_software.epe_transformer import EPETransformer
 from transform.transformers.cora import UKISTransformer
+from transform.transformers.cora.mes_transformer import MESTransformer
 from transform.transformers.cord import Ecommerce2019Transformer, EcommerceTransformer
 from transform.transformers.survey import MissingIdsException
 
@@ -22,6 +23,8 @@ def get_transformer(response, sequence_no=1000):
     # CORA
     if survey_id == "144":
         transformer = UKISTransformer(response, sequence_no)
+    elif survey_id == "092":
+        transformer = MESTransformer(response, sequence_no)
 
     # CORD
     elif survey_id == "187":
