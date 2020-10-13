@@ -11,7 +11,7 @@ logger = wrap_logger(logging.getLogger(__name__))
 
 
 class PCKTransformer:
-    comments_questions = ['147', '146a', '146b', '146c', '146d', '146e', '146f', '146g', '146h', '146i', '146j', '146k']
+    comments_questions = ['147']
     rsi_turnover_questions = ["20", "21", "22", "23", "24", "25", "26"]
     rsi_currency_questions = rsi_turnover_questions + ["27"]
     employee_questions = ["50", "51", "52", "53", "54"]  # Used by qbs and rsi surveys
@@ -29,8 +29,7 @@ class PCKTransformer:
     # QSS (Stocks - survey_id 017) has 20 different formtypes where the majority of questions both numeric and in need
     # of rounding.
     # The list of answers that DON'T need rounding is much shorter.
-    qss_non_currency_questions = ["11", "12", "15", "146", '146a', '146b', '146c', '146d', '146e', '146f', '146g',
-                                  '146h']
+    qss_non_currency_questions = ["11", "12", "15", "146"]
 
     # Mapping used to calculate totals and which qcode should hold the total value.
     qss_questions = {

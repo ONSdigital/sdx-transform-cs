@@ -487,8 +487,6 @@ class TestTransform(unittest.TestCase):
 
         actual = transformer.image_transformer.zip.get_filenames()
 
-        print(actual)
-
         expected = [
             'EDC_QData/009_0000',
             'EDC_QReceipts/REC0103_0000.DAT',
