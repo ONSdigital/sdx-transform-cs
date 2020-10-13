@@ -67,7 +67,7 @@ class LogicTests(unittest.TestCase):
         no_turnover_response["data"]["146"] = "No"
         no_turnover_transformed = MBSTransformer(no_turnover_response)._transform()
 
-        self.assertEqual(no_turnover_transformed["146"], False)
+        self.assertEqual(no_turnover_transformed["146"], 1)
 
     def test_turnover_excluding_vat_rounds_down(self):
         """
@@ -265,14 +265,6 @@ class TestTransform(unittest.TestCase):
             "11": "13/02/2017",
             "12": "14/03/2018",
             "146": "Yes",
-            "146a": "Change in level of business activity",
-            "146b": "In-store / online promotions",
-            "146c": "Special events (e.g. sporting events)",
-            "146d": "Calendar events (e.g. Christmas, Easter, Bank Holiday)",
-            "146e": "Weather",
-            "146f": "Store closures",
-            "146g": "Store openings",
-            "146h": "Other",
             "40": "100499.49",
             "49": "150500",
             "90": "2900",
@@ -304,14 +296,6 @@ class TestTransform(unittest.TestCase):
             "11": "13/02/2017",
             "12": "14/03/2018",
             "146": "Yes",
-            "146a": "Change in level of business activity",
-            "146b": "In-store / online promotions",
-            "146c": "Special events (e.g. sporting events)",
-            "146d": "Calendar events (e.g. Christmas, Easter, Bank Holiday)",
-            "146e": "Weather",
-            "146f": "Store closures",
-            "146g": "Store openings",
-            "146h": "Other",
             "d49": "Yes",
             "90": "2900",
             "d50": "Yes",
