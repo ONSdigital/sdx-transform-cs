@@ -44,12 +44,6 @@
                         "Yes",
                         "No"
                     ]
-                },
-                {
-                    "text": "Did any significant changes occur?",
-                    "question_id": "146h",
-                    "number": "146h",
-                    "type": "contains"
                 }
             ]
         }

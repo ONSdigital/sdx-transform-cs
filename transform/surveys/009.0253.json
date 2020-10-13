@@ -74,12 +74,6 @@
                         "Yes",
                         "No"
                     ]
-                },
-                {
-                    "text": "Did any significant changes occur to turnover?",
-                    "question_id": "146h",
-                    "number": "146h",
-                    "type": "contains"
                 }
             ]
         }

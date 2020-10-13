@@ -232,8 +232,13 @@ class MBSTransformer(SurveyTransformer):
             tx_id=self.ids.tx_id
         )
 
+        if self.response["data"].get("146") == None:
+            data_146 = self.round_mbs(self.response["data"].get("2"))
+        else:
+            data_146 = self.round_mbs(self.response["data"].get("1"))
+
         transformed_data = {
-            "146": True if self.response["data"].get("146") == "Yes" else False,
+            "146": data_146,
             "40": self.round_mbs(self.response["data"].get("40")),
             "42": self.round_mbs(self.response["data"].get("42")),
             "43": self.round_mbs(self.response["data"].get("43")),

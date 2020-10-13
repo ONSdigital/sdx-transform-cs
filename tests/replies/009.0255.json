@@ -14,15 +14,7 @@
         "54": "4",
         "90": "2900",
         "110": "256",
-        "146": "Yes",
-        "146a": "Change in level of business activity",
-        "146b": "In-store / online promotions",
-        "146c": "Special events (e.g. sporting events)",
-        "146d": "Calendar events (e.g. Christmas, Easter, Bank Holiday)",
-        "146e": "Weather",
-        "146f": "Store closures",
-        "146g": "Store openings",
-        "146h": "Other"
+        "146": "Yes"
     },
     "type": "uk.gov.ons.edc.eq:surveyresponse",
     "version": "0.0.1",
