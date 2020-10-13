@@ -67,7 +67,7 @@ class LogicTests(unittest.TestCase):
         no_turnover_response["data"]["146"] = "No"
         no_turnover_transformed = MBSTransformer(no_turnover_response)._transform()
 
-        self.assertEqual(no_turnover_transformed["146"], False)
+        self.assertEqual(no_turnover_transformed["146"], 1)
 
     def test_turnover_excluding_vat_rounds_down(self):
         """
@@ -486,6 +486,8 @@ class TestTransform(unittest.TestCase):
         transformer.get_zip(img_seq=itertools.count())
 
         actual = transformer.image_transformer.zip.get_filenames()
+
+        print(actual)
 
         expected = [
             'EDC_QData/009_0000',
