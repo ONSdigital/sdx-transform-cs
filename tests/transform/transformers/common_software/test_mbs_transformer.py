@@ -492,7 +492,6 @@ class TestTransform(unittest.TestCase):
             'EDC_QReceipts/REC0103_0000.DAT',
             'EDC_QImages/Images/S000000000.JPG',
             'EDC_QImages/Images/S000000001.JPG',
-            'EDC_QImages/Images/S000000002.JPG',
             'EDC_QImages/Index/EDC_009_20170301_0000.csv',
             'EDC_QJson/009_0000.json'
         ]
