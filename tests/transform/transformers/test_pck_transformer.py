@@ -212,17 +212,6 @@ class TestPckTransformer(unittest.TestCase):
                         "11": "03/07/2018",
                         "12": "01/10/2018",
                         "681": "123456.78",
-                        "146a": "Yes",
-                        "146b": "Start or end of a long term project",
-                        "146c": "Site changes, for example, openings, closures, refurbishments or upgrades",
-                        "146d": "End of accounting period or financial year",
-                        "146e": "Normal movement for time of year",
-                        "146f": "Change of business structure, merger, or takeover",
-                        "146g": "One off or unusual investment",
-                        "146h": "Introduction / removal of new legislation / incentive",
-                        "146i": "Availability of credit",
-                        "146j": "Overspend during the previous quarter",
-                        "146k": "Other",
                         '147': "Yes",
                         'd12': 'Yes'}}
 
@@ -231,17 +220,6 @@ class TestPckTransformer(unittest.TestCase):
             "11": "03/07/2018",
             "12": "01/10/2018",
             "681": "123456.78",
-            "146a": "Yes",
-            "146b": "Start or end of a long term project",
-            "146c": "Site changes, for example, openings, closures, refurbishments or upgrades",
-            "146d": "End of accounting period or financial year",
-            "146e": "Normal movement for time of year",
-            "146f": "Change of business structure, merger, or takeover",
-            "146g": "One off or unusual investment",
-            "146h": "Introduction / removal of new legislation / incentive",
-            "146i": "Availability of credit",
-            "146j": "Overspend during the previous quarter",
-            "146k": "Other",
             '147': "Yes",
             'd12': 'Yes'})
 
@@ -290,17 +268,6 @@ class TestPckTransformer(unittest.TestCase):
                 # Mineral
                 "697": "-1500",
 
-                "146a": "Yes",
-                "146b": "Start or end of a long term project",
-                "146c": "Site changes, for example, openings, closures, refurbishments or upgrades",
-                "146d": "End of accounting period or financial year",
-                "146e": "Normal movement for time of year",
-                "146f": "Change of business structure, merger, or takeover",
-                "146g": "One off or unusual investment",
-                "146h": "Introduction / removal of new legislation / incentive",
-                "146i": "Availability of credit",
-                "146j": "Overspend during the previous quarter",
-                "146k": "Other",
                 "d12": "Yes",
                 "d681": "Yes"
             }
