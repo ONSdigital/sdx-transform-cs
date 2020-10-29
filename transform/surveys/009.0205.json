@@ -59,14 +59,10 @@
             "title": "Changes in turnover",
             "questions": [
                 {
-                    "text": "Did any significant changes occur to turnover?",
+                    "text": "Please explain any changes in your turnover, exports or excise duty figures from the previous return, if applicable.",
                     "question_id": "146",
                     "number": "146",
-                    "type": "radio",
-                    "options": [
-                        "Yes",
-                        "No"
-                    ]
+                    "type": "contains"
                 }
             ]
         }
