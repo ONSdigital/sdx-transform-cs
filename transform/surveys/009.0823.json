@@ -37,82 +37,9 @@
             "title": "Changes in total turnover",
             "questions": [
                 {
-                    "text": "Did any significant changes occur to total turnover?",
+                    "text": "Please explain any changes in your turnover figures from the previous return, if applicable.",
                     "question_id": "146",
                     "number": "146",
-                    "type": "radio",
-                    "options": [
-                        "Yes",
-                        "No"
-                    ]
-                },
-                {
-                    "text": "Did any significant changes occur to total turnover?",
-                    "question_id": "146a",
-                    "number": "146a",
-                    "type": "checkbox",
-                    "options": [
-                        "Change in level of business activity"
-                    ]
-                },
-                {
-                    "text": "Did any significant changes occur to total turnover?",
-                    "question_id": "146b",
-                    "number": "146b",
-                    "type": "checkbox",
-                    "options": [
-                        "Maintenance/shutdowns"
-                    ]
-                },
-                {
-                    "text": "Did any significant changes occur to total turnover?",
-                    "question_id": "146c",
-                    "number": "146c",
-                    "type": "checkbox",
-                    "options": [
-                        "Special/calendar events"
-                    ]
-                },
-                {
-                    "text": "Did any significant changes occur to total turnover?",
-                    "question_id": "146d",
-                    "number": "146d",
-                    "type": "checkbox",
-                    "options": [
-                        "Weather"
-                    ]
-                },
-                {
-                    "text": "Did any significant changes occur to total turnover?",
-                    "question_id": "146e",
-                    "number": "146e",
-                    "type": "checkbox",
-                    "options": [
-                        "Price effects"
-                    ]
-                },
-                {
-                    "text": "Did any significant changes occur to total turnover?",
-                    "question_id": "146f",
-                    "number": "146f",
-                    "type": "checkbox",
-                    "options": [
-                        "Currency effects (increase/decrease in the currency value)"
-                    ]
-                },
-                {
-                    "text": "Did any significant changes occur to total turnover?",
-                    "question_id": "146g",
-                    "number": "146g",
-                    "type": "checkbox",
-                    "options": [
-                        "Other"
-                    ]
-                },
-                {
-                    "text": "Did any significant changes occur to total turnover?",
-                    "question_id": "146h",
-                    "number": "146h",
                     "type": "contains"
                 }
             ]

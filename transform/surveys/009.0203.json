@@ -36,19 +36,9 @@
             "title": "Significant Changes",
             "questions": [
                 {
-                    "text": "Did any significant changes occur?",
+                    "text": "Please explain any changes in your potable water volume figures from the previous return, if applicable.",
                     "question_id": "146",
                     "number": "146",
-                    "type": "radio",
-                    "options": [
-                        "Yes",
-                        "No"
-                    ]
-                },
-                {
-                    "text": "Did any significant changes occur?",
-                    "question_id": "146h",
-                    "number": "146h",
                     "type": "contains"
                 }
             ]
