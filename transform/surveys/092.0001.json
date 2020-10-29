@@ -575,20 +575,6 @@
       "title": "Expectations",
       "questions": [
         {
-          "title": "What dates in the calendar last year will you be reporting for?",
-          "text": "To",
-          "question_id": "1164",
-          "number": "1164",
-          "type": "radio"
-        },
-        {
-          "title": "What dates in the calendar last year will you be reporting for?",
-          "text": "From",
-          "question_id": "1165",
-          "number": "1165",
-          "type": "radio"
-        },
-        {
           "text": "What was the business's turnover for last year?",
           "question_id": "1086",
           "number": "1086",

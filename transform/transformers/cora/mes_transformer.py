@@ -122,8 +122,6 @@ transforms = {
              'Both at individual sites and at headquarters': '0010', 'Other': '0001'},
     '1170': {'Under £1000': '10000', '£1000 to £9999': '01000', '£10,000 to £99,999': '00100',
              '£100,000 to £999,999': '00010', '£1 million or more': '00001'},
-    '1164': 'None',
-    '1165': 'None',
     '1086': 'None',
     '1087': 'None',
     '1191': 'None',
@@ -133,7 +131,10 @@ transforms = {
     '1288': {
         'Turnover derived from some types of product or activities is higher than expected while others lower than expected': '1'},
     '1289': {'Turnover derived from types of product or service not expected at the start of 2020': '1'},
-    '1290': {'Turnover in 2020 is as expected': '1'}, '1193': 'None', '1194': 'None', '1088': {'': "£'000"},
+    '1290': {'Turnover in 2020 is as expected': '1'},
+    '1193': 'None',
+    '1194': 'None',
+    '1088': 'None',
     '1090': 'None',
     '1092': 'None',
     '1094': 'None',
@@ -208,7 +209,11 @@ class MESTransformer(SurveyTransformer):
         super().__init__(response, seq_nr)
 
     def transform(self):
-        result = {}
+        result = {
+            '0001': '0',
+            '0002': '0',
+            '0003': '0'
+        }
         for q_code, tran in transforms.items():
             value = self.response['data'].get(q_code)
             if value is None:
