@@ -57,17 +57,19 @@ class LogicTests(unittest.TestCase):
         self.assertEqual(3, self.transformed_data["12"].month)
         self.assertEqual(2018, self.transformed_data["12"].year)
 
-    def test_turnover_radio(self):
+    def test_comments(self):
         """
-        QId 146 returns Yes.
+        QId 146 returns 1 if comments present, 2 otherwise.
         """
         self.assertEqual(self.transformed_data["146"], 1)
 
         no_turnover_response = dict.copy(self.response)
-        no_turnover_response["data"]["146"] = "No"
+        print(no_turnover_response)
+        del no_turnover_response["data"]["146"]
+        print(no_turnover_response)
         no_turnover_transformed = MBSTransformer(no_turnover_response)._transform()
 
-        self.assertEqual(no_turnover_transformed["146"], 1)
+        self.assertEqual(no_turnover_transformed["146"], 2)
 
     def test_turnover_excluding_vat_rounds_down(self):
         """

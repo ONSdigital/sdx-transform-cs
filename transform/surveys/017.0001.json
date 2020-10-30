@@ -84,9 +84,79 @@
             "title": "Significant changes",
             "questions": [
                 {
+                    "text": "Did any significant changes occur to the total value of stocks for the business?",
+                    "question_id": "146a",
+                    "type": "radio",
+                    "options": [
+                        "Yes",
+                        "No"
+                    ]
+                },
+                {
                     "text": "Explain any differences between this quarter's opening value and the previously returned closing value",
                     "question_id": "146",
                     "type": "contains"
+                }
+            ]
+        },
+        {
+            "title": "Please indicate the reasons for any changes",
+            "questions": [
+                {
+                    "text": "Select all that apply",
+                    "question_id": "146b",
+                    "type": "checkbox",
+                    "options": [
+                        "Start or end of long term project"
+                    ]
+                },
+                {
+                    "text": "Select all that apply",
+                    "question_id": "146c",
+                    "type": "checkbox",
+                    "options": [
+                        "End of accounting period or financial year"
+                    ]
+                },
+                {
+                    "text": "Select all that apply",
+                    "question_id": "146d",
+                    "type": "checkbox",
+                    "options": [
+                        "Normal movement for the time of year"
+                    ]
+                },
+                {
+                    "text": "Select all that apply",
+                    "question_id": "146e",
+                    "type": "checkbox",
+                    "options": [
+                        "Change of business structure, merger or takeover"
+                    ]
+                },
+                {
+                    "text": "Select all that apply",
+                    "question_id": "146f",
+                    "type": "checkbox",
+                    "options": [
+                        "One off increase in stocks"
+                    ]
+                },
+                {
+                    "text": "Select all that apply",
+                    "question_id": "146g",
+                    "type": "checkbox",
+                    "options": [
+                        "Introduction or removal of new legislation or incentive"
+                    ]
+                },
+                {
+                    "text": "Select all that apply",
+                    "question_id": "146h",
+                    "type": "checkbox",
+                    "options": [
+                        "Other"
+                    ]
                 }
             ]
         }
