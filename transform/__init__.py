@@ -11,7 +11,7 @@ from .views.logger_config import logger_initial_config
 app = Flask(__name__)
 
 from .views import main  # noqa
-__version__ = "4.1.0"
+__version__ = "4.2.0"
 
 logger_initial_config(service_name='sdx-transform-cs',
                       log_level=settings.LOGGING_LEVEL)
