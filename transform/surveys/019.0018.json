@@ -1,0 +1,313 @@
+{
+    "title": "Quarterly Acquisitions and Disposals of Capital Assets Survey",
+    "survey_id": "019",
+    "form_type": "0018",
+    "question_groups": [
+        {
+            "title": "Reporting Period",
+            "questions": [
+                {
+                    "title": "What are the dates of the period that you will be reporting for?",
+                    "text": "From",
+                    "question_id": "11",
+                    "number": "11",
+                    "type": "date"
+                },
+                {
+                    "title": "What are the dates of the period that you will be reporting for?",
+                    "text": "To",
+                    "question_id": "12",
+                    "number": "12",
+                    "type": "date"
+                }
+            ]
+        },
+        {
+            "title": "Major improvements and construction work",
+            "questions": [
+                {
+                    "title": "What was the total capital expenditure on major improvements and construction work, for own use, or for which you are responsible for its maintenance?",
+                    "text": "Value of acquisitions for improvements and construction work",
+                    "question_id": "681",
+                    "number": "681",
+                    "type": "currency"
+                }
+            ]
+        },
+        {
+            "title": "Transport assets and equipment",
+            "questions": [
+                {
+                    "title": "What was the value of acquisitions and proceeds from disposal of capital assets for transport assets and equipment?",
+                    "text": "Value of acquisitions for transport assets and equipment",
+                    "question_id": "688",
+                    "number": "688",
+                    "type": "currency"
+                },
+                {
+                    "title": "What was the value of acquisitions and proceeds from disposal of capital assets for transport assets and equipment?",
+                    "text": "Value of proceeds from disposals for transport assets and equipment",
+                    "question_id": "689",
+                    "number": "689",
+                    "type": "currency"
+                }
+            ]
+        },
+        {
+            "title": "Computers and peripheral devices (hardware)",
+            "questions": [
+                {
+                    "title": "What was the value of acquisitions and proceeds from disposal of capital assets for computers and peripheral devices (hardware)?",
+                    "text": "Value of acquisitions for computers and peripheral devices (hardware)",
+                    "question_id": "695",
+                    "number": "695",
+                    "type": "currency"
+                },
+                {
+                    "title": "What was the value of acquisitions and proceeds from disposal of capital assets for computers and peripheral devices (hardware)?",
+                    "text": "Value of proceeds from disposals for computers and peripheral devices (hardware)",
+                    "question_id": "696",
+                    "number": "696",
+                    "type": "currency"
+                }
+            ]
+        },
+        {
+            "title": "Computer software programs purchased or developed externally (bespoke)",
+            "questions": [
+                {
+                    "title": "What was the value of acquisitions and proceeds from disposal of capital assets for computer software programs purchased or developed externally (bespoke)?",
+                    "text": "Value of acquisitions for computer software programs purchased or developed externally",
+                    "question_id": "703",
+                    "number": "703",
+                    "type": "currency"
+                },
+                {
+                    "title": "What was the value of acquisitions and proceeds from disposal of capital assets for computer software programs purchased or developed externally (bespoke)?",
+                    "text": "Value of proceeds from disposals for computer software programs purchased or developed externally",
+                    "question_id": "704",
+                    "number": "704",
+                    "type": "currency"
+                }
+            ]
+        },
+        {
+            "title": "Databases purchased or developed externally (bespoke)",
+            "questions": [
+                {
+                    "title": "What was the value of acquisitions and proceeds from disposals of capital assets for databases purchased or developed externally (bespoke)?",
+                    "text": "Value of acquisitions for databases purchased or developed externally",
+                    "question_id": "707",
+                    "number": "707",
+                    "type": "currency"
+                },
+                {
+                    "title": "What was the value of acquisitions and proceeds from disposals of capital assets for databases purchased or developed externally (bespoke)?",
+                    "text": "Value of proceeds from disposals for databases purchased or developed externally",
+                    "question_id": "708",
+                    "number": "708",
+                    "type": "currency"
+                }
+            ]
+        },
+        {
+            "title": "Telecommunication equipment",
+            "questions": [
+                {
+                    "title": "What was the value of acquisitions and proceeds from disposal of capital assets for telecommunication equipment?",
+                    "text": "Value of acquisitions for telecommunication equipment",
+                    "question_id": "709",
+                    "number": "709",
+                    "type": "currency"
+                },
+                {
+                    "title": "What was the value of acquisitions and proceeds from disposal of capital assets for telecommunication equipment?",
+                    "text": "Value of proceeds from disposals for telecommunication equipment",
+                    "question_id": "710",
+                    "number": "710",
+                    "type": "currency"
+                }
+            ]
+        },
+        {
+            "title": "Other machinery or equipment not mentioned",
+            "questions": [
+                {
+                    "title": "What was the value of acquisitions and proceeds from disposal of capital assets for other machinery or equipment not mentioned?",
+                    "text": "Value of acquisitions for other machinery or equipment",
+                    "question_id": "711",
+                    "number": "711",
+                    "type": "currency"
+                },
+                {
+                    "title": "What was the value of acquisitions and proceeds from disposal of capital assets for other machinery or equipment not mentioned?",
+                    "text": "Value of proceeds from disposals for other machinery or equipment",
+                    "question_id": "712",
+                    "number": "712",
+                    "type": "currency"
+                }
+            ]
+        },
+        {
+            "title": "Total playback for machinery and equipments",
+            "questions": [
+                {
+                    "title": "The total value of acquisitions for machinery and equipments",
+                    "text": "The total value of acquisitions for machinery and equipments",
+                    "question_id": "714",
+                    "number": "714",
+                    "type": "currency"
+                },
+                {
+                    "title": "The total value of proceeds from disposals for machinery and equipments",
+                    "text": "The total value of proceeds from disposals for machinery and equipments",
+                    "question_id": "715",
+                    "number": "715",
+                    "type": "currency"
+                }
+            ]
+        },
+        {
+            "title": "Total playback for all questions",
+            "questions": [
+                {
+                    "title": "The total value of all acquisitions",
+                    "text": "The total value of all acquisitions",
+                    "question_id": "692",
+                    "number": "692",
+                    "type": "currency"
+                },
+                {
+                    "title": "The total value of all proceeds from disposals",
+                    "text": "The total value of all proceeds from disposals",
+                    "question_id": "693",
+                    "number": "693",
+                    "type": "currency"
+                }
+            ]
+        },
+        {
+            "title": "Significant changes",
+            "questions": [
+                {
+                    "title": "Did any significant changes occur to the total investment?",
+                    "text": "Did any significant changes occur to the total investment?",
+                    "question_id": "146a",
+                    "number": "146a",
+                    "type": "radio",
+                    "options": [
+                        "Yes",
+                        "No"
+                    ]
+                },
+                {
+                    "title": "Please indicate the reasons for any changes in the total investment",
+                    "text": "Start or end of a long term project",
+                    "question_id": "146b",
+                    "number": "146b",
+                    "type": "checkbox",
+                    "options": [
+                        "Start or end of a long term project"
+                    ]
+                },
+                {
+                    "title": "Please indicate the reasons for any changes in the total investment",
+                    "text": "Site changes, for example, openings, closures, refurbishments or upgrades",
+                    "question_id": "146c",
+                    "number": "146c",
+                    "type": "checkbox",
+                    "options": [
+                        "Site changes, for example, openings, closures, refurbishments or upgrades"
+                    ]
+                },
+                {
+                    "title": "Please indicate the reasons for any changes in the total investment",
+                    "text": "End of accounting period or financial year",
+                    "question_id": "146d",
+                    "number": "146d",
+                    "type": "checkbox",
+                    "options": [
+                        "End of accounting period or financial year"
+                    ]
+                },
+                {
+                    "title": "Please indicate the reasons for any changes in the total investment",
+                    "text": "Normal movement for time of year",
+                    "question_id": "146e",
+                    "number": "146e",
+                    "type": "checkbox",
+                    "options": [
+                        "Normal movement for time of year"
+                    ]
+                },
+                {
+                    "title": "Please indicate the reasons for any changes in the total investment",
+                    "text": "Change of business structure, merger, or takeover",
+                    "question_id": "146f",
+                    "number": "146f",
+                    "type": "checkbox",
+                    "options": [
+                        "Change of business structure, merger, or takeover"
+                    ]
+                },
+                {
+                    "title": "Please indicate the reasons for any changes in the total investment",
+                    "text": "One off or unusual investment",
+                    "question_id": "146g",
+                    "number": "146g",
+                    "type": "checkbox",
+                    "options": [
+                        "One off or unusual investment"
+                    ]
+                },
+                {
+                    "title": "Please indicate the reasons for any changes in the total investment",
+                    "text": "Introduction / removal of new legislation / incentive",
+                    "question_id": "146h",
+                    "number": "146h",
+                    "type": "checkbox",
+                    "options": [
+                        "Introduction / removal of new legislation / incentive"
+                    ]
+                },
+                {
+                    "title": "Please indicate the reasons for any changes in the total investment",
+                    "text": "Availability of credit",
+                    "question_id": "146i",
+                    "number": "146i",
+                    "type": "checkbox",
+                    "options": [
+                        "Availability of credit"
+                    ]
+                },
+                {
+                    "title": "Please indicate the reasons for any changes in the total investment",
+                    "text": "Overspend during the previous quarter",
+                    "question_id": "146j",
+                    "number": "146j",
+                    "type": "checkbox",
+                    "options": [
+                        "Overspend during the previous quarter"
+                    ]
+                },
+                {
+                    "title": "Please indicate the reasons for any changes in the total investment",
+                    "text": "Other",
+                    "question_id": "146k",
+                    "number": "146k",
+                    "type": "checkbox",
+                    "options": [
+                        "Other"
+                    ]
+                },
+                {
+                    "title": "Please describe the changes in total investment",
+                    "text": "Significant changes comments",
+                    "question_id": "146",
+                    "number": "146",
+                    "type": "contains"
+                }
+            ]
+        }
+    ]
+}

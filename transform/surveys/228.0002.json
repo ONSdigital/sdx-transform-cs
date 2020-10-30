@@ -1,0 +1,189 @@
+{
+    "title": "Construction and Allied Trades",
+    "survey_id": "228",
+    "form_type": "0002",
+    "question_groups": [
+        {
+            "title": "Reporting Period",
+            "questions": [
+                {
+                    "text": "Are you able to report for the two period dates?",
+                    "question_id": "901",
+                    "number": "901",
+                    "type": "radio"
+                },
+                {
+                    "title": "What are the dates of the period that you will be reporting for?",
+                    "text": "From",
+                    "question_id": "11",
+                    "number": "11",
+                    "type": "date"
+                },
+                {
+                    "title": "What are the dates of the period that you will be reporting for?",
+                    "text": "To",
+                    "question_id": "12",
+                    "number": "12",
+                    "type": "date"
+                }
+            ]
+        },
+        {
+            "title": "Value of work",
+            "questions": [
+                {
+                    "text": "During the period, what was the total value of all construction work carried out by the business?",
+                    "question_id": "290",
+                    "number": "290",
+                    "type": "currency"
+                }
+            ]
+        },
+        {
+            "title": "Housing work",
+            "questions": [
+                {
+                    "text": "During the period, did the business carry out any work on housing?",
+                    "question_id": "902",
+                    "number": "902",
+                    "type": "radio"
+                },
+                {
+                    "text": "What was the value of work carried out on new housing builds for public sector projects?",
+                    "question_id": "201",
+                    "number": "201",
+                    "type": "currency"
+                },
+                {
+                    "text": "What was the value of repair and maintenance (R&M), improvements and major alterations carried out on existing housing for public sector projects?",
+                    "question_id": "202",
+                    "number": "202",
+                    "type": "currency"
+                },
+                {
+                    "text": "What was the value of work carried out on new housing builds for private sector projects?",
+                    "question_id": "211",
+                    "number": "211",
+                    "type": "currency"
+                },
+                {
+                    "text": "What was the value of R&M, improvements and major alterations carried out on existing housing for private sector projects?",
+                    "question_id": "212",
+                    "number": "212",
+                    "type": "currency"
+                }
+
+            ]
+        },
+        {
+            "title": "Infrastructure",
+            "questions": [
+                {
+                    "text": "During the period, did the business carry out any work on infrastructure?",
+                    "question_id": "903",
+                    "number": "903",
+                    "type": "radio"
+                },
+
+                {
+                    "text": "What was the value of work carried out on new infrastructure?",
+                    "question_id": "221",
+                    "number": "221",
+                    "type": "currency"
+                },
+                {
+                    "text": "What was the value of R&M carried out on existing infrastructure?",
+                    "question_id": "222",
+                    "number": "222",
+                    "type": "currency"
+                }
+            ]
+        },
+        {
+            "title": "Other construction work",
+            "questions": [
+                {
+                    "text": "During the period, did the business carry out any other construction work?",
+                    "question_id": "904",
+                    "number": "904",
+                    "type": "radio"
+                },
+                {
+                    "text": "What was the value of work carried out on other new structures for public sector projects?",
+                    "question_id": "231",
+                    "number": "231",
+                    "type": "currency"
+                },
+                {
+                    "text": "What was the value of R&M carried out on other existing structures for public sector projects?",
+                    "question_id": "232",
+                    "number": "232",
+                    "type": "currency"
+                },
+                {
+                    "text": "What was the value of work carried out on new structures for private commercial sector projects?",
+                    "question_id": "241",
+                    "number": "241",
+                    "type": "currency"
+                },
+                {
+                    "text": "what was the value of work carried out on new structures for private industrial sector projects?",
+                    "question_id": "242",
+                    "number": "242",
+                    "type": "currency"
+                },
+                {
+                    "text": "what was the value of R&M carried out on existing structures for private industrial and/or private commercial sector projects?",
+                    "question_id": "243",
+                    "number": "243",
+                    "type": "currency"
+                }
+            ]
+        },
+        {
+        "title": "Employment",
+            "questions": [
+                {
+                    "text": "For the employment date, what was the total number of employees for the business?",
+                    "question_id": "50",
+                    "number": "50",
+                    "type": "positiveinteger"
+                },
+                {
+                    "text": "How many male employees worked more than 30 hours per week?",
+                    "question_id": "51",
+                    "number": "51",
+                    "type": "positiveinteger"
+                },
+                {
+                    "text": "How many male employees worked 30 hours or less per week?",
+                    "question_id": "52",
+                    "number": "52",
+                    "type": "positiveinteger"
+                },
+                {
+                    "text": "How many female employees worked more than 30 hours per week?",
+                    "question_id": "53",
+                    "number": "53",
+                    "type": "positiveinteger"
+                },
+                {
+                    "text": "How many female employees worked 30 hours or less per week?",
+                    "question_id": "54",
+                    "number": "54",
+                    "type": "positiveinteger"
+                }
+            ]
+        },
+        {
+            "title": "Explanation",
+            "questions": [
+                {
+                    "text": "Please explain any changes in your figures from the previous return, if applicable.",
+                    "question_id": "146",
+                    "type": "contains"
+                }
+            ]
+        }
+    ]
+}
