@@ -19,3 +19,4 @@ coverage.xml
 .vscode/
 htmlcov/
 lastfailed
+pyvenv.cfg
