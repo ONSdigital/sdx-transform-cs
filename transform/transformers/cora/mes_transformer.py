@@ -170,7 +170,7 @@ transforms = {
     '1308': {'Capital expenditure in 2020 is higher than expected': '1'},
     '1309': {'Capital expenditure in 2020 is lower than expected': '1'},
     '1310': {'Expenditure on some types of capital increased while others decreased': '1'},
-    '1311': {'Capital expenditure projects cancelled': '1'},
+    '1311': {'Capital expenditure projects were cancelled': '1'},
     '1312': {'Capital expenditure in types and activities new to the business': '1'},
     '1313': {'Capital expenditure did not change': '1'},
     '1201': 'None',
