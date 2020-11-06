@@ -120,7 +120,7 @@ transforms = {
              'Other': '0001'},
     '1189': {'Only at individual sites': '1000', 'Only at headquarters': '0100',
              'Both at individual sites and at headquarters': '0010', 'Other': '0001'},
-    '1170': {'Under £1000': '10000', '£1000 to £9999': '01000', '£10,000 to £99,999': '00100',
+    '1170': {'£999 or less': '10000', '£1000 to £9999': '01000', '£10,000 to £99,999': '00100',
              '£100,000 to £999,999': '00010', '£1 million or more': '00001'},
     '1086': 'None',
     '1087': 'None',
