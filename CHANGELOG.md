@@ -1,4 +1,5 @@
  - Fix broken transformation in MES due to wording changes
+ - 1170 wording changes for MES bug
 
 ### 4.3.0 2020-10-30
  - Fix for MBS comments
