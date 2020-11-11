@@ -1,4 +1,6 @@
+import decimal
 import logging
+from decimal import Decimal, ROUND_HALF_UP
 
 from structlog import wrap_logger
 
@@ -7,6 +9,9 @@ from transform.transformers.survey_transformer import SurveyTransformer
 
 logger = wrap_logger(logging.getLogger(__name__))
 
+# This dict defines how the transformation is done.  The key is the qcode, the value describes what transformation
+# needs to be done on the value.  A dict for the value generally describes what to do with a radio button input and a
+# string describes all other inputs.
 transforms = {
     '1171': 'None',
     '1203': 'None',
@@ -122,8 +127,8 @@ transforms = {
              'Both at individual sites and at headquarters': '0010', 'Other': '0001'},
     '1170': {'Under £1,000': '10000', '£1,000 to £9,999': '01000', '£10,000 to £99,999': '00100',
              '£100,000 to £999,999': '00010', '£1 million or more': '00001'},
-    '1086': 'None',
-    '1087': 'None',
+    '1086': 'nearest_thousand',
+    '1087': 'nearest_thousand',
     '1191': 'None',
     '1192': 'None',
     '1286': {'Turnover in 2020 is higher than expected': '1'},
@@ -214,21 +219,35 @@ class MESTransformer(SurveyTransformer):
             '0002': '0',
             '0003': '0'
         }
-        for q_code, tran in transforms.items():
+        for q_code, transformation in transforms.items():
             value = self.response['data'].get(q_code)
             if value is None:
-                t = ''
+                transformed_value = ''
             else:
-                if tran == 'None':
-                    t = value
-                elif tran == 'Comment':
-                    t = '1' if value != "" else ''
-                else:
-                    t = tran.get(value) or ''
+                if transformation == 'None':
+                    transformed_value = value
+                elif transformation == 'nearest_thousand':
+                    transformed_value = self.round_and_divide_by_one_thousand(value)
+                elif transformation == 'Comment':
+                    transformed_value = '1' if value != "" else ''
+                else:  # We assume if it's not one of those strings, then it's a dict
+                    transformed_value = transformation.get(value) or ''
 
-            result[q_code] = t
+            result[q_code] = transformed_value
 
         return result
+
+    @staticmethod
+    def round_and_divide_by_one_thousand(value):
+        """Rounding is done on a ROUND_HALF_UP basis and values are divided by 1000 for the pck"""
+        try:
+            # Set the rounding context for Decimal objects to ROUND_HALF_UP
+            decimal.getcontext().rounding = ROUND_HALF_UP
+            return Decimal(round(Decimal(float(value))) / 1000).quantize(1)
+
+        except TypeError:
+            logger.info("Tried to quantize a NoneType object. Returning an empty string")
+            return ''
 
     def _create_pck(self, transformed_data):
         """Return a pck file using provided data"""
