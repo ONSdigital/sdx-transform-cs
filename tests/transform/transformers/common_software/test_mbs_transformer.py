@@ -266,7 +266,6 @@ class TestTransform(unittest.TestCase):
         "data": {
             "11": "13/02/2017",
             "12": "14/03/2018",
-            "146": "Yes",
             "40": "100499.49",
             "49": "150500",
             "90": "2900",
@@ -498,3 +497,21 @@ class TestTransform(unittest.TestCase):
             'EDC_QJson/009_0000.json'
         ]
         self.assertEqual(expected, actual)
+
+    def test_comment_results_in_1(self):
+        response = deepcopy(self.response)
+        response['data']["146"] = "This is a comment"
+        result = MBSTransformer(response)._transform()
+        self.assertEqual(1, result["146"])
+
+    def test_empty_comment_results_in_1(self):
+        response = deepcopy(self.response)
+        response['data']["146"] = " "
+        result = MBSTransformer(response)._transform()
+        self.assertEqual(1, result["146"])
+
+    def test_no_comment_results_in_2(self):
+        response = deepcopy(self.response)
+        result = MBSTransformer(response)._transform()
+        self.assertEqual(2, result["146"])
+
