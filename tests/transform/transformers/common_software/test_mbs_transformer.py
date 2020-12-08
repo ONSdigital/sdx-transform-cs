@@ -514,4 +514,3 @@ class TestTransform(unittest.TestCase):
         response = deepcopy(self.response)
         result = MBSTransformer(response)._transform()
         self.assertEqual(2, result["146"])
-
