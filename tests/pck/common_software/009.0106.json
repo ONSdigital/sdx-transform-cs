@@ -1,0 +1,26 @@
+{
+  "case_id": "e02df071-72eb-45b8-9a74-e976ef62007b",
+  "collection": {
+    "exercise_sid": "f29c3004-2c5d-4610-bc50-93e0aca25df8",
+    "instrument_id": "0106",
+    "period": "201605"
+  },
+  "data": {
+    "146": "My significant comment",
+    "40": "24000"
+  },
+  "flushed": false,
+  "metadata": {
+    "ref_period_end_date": "2016-05-31",
+    "ref_period_start_date": "2016-05-01",
+    "ru_ref": "30237487572l",
+    "user_id": "UNKNOWN"
+  },
+  "origin": "uk.gov.ons.edc.eq",
+  "started_at": "2020-12-02T17:10:47.843504",
+  "submitted_at": "2020-12-02T17:11:58.573816",
+  "survey_id": "009",
+  "tx_id": "0b8c42ad-fe94-40b9-ac3b-60d6ef2848f6",
+  "type": "uk.gov.ons.edc.eq:surveyresponse",
+  "version": "0.0.1"
+}
