@@ -490,7 +490,7 @@ class TestTransform(unittest.TestCase):
 
         expected = [
             'EDC_QData/009_40e659ec013f4993',
-            'EDC_QReceipts/REC0103_0000.DAT',
+            'EDC_QReceipts/REC0103_40e659ec013f4993.DAT',
             'EDC_QImages/Images/S40e659ec013f4993_1.JPG',
             'EDC_QImages/Images/S40e659ec013f4993_2.JPG',
             'EDC_QImages/Index/EDC_009_20170301_0000.csv',

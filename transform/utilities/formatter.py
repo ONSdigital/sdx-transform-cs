@@ -6,9 +6,9 @@ class Formatter:
         return "%s_%04d.json" % (survey_id, seq_nr)
 
     @staticmethod
-    def idbr_name(user_ts, seq_nr):
+    def idbr_name(user_ts, tx_id):
         """Generate the name of an IDBR file."""
-        return "REC{0}_{1:04}.DAT".format(user_ts.strftime("%d%m"), int(seq_nr))
+        return "REC{0}_{1}.DAT".format(user_ts.strftime("%d%m"), Formatter._get_tx_code(tx_id))
 
     @staticmethod
     def pck_name(survey_id, tx_id):

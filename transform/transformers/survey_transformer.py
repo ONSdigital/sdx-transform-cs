@@ -42,7 +42,7 @@ class SurveyTransformer(ABC):
     def create_receipt(self):
         bound_logger = self.logger.bind(ru_ref=self.ids.ru_ref, tx_id=self.ids.tx_id)
         bound_logger.info("Creating IDBR receipt")
-        idbr_name = Formatter.idbr_name(self.ids.user_ts, self.ids.seq_nr)
+        idbr_name = Formatter.idbr_name(self.ids.user_ts, self.ids.tx_id)
         idbr = Formatter.get_idbr(
             self.ids.survey_id,
             self.ids.ru_ref,

@@ -178,7 +178,7 @@ class TestTransformerUnits:
 
         expected = [
             'EDC_QData/144_d6d7acf452f441f6',
-            'EDC_QReceipts/REC1712_0000.DAT',
+            'EDC_QReceipts/REC1712_d6d7acf452f441f6.DAT',
             'EDC_QImages/Images/Sd6d7acf452f441f6_1.JPG',
             'EDC_QImages/Images/Sd6d7acf452f441f6_2.JPG',
             'EDC_QImages/Images/Sd6d7acf452f441f6_3.JPG',
