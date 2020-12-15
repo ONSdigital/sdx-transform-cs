@@ -102,7 +102,7 @@ class TestCSTransformService(unittest.TestCase):
             'EDC_QImages/Images/S897fbe8cfa674406_1.JPG',
             'EDC_QImages/Images/S897fbe8cfa674406_2.JPG',
             'EDC_QImages/Index/EDC_023_20160312_1000.csv',
-            'EDC_QJson/023_1000.json'
+            'EDC_QJson/023_897fbe8cfa674406.json'
         ]
 
         self.assertEqual(expected, ziplist)
@@ -120,7 +120,7 @@ class TestCSTransformService(unittest.TestCase):
             'EDC_QReceipts/REC0501_1000.DAT',
             'EDC_QImages/Images/S897fbe8cfa674406_1.JPG',
             'EDC_QImages/Index/EDC_182_20200105_1000.csv',
-            'EDC_QJson/182_1000.json'
+            'EDC_QJson/182_897fbe8cfa674406.json'
         ]
 
         self.assertEqual(expected, ziplist)
@@ -136,7 +136,7 @@ class TestCSTransformService(unittest.TestCase):
             'EDC_QImages/Images/S897fbe8cfa674406_1.JPG',
             'EDC_QImages/Images/S897fbe8cfa674406_2.JPG',
             'EDC_QImages/Index/EDC_023_20160312_2345.csv',
-            'EDC_QJson/023_2345.json'
+            'EDC_QJson/023_897fbe8cfa674406.json'
         ]
 
         self.assertEqual(expected, ziplist)
@@ -150,7 +150,7 @@ class TestCSTransformService(unittest.TestCase):
             'EDC_QImages/Images/S897fbe8cfa674406_1.JPG',
             'EDC_QImages/Images/S897fbe8cfa674406_2.JPG',
             'EDC_QImages/Index/EDC_023_20160312_0999.csv',
-            'EDC_QJson/023_0999.json'
+            'EDC_QJson/023_897fbe8cfa674406.json'
         ]
 
         self.assertEqual(expected, ziplist)
@@ -162,7 +162,7 @@ class TestCSTransformService(unittest.TestCase):
         zip_contents = self.get_zip_file_contents(self.transform_cs_endpoint + "/2345")
 
         z = zipfile.ZipFile(zip_contents)
-        zfile = z.open('EDC_QJson/023_2345.json', 'r')
+        zfile = z.open('EDC_QJson/023_897fbe8cfa674406.json', 'r')
         actual_json_data = json.loads(zfile.read().decode('utf-8'))
 
         self.assertEqual(actual_json_data, expected_json_data)

@@ -193,6 +193,6 @@ class TestTransformerUnits:
             'EDC_QImages/Images/Sd6d7acf452f441f6_12.JPG',
             'EDC_QImages/Images/Sd6d7acf452f441f6_13.JPG',
             'EDC_QImages/Index/EDC_144_20181217_0000.csv',
-            'EDC_QJson/144_0000.json'
+            'EDC_QJson/144_d6d7acf452f441f6.json'
         ]
         assert expected == actual

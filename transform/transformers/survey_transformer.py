@@ -71,7 +71,7 @@ class SurveyTransformer(ABC):
         self._create_images(img_seq)
 
         # add original json to zip
-        response_json_name = Formatter.response_json_name(self.ids.survey_id, self.ids.seq_nr)
+        response_json_name = Formatter.response_json_name(self.ids.survey_id, self.ids.tx_id)
         self.image_transformer.zip.append(os.path.join(SDX_RESPONSE_JSON_PATH, response_json_name),
                                           json.dumps(self.response))
 

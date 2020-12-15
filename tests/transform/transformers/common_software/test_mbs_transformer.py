@@ -494,7 +494,7 @@ class TestTransform(unittest.TestCase):
             'EDC_QImages/Images/S40e659ec013f4993_1.JPG',
             'EDC_QImages/Images/S40e659ec013f4993_2.JPG',
             'EDC_QImages/Index/EDC_009_20170301_0000.csv',
-            'EDC_QJson/009_0000.json'
+            'EDC_QJson/009_40e659ec013f4993.json'
         ]
         self.assertEqual(expected, actual)
 

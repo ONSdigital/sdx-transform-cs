@@ -2,8 +2,8 @@ class Formatter:
     """Common formatter functions for the various downstream systems."""
 
     @staticmethod
-    def response_json_name(survey_id, seq_nr):
-        return "%s_%04d.json" % (survey_id, seq_nr)
+    def response_json_name(survey_id, tx_id):
+        return "{0}_{1}.json".format(survey_id, Formatter._get_tx_code(tx_id))
 
     @staticmethod
     def idbr_name(user_ts, tx_id):
