@@ -9,6 +9,7 @@ import zipfile
 import dateutil
 
 from transform.transformers.transform_selector import get_transformer
+from transform.utilities.formatter import Formatter
 from transform.views.image_filters import format_date
 
 
@@ -161,7 +162,8 @@ class TestSurveyTransformer(unittest.TestCase):
             sub_date = dateutil.parser.parse(payload_object["submitted_at"])
             sub_date_str = sub_date.strftime("%Y%m%d")
 
-            filename = "EDC_QImages/Index/EDC_{}_{}_1000.csv".format(payload_object["survey_id"], sub_date_str)
+            filename = "EDC_QImages/Index/EDC_{}_{}_{}.csv".format(payload_object["survey_id"], sub_date_str,
+                                                                   Formatter._get_tx_code(payload_object["tx_id"]))
             self.assertIn(filename, z.namelist())
 
             edc_file = z.open(filename)

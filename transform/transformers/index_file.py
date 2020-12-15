@@ -3,6 +3,7 @@ import dateutil.parser
 
 from io import BytesIO
 from transform import settings
+from transform.utilities.formatter import Formatter
 from transform.views.image_filters import get_env, format_date
 
 
@@ -23,7 +24,7 @@ class IndexFile:
             'short': format_date(current_time, 'short'),
             'long': format_date(current_time)
         }
-        self.index_name = self._get_index_name(self._response, sequence_no)
+        self.index_name = self._get_index_name(self._response)
         self._current_time = current_time  # used to test if current_time gets set to a default value in init definition
         self._build_index(image_names)
 
@@ -52,7 +53,9 @@ class IndexFile:
         self.rewind()
 
     @staticmethod
-    def _get_index_name(response, sequence_no):
+    def _get_index_name(response):
+        survey_id = response['survey_id']
         submission_date = dateutil.parser.parse(response['submitted_at'])
         submission_date_str = format_date(submission_date, 'short')
-        return "EDC_{}_{}_{:04d}.csv".format(response['survey_id'], submission_date_str, sequence_no)
+        tx_id = response["tx_id"]
+        return Formatter.get_index_name(survey_id, submission_date_str, tx_id)

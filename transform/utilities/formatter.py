@@ -32,5 +32,12 @@ class Formatter:
         return f"S{Formatter._get_tx_code(tx_id)}_{i}.JPG"
 
     @staticmethod
+    def get_index_name(survey_id: str, submission_date: str, tx_id: str):
+        tx_code = Formatter._get_tx_code(tx_id)
+        return "EDC_{0}_{1}_{2}.csv".format(survey_id, submission_date, tx_code)
+
+    @staticmethod
     def _get_tx_code(tx_id: str):
+        """Format the tx_id."""
+        # tx_code is the first 16 digits of the tx_id without hyphens
         return "".join(tx_id.split("-"))[0:16]
