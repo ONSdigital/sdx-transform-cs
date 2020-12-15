@@ -252,7 +252,7 @@ class MBSTransformer(SurveyTransformer):
 
     def create_pck(self, img_seq=None):
         logger.info("Creating PCK", ru_ref=self.ids.ru_ref)
-        pck_name = CSFormatter.pck_name(self.ids.survey_id, self.ids.seq_nr)
+        pck_name = CSFormatter.pck_name(self.ids.survey_id, self.ids.tx_id)
         transformed_data = self._transform()
         pck = CSFormatter.get_pck(
             transformed_data,

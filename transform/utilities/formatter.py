@@ -11,9 +11,9 @@ class Formatter:
         return "REC{0}_{1:04}.DAT".format(user_ts.strftime("%d%m"), int(seq_nr))
 
     @staticmethod
-    def pck_name(survey_id, seq_nr):
+    def pck_name(survey_id, tx_id):
         """Generate the name of a PCK file."""
-        return "{0}_{1:04}".format(survey_id, int(seq_nr))
+        return f"{survey_id}_{Formatter._get_tx_code(tx_id)}"
 
     @staticmethod
     def get_idbr(survey_id, ru_ref, ru_check, period):

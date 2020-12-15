@@ -313,7 +313,7 @@ class TestTransformerUnits:
         actual = transformer.image_transformer.zip.get_filenames()
 
         expected = [
-            'EDC_QData/187_0000',
+            'EDC_QData/187_40e659ec013f4888',
             'EDC_QReceipts/REC0103_0000.DAT',
             'EDC_QImages/Images/S40e659ec013f4888_1.JPG',
             'EDC_QImages/Images/S40e659ec013f4888_2.JPG',
