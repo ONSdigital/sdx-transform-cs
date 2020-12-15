@@ -26,3 +26,11 @@ class Formatter:
         # ensure the period is 6 digits
         period = "20" + period if len(period) == 4 else period
         return "{0}:{1}:{2:03}:{3}".format(ru_ref, ru_check, int(survey_id), period)
+
+    @staticmethod
+    def get_image_name(tx_id: str, i: int):
+        return f"S{Formatter._get_tx_code(tx_id)}_{i}.JPG"
+
+    @staticmethod
+    def _get_tx_code(tx_id: str):
+        return "".join(tx_id.split("-"))[0:16]

@@ -4,15 +4,15 @@ import requests
 import subprocess
 
 from requests.adapters import HTTPAdapter
-from requests.packages.urllib3.exceptions import MaxRetryError
 from requests.packages.urllib3.util.retry import Retry
 
-from transform import settings
 from transform.transformers.in_memory_zip import InMemoryZip
 from transform.transformers.index_file import IndexFile
 from .pdf_transformer import PDFTransformer
 
 # Configure the number of retries attempted before failing call
+from ..utilities.formatter import Formatter
+
 session = requests.Session()
 
 retries = Retry(total=5, backoff_factor=0.1)
@@ -60,9 +60,9 @@ class ImageTransformer:
         self.zip.rewind()
         return self.zip.in_memory_zip
 
-    @staticmethod
-    def _get_image_name(i):
-        return "S{0:09}.JPG".format(i)
+    def _get_image_name(self, i: int):
+        tx_id = self.response["tx_id"]
+        return Formatter.get_image_name(tx_id, i)
 
     def _create_pdf(self, survey, response):
         """Create a pdf which will be used as the basis for images """
@@ -72,13 +72,8 @@ class ImageTransformer:
 
     def _build_image_names(self, num_sequence, image_count):
         """Build a collection of image names to use later"""
-        if num_sequence is None:
-            for image_sequence in self._get_image_sequence_list(image_count):
-                self._image_names.append(ImageTransformer._get_image_name(image_sequence))
-        else:
-            for _ in range(0, image_count):
-                name = ImageTransformer._get_image_name(next(num_sequence))
-                self._image_names.append(name)
+        for i in self._get_image_sequence_list(image_count):
+            self._image_names.append(self._get_image_name(i))
 
     def _create_index(self):
         self.index_file = IndexFile(self.logger, self.response, self._page_count, self._image_names,
@@ -112,32 +107,6 @@ class ImageTransformer:
             if len(image) > 11:  # we can get an end of file marker after the image and a jpeg header is 11 bytes long
                 yield image
 
-    def _response_ok(self, res):
-        if res.status_code == 200:
-            self.logger.info("Returned from sdx-sequence", request_url=res.url, status=res.status_code)
-            return True
-        else:
-            self.logger.error("Returned from sdx-sequence", request_url=res.url, status=res.status_code)
-            return False
-
-    def _remote_call(self, request_url, json=None):
-        try:
-            self.logger.info("Calling sdx-sequence", request_url=request_url)
-            if json:
-                return session.post(request_url, json=json)
-
-            return session.get(request_url)
-
-        except MaxRetryError:
-            self.logger.error("Max retries exceeded (5)", request_url=request_url)
-
-    def _get_image_sequence_list(self, n):
-        sequence_url = f"{settings.SDX_SEQUENCE_URL}/image-sequence?n={n}"
-
-        r = self._remote_call(sequence_url)
-
-        if not self._response_ok(r):
-            return False
-
-        result = r.json()
-        return result['sequence_list']
+    @staticmethod
+    def _get_image_sequence_list(n):
+        return [i for i in range(1, n + 1)]

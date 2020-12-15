@@ -6,8 +6,6 @@ import json
 import os
 import unittest
 import zipfile
-from unittest.mock import patch
-
 import dateutil
 
 from transform.transformers.transform_selector import get_transformer
@@ -140,8 +138,7 @@ class TestSurveyTransformer(unittest.TestCase):
 
             self.assertEqual(actual_response, expected_response)
 
-    @patch("transform.transformers.ImageTransformer._get_image_sequence_list", return_value=[1, 2])
-    def test_create_index(self, mock_sequence_no):
+    def test_create_index(self):
         test_scenarios = get_test_scenarios("csv")
 
         print("Found %d csv scenarios" % len(test_scenarios))

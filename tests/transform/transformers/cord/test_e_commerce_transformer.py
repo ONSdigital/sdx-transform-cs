@@ -1,4 +1,3 @@
-import itertools
 import json
 
 import pytest
@@ -310,20 +309,20 @@ class TestTransformerUnits:
 
         transformer = get_transformer(response)
 
-        transformer.get_zip(img_seq=itertools.count())
+        transformer.get_zip()
         actual = transformer.image_transformer.zip.get_filenames()
 
         expected = [
             'EDC_QData/187_0000',
             'EDC_QReceipts/REC0103_0000.DAT',
-            'EDC_QImages/Images/S000000000.JPG',
-            'EDC_QImages/Images/S000000001.JPG',
-            'EDC_QImages/Images/S000000002.JPG',
-            'EDC_QImages/Images/S000000003.JPG',
-            'EDC_QImages/Images/S000000004.JPG',
-            'EDC_QImages/Images/S000000005.JPG',
-            'EDC_QImages/Images/S000000006.JPG',
-            'EDC_QImages/Images/S000000007.JPG',
+            'EDC_QImages/Images/S40e659ec013f4888_1.JPG',
+            'EDC_QImages/Images/S40e659ec013f4888_2.JPG',
+            'EDC_QImages/Images/S40e659ec013f4888_3.JPG',
+            'EDC_QImages/Images/S40e659ec013f4888_4.JPG',
+            'EDC_QImages/Images/S40e659ec013f4888_5.JPG',
+            'EDC_QImages/Images/S40e659ec013f4888_6.JPG',
+            'EDC_QImages/Images/S40e659ec013f4888_7.JPG',
+            'EDC_QImages/Images/S40e659ec013f4888_8.JPG',
             'EDC_QImages/Index/EDC_187_20170301_0000.csv',
             'EDC_QJson/187_0000.json'
         ]
