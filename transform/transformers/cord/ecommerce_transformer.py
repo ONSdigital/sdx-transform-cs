@@ -325,7 +325,7 @@ class EcommerceTransformer(SurveyTransformer):
         bound_logger.info("Data successfully transformed")
 
         bound_logger.info("Creating PCK")
-        pck_name = CORDFormatter.pck_name(self.ids.survey_id, self.ids.seq_nr)
+        pck_name = CORDFormatter.pck_name(self.ids.survey_id, self.ids.tx_id)
         pck = self._create_pck(transformed_data)
         bound_logger.info("Successfully created PCK")
         return pck_name, pck

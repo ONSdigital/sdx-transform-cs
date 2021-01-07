@@ -1,7 +1,6 @@
 import datetime
 import itertools
 import json
-import os.path
 import unittest
 import zipfile
 from collections import OrderedDict
@@ -1040,35 +1039,6 @@ class PackingTests(unittest.TestCase):
             seq_nr=0
         )
 
-    def test_image_sequence_number(self):
-        """
-        Test image sequence number returns as expected
-
-        """
-        response = {
-            "survey_id": "134",
-            "tx_id": "27923934-62de-475c-bc01-433c09fd38b8",
-            "collection": {
-                "instrument_id": "0005",
-                "period": "201704"
-            },
-            "metadata": {
-                "user_id": "123456789",
-                "ru_ref": "12345678901A"
-            },
-            "submitted_at": "2017-04-12T13:01:26Z",
-            "data": {"something": "some data", "something else": "some other data"}
-        }
-        seq_nr = 12345
-
-        transformer = get_transformer(response, seq_nr)
-        transformer.get_zip(img_seq=itertools.count())
-
-        funct = next(i for i in transformer.image_transformer.zip.get_filenames() if os.path.splitext(i)[1] == ".csv")
-        bits = os.path.splitext(funct)[0].split("_")
-
-        self.assertEqual(seq_nr, int(bits[-1]))
-
     def test_original_response_is_stored(self):
         """Compare the dictionary loaded from the zip file json is the same as that submitted"""
         expected_json_data = {
@@ -1091,7 +1061,7 @@ class PackingTests(unittest.TestCase):
         result = transformer.get_zip(img_seq=itertools.count())
 
         z = zipfile.ZipFile(result)
-        zfile = z.open('EDC_QJson/134_12345.json', 'r')
+        zfile = z.open('EDC_QJson/134_2792393462de475c.json', 'r')
         actual_json_data = json.loads(zfile.read().decode('utf-8'))
         z.close()
 

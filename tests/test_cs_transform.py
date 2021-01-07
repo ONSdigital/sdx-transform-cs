@@ -4,7 +4,6 @@ import unittest
 import zipfile
 
 from transform import app
-from unittest.mock import patch
 
 
 class TestCSTransformService(unittest.TestCase):
@@ -92,25 +91,23 @@ class TestCSTransformService(unittest.TestCase):
 
         return z.namelist()
 
-    @patch('transform.transformers.ImageTransformer._get_image_sequence_list', return_value=[13, 14])
-    def test_creates_cs_defaults(self, mock_sequence_no):  # pylint: disable=unused-argument
+    def test_creates_cs_defaults(self):
 
         ziplist = self.get_zip_list(self.transform_cs_endpoint)
 
         # Check that all expected contents are listed in the zip
         expected = [
-            'EDC_QData/023_1000',
-            'EDC_QReceipts/REC1203_1000.DAT',
-            'EDC_QImages/Images/S000000013.JPG',
-            'EDC_QImages/Images/S000000014.JPG',
-            'EDC_QImages/Index/EDC_023_20160312_1000.csv',
-            'EDC_QJson/023_1000.json'
+            'EDC_QData/023_897fbe8cfa674406',
+            'EDC_QReceipts/REC1203_897fbe8cfa674406.DAT',
+            'EDC_QImages/Images/S897fbe8cfa674406_1.JPG',
+            'EDC_QImages/Images/S897fbe8cfa674406_2.JPG',
+            'EDC_QImages/Index/EDC_023_20160312_897fbe8cfa674406.csv',
+            'EDC_QJson/023_897fbe8cfa674406.json'
         ]
 
         self.assertEqual(expected, ziplist)
 
-    @patch('transform.transformers.ImageTransformer._get_image_sequence_list', return_value=[13, 14])
-    def test_creates_vacancies_defaults(self, mock_sequence_no):  # pylint: disable=unused-argument
+    def test_creates_vacancies_defaults(self):
 
         zip_contents = self.get_zip_file_contents(self.transform_cs_endpoint, msg_data=self.vacancies_message)
         z = zipfile.ZipFile(zip_contents)
@@ -119,28 +116,27 @@ class TestCSTransformService(unittest.TestCase):
 
         # Check that all expected contents are listed in the zip
         expected = [
-            'EDC_QData/181_1000',
-            'EDC_QReceipts/REC0501_1000.DAT',
-            'EDC_QImages/Images/S000000013.JPG',
-            'EDC_QImages/Index/EDC_182_20200105_1000.csv',
-            'EDC_QJson/182_1000.json'
+            'EDC_QData/181_897fbe8cfa674406',
+            'EDC_QReceipts/REC0501_897fbe8cfa674406.DAT',
+            'EDC_QImages/Images/S897fbe8cfa674406_1.JPG',
+            'EDC_QImages/Index/EDC_182_20200105_897fbe8cfa674406.csv',
+            'EDC_QJson/182_897fbe8cfa674406.json'
         ]
 
         self.assertEqual(expected, ziplist)
 
-    @patch('transform.transformers.ImageTransformer._get_image_sequence_list', return_value=[1985, 1986])
-    def test_creates_cs_sequence(self, mock_sequence_no):  # pylint: disable=unused-argument
+    def test_creates_cs_sequence(self):
 
         ziplist = self.get_zip_list(self.transform_cs_endpoint + "/2345")
 
         # Check that all expected contents are listed in the zip
         expected = [
-            'EDC_QData/023_2345',
-            'EDC_QReceipts/REC1203_2345.DAT',
-            'EDC_QImages/Images/S000001985.JPG',
-            'EDC_QImages/Images/S000001986.JPG',
-            'EDC_QImages/Index/EDC_023_20160312_2345.csv',
-            'EDC_QJson/023_2345.json'
+            'EDC_QData/023_897fbe8cfa674406',
+            'EDC_QReceipts/REC1203_897fbe8cfa674406.DAT',
+            'EDC_QImages/Images/S897fbe8cfa674406_1.JPG',
+            'EDC_QImages/Images/S897fbe8cfa674406_2.JPG',
+            'EDC_QImages/Index/EDC_023_20160312_897fbe8cfa674406.csv',
+            'EDC_QJson/023_897fbe8cfa674406.json'
         ]
 
         self.assertEqual(expected, ziplist)
@@ -149,25 +145,24 @@ class TestCSTransformService(unittest.TestCase):
 
         # Check that all expected contents are listed in the zip
         expected = [
-            'EDC_QData/023_0999',
-            'EDC_QReceipts/REC1203_0999.DAT',
-            'EDC_QImages/Images/S000001985.JPG',
-            'EDC_QImages/Images/S000001986.JPG',
-            'EDC_QImages/Index/EDC_023_20160312_0999.csv',
-            'EDC_QJson/023_0999.json'
+            'EDC_QData/023_897fbe8cfa674406',
+            'EDC_QReceipts/REC1203_897fbe8cfa674406.DAT',
+            'EDC_QImages/Images/S897fbe8cfa674406_1.JPG',
+            'EDC_QImages/Images/S897fbe8cfa674406_2.JPG',
+            'EDC_QImages/Index/EDC_023_20160312_897fbe8cfa674406.csv',
+            'EDC_QJson/023_897fbe8cfa674406.json'
         ]
 
         self.assertEqual(expected, ziplist)
 
-    @patch('transform.transformers.ImageTransformer._get_image_sequence_list', return_value=[13, 14])
-    def test_original_json_stored_in_zip(self, mock_sequence_no):  # pylint: disable=unused-argument
+    def test_original_json_stored_in_zip(self):
         """Compare the dictionary loaded from the zip file json is the same as that submitted"""
         expected_json_data = json.loads(self.test_message)
 
         zip_contents = self.get_zip_file_contents(self.transform_cs_endpoint + "/2345")
 
         z = zipfile.ZipFile(zip_contents)
-        zfile = z.open('EDC_QJson/023_2345.json', 'r')
+        zfile = z.open('EDC_QJson/023_897fbe8cfa674406.json', 'r')
         actual_json_data = json.loads(zfile.read().decode('utf-8'))
 
         self.assertEqual(actual_json_data, expected_json_data)

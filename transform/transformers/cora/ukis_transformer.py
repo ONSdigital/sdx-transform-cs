@@ -412,6 +412,6 @@ class UKISTransformer(SurveyTransformer):
         bound_logger.info("Transforming data for processing")
         transformed_data = self.transform()
         bound_logger.info("Data successfully transformed")
-        pck_name = CORAFormatter.pck_name(self.ids.survey_id, self.ids.seq_nr)
+        pck_name = CORAFormatter.pck_name(self.ids.survey_id, self.ids.tx_id)
         pck = self._create_pck(transformed_data)
         return pck_name, pck
