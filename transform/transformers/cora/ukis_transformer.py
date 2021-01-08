@@ -108,21 +108,21 @@ class UKISTransformer(SurveyTransformer):
             logger.info("Tried to quantize a NoneType object. Returning an empty string")
             return ''
 
-    def general_business_information(self):
-        """Transforms the 'General business information' questions"""
-        answers = {
-            "0210": self.checkbox_question("0210"),
-            "0220": self.checkbox_question("0220"),
-            "0230": self.checkbox_question("0230"),
-            "0240": self.checkbox_question("0240"),
-            "0410": self.checkbox_question("0410"),
-            "0420": self.checkbox_question("0420"),
-            "0430": self.checkbox_question("0430"),
-            "0440": self.checkbox_question("0440"),
-
-        }
-
-        return answers
+    # def general_business_information(self):
+    #     """Transforms the 'General business information' questions"""
+    #     answers = {
+    #         "0210": self.checkbox_question("0210"),
+    #         "0220": self.checkbox_question("0220"),
+    #         "0230": self.checkbox_question("0230"),
+    #         "0240": self.checkbox_question("0240"),
+    #         "0410": self.checkbox_question("0410"),
+    #         "0420": self.checkbox_question("0420"),
+    #         "0430": self.checkbox_question("0430"),
+    #         "0440": self.checkbox_question("0440"),
+    #
+    #     }
+    #
+    #     return answers
 
     def business_strategy_and_practices(self):
         """Transforms the 'Business strategy and practices' questions"""
@@ -134,6 +134,7 @@ class UKISTransformer(SurveyTransformer):
             "2350": self.checkbox_question("2350", catchall="d1"),
             "2360": self.checkbox_question("2360", catchall="d1"),
             "2370": self.checkbox_question("2370", catchall="d1"),
+            "2380": self.checkbox_question("2380")
         }
 
         return answers
@@ -141,23 +142,25 @@ class UKISTransformer(SurveyTransformer):
     def innovation_investment(self):
         """Transforms the 'Innovation investment' questions"""
         answers = {
-            "1310": self.yes_no_question("1310"),
+            "1310": self.yes_no_question("1310", yes_value="10", no_value="01"),
             "2675": self.checkbox_question("2675"),
             "2676": self.checkbox_question("2676"),
             "2677": self.checkbox_question("2677"),
             "1410": self.round_and_divide_by_one_thousand(self.get_qcode("1410")),
-            "1320": self.yes_no_question("1320"),
+            "1320": self.yes_no_question("1320", yes_value="10", no_value="01"),
             "1420": self.round_and_divide_by_one_thousand(self.get_qcode("1420")),
+            "1330": self.yes_no_question("1330", yes_value="10", no_value="01"),
             "1331": self.checkbox_question("1331"),
             "1332": self.checkbox_question("1332"),
             "1333": self.checkbox_question("1333"),
             "1430": self.round_and_divide_by_one_thousand(self.get_qcode("1430")),
-            "1340": self.yes_no_question("1340"),
+            "1340": self.yes_no_question("1340", yes_value="10", no_value="01"),
             "1440": self.round_and_divide_by_one_thousand(self.get_qcode("1440")),
-            "1350": self.yes_no_question("1350"),
+            "1350": self.yes_no_question("1350", yes_value="10", no_value="01"),
             "1450": self.round_and_divide_by_one_thousand(self.get_qcode("1450")),
-            "1360": self.yes_no_question("1360"),
+            "1360": self.yes_no_question("1360", yes_value="10", no_value="01"),
             "1460": self.round_and_divide_by_one_thousand(self.get_qcode("1460")),
+            "1370": self.yes_no_question("1370", yes_value="10", no_value="01"),
             "1371": self.checkbox_question("1371"),
             "1372": self.checkbox_question("1372"),
             "1373": self.checkbox_question("1373"),
@@ -173,13 +176,11 @@ class UKISTransformer(SurveyTransformer):
             "0510": self.yes_no_question("0510", yes_value="10", no_value="01"),
             "0610": self.checkbox_question("0610"),
             "0620": self.checkbox_question("0620"),
-            "0630": self.checkbox_question("0630"),
             "0520": self.yes_no_question("0520", yes_value="10", no_value="01"),
             "0601": self.checkbox_question("0601"),
             "0602": self.checkbox_question("0602"),
-            "0603": self.checkbox_question("0603"),
-            "0710": self.yes_no_question("0710"),
-            "0720": self.yes_no_question("0720"),
+            "0710": self.yes_no_question("0710", yes_value="10", no_value="01"),
+            "0720": self.yes_no_question("0720", yes_value="10", no_value="01"),
         }
 
         return answers
@@ -190,8 +191,6 @@ class UKISTransformer(SurveyTransformer):
             "0900": self.yes_no_question("0900", yes_value="10", no_value="01"),
             "1010": self.checkbox_question("1010"),
             "1020": self.checkbox_question("1020"),
-            "1030": self.checkbox_question("1030"),
-            "1100": self.yes_no_question("1100", yes_value="10", no_value="01"),
         }
 
         return answers
@@ -202,6 +201,7 @@ class UKISTransformer(SurveyTransformer):
             "1510": self.checkbox_question("1510", catchall="d2"),
             "1520": self.checkbox_question("1520", catchall="d2"),
             "1530": self.checkbox_question("1530", catchall="d2"),
+            "1540": self.checkbox_question("1540", catchall="d2"),
             "2657": self.importance_question("2657"),
             "2658": self.importance_question("2658"),
             "2659": self.importance_question("2659"),
@@ -214,6 +214,7 @@ class UKISTransformer(SurveyTransformer):
             "2666": self.importance_question("2666"),
             "2667": self.importance_question("2667"),
             "2678": self.importance_question("2678"),
+            "2680": self.importance_question("2680"),
             "2011": self.checkbox_question("2011"),
             "2020": self.checkbox_question("2020"),
             "2030": self.checkbox_question("2030"),
@@ -225,8 +226,8 @@ class UKISTransformer(SurveyTransformer):
     def factors_affecting_innovation(self):
         """Transforms the 'Process innovation' questions"""
         answers = {
-            "1211": self.importance_question("1211"),
             "1210": self.importance_question("1210"),
+            "1211": self.importance_question("1211"),
             "1220": self.importance_question("1220"),
             "1230": self.importance_question("1230"),
             "1240": self.importance_question("1240"),
@@ -237,6 +238,7 @@ class UKISTransformer(SurveyTransformer):
             "1212": self.importance_question("1212"),
             "1213": self.importance_question("1213"),
             "1280": self.importance_question("1280"),
+            "1281": self.importance_question("1281"),
         }
 
         return answers
@@ -256,6 +258,7 @@ class UKISTransformer(SurveyTransformer):
             "1610": self.importance_question("1610"),
             "1611": self.importance_question("1611"),
             "1690": self.importance_question("1690"),
+            "1691": self.importance_question("1691")
         }
 
         return answers
@@ -372,7 +375,7 @@ class UKISTransformer(SurveyTransformer):
             "2900": self.yes_no_question("2900", yes_value="10", no_value="01"),
         }
 
-        general_business_information = self.general_business_information()
+        # general_business_information = self.general_business_information()
         business_strategy_and_practices = self.business_strategy_and_practices()
         innovation_investment = self.innovation_investment()
         goods_and_services_innovation = self.goods_and_services_innovation()
@@ -387,7 +390,7 @@ class UKISTransformer(SurveyTransformer):
 
         logger.info(f"Transforming data for {self.ids.ru_ref}", tx_id=self.ids.tx_id)
 
-        return {**transformed, **general_business_information,  # Merge Dictionaries
+        return {**transformed,  # Merge Dictionaries
                 **business_strategy_and_practices,
                 **innovation_investment, **goods_and_services_innovation,
                 **process_innovation, **constraints_on_innovation,
