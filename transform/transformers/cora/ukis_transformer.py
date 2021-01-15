@@ -310,7 +310,8 @@ class UKISTransformer(SurveyTransformer):
             "2671": self.checkbox_question("2671"),
             "2672": self.checkbox_question("2672"),
             "2673": self.checkbox_question("2673"),
-            "2674": self.checkbox_question("2674"),
+            "2679": self.checkbox_question("2679"),
+            "2674": self.checkbox_question("2674")
         }
 
         return answers
