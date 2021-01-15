@@ -29,12 +29,12 @@ class UKISTransformer(SurveyTransformer):
                 value = value.lower()
         return value
 
-    def yes_no_question(self, qcode, yes_value="1", no_value=""):
+    def yes_no_question(self, qcode, yes_value="10", no_value="01"):
         """ Handles Yes / No radio questions.  The Yes/No is case-insensitive.
         :param qcode: The qcode to search for form the response
-        :param yes_value: What should be returned if the answer value is 'Yes' (defaults to '1')
-        :param no_value: What should be returned if the answer value is 'No' (defaults to an empty string)
-        :returns: '1' or None (if the return values haven't been modified).  If the answer isn't either 'Yes' or 'No'
+        :param yes_value: What should be returned if the answer value is 'Yes' (defaults to '10')
+        :param no_value: What should be returned if the answer value is 'No' (defaults to '01')
+        :returns: '10' or '01' (if the return values haven't been modified).  If the answer isn't either 'Yes' or 'No'
         then an empty string is returned.
         """
         answer = self.get_qcode(qcode, lowercase=True)
@@ -111,13 +111,13 @@ class UKISTransformer(SurveyTransformer):
     def business_strategy_and_practices(self):
         """Transforms the 'Business strategy and practices' questions"""
         answers = {
-            "2310": self.checkbox_question("2310", catchall="d1"),
-            "2320": self.checkbox_question("2320", catchall="d1"),
-            "2330": self.checkbox_question("2330", catchall="d1"),
-            "2340": self.checkbox_question("2340", catchall="d1"),
-            "2350": self.checkbox_question("2350", catchall="d1"),
-            "2360": self.checkbox_question("2360", catchall="d1"),
-            "2370": self.checkbox_question("2370", catchall="d1"),
+            "2310": self.checkbox_question("2310"),
+            "2320": self.checkbox_question("2320"),
+            "2330": self.checkbox_question("2330"),
+            "2340": self.checkbox_question("2340"),
+            "2350": self.checkbox_question("2350"),
+            "2360": self.checkbox_question("2360"),
+            "2370": self.checkbox_question("2370"),
             "2380": self.checkbox_question("2380")
         }
 
@@ -126,25 +126,25 @@ class UKISTransformer(SurveyTransformer):
     def innovation_investment(self):
         """Transforms the 'Innovation investment' questions"""
         answers = {
-            "1310": self.yes_no_question("1310", yes_value="10", no_value="01"),
+            "1310": self.yes_no_question("1310"),
             "2675": self.checkbox_question("2675"),
             "2676": self.checkbox_question("2676"),
             "2677": self.checkbox_question("2677"),
             "1410": self.round_and_divide_by_one_thousand(self.get_qcode("1410")),
-            "1320": self.yes_no_question("1320", yes_value="10", no_value="01"),
+            "1320": self.yes_no_question("1320"),
             "1420": self.round_and_divide_by_one_thousand(self.get_qcode("1420")),
-            "1330": self.yes_no_question("1330", yes_value="10", no_value="01"),
+            "1330": self.yes_no_question("1330"),
             "1331": self.checkbox_question("1331"),
             "1332": self.checkbox_question("1332"),
             "1333": self.checkbox_question("1333"),
             "1430": self.round_and_divide_by_one_thousand(self.get_qcode("1430")),
-            "1340": self.yes_no_question("1340", yes_value="10", no_value="01"),
+            "1340": self.yes_no_question("1340"),
             "1440": self.round_and_divide_by_one_thousand(self.get_qcode("1440")),
-            "1350": self.yes_no_question("1350", yes_value="10", no_value="01"),
+            "1350": self.yes_no_question("1350"),
             "1450": self.round_and_divide_by_one_thousand(self.get_qcode("1450")),
-            "1360": self.yes_no_question("1360", yes_value="10", no_value="01"),
+            "1360": self.yes_no_question("1360"),
             "1460": self.round_and_divide_by_one_thousand(self.get_qcode("1460")),
-            "1370": self.yes_no_question("1370", yes_value="10", no_value="01"),
+            "1370": self.yes_no_question("1370"),
             "1371": self.checkbox_question("1371"),
             "1372": self.checkbox_question("1372"),
             "1373": self.checkbox_question("1373"),
@@ -157,14 +157,14 @@ class UKISTransformer(SurveyTransformer):
     def goods_and_services_innovation(self):
         """Transforms the 'Goods and services innovation' questions"""
         answers = {
-            "0510": self.yes_no_question("0510", yes_value="10", no_value="01"),
+            "0510": self.yes_no_question("0510"),
             "0610": self.checkbox_question("0610"),
             "0620": self.checkbox_question("0620"),
-            "0520": self.yes_no_question("0520", yes_value="10", no_value="01"),
+            "0520": self.yes_no_question("0520"),
             "0601": self.checkbox_question("0601"),
             "0602": self.checkbox_question("0602"),
-            "0710": self.yes_no_question("0710", yes_value="10", no_value="01"),
-            "0720": self.yes_no_question("0720", yes_value="10", no_value="01"),
+            "0710": self.yes_no_question("0710"),
+            "0720": self.yes_no_question("0720"),
         }
 
         return answers
@@ -172,7 +172,7 @@ class UKISTransformer(SurveyTransformer):
     def process_innovation(self):
         """Transforms the 'Process innovation' questions"""
         answers = {
-            "0900": self.yes_no_question("0900", yes_value="10", no_value="01"),
+            "0900": self.yes_no_question("0900"),
             "1010": self.checkbox_question("1010"),
             "1020": self.checkbox_question("1020"),
         }
@@ -182,10 +182,10 @@ class UKISTransformer(SurveyTransformer):
     def constraints_on_innovation(self):
         """Transforms the 'Process innovation' questions"""
         answers = {
-            "1510": self.checkbox_question("1510", catchall="d2"),
-            "1520": self.checkbox_question("1520", catchall="d2"),
-            "1530": self.checkbox_question("1530", catchall="d2"),
-            "1540": self.checkbox_question("1540", catchall="d2"),
+            "1510": self.checkbox_question("1510"),
+            "1520": self.checkbox_question("1520"),
+            "1530": self.checkbox_question("1530"),
+            "1540": self.checkbox_question("1540"),
             "2657": self.importance_question("2657"),
             "2658": self.importance_question("2658"),
             "2659": self.importance_question("2659"),
@@ -357,7 +357,7 @@ class UKISTransformer(SurveyTransformer):
             "2700": "1" if self.get_qcode("2700") else "0",  # 2700 is the additional comments question.
             "2801": self.get_qcode("2801", not_found_value=''),
             "2800": self.get_qcode("2800", not_found_value=''),
-            "2900": self.yes_no_question("2900", yes_value="10", no_value="01"),
+            "2900": self.yes_no_question("2900"),
         }
 
         # general_business_information = self.general_business_information()

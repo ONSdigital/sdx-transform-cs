@@ -38,14 +38,14 @@ class TestTransformerUnits:
     default_data = json.loads(data)
 
     @pytest.mark.parametrize('qcode, expected_output', [
-        ('1', '1000'),
-        ('2', '0100'),
-        ('3', '0010'),
-        ('4', '0001'),
+        ('1', '0001'),
+        ('2', '0010'),
+        ('3', '0011'),
+        ('4', '0100'),
         ('5', ''),
-        ('6', '1000'),
-        ('7', '0010'),
-        ('8', '0001'),
+        ('6', '0001'),
+        ('7', '0011'),
+        ('8', '0100'),
         ('100', ''),
     ])
     def test_percentage_question(self, qcode, expected_output):
@@ -84,8 +84,8 @@ class TestTransformerUnits:
         assert transformer.get_qcode('789', lowercase=True) is None
 
     @pytest.mark.parametrize('qcode, expected_output', [
-        ('1', '1'),
-        ('2', ''),
+        ('1', '10'),
+        ('2', '01'),
         ('500', '')
     ])
     def test_yes_no_question(self, qcode, expected_output):
@@ -145,7 +145,8 @@ class TestTransformerUnits:
         ('4', ['1', '2', '3', '4'], '01'),
         ('4', ['3', '4'], '')
     ])
-    def test_checkbox_question_with_dependant_qcode_and_custom_return_values(self, qcode, dependant_qcodes, expected_output):
+    def test_checkbox_question_with_dependant_qcode_and_custom_return_values(self, qcode, dependant_qcodes,
+                                                                             expected_output):
         """Tests the checkbox_question function.  Normally there would be separate tests for both the dependant_qcodes and the modified
         return values, but it's easier to highlight what the dependant_qcodes are checking this way.  Without this, both empty qcodes and
         sets of dependant_qcodes would both return None."""
@@ -158,7 +159,8 @@ class TestTransformerUnits:
 
         transformer = get_transformer(data)
 
-        assert transformer.checkbox_question(qcode, dependent_qcodes=dependant_qcodes, checked="10", unchecked="01") == expected_output
+        assert transformer.checkbox_question(qcode, dependent_qcodes=dependant_qcodes, checked="10",
+                                             unchecked="01") == expected_output
 
     def test_pck_file(self):
         transformer = get_transformer(self.default_data)
@@ -168,7 +170,7 @@ class TestTransformerUnits:
     def test_idbr_receipt(self):
         transformer = get_transformer(self.default_data)
         name, idbr = transformer.create_receipt()
-        assert idbr == '15162882666:f:144:201605'
+        assert idbr == '13141978737:G:144:201605'
 
     def test_create_zip(self):
         transformer = get_transformer(self.default_data)
@@ -177,22 +179,23 @@ class TestTransformerUnits:
         actual = transformer.image_transformer.zip.get_filenames()
 
         expected = [
-            'EDC_QData/144_d6d7acf452f441f6',
-            'EDC_QReceipts/REC1712_d6d7acf452f441f6.DAT',
-            'EDC_QImages/Images/Sd6d7acf452f441f6_1.JPG',
-            'EDC_QImages/Images/Sd6d7acf452f441f6_2.JPG',
-            'EDC_QImages/Images/Sd6d7acf452f441f6_3.JPG',
-            'EDC_QImages/Images/Sd6d7acf452f441f6_4.JPG',
-            'EDC_QImages/Images/Sd6d7acf452f441f6_5.JPG',
-            'EDC_QImages/Images/Sd6d7acf452f441f6_6.JPG',
-            'EDC_QImages/Images/Sd6d7acf452f441f6_7.JPG',
-            'EDC_QImages/Images/Sd6d7acf452f441f6_8.JPG',
-            'EDC_QImages/Images/Sd6d7acf452f441f6_9.JPG',
-            'EDC_QImages/Images/Sd6d7acf452f441f6_10.JPG',
-            'EDC_QImages/Images/Sd6d7acf452f441f6_11.JPG',
-            'EDC_QImages/Images/Sd6d7acf452f441f6_12.JPG',
-            'EDC_QImages/Images/Sd6d7acf452f441f6_13.JPG',
-            'EDC_QImages/Index/EDC_144_20181217_d6d7acf452f441f6.csv',
-            'EDC_QJson/144_d6d7acf452f441f6.json'
+            'EDC_QData/144_16328a9912994f09',
+            'EDC_QReceipts/REC1501_16328a9912994f09.DAT',
+            'EDC_QImages/Images/S16328a9912994f09_1.JPG',
+            'EDC_QImages/Images/S16328a9912994f09_2.JPG',
+            'EDC_QImages/Images/S16328a9912994f09_3.JPG',
+            'EDC_QImages/Images/S16328a9912994f09_4.JPG',
+            'EDC_QImages/Images/S16328a9912994f09_5.JPG',
+            'EDC_QImages/Images/S16328a9912994f09_6.JPG',
+            'EDC_QImages/Images/S16328a9912994f09_7.JPG',
+            'EDC_QImages/Images/S16328a9912994f09_8.JPG',
+            'EDC_QImages/Images/S16328a9912994f09_9.JPG',
+            'EDC_QImages/Images/S16328a9912994f09_10.JPG',
+            'EDC_QImages/Images/S16328a9912994f09_11.JPG',
+            'EDC_QImages/Images/S16328a9912994f09_12.JPG',
+            'EDC_QImages/Images/S16328a9912994f09_13.JPG',
+            'EDC_QImages/Images/S16328a9912994f09_14.JPG',
+            'EDC_QImages/Index/EDC_144_20210115_16328a9912994f09.csv',
+            'EDC_QJson/144_16328a9912994f09.json'
         ]
         assert expected == actual
