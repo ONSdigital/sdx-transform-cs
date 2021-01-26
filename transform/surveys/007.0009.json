@@ -717,9 +717,7 @@
         }
       ]
     },
-
-
-        {
+    {
       "title": "Section 8",
       "questions": [
         {
@@ -807,11 +805,8 @@
             "type": "percentage"
         }
       ]
-        },
-
-
-
-        {
+    },
+    {
       "title": "Section 9",
       "questions": [
         {
@@ -909,11 +904,8 @@
             "type": "percentage"
         }
       ]
-        },
-
-
-
-        {
+    },
+    {
       "title": "Section 10",
       "questions": [
         {
@@ -1001,11 +993,8 @@
             "type": "percentage"
         }
       ]
-        },
-
-
-
-        {
+    },
+    {
       "title": "Section 11",
       "questions": [
         {
@@ -1093,12 +1082,8 @@
             "type": "percentage"
         }
       ]
-        },
-
-
-
-
-        {
+    },
+    {
       "title": "Section 12",
       "questions": [
         {
@@ -1180,11 +1165,8 @@
             "type": "percentage"
         }
       ]
-        },
-
-
-
-        {
+    },
+    {
       "title": "Section 13",
       "questions": [
         {
@@ -1266,8 +1248,7 @@
             "type": "percentage"
         }
       ]
-        },
-
+    },
     {
       "title" : "Section 14",
       "questions": [
