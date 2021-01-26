@@ -1,0 +1,532 @@
+{
+  "title": "Low Carbon and Renewable Energy Economy Survey",
+  "survey_id": "007",
+  "form_type": "0009",
+  "question_groups": [
+    {
+      "title" : "Section 14",
+      "questions": [
+        {
+          "text" : "What was your turnover from activities carried out within the energy monitoring, saving and control systems sector?",
+          "question_id" : "1232",
+          "number" : "1232",
+          "type" : "currency"
+        },
+        {
+          "text" : "What was your expenditure on imports in relation to the energy monitoring, saving and control systems sector?",
+          "question_id" : "1236",
+          "number" : "1236",
+          "type" : "currency"
+        },
+        {
+          "text" : "What was your income from exports in relation to the energy monitoring, saving and control systems sector?",
+          "question_id" : "1238",
+          "number" : "1238",
+          "type" : "currency"
+        },
+        {
+          "text" : "Value of acquisitions for energy monitoring, saving and control systems capital assets",
+          "question_id" : "1242",
+          "number" : "1242",
+          "type" : "currency"
+        },
+        {
+          "text" : "Proceeds from disposals of energy monitoring, saving and control systems capital assets",
+          "question_id" : "1244",
+          "number" : "1244",
+          "type" : "currency"
+        },
+        {
+          "text" : "In-house R&D expenditure",
+          "question_id" : "1247",
+          "number" : "1247",
+          "type" : "currency"
+        },
+        {
+          "text" : "Purchased R&D expenditure",
+          "question_id" : "1248",
+          "number" : "1248",
+          "type" : "currency"
+        },
+        {
+          "text" : "How many full-time equivalent employees (FTEs) were working in the energy monitoring, saving and control systems sector?",
+          "question_id" : "1240",
+          "number" : "1240",
+          "type" : "number"
+        },
+        {
+          "text" : "You stated that the number of full-time equivalents (FTEs) who worked within the energy monitoring, saving and control systems sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
+          "question_id" : "1261",
+          "number" : "1261",
+          "type" : "confirmation question"
+        },
+        {
+          "text" : "Approximately what percentage of your energy monitoring, saving and control systems activities were in England",
+          "question_id" : "1250",
+          "number" : "1250",
+          "type" : "percentage"
+        },
+        {
+          "text" : "Approximately what percentage of your energy monitoring, saving and control systems activities were in Northern Ireland?",
+          "question_id" : "1253",
+          "number" : "1253",
+          "type" : "percentage"
+        },
+        {
+          "text" : "Approximately what percentage of your energy monitoring, saving and control systems activities were in Scotland?",
+          "question_id" : "1251",
+          "number" : "1251",
+          "type" : "percentage"
+        },
+        {
+          "text" : "Approximately what percentage of your energy monitoring, saving and control systems activities were in Wales?",
+          "question_id" : "1252",
+          "number" : "1252",
+          "type" : "percentage"
+        }
+      ]
+    },
+    {
+      "title" : "section 15",
+      "questions" : [
+        {
+          "text" : "What was your turnover from activities carried out within the low carbon consultancy, advisory and offsetting services sector?",
+          "question_id" : "1332",
+          "number" : "1332",
+          "type" : "currency"
+        },
+        {
+          "text" : "What was your expenditure on imports in relation to the low carbon consultancy, advisory and offsetting services sector?",
+          "question_id" : "1336",
+          "number" : "1336",
+          "type" : "currency"
+        },
+        {
+          "text" : "What was your income from exports in relation to the low carbon consultancy, advisory and offsetting services sector?",
+          "question_id" : "1338",
+          "number" : "1338",
+          "type" : "currency"
+        },
+        {
+          "text" : "Value of acquisitions for low carbon consultancy, advisory and offsetting services capital assets?",
+          "question_id" : "1342",
+          "number" : "1342",
+          "type" : "currency"
+        },
+        {
+          "text" : "Proceeds from disposals of low carbon consultancy, advisory and offsetting services capital assets?",
+          "question_id" : "1344",
+          "number" : "1344",
+          "type" : "currency"
+        },
+        {
+          "text" : "What was your expenditure on Research and Development (In-house R&D expenditure) in relation to the low carbon consultancy, advisory and offsetting services sector?",
+          "question_id" : "1347",
+          "number" : "1347",
+          "type" : "currency"
+        },
+        {
+          "text" : "What was your expenditure on Research and Development (Purchased R&D expenditure) in relation to the low carbon consultancy, advisory and offsetting services sector?",
+          "question_id" : "1348",
+          "number" : "1348",
+          "type" : "currency"
+        },
+        {
+          "text" : "How many full-time equivalent employees (FTEs) were working in the low carbon consultancy, advisory and offsetting services sector?",
+          "question_id" : "1340",
+          "number" : "1340",
+          "type" : "number"
+        },
+        {
+          "text" : "You stated that the number of full-time equivalents (FTEs) who worked within the low carbon consultancy, advisory and offsetting services sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
+          "question_id" : "1361",
+          "number" : "1361",
+          "type" : "confirmation questions"
+        },
+        {
+          "text" : "Approximately what percentage of your low carbon consultancy, advisory and offsetting services activities were in England?",
+          "question_id" : "1350",
+          "number" : "1350",
+          "type" : "percentage"
+        },
+        {
+          "text" : "Approximately what percentage of your low carbon consultancy, advisory and offsetting services activities were in Northern Ireland?",
+          "question_id" : "1353",
+          "number" : "1353",
+          "type" : "percentage"
+        },
+        {
+          "text" : "Approximately what percentage of your low carbon consultancy, advisory and offsetting services activities were in Scotland?",
+          "question_id" : "1351",
+          "number" : "1351",
+          "type" : "percentage"
+        },
+        {
+          "text" : "Approximately what percentage of your low carbon consultancy, advisory and offsetting services activities were in Wales?",
+          "question_id" : "1352",
+          "number" : "1352",
+          "type" : "percentage"
+        }
+      ]
+    },
+    {
+      "title" : "section 16",
+      "questions" : [
+        {
+          "text" : "What was your turnover from activities carried out within the low emission vehicles and infrastructure sector?",
+          "question_id" : "1432",
+          "number" : "1432",
+          "type" : "currency"
+        },
+        {
+          "text" : "what was your expenditure on imports in relation to the low emission vehicles and infrastructure sector?",
+          "question_id" : "1436",
+          "number" : "1436",
+          "type" : "currency"
+        },
+        {
+          "text" : "What was your income from exports in relation to the low emission vehicles and infrastructure sector?",
+          "question_id" : "1438",
+          "number" : "1438",
+          "type" : "currency"
+        },
+        {
+          "text" : "What was the value of acquisitions for low emission vehicles and infrastructure capital assets, relating to the low emission vehicles and infrastructure sector?",
+          "question_id" : "1442",
+          "number" : "1442",
+          "type" : "currency"
+        },
+        {
+          "text" : "What was the proceeds from disposals of low emission vehicles and infrastructure capital assets, relating to the low emission vehicles and infrastructure sector?",
+          "question_id" : "1444",
+          "number" : "1444",
+          "type" : "currency"
+        },
+        {
+          "text" : "what was your expenditure on Research and Development (In-house R&D expenditure) in relation to the low emission vehicles and infrastructure sector?",
+          "question_id" : "1447",
+          "number" : "1447",
+          "type" : "currency"
+        },
+        {
+          "text" : "What was your expenditure on Research and Development (Purchased R&D expenditure) in relation to the low emission vehicles and infrastructure sector?",
+          "question_id" : "1448",
+          "number" : "1448",
+          "type" : "currency"
+        },
+        {
+          "text" : "How many full-time equivalent employees (FTEs) were working in the low emission vehicles and infrastructure sector?",
+          "question_id" : "1440",
+          "number" : "1440",
+          "type" : "number"
+        },
+        {
+          "text" : "You stated that the number of full-time equivalents (FTEs) who worked within the low emission vehicles and infrastructure sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
+          "question_id" : "1461",
+          "number" : "1461",
+          "type" : "confirmation questions"
+        },
+        {
+          "text" : "Approximately what percentage of your low emission vehicles and infrastructure activities were in England?",
+          "question_id" : "1450",
+          "number" : "1450",
+          "type" : "percentage"
+        },
+        {
+          "text" : "Approximately what percentage of your low emission vehicles and infrastructure activities were in Northern Ireland?",
+          "question_id" : "1453",
+          "number" : "1453",
+          "type" : "percentage"
+        },
+        {
+          "text" : "Approximately what percentage of your low emission vehicles and infrastructure activities were in Scotland?",
+          "question_id" : "1451",
+          "number" : "1451",
+          "type" : "percentage"
+        },
+        {
+          "text" : "Approximately what percentage of your low emission vehicles and infrastructure activities were in Wales?",
+          "question_id" : "1452",
+          "number" : "1452",
+          "type" : "percentage"
+        }
+      ]
+    },
+    {
+      "title" : "section 17",
+      "options" : [
+        {
+          "text" : "What was your turnover from activities carried out within the carbon capture and storage sector?",
+          "question_id" : "1532",
+          "number" : "1532",
+          "type" : "currency"
+        },
+        {
+          "text" : "What was your expenditure on imports in relation to the carbon capture and storage sector?",
+          "question_id" : "1536",
+          "number" : "1536",
+          "type" : "currency"
+        },
+        {
+          "text" : "What was your income from exports in relation to the carbon capture and storage sector?",
+          "question_id" : "1538",
+          "number" : "1538",
+          "type" : "currency"
+        },
+        {
+          "text" : "What was the value of acquisitions from disposals of capital assets, relating to the carbon capture and storage sector?",
+          "question_id" : "1542",
+          "number" : "1542",
+          "type" : "currency"
+        },
+        {
+          "text" : "What was the proceeds from disposals of carbon capture and storage capital assets, relating to the carbon capture and storage sector?",
+          "question_id" : "1544",
+          "number" : "1544",
+          "type" : "currency"
+        },
+        {
+          "text" : "What was your expenditure on Research and Development (In-house R&D expenditure) in relation to the carbon capture and storage sector?",
+          "question_id" : "1547",
+          "number" : "1547",
+          "type" : "currency"
+        },
+        {
+          "text" : "What was your expenditure on Research and Development (Purchased R&D expenditure) in relation to the carbon capture and storage sector?",
+          "question_id" : "1548",
+          "number" : "1548",
+          "type" : "currency"
+        },
+        {
+          "text" : "How many full-time equivalent employees (FTEs) were working in the carbon capture and storage sector?",
+          "question_id" : "1540",
+          "number" : "1540",
+          "type" : "number"
+        },
+        {
+          "text" : "You stated that the number of full-time equivalents (FTEs) who worked within the low emission vehicles and infrastructure sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
+          "question_id" : "1561",
+          "number" : "1561",
+          "type" : "confirmation questions"
+        },
+        {
+          "text" : "Approximately what percentage of your carbon capture and storage activities were in England?",
+          "question_id" : "1550",
+          "number" : "1550",
+          "type" : "percentage"
+        },
+        {
+          "text" : "Approximately what percentage of your carbon capture and storage activities were in Northern Ireland?",
+          "question_id" : "1553",
+          "number" : "1553",
+          "type" : "percentage"
+        },
+        {
+          "text" : "Approximately what percentage of your carbon capture and storage activities were in Scotland?",
+          "question_id" : "1551",
+          "number" : "1551",
+          "type" : "percentage"
+        },
+        {
+          "text" : "Approximately what percentage of your carbon capture and storage activities were in Wales?",
+          "question_id" : "1552",
+          "number" : "1552",
+          "type" : "percentage"
+        }
+      ]
+    },
+    {
+      "title" : "section 18",
+      "options" : [
+        {
+          "text" : "What was your turnover from activities carried out within the nuclear power sector?",
+          "question_id" : "1632",
+          "number" : "1632",
+          "type" : "currency"
+        },
+        {
+          "text" : "What was your expenditure on imports in relation to the nuclear power sector?",
+          "question_id" : "1636",
+          "number" : "1636",
+          "type" : "currency"
+        },
+        {
+          "text" : "What was your income from exports in relation to the nuclear power sector?",
+          "question_id" : "1638",
+          "number" : "1638",
+          "type" : "currency"
+        },
+        {
+          "text" : "What was the value of acquisitions and proceeds from disposals of capital assets, relating to the nuclear power sector?",
+          "question_id" : "1642",
+          "number" : "1642",
+          "type" : "currency"
+        },
+        {
+          "text" : "What was the proceeds from disposals of nuclear power capital assets, relating to the nuclear power sector?",
+          "question_id" : "1644",
+          "number" : "1644",
+          "type" : "currency"
+        },
+        {
+          "text" : "What was your expenditure on Research and Development (In-house R&D expenditure) in relation to the nuclear power sector?",
+          "question_id" : "1647",
+          "number" : "1647",
+          "type" : "currency"
+        },
+        {
+          "text" : "What was your expenditure on Research and Development (Purchased R&D expenditure) in relation to the nuclear power sector?",
+          "question_id" : "1648",
+          "number" : "1648",
+          "type" : "currency"
+        },
+        {
+          "text" : "How many full-time equivalent employees (FTEs) were working in the nuclear power sector?",
+          "question_id" : "1640",
+          "number" : "1640",
+          "type" : "number"
+        },
+        {
+          "text" : "You stated that the number of full-time equivalents (FTEs) who worked within the nuclear power sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
+          "question_id" : "1661",
+          "number" : "1661",
+          "type" : "confirmation questions"
+        },
+        {
+          "text" : "Approximately what percentage of your nuclear power activities were in England?",
+          "question_id" : "1650",
+          "number" : "1650",
+          "type" : "percentage"
+        },
+        {
+          "text" : "Approximately what percentage of your nuclear power activities were in Northern Ireland?",
+          "question_id" : "1653",
+          "number" : "1653",
+          "type" : "percentage"
+        },
+        {
+          "text" : "Approximately what percentage of your nuclear power activities were in Scotland?",
+          "question_id" : "1651",
+          "number" : "1651",
+          "type" : "percentage"
+        },
+        {
+          "text" : "Approximately what percentage of your nuclear power activities were in Wales?",
+          "question_id" : "1652",
+          "number" : "1652",
+          "type" : "percentage"
+        }
+      ]
+    },
+    {
+      "title" : "section 19",
+      "options" : [
+        {
+          "text" : "What was your turnover from activities carried out within the fuel cells and energy storage systems sector?",
+          "question_id" : "1732",
+          "number" : "1732",
+          "type" : "currency"
+        },
+        {
+          "text" : "What was your expenditure on imports in relation to the fuel cells and energy storage systems sector?",
+          "question_id" : "1736",
+          "number" : "1736",
+          "type" : "currency"
+        },
+        {
+          "text" : "What was your income from exports in relation to the fuel cells and energy storage systems sector?",
+          "question_id" : "1738",
+          "number" : "1738",
+          "type" : "currency"
+        },
+        {
+          "text" : "What was the value of acquisitions from disposals of capital assets, relating to the fuel cells and energy storage systems sector?",
+          "question_id" : "1742",
+          "number" : "1742",
+          "type" : "currency"
+        },
+        {
+          "text" : "What was the proceeds from disposals of nuclear power capital assets, relating to the fuel cells and energy storage systems sector?",
+          "question_id" : "1744",
+          "number" : "1744",
+          "type" : "currency"
+        },
+        {
+          "text" : "What was your expenditure on Research and Development (In-house R&D expenditure) in relation to the fuel cells and energy storage systems sector?",
+          "question_id" : "1747",
+          "number" : "1747",
+          "type" : "currency"
+        },
+        {
+          "text" : "What was your expenditure on Research and Development (Purchased R&D expenditure) in relation to the fuel cells and energy storage systems sector?",
+          "question_id" : "1748",
+          "number" : "1748",
+          "type" : "currency"
+        },
+        {
+          "text" : "How many full-time equivalent employees (FTEs) were working in the fuel cells and energy storage systems sector?",
+          "question_id" : "1740",
+          "number" : "1740",
+          "type" : "number"
+        },
+        {
+          "text" : "You stated that the number of full-time equivalents (FTEs) who worked within the fuel cells and energy storage systems sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
+          "question_id" : "1761",
+          "number" : "1761",
+          "type" : "confirmation questions"
+        },
+        {
+          "text" : "Approximately what percentage of your fuel cells and energy storage systems activities were in England?",
+          "question_id" : "1750",
+          "number" : "1750",
+          "type" : "percentage"
+        },
+        {
+          "text" : "Approximately what percentage of your fuel cells and energy storage systems activities were in Northern Ireland?",
+          "question_id" : "1753",
+          "number" : "1753",
+          "type" : "percentage"
+        },
+        {
+          "text" : "Approximately what percentage of your fuel cells and energy storage systems activities were in Scotland?",
+          "question_id" : "1751",
+          "number" : "1751",
+          "type" : "percentage"
+        },
+        {
+          "text" : "Approximately what percentage of your fuel cells and energy storage systems activities were in Wales?",
+          "question_id" : "1752",
+          "number" : "1752",
+          "type" : "percentage"
+        }
+      ]
+    },
+    {
+      "title": "section 20",
+      "options": [
+        {
+          "text" : "Did [Ru Name] operate in any other low carbon or renewable energy sectors that have not been listed?",
+          "question_id" : "0063",
+          "number" : "0063",
+          "type": "radio",
+            "options": [
+              "Yes",
+              "No",
+              "Not sure"
+            ]
+        }
+      ]
+    },
+    {
+      "title": "section 21",
+      "options": [
+        {
+          "text" : "Please provide any further details that will help us understand your figures and to tell an industry story",
+          "question_id" : "0060",
+          "number" : "0060",
+          "type": "contains"
+        }
+      ]
+    }
+  ]
+}

@@ -1271,7 +1271,7 @@
           "type" : "currency"
         },
         {
-          "text" : "What was the value of acquisitions and proceeds from disposals of capital assets, relating to the energy monitoring, saving and control systems sector?",
+          "text" : "Value of acquisitions for energy monitoring, saving and control systems capital assets",
           "question_id" : "1242",
           "number" : "1242",
           "type" : "currency"
@@ -1437,7 +1437,7 @@
           "type" : "currency"
         },
         {
-          "text" : "What was the value of acquisitions and proceeds from disposals of capital assets, relating to the low emission vehicles and infrastructure sector?",
+          "text" : "What was the value of acquisitions for low emission vehicles and infrastructure capital assets, relating to the low emission vehicles and infrastructure sector?",
           "question_id" : "1442",
           "number" : "1442",
           "type" : "currency"
@@ -1520,7 +1520,7 @@
           "type" : "currency"
         },
         {
-          "text" : "What was the value of acquisitions and proceeds from disposals of capital assets, relating to the carbon capture and storage sector?",
+          "text" : "What was the value of acquisitions from disposals of capital assets, relating to the carbon capture and storage sector?",
           "question_id" : "1542",
           "number" : "1542",
           "type" : "currency"
@@ -1686,7 +1686,7 @@
           "type" : "currency"
         },
         {
-          "text" : "What was the value of acquisitions and proceeds from disposals of capital assets, relating to the fuel cells and energy storage systems sector?",
+          "text" : "What was the value of acquisitions from disposals of capital assets, relating to the fuel cells and energy storage systems sector?",
           "question_id" : "1742",
           "number" : "1742",
           "type" : "currency"
