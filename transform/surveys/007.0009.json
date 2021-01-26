@@ -14,6 +14,560 @@
           "options" : [
             "Yes, I can report for these dates"
           ]
+        },
+
+
+
+
+        {
+      "title": "Section 8",
+      "questions": [
+        {
+            "text" : "What was your turnover from activities carried out within the bioenergy sector?",
+            "question_id" : "0632",
+            "number" : "0632",
+            "type": "currency"
+        },
+        {
+            "text" : "Of the [Turnover excluding VAT, from bioenergy] turnover, how much related to income from feed-in tariffs?",
+            "question_id" : "0634",
+            "number" : "0634",
+            "type": "currency"
+        },
+        {
+            "text" : "What was your expenditure on imports in relation to the bioenergy sector?",
+            "question_id" : "0636",
+            "number" : "0636",
+            "type": "currency"
+        },
+        {
+            "text" : "What was your income from exports in relation to the bioenergy sector?",
+            "question_id" : "0638",
+            "number" : "0638",
+            "type": "currency"
+        },
+        {
+            "text" : "What was the value of acquisitions and proceeds from disposals of capital assets, relating to the bioenergy sector?",
+            "question_id" : "0642",
+            "number" : "0642",
+            "type": "currency"
+        },
+        {
+            "text" : "Proceeds from disposals of bioenergy capital assets",
+            "question_id" : "0644",
+            "number" : "0644",
+            "type": "currency"
+        },
+        {
+            "text" : "What was your expenditure on Research and Development (R&amp;D) in relation to the bioenergy sector?",
+            "question_id" : "0647",
+            "number" : "0647",
+            "type": "currency"
+        },
+        {
+            "text" : "Purchased R&D expenditure",
+            "question_id" : "0648",
+            "number" : "0648",
+            "type": "currency"
+        },
+        {
+            "text" : "How many full-time equivalent employees (FTEs) were working in the bioenergy sector?",
+            "question_id" : "0640",
+            "number" : "0640",
+            "type": "number"
+        },
+        {
+            "text" : "You stated that the number of full-time equivalents (FTEs) who worked within the bioenergy sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
+            "question_id" : "0661",
+            "number" : "0661",
+            "type": "confirmation question"
+        },
+        {
+            "text" : "Approximately what percentage of your bioenergy activities were in the England??",
+            "question_id" : "0650",
+            "number" : "0650",
+            "type": "percentage"
+        },
+        {
+            "text" : "Approximately what percentage of your bioenergy activities were in the Northern Ireland??",
+            "question_id" : "0653",
+            "number" : "0653",
+            "type": "percentage"
+        },
+        {
+            "text" : "Approximately what percentage of your bioenergy activities were in the Scotland??",
+            "question_id" : "0651",
+            "number" : "0651",
+            "type": "percentage"
+        },
+        {
+            "text" : "Approximately what percentage of your bioenergy activities were in the Wales??",
+            "question_id" : "0652",
+            "number" : "0652",
+            "type": "percentage"
+        }
+      ]
+        },
+
+
+
+        {
+      "title": "Section 9",
+      "questions": [
+        {
+            "text" : "Did any of the activity within the alternative fuels sector relate to hydrogen?",
+            "question_id" : "0762",
+            "number" : "0762",
+            "type": "radio",
+            "options": [
+              "Yes",
+              "No"
+            ]
+        },
+        {
+            "text" : "What was your turnover from activities carried out within the alternative fuels sector?",
+            "question_id" : "0732",
+            "number" : "0732",
+            "type": "currency"
+        },
+        {
+            "text" : "Of the [Turnover excluding VAT, from alternative fuels] turnover, how much related to income from feed-in tariffs?",
+            "question_id" : "0734",
+            "number" : "0734",
+            "type": "currency"
+        },
+        {
+            "text" : "What was your expenditure on imports in relation to the alternative fuels sector?",
+            "question_id" : "0736",
+            "number" : "0736",
+            "type": "currency"
+        },
+        {
+            "text" : "What was your income from exports in relation to the alternative fuels sector?",
+            "question_id" : "0738",
+            "number" : "0738",
+            "type": "currency"
+        },
+        {
+            "text" : "What was the value of acquisitions and proceeds from disposals of capital assets, relating to the alternative fuels sector?",
+            "question_id" : "0742",
+            "number" : "0742",
+            "type": "currency"
+        },
+        {
+            "text" : "Proceeds from disposals of alternative fuels capital assets",
+            "question_id" : "0744",
+            "number" : "0744",
+            "type": "currency"
+        },
+        {
+            "text" : "What was your expenditure on Research and Development (R&amp;D) in relation to the alternative fuels sector?",
+            "question_id" : "0747",
+            "number" : "0747",
+            "type": "currency"
+        },
+        {
+            "text" : "Purchased R&D expenditure",
+            "question_id" : "0748",
+            "number" : "0748",
+            "type": "currency"
+        },
+        {
+            "text" : "How many full-time equivalent employees (FTEs) were working in the alternative fuels sector?",
+            "question_id" : "0740",
+            "number" : "0740",
+            "type": "number"
+        },
+        {
+            "text" : "You stated that the number of full-time equivalents (FTEs) who worked within the alternative fuels sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
+            "question_id" : "0761",
+            "number" : "0761",
+            "type": "confirmation question"
+        },
+        {
+            "text" : "Approximately what percentage of your alternative fuels activities were in the England?",
+            "question_id" : "0750",
+            "number" : "0750",
+            "type": "percentage"
+        },
+        {
+            "text" : "Approximately what percentage of your alternative fuels activities were in the Northern Ireland?",
+            "question_id" : "0753",
+            "number" : "0753",
+            "type": "percentage"
+        },
+        {
+            "text" : "Approximately what percentage of your alternative fuels activities were in the Scotland?",
+            "question_id" : "0751",
+            "number" : "0751",
+            "type": "percentage"
+        },
+        {
+            "text" : "Approximately what percentage of your alternative fuels activities were in the Wales?",
+            "question_id" : "0752",
+            "number" : "0752",
+            "type": "percentage"
+        }
+      ]
+        },
+
+
+
+        {
+      "title": "Section 10",
+      "questions": [
+        {
+            "text" : "What was your turnover from activities carried out within the renewable heat sector?",
+            "question_id" : "0832",
+            "number" : "0832",
+            "type": "currency"
+        },
+        {
+            "text" : "Of the [Turnover excluding VAT, from renewable heat] turnover, how much related to income from feed-in tariffs?",
+            "question_id" : "0834",
+            "number" : "0834",
+            "type": "currency"
+        },
+        {
+            "text" : "What was your expenditure on imports in relation to the renewable heat sector?",
+            "question_id" : "0836",
+            "number" : "0836",
+            "type": "currency"
+        },
+        {
+            "text" : "What was your income from exports in relation to the renewable heat sector?",
+            "question_id" : "0838",
+            "number" : "0838",
+            "type": "currency"
+        },
+        {
+            "text" : "What was the value of acquisitions and proceeds from disposals of capital assets, relating to the renewable heat sector?",
+            "question_id" : "0842",
+            "number" : "0842",
+            "type": "currency"
+        },
+        {
+            "text" : "Proceeds from disposals of renewable heat capital assets",
+            "question_id" : "0844",
+            "number" : "0844",
+            "type": "currency"
+        },
+        {
+            "text" : "What was your expenditure on Research and Development (R&amp;D) in relation to the renewable heat sector?",
+            "question_id" : "0847",
+            "number" : "0847",
+            "type": "currency"
+        },
+        {
+            "text" : "Purchased R&D expenditure",
+            "question_id" : "0848",
+            "number" : "0848",
+            "type": "currency"
+        },
+        {
+            "text" : "How many full-time equivalent employees (FTEs) were working in the renewable heat sector?",
+            "question_id" : "0840",
+            "number" : "0840",
+            "type": "number"
+        },
+        {
+            "text" : "You stated that the number of full-time equivalents (FTEs) who worked within the renewable heat sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
+            "question_id" : "0861",
+            "number" : "0861",
+            "type": "confirmation question"
+        },
+         {
+            "text" : "Approximately what percentage of your renewable heat activities were in the England?",
+            "question_id" : "0850",
+            "number" : "0850",
+            "type": "percentage"
+        },
+        {
+            "text" : "Approximately what percentage of your renewable heat activities were in the Northern Ireland?",
+            "question_id" : "0853",
+            "number" : "0853",
+            "type": "percentage"
+        },
+        {
+            "text" : "Approximately what percentage of your renewable heat activities were in the Scotland?",
+            "question_id" : "0851",
+            "number" : "0851",
+            "type": "percentage"
+        },
+        {
+            "text" : "Approximately what percentage of your renewable heat activities were in the Wales?",
+            "question_id" : "0852",
+            "number" : "0852",
+            "type": "percentage"
+        }
+      ]
+        },
+
+
+
+        {
+      "title": "Section 11",
+      "questions": [
+        {
+            "text" : "What was your turnover from activities carried out within the renewable combined heat and power sector?",
+            "question_id" : "0932",
+            "number" : "0932",
+            "type": "currency"
+        },
+        {
+            "text" : "Of the [Turnover excluding VAT, from renewable combined heat and power] turnover, how much related to income from feed-in tariffs?",
+            "question_id" : "0934",
+            "number" : "0934",
+            "type": "currency"
+        },
+        {
+            "text" : "What was your expenditure on imports in relation to the renewable combined heat and power sector",
+            "question_id" : "0936",
+            "number" : "0936",
+            "type": "currency"
+        },
+        {
+            "text" : "What was your income from exports in relation to the renewable combined heat and power sector?",
+            "question_id" : "0938",
+            "number" : "0938",
+            "type": "currency"
+        },
+        {
+            "text" : "What was the value of acquisitions and proceeds from disposals of capital assets, relating to the renewable combined heat and power sector?",
+            "question_id" : "0942",
+            "number" : "0942",
+            "type": "currency"
+        },
+        {
+            "text" : "Proceeds from disposals of renewable combined heat and power capital asset",
+            "question_id" : "0944",
+            "number" : "0944",
+            "type": "currency"
+        },
+         {
+            "text" : "What was your expenditure on Research and Development (R&amp;D) in relation to the renewable combined heat and power sector?",
+            "question_id" : "0947",
+            "number" : "0947",
+            "type": "currency"
+        },
+        {
+            "text" : "Purchased R&D expenditure",
+            "question_id" : "0948",
+            "number" : "0948",
+            "type": "currency"
+        },
+        {
+            "text" : "How many full-time equivalent employees (FTEs) were working in the renewable combined heat and power sector?",
+            "question_id" : "0940",
+            "number" : "0940",
+            "type": "number"
+        },
+        {
+            "text" : "You stated that the number of full-time equivalents (FTEs) who worked within the renewable combined heat and power sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
+            "question_id" : "0961",
+            "number" : "0961",
+            "type": "confirmation question"
+        },
+        {
+            "text" : "Approximately what percentage of your renewable combined heat and power activities were in the England?",
+            "question_id" : "0950",
+            "number" : "0950",
+            "type": "percentage"
+        },
+        {
+            "text" : "Approximately what percentage of your renewable combined heat and power activities were in the Northern Ireland?",
+            "question_id" : "0953",
+            "number" : "0953",
+            "type": "percentage"
+        },
+        {
+            "text" : "Approximately what percentage of your renewable combined heat and power activities were in the Scotland?",
+            "question_id" : "0951",
+            "number" : "0951",
+            "type": "percentage"
+        },
+        {
+            "text" : "Approximately what percentage of your renewable combined heat and power activities were in the Wales?",
+            "question_id" : "0952",
+            "number" : "0952",
+            "type": "percentage"
+        }
+      ]
+        },
+
+
+
+
+        {
+      "title": "Section 12",
+      "questions": [
+        {
+           "text" : "What was your turnover from activities carried out within the energy efficient lighting sector?",
+            "question_id" : "1032",
+            "number" : "1032",
+            "type": "currency"
+        },
+        {
+           "text" : "What was your expenditure on imports in relation to the energy efficient lighting sector?",
+            "question_id" : "1036",
+            "number" : "1036",
+            "type": "currency"
+        },
+        {
+           "text" : "What was your income from exports in relation to the energy efficient lighting sector?",
+            "question_id" : "1038",
+            "number" : "1038",
+            "type": "currency"
+        },
+        {
+           "text" : "What was the value of acquisitions and proceeds from disposals of capital assets, relating to the energy efficient lighting sector?",
+            "question_id" : "1042",
+            "number" : "1042",
+            "type": "currency"
+        },
+        {
+           "text" : "Proceeds from disposals of energy efficient lighting capital assets",
+            "question_id" : "1044",
+            "number" : "1044",
+            "type": "currency"
+        },
+        {
+           "text" : "What was your expenditure on Research and Development (R&amp;D) in relation to the energy efficient lighting sector?",
+            "question_id" : "1047",
+            "number" : "1047",
+            "type": "currency"
+        },
+        {
+           "text" : "Purchased R&D expenditure",
+            "question_id" : "1048",
+            "number" : "1048",
+            "type": "currency"
+        },
+        {
+           "text" : "How many full-time equivalent employees (FTEs) were working in the energy efficient lighting sector?",
+            "question_id" : "1040",
+            "number" : "1040",
+            "type": "number"
+        },
+         {
+           "text" : "You stated that the number of full-time equivalents (FTEs) who worked within the energy efficient lighting sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
+            "question_id" : "1061",
+            "number" : "1061",
+            "type": "confirmation question"
+        },
+        {
+           "text" : "Approximately what percentage of your energy efficient lighting activities were in the England?",
+            "question_id" : "1050",
+            "number" : "1050",
+            "type": "percentage"
+        },
+        {
+           "text" : "Approximately what percentage of your energy efficient lighting activities were in the Northern Ireland?",
+            "question_id" : "1053",
+            "number" : "1053",
+            "type": "percentage"
+        },
+        {
+           "text" : "Approximately what percentage of your energy efficient lighting activities were in the Scotland?",
+            "question_id" : "1051",
+            "number" : "1051",
+            "type": "percentage"
+        },
+        {
+           "text" : "Approximately what percentage of your energy efficient lighting activities were in the Wales?",
+            "question_id" : "1052",
+            "number" : "1052",
+            "type": "percentage"
+        }
+      ]
+        },
+
+
+
+        {
+      "title": "Section 13",
+      "questions": [
+        {
+           "text" : "What was your turnover from activities carried out within the energy efficient products sector?",
+            "question_id" : "1132",
+            "number" : "1132",
+            "type": "currency"
+        },
+        {
+           "text" : "What was your expenditure on imports in relation to the energy efficient products sector?",
+            "question_id" : "1136",
+            "number" : "1136",
+            "type": "currency"
+        },
+        {
+           "text" : "What was your income from exports in relation to the energy efficient products sector?",
+            "question_id" : "1138",
+            "number" : "1138",
+            "type": "currency"
+        },
+        {
+           "text" : "What was the value of acquisitions and proceeds from disposals of capital assets, relating to the energy efficient products sector?",
+            "question_id" : "1142",
+            "number" : "1142",
+            "type": "currency"
+        },
+        {
+           "text" : "Proceeds from disposals of energy efficient products capital assets",
+            "question_id" : "1144",
+            "number" : "1144",
+            "type": "currency"
+        },
+        {
+           "text" : "What was your expenditure on Research and Development (R&amp;D) in relation to the energy efficient products sector?",
+            "question_id" : "1147",
+            "number" : "1147",
+            "type": "currency"
+        },
+        {
+           "text" : "Purchased R&D expenditure",
+            "question_id" : "1148",
+            "number" : "1148",
+            "type": "currency"
+        },
+        {
+           "text" : "How many full-time equivalent employees (FTEs) were working in the energy efficient products sector?",
+            "question_id" : "1140",
+            "number" : "1140",
+            "type": "number"
+        },
+         {
+           "text" : "You stated that the number of full-time equivalents (FTEs) who worked within the energy efficient products sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
+            "question_id" : "1161",
+            "number" : "1161",
+            "type": "confirmation question"
+        },
+        {
+           "text" : "Approximately what percentage of your energy efficient products activities were in the England?",
+            "question_id" : "1150",
+            "number" : "1150",
+            "type": "percentage"
+        },
+        {
+           "text" : "Approximately what percentage of your energy efficient products activities were in the Northern Ireland?",
+            "question_id" : "1153",
+            "number" : "1153",
+            "type": "percentage"
+        },
+        {
+           "text" : "Approximately what percentage of your energy efficient products activities were in the Scotland?",
+            "question_id" : "1151",
+            "number" : "1151",
+            "type": "percentage"
+        },
+        {
+           "text" : "Approximately what percentage of your energy efficient products activities were in the Wales?",
+            "question_id" : "1152",
+            "number" : "1152",
+            "type": "percentage"
+        }
+      ]
+
+
         }
       ]
     }
