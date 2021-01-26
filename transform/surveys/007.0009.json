@@ -1,0 +1,21 @@
+{
+  "title" : "Low Carbon and Renewable Energy Economy Survey",
+  "survey_id" : "007",
+  "form_type": "0009",
+  "question_groups" : [
+    {
+      "title" : "Section 1",
+      "questions" :[
+        {
+          "text" : "Are you able to report figures for the period [Start Date] to [End Date]?",
+          "question_id" : "0010",
+          "number" : "0010",
+          "type" : "radio",
+          "options" : [
+            "Yes, I can report for these dates"
+          ]
+        }
+      ]
+    }
+  ]
+}
