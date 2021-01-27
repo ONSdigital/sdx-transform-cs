@@ -3,7 +3,721 @@
   "survey_id": "007",
   "form_type": "0010",
   "question_groups": [
-      {
+    {
+      "title": "Section 1",
+      "questions":[
+        {
+          "text": "Are you able to report figures for the period [Start Date] to [End Date]?",
+          "question_id": "0010",
+          "number" : "0010",
+          "type": "radio",
+          "options": [
+            "Yes, I can report for these dates",
+            "No, I need to report for a different period"
+          ]
+        },
+
+        {
+          "title": "What dates are you reporting for?",
+          "text": "From",
+          "question_id": "0011",
+          "number": "0011",
+          "type": "date"
+        },
+        {
+          "title": "What dates are you reporting for?",
+          "text": "To",
+          "question_id": "0012",
+          "number": "0012",
+          "type": "date"
+        }
+
+      ]
+    },
+    {
+      "title": "Section 2",
+      "questions": [
+        {
+          "text": "Which of the following sectors has [RU Name] operated in?",
+          "question_id": "0201",
+          "number": "0201",
+          "type": "checkbox",
+          "options": [
+            "Offshore wind"
+          ]
+        },
+                {
+          "text": "Which of the following sectors has [RU Name] operated in?",
+          "question_id": "0202",
+          "number": "0202",
+          "type": "checkbox",
+          "options": [
+            "Onshore wind"
+          ]
+        },
+                {
+          "text": "Which of the following sectors has [RU Name] operated in?",
+          "question_id": "0203",
+          "number": "0203",
+          "type": "checkbox",
+          "options": [
+            "Solar"
+          ]
+        },
+                {
+          "text": "Which of the following sectors has [RU Name] operated in?",
+          "question_id": "0204",
+          "number": "0204",
+          "type": "checkbox",
+          "options": [
+            "Hydropower"
+          ]
+        },
+                {
+          "text": "Which of the following sectors has [RU Name] operated in?",
+          "question_id": "0205",
+          "number": "0205",
+          "type": "checkbox",
+          "options": [
+            "Other renewable electricity"
+          ]
+        },
+                {
+          "text": "Which of the following sectors has [RU Name] operated in?",
+          "question_id": "0206",
+          "number": "0206",
+          "type": "checkbox",
+          "options": [
+            "Bioenergy"
+          ]
+        },
+                {
+          "text": "Which of the following sectors has [RU Name] operated in?",
+          "question_id": "0207",
+          "number": "0207",
+          "type": "checkbox",
+          "options": [
+            "Alternative fuels"
+          ]
+        },
+                {
+          "text": "Which of the following sectors has [RU Name] operated in?",
+          "question_id": "0208",
+          "number": "0208",
+          "type": "checkbox",
+          "options": [
+            "Renewable heat"
+          ]
+        },
+                {
+          "text": "Which of the following sectors has [RU Name] operated in?",
+          "question_id": "0209",
+          "number": "0209",
+          "type": "checkbox",
+          "options": [
+            "Renewable combined heat and power"
+          ]
+        },
+                {
+          "text": "Which of the following sectors has [RU Name] operated in?",
+          "question_id": "0210",
+          "number": "0210",
+          "type": "checkbox",
+          "options": [
+            "Energy efficient lighting"
+          ]
+        },
+                {
+          "text": "Which of the following sectors has [RU Name] operated in?",
+          "question_id": "0211",
+          "number": "0211",
+          "type": "checkbox",
+          "options": [
+            "Energy efficient products"
+          ]
+        },
+                {
+          "text": "Which of the following sectors has [RU Name] operated in?",
+          "question_id": "0212",
+          "number": "0212",
+          "type": "checkbox",
+          "options": [
+            "Energy monitoring, saving or control systems"
+          ]
+        },
+                {
+          "text": "Which of the following sectors has [RU Name] operated in?",
+          "question_id": "0213",
+          "number": "0213",
+          "type": "checkbox",
+          "options": [
+            "Low carbon consultancy, advisory and offsetting services"
+          ]
+        },
+                {
+          "text": "Which of the following sectors has [RU Name] operated in?",
+          "question_id": "0214",
+          "number": "0214",
+          "type": "checkbox",
+          "options": [
+            "Low emission vehicles and infrastructure"
+          ]
+        },
+                {
+          "text": "Which of the following sectors has [RU Name] operated in?",
+          "question_id": "0215",
+          "number": "0215",
+          "type": "checkbox",
+          "options": [
+            "Carbon capture and storage"
+          ]
+        },
+                {
+          "text": "Which of the following sectors has [RU Name] operated in?",
+          "question_id": "0216",
+          "number": "0216",
+          "type": "checkbox",
+          "options": [
+            "Nuclear power"
+          ]
+        },
+                {
+          "text": "Which of the following sectors has [RU Name] operated in?",
+          "question_id": "0217",
+          "number": "0217",
+          "type": "checkbox",
+          "options": [
+            "Fuel cells and energy storage systems"
+          ]
+        },
+                {
+          "text": "Which of the following sectors has [RU Name] operated in?",
+          "question_id": "0013",
+          "number": "0013",
+          "type": "checkbox",
+          "options": [
+            "Have not operated in any of these sectors"
+          ]
+        },
+        {
+          "title": "Will [RU Name] have activity in any low carbon and renewable sectors in the future?",
+          "question_id": "0014",
+          "number": "0014",
+          "type": "radio",
+          "options": [
+            "Yes",
+            "No",
+            "Not sure"
+          ]
+        }
+      ]
+    },
+    {
+      "title": "Section 3",
+      "questions": [
+        {
+          "title": "What was your turnover from activities carried out within the offshore wind sector?",
+          "text": "Turnover from offshore wind",
+          "question_id": "0132",
+          "number": "0132",
+          "type": "currency"
+        },
+        {
+          "title": "How much of the turnover (excluding VAT) is related to the income from feed-in tariffs?",
+          "text": "Turnover from feed-in tariffs within offshore wind",
+          "question_id": "0134",
+          "number": "0134",
+          "type": "currency"
+        },
+        {
+          "title": "What was your expenditure on imports in relation to the offshore wind sector?",
+          "text": "Expenditure on imports in the offshore wind sector",
+          "question_id": "0136",
+          "number": "0136",
+          "type": "currency"
+        },
+        {
+          "title": "What was your expenditure on exports in relation to the offshore wind sector?",
+          "text": "Income from exports in the offshore wind sector",
+          "question_id": "0138",
+          "number": "0138",
+          "type": "currency"
+        },
+        {
+          "title": "What was the value of acquisitions and proceeds from disposals of capital assets, relating to the offshore wind sector?",
+          "text": "Value of acquisitions for offshore wind capital assets",
+          "question_id": "0142",
+          "number": "0142",
+          "type": "currency"
+        },
+        {
+          "title": "What was the value of acquisitions and proceeds from disposals of capital assets, relating to the offshore wind sector?",
+          "text": "Proceeds from disposals of offshore wind capital assets",
+          "question_id": "0144",
+          "number": "0144",
+          "type": "currency"
+        },
+        {
+          "title": "What was your expenditure on Research and Development (R&D) in relation to the offshore wind sector?",
+          "text": "In-house R&D expenditure",
+          "question_id": "0147",
+          "number": "0147",
+          "type": "currency"
+        },
+        {
+          "title": "What was your expenditure on Research and Development (R&D) in relation to the offshore wind sector?",
+          "text": "Purchased R&D expenditure",
+          "question_id": "0148",
+          "number": "0148",
+          "type": "currency"
+        },
+        {
+          "title": "How many full-time equivalent employees (FTEs) were working in the offshore wind sector?",
+          "question_id": "0140",
+          "number": "0140",
+          "type": "number"
+        },
+        {
+          "title": "You stated that the number of full-time equivalents (FTEs) who worked within the offshore wind sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
+          "question_id": "0161",
+          "number": "0161",
+          "type": "confirmation"
+        },
+        {
+          "title": "Approximately what percentage of your offshore wind activities were in the following UK countries?",
+          "text": "England",
+          "question_id": "0150",
+          "number": "0150",
+          "type": "percentage"
+        },
+        {
+          "title": "Approximately what percentage of your offshore wind activities were in the following UK countries?",
+          "text": "Scotland",
+          "question_id": "0151",
+          "number": "0151",
+          "type": "percentage"
+        },
+        {
+          "title": "Approximately what percentage of your offshore wind activities were in the following UK countries?",
+          "text": "Wales",
+          "question_id": "0152",
+          "number": "0152",
+          "type": "percentage"
+        },
+        {
+          "title": "Approximately what percentage of your offshore wind activities were in the following UK countries?",
+          "text": "Northern Ireland",
+          "question_id": "0153",
+          "number": "0153",
+          "type": "percentage"
+        }
+      ]
+    },
+    {
+      "title": "Section 4",
+      "questions": [
+        {
+          "title": "What was your turnover from activities carried out within the onshore wind sector?",
+          "text": "Turnover from onshore wind",
+          "question_id": "0232",
+          "number": "0232",
+          "type": "currency"
+        },
+        {
+          "title": "How much of the turnover (excluding VAT) is related to the income from feed-in tariffs?",
+          "text": "Turnover from feed-in tariffs within onshore wind",
+          "question_id": "0234",
+          "number": "0234",
+          "type": "currency"
+        },
+        {
+          "title": "What was your expenditure on imports in relation to the onshore wind sector?",
+          "text": "Expenditure on imports in the onshore wind sector",
+          "question_id": "0236",
+          "number": "0236",
+          "type": "currency"
+        },
+        {
+          "title": "What was your expenditure on exports in relation to the onshore wind sector?",
+          "text": "Income from exports in the onshore wind sector",
+          "question_id": "0238",
+          "number": "0238",
+          "type": "currency"
+        },
+        {
+          "title": "What was the value of acquisitions and proceeds from disposals of capital assets, relating to the onshore wind sector?",
+          "text": "Value of acquisitions for onshore wind capital assets",
+          "question_id": "0242",
+          "number": "0242",
+          "type": "currency"
+        },
+        {
+          "title": "What was the value of acquisitions and proceeds from disposals of capital assets, relating to the onshore wind sector?",
+          "text": "Proceeds from disposals of onshore wind capital assets",
+          "question_id": "0244",
+          "number": "0244",
+          "type": "currency"
+        },
+        {
+          "title": "What was your expenditure on Research and Development (R&D) in relation to the onshore wind sector?",
+          "text": "In-house R&D expenditure",
+          "question_id": "0247",
+          "number": "0247",
+          "type": "currency"
+        },
+        {
+          "title": "What was your expenditure on Research and Development (R&D) in relation to the onshore wind sector?",
+          "text": "Purchased R&D expenditure",
+          "question_id": "0248",
+          "number": "0248",
+          "type": "currency"
+        },
+        {
+          "title": "How many full-time equivalent employees (FTEs) were working in the onshore wind sector?",
+          "question_id": "0240",
+          "number": "0240",
+          "type": "number"
+        },
+        {
+          "title": "You stated that the number of full-time equivalents (FTEs) who worked within the onshore wind sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
+          "question_id": "0261",
+          "number": "0261",
+          "type": "confirmation"
+        },
+        {
+          "title": "Approximately what percentage of your onshore wind activities were in the following UK countries?",
+          "text": "England",
+          "question_id": "0250",
+          "number": "0250",
+          "type": "percentage"
+        },
+        {
+          "title": "Approximately what percentage of your onshore wind activities were in the following UK countries?",
+          "text": "Scotland",
+          "question_id": "0251",
+          "number": "0251",
+          "type": "percentage"
+        },
+        {
+          "title": "Approximately what percentage of your onshore wind activities were in the following UK countries?",
+          "text": "Wales",
+          "question_id": "0252",
+          "number": "0252",
+          "type": "percentage"
+        },
+        {
+          "title": "Approximately what percentage of your onshore wind activities were in the following UK countries?",
+          "text": "Northern Ireland",
+          "question_id": "0253",
+          "number": "0253",
+          "type": "percentage"
+        }
+      ]
+    },
+    {
+      "title": "Section 5",
+      "questions": [
+        {
+          "title": "What was your turnover from activities carried out within the solar sector?",
+          "text": "Turnover from solar",
+          "question_id": "0332",
+          "number": "0332",
+          "type": "currency"
+        },
+        {
+          "title": "How much of the turnover (excluding VAT) is related to the income from feed-in tariffs?",
+          "text": "Turnover from feed-in tariffs within solar sector",
+          "question_id": "0334",
+          "number": "0334",
+          "type": "currency"
+        },
+        {
+          "title": "What was your expenditure on imports in relation to the solar sector?",
+          "text": "Expenditure on imports in the solar sector",
+          "question_id": "0336",
+          "number": "0336",
+          "type": "currency"
+        },
+        {
+          "title": "What was your expenditure on exports in relation to the solar sector?",
+          "text": "Income from exports in the solar sector",
+          "question_id": "0338",
+          "number": "0338",
+          "type": "currency"
+        },
+        {
+          "title": "What was the value of acquisitions and proceeds from disposals of capital assets, relating to the solar sector?",
+          "text": "Value of acquisitions for solar capital assets",
+          "question_id": "0342",
+          "number": "0342",
+          "type": "currency"
+        },
+        {
+          "title": "What was the value of acquisitions and proceeds from disposals of capital assets, relating to the solar sector?",
+          "text": "Proceeds from disposals of solar capital assets",
+          "question_id": "0344",
+          "number": "0344",
+          "type": "currency"
+        },
+        {
+          "title": "What was your expenditure on Research and Development (R&D) in relation to the solar sector?",
+          "text": "In-house R&D expenditure",
+          "question_id": "0347",
+          "number": "0347",
+          "type": "currency"
+        },
+        {
+          "title": "What was your expenditure on Research and Development (R&D) in relation to the solar sector?",
+          "text": "Purchased R&D expenditure",
+          "question_id": "0348",
+          "number": "0348",
+          "type": "currency"
+        },
+        {
+          "title": "How many full-time equivalent employees (FTEs) were working in the solar sector?",
+          "question_id": "0340",
+          "number": "0340",
+          "type": "number"
+        },
+        {
+          "title": "You stated that the number of full-time equivalents (FTEs) who worked within the solar sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
+          "question_id": "0361",
+          "number": "0361",
+          "type": "confirmation"
+        },
+        {
+          "title": "Approximately what percentage of your solar activities were in the following UK countries?",
+          "text": "England",
+          "question_id": "0350",
+          "number": "0350",
+          "type": "percentage"
+        },
+        {
+          "title": "Approximately what percentage of your solar activities were in the following UK countries?",
+          "text": "Scotland",
+          "question_id": "0351",
+          "number": "0351",
+          "type": "percentage"
+        },
+        {
+          "title": "Approximately what percentage of your solar activities were in the following UK countries?",
+          "text": "Wales",
+          "question_id": "0352",
+          "number": "0352",
+          "type": "percentage"
+        },
+        {
+          "title": "Approximately what percentage of your solar activities were in the following UK countries?",
+          "text": "Northern Ireland",
+          "question_id": "0353",
+          "number": "0353",
+          "type": "percentage"
+        }
+      ]
+    },
+    {
+      "title": "Section 6",
+      "questions": [
+        {
+          "title": "What was your turnover from activities carried out within the hydropower sector?",
+          "text": "Turnover from hydropower",
+          "question_id": "0432",
+          "number": "0432",
+          "type": "currency"
+        },
+        {
+          "title": "How much of the turnover (excluding VAT) is related to the income from feed-in tariffs?",
+          "text": "Turnover from feed-in tariffs within hydropower",
+          "question_id": "0434",
+          "number": "0434",
+          "type": "currency"
+        },
+        {
+          "title": "What was your expenditure on imports in relation to the hydropower sector?",
+          "text": "Expenditure on imports in the hydropower sector",
+          "question_id": "0436",
+          "number": "0436",
+          "type": "currency"
+        },
+        {
+          "title": "What was your expenditure on exports in relation to the hydropower sector?",
+          "text": "Income from exports in the hydropower sector",
+          "question_id": "0438",
+          "number": "0438",
+          "type": "currency"
+        },
+        {
+          "title": "What was the value of acquisitions and proceeds from disposals of capital assets, relating to the hydropower sector?",
+          "text": "Value of acquisitions for hydropower capital assets",
+          "question_id": "0442",
+          "number": "0442",
+          "type": "currency"
+        },
+        {
+          "title": "What was the value of acquisitions and proceeds from disposals of capital assets, relating to the hydropower sector?",
+          "text": "Proceeds from disposals of hydropower capital assets",
+          "question_id": "0444",
+          "number": "0444",
+          "type": "currency"
+        },
+        {
+          "title": "What was your expenditure on Research and Development (R&D) in relation to the hydropower sector?",
+          "text": "In-house R&D expenditure",
+          "question_id": "0447",
+          "number": "0447",
+          "type": "currency"
+        },
+        {
+          "title": "What was your expenditure on Research and Development (R&D) in relation to the hydropower sector?",
+          "text": "Purchased R&D expenditure",
+          "question_id": "0448",
+          "number": "0448",
+          "type": "currency"
+        },
+        {
+          "title": "How many full-time equivalent employees (FTEs) were working in the hydropower sector?",
+          "question_id": "0440",
+          "number": "0440",
+          "type": "number"
+        },
+        {
+          "title": "You stated that the number of full-time equivalents (FTEs) who worked within the hydropower sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
+          "question_id": "0461",
+          "number": "0461",
+          "type": "confirmation"
+        },
+        {
+          "title": "Approximately what percentage of your hydropower activities were in the following UK countries?",
+          "text": "England",
+          "question_id": "0450",
+          "number": "0450",
+          "type": "percentage"
+        },
+        {
+          "title": "Approximately what percentage of your hydropower activities were in the following UK countries?",
+          "text": "Scotland",
+          "question_id": "0451",
+          "number": "0451",
+          "type": "percentage"
+        },
+        {
+          "title": "Approximately what percentage of your hydropower activities were in the following UK countries?",
+          "text": "Wales",
+          "question_id": "0452",
+          "number": "0452",
+          "type": "percentage"
+        },
+        {
+          "title": "Approximately what percentage of your hydropower activities were in the following UK countries?",
+          "text": "Northern Ireland",
+          "question_id": "0453",
+          "number": "0453",
+          "type": "percentage"
+        }
+      ]
+    },
+    {
+      "title": "Section 7",
+      "questions": [
+        {
+          "title": "What was your turnover from activities carried out within the other renewable electricity sector?",
+          "text": "Turnover from other renewable electricity",
+          "question_id": "0532",
+          "number": "0532",
+          "type": "currency"
+        },
+        {
+          "title": "How much of the turnover (excluding VAT) is related to the income from feed-in tariffs?",
+          "text": "Turnover from feed-in tariffs within other renewable electricity",
+          "question_id": "0534",
+          "number": "0534",
+          "type": "currency"
+        },
+        {
+          "title": "What was your expenditure on imports in relation to the other renewable electricity sector?",
+          "text": "Expenditure on imports in the other renewable electricity sector",
+          "question_id": "0536",
+          "number": "0536",
+          "type": "currency"
+        },
+        {
+          "title": "What was your expenditure on exports in relation to the other renewable electricity sector?",
+          "text": "Income from exports in the other renewable electricity sector",
+          "question_id": "0538",
+          "number": "0538",
+          "type": "currency"
+        },
+        {
+          "title": "What was the value of acquisitions and proceeds from disposals of capital assets, relating to the other renewable electricity sector?",
+          "text": "Value of acquisitions for other renewable electricity capital assets",
+          "question_id": "0542",
+          "number": "0542",
+          "type": "currency"
+        },
+        {
+          "title": "What was the value of acquisitions and proceeds from disposals of capital assets, relating to the other renewable electricity sector?",
+          "text": "Proceeds from disposals of other renewable electricity capital assets",
+          "question_id": "0544",
+          "number": "0544",
+          "type": "currency"
+        },
+        {
+          "title": "What was your expenditure on Research and Development (R&D) in relation to the other renewable electricity sector?",
+          "text": "In-house R&D expenditure",
+          "question_id": "0547",
+          "number": "0547",
+          "type": "currency"
+        },
+        {
+          "title": "What was your expenditure on Research and Development (R&D) in relation to the other renewable electricity sector?",
+          "text": "Purchased R&D expenditure",
+          "question_id": "0548",
+          "number": "0548",
+          "type": "currency"
+        },
+        {
+          "title": "How many full-time equivalent employees (FTEs) were working in the other renewable electricity sector?",
+          "question_id": "0540",
+          "number": "0540",
+          "type": "number"
+        },
+        {
+          "title": "You stated that the number of full-time equivalents (FTEs) who worked within the other renewable electricity sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
+          "question_id": "0561",
+          "number": "0561",
+          "type": "confirmation"
+        },
+        {
+          "title": "Approximately what percentage of your other renewable electricity activities were in the following UK countries?",
+          "text": "England",
+          "question_id": "0550",
+          "number": "0550",
+          "type": "percentage"
+        },
+        {
+          "title": "Approximately what percentage of your other renewable electricity activities were in the following UK countries?",
+          "text": "Scotland",
+          "question_id": "0551",
+          "number": "0551",
+          "type": "percentage"
+        },
+        {
+          "title": "Approximately what percentage of your other renewable electricity activities were in the following UK countries?",
+          "text": "Wales",
+          "question_id": "0552",
+          "number": "0552",
+          "type": "percentage"
+        },
+        {
+          "title": "Approximately what percentage of your other renewable electricity activities were in the following UK countries?",
+          "text": "Northern Ireland",
+          "question_id": "0553",
+          "number": "0553",
+          "type": "percentage"
+        }
+      ]
+    },
+    {
       "title": "Section 8",
       "questions": [
         {
