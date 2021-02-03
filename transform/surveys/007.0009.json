@@ -1500,7 +1500,7 @@
     },
     {
       "title" : "Carbon Capture and Storage",
-      "options" : [
+      "questions" : [
         {
           "text" : "What was your turnover from activities carried out within the carbon capture and storage sector?",
           "question_id" : "1532",
@@ -1583,7 +1583,7 @@
     },
     {
       "title" : "Nuclear Power",
-      "options" : [
+      "questions" : [
         {
           "text" : "What was your turnover from activities carried out within the nuclear power sector?",
           "question_id" : "1632",
@@ -1666,7 +1666,7 @@
     },
     {
       "title" : "Fuel Cells and Energy Storage",
-      "options" : [
+      "questions" : [
         {
           "text" : "What was your turnover from activities carried out within the fuel cells and energy storage systems sector?",
           "question_id" : "1732",
@@ -1749,7 +1749,7 @@
     },
     {
       "title": "Other Low Carbon or Renewable Energy Sectors",
-      "options": [
+      "questions": [
         {
           "text" : "Did [Ru Name] operate in any other low carbon or renewable energy sectors that have not been listed?",
           "question_id" : "0063",
@@ -1765,7 +1765,7 @@
     },
     {
       "title": "Comments",
-      "options": [
+      "questions": [
         {
           "text" : "Please provide any further details that will help us understand your figures and to tell an industry story",
           "question_id" : "0060",
