@@ -4,7 +4,7 @@
   "form_type": "0010",
   "question_groups": [
     {
-      "title": "Section 1",
+      "title": "How to complete",
       "questions":[
         {
           "text": "Are you able to report figures for the period [Start Date] to [End Date]?",
@@ -35,7 +35,7 @@
       ]
     },
     {
-      "title": "Section 2",
+      "title": "Sectors",
       "questions": [
         {
           "text": "Which of the following sectors has [RU Name] operated in?",
@@ -213,7 +213,7 @@
       ]
     },
     {
-      "title": "Section 3",
+      "title": "Offshore Wind",
       "questions": [
         {
           "title": "What was your turnover from activities carried out within the offshore wind sector?",
@@ -314,7 +314,7 @@
       ]
     },
     {
-      "title": "Section 4",
+      "title": "Onshore Wind",
       "questions": [
         {
           "title": "What was your turnover from activities carried out within the onshore wind sector?",
@@ -415,7 +415,7 @@
       ]
     },
     {
-      "title": "Section 5",
+      "title": "Solar",
       "questions": [
         {
           "title": "What was your turnover from activities carried out within the solar sector?",
@@ -516,7 +516,7 @@
       ]
     },
     {
-      "title": "Section 6",
+      "title": "Hydropower",
       "questions": [
         {
           "title": "What was your turnover from activities carried out within the hydropower sector?",
@@ -617,7 +617,7 @@
       ]
     },
     {
-      "title": "Section 7",
+      "title": "Other Renewable Electricity",
       "questions": [
         {
           "title": "What was your turnover from activities carried out within the other renewable electricity sector?",
@@ -718,7 +718,7 @@
       ]
     },
     {
-      "title": "Section 8",
+      "title": "Bioenergy",
       "questions": [
         {
             "text" : "What was your turnover from activities carried out within the bioenergy sector?",
@@ -807,7 +807,7 @@
       ]
     },
     {
-      "title": "Section 9",
+      "title": "Alternative Fuels",
       "questions": [
         {
             "text" : "Did any of the activity within the alternative fuels sector relate to hydrogen?",
@@ -906,7 +906,7 @@
       ]
     },
     {
-      "title": "Section 10",
+      "title": "Renewable Heat",
       "questions": [
         {
             "text" : "What was your turnover from activities carried out within the renewable heat sector?",
@@ -995,7 +995,7 @@
       ]
     },
     {
-      "title": "Section 11",
+      "title": "Combined Heat and Power",
       "questions": [
         {
             "text" : "What was your turnover from activities carried out within the renewable combined heat and power sector?",
@@ -1084,7 +1084,7 @@
       ]
     },
     {
-      "title": "Section 12",
+      "title": "Energy Efficient Lighting",
       "questions": [
         {
            "text" : "What was your turnover from activities carried out within the energy efficient lighting sector?",
@@ -1167,7 +1167,7 @@
       ]
     },
     {
-      "title": "Section 13",
+      "title": "Energy Efficient Products",
       "questions": [
         {
            "text" : "What was your turnover from activities carried out within the energy efficient products sector?",
@@ -1250,7 +1250,7 @@
       ]
     },
     {
-      "title" : "Section 14",
+      "title" : "Energy Monitoring, Saving and Control Systems",
       "questions": [
         {
           "text" : "What was your turnover from activities carried out within the energy monitoring, saving and control systems sector?",
@@ -1333,7 +1333,7 @@
       ]
     },
     {
-      "title" : "section 15",
+      "title" : "Low Carbon Consultancy, Advisory and Offsetting Services",
       "questions" : [
         {
           "text" : "What was your turnover from activities carried out within the low carbon consultancy, advisory and offsetting services sector?",
@@ -1416,7 +1416,7 @@
       ]
     },
     {
-      "title" : "section 16",
+      "title" : "Vehicles and Infrastructure",
       "questions" : [
         {
           "text" : "What was your turnover from activities carried out within the low emission vehicles and infrastructure sector?",
@@ -1499,7 +1499,7 @@
       ]
     },
     {
-      "title" : "section 17",
+      "title" : "Carbon Capture and Storage",
       "options" : [
         {
           "text" : "What was your turnover from activities carried out within the carbon capture and storage sector?",
@@ -1582,7 +1582,7 @@
       ]
     },
     {
-      "title" : "section 18",
+      "title" : "Nuclear Power",
       "options" : [
         {
           "text" : "What was your turnover from activities carried out within the nuclear power sector?",
@@ -1665,7 +1665,7 @@
       ]
     },
     {
-      "title" : "section 19",
+      "title" : "Fuel Cells and Energy Storage",
       "options" : [
         {
           "text" : "What was your turnover from activities carried out within the fuel cells and energy storage systems sector?",
@@ -1748,7 +1748,7 @@
       ]
     },
     {
-      "title": "section 20",
+      "title": "Other Low Carbon or Renewable Energy Sectors",
       "options": [
         {
           "text" : "Did [Ru Name] operate in any other low carbon or renewable energy sectors that have not been listed?",
@@ -1764,7 +1764,7 @@
       ]
     },
     {
-      "title": "section 21",
+      "title": "Comments",
       "options": [
         {
           "text" : "Please provide any further details that will help us understand your figures and to tell an industry story",
