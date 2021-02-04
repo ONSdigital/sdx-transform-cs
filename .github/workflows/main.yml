@@ -1,0 +1,30 @@
+name: Build
+
+on: [push]
+
+jobs:
+  build:
+    name: Build and Package
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+    - name: install packages
+      run: |
+          sudo apt-get update
+          sudo apt-get install -y poppler-utils
+          pip install --upgrade pip
+    - name: make build
+      run: |
+        make build
+        pip install -r test_requirements.txt
+        pip install codecov
+    - name: run tests
+      run: pytest -v tests/ --cov=transform --cov-report html
+    - name: get coverage
+      run: codecov
+
+
