@@ -272,15 +272,14 @@
           "type": "currency"
         },
         {
-          "title": "How many full-time equivalent employees (FTEs) were working in the offshore wind sector?",
+          "text": "How many full-time equivalent employees (FTEs) were working in the offshore wind sector?",
           "question_id": "0140",
           "number": "0140"
         },
         {
-          "title": "You stated that the number of full-time equivalents (FTEs) who worked within the offshore wind sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
+          "text": "You stated that the number of full-time equivalents (FTEs) who worked within the offshore wind sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
           "question_id": "0161",
-          "number": "0161",
-          "type": "confirmation"
+          "number": "0161"
         },
         {
           "title": "Approximately what percentage of your offshore wind activities were in the following UK countries?",
@@ -372,15 +371,14 @@
           "type": "currency"
         },
         {
-          "title": "How many full-time equivalent employees (FTEs) were working in the onshore wind sector?",
+          "text": "How many full-time equivalent employees (FTEs) were working in the onshore wind sector?",
           "question_id": "0240",
           "number": "0240"
         },
         {
-          "title": "You stated that the number of full-time equivalents (FTEs) who worked within the onshore wind sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
+          "text": "You stated that the number of full-time equivalents (FTEs) who worked within the onshore wind sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
           "question_id": "0261",
-          "number": "0261",
-          "type": "confirmation"
+          "number": "0261"
         },
         {
           "title": "Approximately what percentage of your onshore wind activities were in the following UK countries?",
@@ -472,15 +470,14 @@
           "type": "currency"
         },
         {
-          "title": "How many full-time equivalent employees (FTEs) were working in the solar sector?",
+          "text": "How many full-time equivalent employees (FTEs) were working in the solar sector?",
           "question_id": "0340",
           "number": "0340"
         },
         {
-          "title": "You stated that the number of full-time equivalents (FTEs) who worked within the solar sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
+          "text": "You stated that the number of full-time equivalents (FTEs) who worked within the solar sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
           "question_id": "0361",
-          "number": "0361",
-          "type": "confirmation"
+          "number": "0361"
         },
         {
           "title": "Approximately what percentage of your solar activities were in the following UK countries?",
@@ -572,15 +569,14 @@
           "type": "currency"
         },
         {
-          "title": "How many full-time equivalent employees (FTEs) were working in the hydropower sector?",
+          "text": "How many full-time equivalent employees (FTEs) were working in the hydropower sector?",
           "question_id": "0440",
           "number": "0440"
         },
         {
-          "title": "You stated that the number of full-time equivalents (FTEs) who worked within the hydropower sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
+          "text": "You stated that the number of full-time equivalents (FTEs) who worked within the hydropower sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
           "question_id": "0461",
-          "number": "0461",
-          "type": "confirmation"
+          "number": "0461"
         },
         {
           "title": "Approximately what percentage of your hydropower activities were in the following UK countries?",
@@ -672,15 +668,14 @@
           "type": "currency"
         },
         {
-          "title": "How many full-time equivalent employees (FTEs) were working in the other renewable electricity sector?",
+          "text": "How many full-time equivalent employees (FTEs) were working in the other renewable electricity sector?",
           "question_id": "0540",
           "number": "0540"
         },
         {
-          "title": "You stated that the number of full-time equivalents (FTEs) who worked within the other renewable electricity sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
+          "text": "You stated that the number of full-time equivalents (FTEs) who worked within the other renewable electricity sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
           "question_id": "0561",
-          "number": "0561",
-          "type": "confirmation"
+          "number": "0561"
         },
         {
           "title": "Approximately what percentage of your other renewable electricity activities were in the following UK countries?",
