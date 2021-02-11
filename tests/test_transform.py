@@ -28,8 +28,7 @@ def get_expected_output(filename, output_type):
     return get_file_as_string(output_filename)
 
 
-class TestTransformService(unittest.TestCase):
-
+git
     transform_images_endpoint = "/images"
     transform_endpoint = "/transform/30001"
 

@@ -275,7 +275,6 @@
           "title": "How many full-time equivalent employees (FTEs) were working in the offshore wind sector?",
           "question_id": "0140",
           "number": "0140",
-          "type": "number"
         },
         {
           "title": "You stated that the number of full-time equivalents (FTEs) who worked within the offshore wind sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
@@ -375,8 +374,7 @@
         {
           "title": "How many full-time equivalent employees (FTEs) were working in the onshore wind sector?",
           "question_id": "0240",
-          "number": "0240",
-          "type": "number"
+          "number": "0240"
         },
         {
           "title": "You stated that the number of full-time equivalents (FTEs) who worked within the onshore wind sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
@@ -476,8 +474,7 @@
         {
           "title": "How many full-time equivalent employees (FTEs) were working in the solar sector?",
           "question_id": "0340",
-          "number": "0340",
-          "type": "number"
+          "number": "0340"
         },
         {
           "title": "You stated that the number of full-time equivalents (FTEs) who worked within the solar sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
@@ -577,8 +574,7 @@
         {
           "title": "How many full-time equivalent employees (FTEs) were working in the hydropower sector?",
           "question_id": "0440",
-          "number": "0440",
-          "type": "number"
+          "number": "0440"
         },
         {
           "title": "You stated that the number of full-time equivalents (FTEs) who worked within the hydropower sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
@@ -678,8 +674,7 @@
         {
           "title": "How many full-time equivalent employees (FTEs) were working in the other renewable electricity sector?",
           "question_id": "0540",
-          "number": "0540",
-          "type": "number"
+          "number": "0540"
         },
         {
           "title": "You stated that the number of full-time equivalents (FTEs) who worked within the other renewable electricity sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
@@ -771,8 +766,7 @@
         {
             "text" : "How many full-time equivalent employees (FTEs) were working in the bioenergy sector?",
             "question_id" : "0640",
-            "number" : "0640",
-            "type": "number"
+            "number" : "0640"
         },
         {
             "text" : "You stated that the number of full-time equivalents (FTEs) who worked within the bioenergy sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
@@ -870,8 +864,7 @@
         {
             "text" : "How many full-time equivalent employees (FTEs) were working in the alternative fuels sector?",
             "question_id" : "0740",
-            "number" : "0740",
-            "type": "number"
+            "number" : "0740"
         },
         {
             "text" : "You stated that the number of full-time equivalents (FTEs) who worked within the alternative fuels sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
@@ -959,8 +952,7 @@
         {
             "text" : "How many full-time equivalent employees (FTEs) were working in the renewable heat sector?",
             "question_id" : "0840",
-            "number" : "0840",
-            "type": "number"
+            "number" : "0840"
         },
         {
             "text" : "You stated that the number of full-time equivalents (FTEs) who worked within the renewable heat sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
@@ -1048,8 +1040,7 @@
         {
             "text" : "How many full-time equivalent employees (FTEs) were working in the renewable combined heat and power sector?",
             "question_id" : "0940",
-            "number" : "0940",
-            "type": "number"
+            "number" : "0940"
         },
         {
             "text" : "You stated that the number of full-time equivalents (FTEs) who worked within the renewable combined heat and power sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
@@ -1131,8 +1122,7 @@
         {
            "text" : "How many full-time equivalent employees (FTEs) were working in the energy efficient lighting sector?",
             "question_id" : "1040",
-            "number" : "1040",
-            "type": "number"
+            "number" : "1040"
         },
          {
            "text" : "You stated that the number of full-time equivalents (FTEs) who worked within the energy efficient lighting sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
@@ -1214,8 +1204,7 @@
         {
            "text" : "How many full-time equivalent employees (FTEs) were working in the energy efficient products sector?",
             "question_id" : "1140",
-            "number" : "1140",
-            "type": "number"
+            "number" : "1140"
         },
          {
            "text" : "You stated that the number of full-time equivalents (FTEs) who worked within the energy efficient products sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
@@ -1297,8 +1286,7 @@
         {
           "text" : "How many full-time equivalent employees (FTEs) were working in the energy monitoring, saving and control systems sector?",
           "question_id" : "1240",
-          "number" : "1240",
-          "type" : "number"
+          "number" : "1240"
         },
         {
           "text" : "You stated that the number of full-time equivalents (FTEs) who worked within the energy monitoring, saving and control systems sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
@@ -1380,8 +1368,7 @@
         {
           "text" : "How many full-time equivalent employees (FTEs) were working in the low carbon consultancy, advisory and offsetting services sector?",
           "question_id" : "1340",
-          "number" : "1340",
-          "type" : "number"
+          "number" : "1340"
         },
         {
           "text" : "You stated that the number of full-time equivalents (FTEs) who worked within the low carbon consultancy, advisory and offsetting services sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
@@ -1463,8 +1450,7 @@
         {
           "text" : "How many full-time equivalent employees (FTEs) were working in the low emission vehicles and infrastructure sector?",
           "question_id" : "1440",
-          "number" : "1440",
-          "type" : "number"
+          "number" : "1440"
         },
         {
           "text" : "You stated that the number of full-time equivalents (FTEs) who worked within the low emission vehicles and infrastructure sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
@@ -1546,8 +1532,7 @@
         {
           "text" : "How many full-time equivalent employees (FTEs) were working in the carbon capture and storage sector?",
           "question_id" : "1540",
-          "number" : "1540",
-          "type" : "number"
+          "number" : "1540"
         },
         {
           "text" : "You stated that the number of full-time equivalents (FTEs) who worked within the low emission vehicles and infrastructure sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
@@ -1629,8 +1614,7 @@
         {
           "text" : "How many full-time equivalent employees (FTEs) were working in the nuclear power sector?",
           "question_id" : "1640",
-          "number" : "1640",
-          "type" : "number"
+          "number" : "1640"
         },
         {
           "text" : "You stated that the number of full-time equivalents (FTEs) who worked within the nuclear power sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
@@ -1712,8 +1696,7 @@
         {
           "text" : "How many full-time equivalent employees (FTEs) were working in the fuel cells and energy storage systems sector?",
           "question_id" : "1740",
-          "number" : "1740",
-          "type" : "number"
+          "number" : "1740"
         },
         {
           "text" : "You stated that the number of full-time equivalents (FTEs) who worked within the fuel cells and energy storage systems sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
