@@ -766,8 +766,7 @@
         {
             "text" : "You stated that the number of full-time equivalents (FTEs) who worked within the bioenergy sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
             "question_id" : "0661",
-            "number" : "0661",
-            "type": "confirmation question"
+            "number" : "0661"
         },
         {
             "text" : "Approximately what percentage of your bioenergy activities were in the England??",
@@ -864,8 +863,7 @@
         {
             "text" : "You stated that the number of full-time equivalents (FTEs) who worked within the alternative fuels sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
             "question_id" : "0761",
-            "number" : "0761",
-            "type": "confirmation question"
+            "number" : "0761"
         },
         {
             "text" : "Approximately what percentage of your alternative fuels activities were in the England?",
@@ -952,8 +950,7 @@
         {
             "text" : "You stated that the number of full-time equivalents (FTEs) who worked within the renewable heat sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
             "question_id" : "0861",
-            "number" : "0861",
-            "type": "confirmation question"
+            "number" : "0861"
         },
          {
             "text" : "Approximately what percentage of your renewable heat activities were in the England?",
@@ -1040,8 +1037,7 @@
         {
             "text" : "You stated that the number of full-time equivalents (FTEs) who worked within the renewable combined heat and power sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
             "question_id" : "0961",
-            "number" : "0961",
-            "type": "confirmation question"
+            "number" : "0961"
         },
         {
             "text" : "Approximately what percentage of your renewable combined heat and power activities were in the England?",
@@ -1120,10 +1116,9 @@
             "number" : "1040"
         },
          {
-           "text" : "You stated that the number of full-time equivalents (FTEs) who worked within the energy efficient lighting sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
+            "text" : "You stated that the number of full-time equivalents (FTEs) who worked within the energy efficient lighting sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
             "question_id" : "1061",
-            "number" : "1061",
-            "type": "confirmation question"
+            "number" : "1061"
         },
         {
            "text" : "Approximately what percentage of your energy efficient lighting activities were in the England?",
@@ -1202,10 +1197,9 @@
             "number" : "1140"
         },
          {
-           "text" : "You stated that the number of full-time equivalents (FTEs) who worked within the energy efficient products sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
+            "text" : "You stated that the number of full-time equivalents (FTEs) who worked within the energy efficient products sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
             "question_id" : "1161",
-            "number" : "1161",
-            "type": "confirmation question"
+            "number" : "1161"
         },
         {
            "text" : "Approximately what percentage of your energy efficient products activities were in the England?",
@@ -1286,8 +1280,7 @@
         {
           "text" : "You stated that the number of full-time equivalents (FTEs) who worked within the energy monitoring, saving and control systems sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
           "question_id" : "1261",
-          "number" : "1261",
-          "type" : "confirmation question"
+          "number" : "1261"
         },
         {
           "text" : "Approximately what percentage of your energy monitoring, saving and control systems activities were in England",
@@ -1368,8 +1361,7 @@
         {
           "text" : "You stated that the number of full-time equivalents (FTEs) who worked within the low carbon consultancy, advisory and offsetting services sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
           "question_id" : "1361",
-          "number" : "1361",
-          "type" : "confirmation questions"
+          "number" : "1361"
         },
         {
           "text" : "Approximately what percentage of your low carbon consultancy, advisory and offsetting services activities were in England?",
@@ -1450,8 +1442,7 @@
         {
           "text" : "You stated that the number of full-time equivalents (FTEs) who worked within the low emission vehicles and infrastructure sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
           "question_id" : "1461",
-          "number" : "1461",
-          "type" : "confirmation questions"
+          "number" : "1461"
         },
         {
           "text" : "Approximately what percentage of your low emission vehicles and infrastructure activities were in England?",
@@ -1532,8 +1523,7 @@
         {
           "text" : "You stated that the number of full-time equivalents (FTEs) who worked within the low emission vehicles and infrastructure sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
           "question_id" : "1561",
-          "number" : "1561",
-          "type" : "confirmation questions"
+          "number" : "1561"
         },
         {
           "text" : "Approximately what percentage of your carbon capture and storage activities were in England?",
@@ -1614,8 +1604,7 @@
         {
           "text" : "You stated that the number of full-time equivalents (FTEs) who worked within the nuclear power sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
           "question_id" : "1661",
-          "number" : "1661",
-          "type" : "confirmation questions"
+          "number" : "1661"
         },
         {
           "text" : "Approximately what percentage of your nuclear power activities were in England?",
@@ -1696,8 +1685,7 @@
         {
           "text" : "You stated that the number of full-time equivalents (FTEs) who worked within the fuel cells and energy storage systems sector was [Number of full-time equivalents (FTEs)] FTEs. Is this correct?",
           "question_id" : "1761",
-          "number" : "1761",
-          "type" : "confirmation questions"
+          "number" : "1761"
         },
         {
           "text" : "Approximately what percentage of your fuel cells and energy storage systems activities were in England?",
