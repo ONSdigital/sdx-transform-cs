@@ -181,7 +181,7 @@
             "Nuclear power"
           ]
         },
-                {
+        {
           "text": "Which of the following sectors has the Business operated in?",
           "question_id": "0217",
           "number": "0217",
@@ -190,7 +190,7 @@
             "Fuel cells and energy storage systems"
           ]
         },
-                {
+        {
           "text": "Which of the following sectors has the Business operated in?",
           "question_id": "0013",
           "number": "0013",
@@ -200,7 +200,7 @@
           ]
         },
         {
-          "title": "Will the Business have activity in any low carbon and renewable sectors in the future?",
+          "text": "Will the Business have activity in any low carbon and renewable sectors in the future?",
           "question_id": "0014",
           "number": "0014",
           "type": "radio",
