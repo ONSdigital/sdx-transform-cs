@@ -355,7 +355,7 @@ class UKISTransformer(SurveyTransformer):
             "0001": '0',
             "0002": '0',
             "0003": '0',
-            "2700": "1" if self.get_qcode("2700") else "0",  # 2700 is the additional comments question.
+            "2700": "1" if self.get_qcode("2700") else "",  # 2700 is the additional comments question.
             "2801": self.get_qcode("2801", not_found_value=''),
             "2800": self.get_qcode("2800", not_found_value=''),
             "2900": self.yes_no_question("2900"),
