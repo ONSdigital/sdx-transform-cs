@@ -1,16 +1,15 @@
 import json
-import logging
 import os
 from abc import ABC, abstractmethod
 
-from structlog import wrap_logger
+import structlog
 
 from transform.settings import SDX_FTP_IMAGE_PATH, SDX_FTP_DATA_PATH, SDX_FTP_RECEIPT_PATH, SDX_RESPONSE_JSON_PATH
 from transform.transformers import ImageTransformer
 from transform.transformers.survey import Survey
 from transform.utilities.formatter import Formatter
 
-logger = wrap_logger(logging.getLogger(__name__))
+logger = structlog.get_logger()
 
 
 class SurveyTransformer(ABC):

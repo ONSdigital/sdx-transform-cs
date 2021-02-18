@@ -1,15 +1,14 @@
 import datetime
 import decimal
-import logging
 from decimal import ROUND_HALF_UP, Decimal
 
-from structlog import wrap_logger
+import structlog
 
 from transform.transformers.common_software.cs_formatter import CSFormatter
 from transform.transformers.survey import Survey
 from transform.transformers.survey_transformer import SurveyTransformer
 
-logger = wrap_logger(logging.getLogger(__name__))
+logger = structlog.get_logger()
 
 
 class MBSTransformer(SurveyTransformer):

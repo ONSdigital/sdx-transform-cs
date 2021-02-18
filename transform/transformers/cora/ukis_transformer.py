@@ -1,13 +1,12 @@
 import decimal
-import logging
 from decimal import Decimal, ROUND_HALF_UP
 
-from structlog import wrap_logger
+import structlog
 
 from transform.transformers.cora.cora_formatter import CORAFormatter
 from transform.transformers.survey_transformer import SurveyTransformer
 
-logger = wrap_logger(logging.getLogger(__name__))
+logger = structlog.get_logger()
 
 
 class UKISTransformer(SurveyTransformer):

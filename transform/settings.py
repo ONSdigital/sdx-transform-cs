@@ -1,10 +1,8 @@
-import logging
 import os
 
-LOGGING_FORMAT = "%(asctime)s|%(levelname)s: sdx-transform-cs: %(message)s"
-LOGGING_LEVEL = logging.getLevelName(os.getenv('LOGGING_LEVEL', 'DEBUG'))
+import structlog
 
-logger = logging.getLogger(__name__)
+logger = structlog.get_logger()
 
 
 def _get_value(key, default_value=None):

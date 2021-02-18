@@ -1,12 +1,12 @@
-from collections import namedtuple
 import datetime
 import json
 import logging
+from collections import namedtuple
 from json import JSONDecodeError
 
-from structlog import wrap_logger
+import structlog
 
-logger = wrap_logger(logging.getLogger(__name__))
+logger = structlog.get_logger()
 
 
 class MissingIdsException(Exception):

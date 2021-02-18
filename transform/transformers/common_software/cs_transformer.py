@@ -1,16 +1,15 @@
 import json
-import logging
 from io import StringIO
 
 import dateutil.parser
+import structlog
 from jinja2 import Environment, PackageLoader
-from structlog import wrap_logger
 
 from transform.transformers.common_software.pck_transformer import PCKTransformer
 from transform.transformers.survey_transformer import SurveyTransformer
 from transform.utilities.formatter import Formatter
 
-logger = wrap_logger(logging.getLogger(__name__))
+logger = structlog.get_logger()
 
 env = Environment(loader=PackageLoader('transform', 'templates'))
 

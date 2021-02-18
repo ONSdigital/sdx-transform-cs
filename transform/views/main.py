@@ -1,19 +1,17 @@
-import logging
+import threading
 
+import structlog
 from flask import request, send_file, jsonify
 from jinja2 import Environment, PackageLoader
-from structlog import wrap_logger
+from structlog.contextvars import bind_contextvars
 
-from transform import app, settings
+from transform import app
 from transform.transformers.survey import MissingSurveyException, MissingIdsException
 from transform.transformers.transform_selector import get_transformer
-from transform.views.logger_config import logger_initial_config
 
 env = Environment(loader=PackageLoader('transform', 'templates'))
 
-logger_initial_config(service_name='sdx-transform-cs',
-                      log_level=settings.LOGGING_LEVEL)
-logger = wrap_logger(logging.getLogger(__name__))
+logger = structlog.get_logger()
 
 
 @app.errorhandler(400)
@@ -57,6 +55,10 @@ def server_error(error=None):
 @app.route('/transform/<sequence_no>', methods=['POST'])
 def transform(sequence_no=1000):
     survey_response = request.get_json(force=True)
+    tx_id = survey_response.get("tx_id")
+    bind_contextvars(app="sdx-transform")
+    bind_contextvars(tx_id=tx_id)
+    bind_contextvars(thread=threading.currentThread().getName())
 
     if sequence_no:
         sequence_no = int(sequence_no)
