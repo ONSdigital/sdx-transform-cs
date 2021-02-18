@@ -58,7 +58,7 @@ def transform(sequence_no=1000):
     tx_id = survey_response.get("tx_id")
     bind_contextvars(app="sdx-transform")
     bind_contextvars(tx_id=tx_id)
-    bind_contextvars(thread=threading.currentThread().getName()[-1:])
+    bind_contextvars(thread=threading.currentThread().getName().split('_')[1])
 
     if sequence_no:
         sequence_no = int(sequence_no)
