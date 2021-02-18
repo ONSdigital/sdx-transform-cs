@@ -1,8 +1,8 @@
-import logging
-from structlog import wrap_logger
+import structlog
+
 from transform.utilities.formatter import Formatter
 
-logger = wrap_logger(logging.getLogger(__name__))
+logger = structlog.get_logger()
 
 
 class CORDFormatter(Formatter):

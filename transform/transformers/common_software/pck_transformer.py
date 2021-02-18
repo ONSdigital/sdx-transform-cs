@@ -1,13 +1,12 @@
 import copy
-from datetime import datetime
 import decimal
+from datetime import datetime
 from decimal import Decimal, ROUND_HALF_UP
-import logging
 
 import dateutil.parser
-from structlog import wrap_logger
+import structlog
 
-logger = wrap_logger(logging.getLogger(__name__))
+logger = structlog.get_logger()
 
 
 class PCKTransformer:

@@ -1,12 +1,11 @@
-import logging
 from decimal import Decimal
 
-from structlog import wrap_logger
+import structlog
 
 from transform.transformers.cord.cord_formatter import CORDFormatter
 from transform.transformers.survey_transformer import SurveyTransformer
 
-logger = wrap_logger(logging.getLogger(__name__))
+logger = structlog.get_logger()
 
 
 class EcommerceTransformer(SurveyTransformer):
