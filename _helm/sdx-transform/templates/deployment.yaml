@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sdx-transform
+  labels:
+    app: sdx-transform
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sdx-transform
+  template:
+    metadata:
+      labels:
+        app: sdx-transform
+    spec:
+      containers:
+      - image: eu.gcr.io/{{ .Values.project_id }}/sdx-transform:{{ .Chart.appVersion }}
+        imagePullPolicy: Always
+        name: sdx-transform
+        ports:
+        - containerPort: 5000
+      serviceAccountName: sdx-workload-identity
