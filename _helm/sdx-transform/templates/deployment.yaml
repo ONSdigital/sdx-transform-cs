@@ -15,7 +15,7 @@ spec:
         app: sdx-transform
     spec:
       containers:
-      - image: eu.gcr.io/{{ .Values.project_id }}/sdx-transform:{{ .Chart.appVersion }}
+      - image: eu.gcr.io/{{ .Values.registry_location }}/sdx-transform:{{ .Chart.AppVersion }}
         imagePullPolicy: Always
         name: sdx-transform
         ports:
