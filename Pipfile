@@ -24,6 +24,12 @@ Pillow = "==8.2.0"
 MarkupSafe = "==1.1.1"
 
 [dev-packages]
+flake8 = "==3.9.1"
+pyflakes = "==2.3.1"
+responses = "==0.13.2"
+pytest = "==6.2.3"
+pytest-cov = "==2.11.1"
+PyYAML = "==5.4.1"
 
 [requires]
 python_version = "3.8"
