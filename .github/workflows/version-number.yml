@@ -1,0 +1,42 @@
+name: Chart.yaml
+
+on:
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  build:
+    name: Checking Version Number
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Read Helm Chart
+      id: chart
+      uses: jacobtomlinson/gha-read-helm-chart@master
+      with:
+        path: ./_helm/sdx-transform
+    - name: Print outputs
+      run: echo ${{ steps.chart.outputs.version }}
+
+    - name: Getting main version
+      uses: actions/checkout@v2
+      with:
+        ref: main
+        fetch-depth: 1
+    - name: Read Helm Chart
+      id: chart-main
+      uses: jacobtomlinson/gha-read-helm-chart@master
+      with:
+        path: ./_helm/sdx-transform
+    - name: Print outputs
+      run: echo ${{ steps.chart-main.outputs.version }}
+    - name: Compare appVersion
+      run: |
+        if [ ${{ steps.chart-main.outputs.version }} != ${{ steps.chart.outputs.version }} ]
+        then
+          echo Version updated!
+        else
+          echo Version not updated!
+          exit 1
+        fi
