@@ -21,4 +21,11 @@ jobs:
         pip install pipenv
         pipenv install --dev --deploy --ignore-pipfile
     - name: Run tests
-      run: pipenv run pytest
+      run: pytest -v --cov-report term-missing --cov=transform tests/ > pytest-coverage.txt
+    - name: Comment coverage
+      uses: coroo/pytest-coverage-commentator@v1.0.2
+    - name: pytest-coverage-commentator
+      uses: coroo/pytest-coverage-commentator@v1.0.2
+      with:
+        pytest-coverage: pytest-coverage.txt
+
