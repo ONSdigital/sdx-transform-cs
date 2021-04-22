@@ -24,7 +24,6 @@ Pillow = "==8.2.0"
 MarkupSafe = "==1.1.1"
 
 [dev-packages]
-coverage = "==5.5"
 flake8 = "==3.9.1"
 pyflakes = "==2.3.1"
 responses = "==0.13.2"
