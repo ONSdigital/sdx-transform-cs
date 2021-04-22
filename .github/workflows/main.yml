@@ -1,6 +1,10 @@
+
 name: Build
 
-on: [push]
+on:
+  pull_request:
+    branches:
+      - '*'
 
 jobs:
   build:
@@ -12,19 +16,16 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: '3.8'
-    - name: install packages
+    - name: install dependencies and run tests
       run: |
-          sudo apt-get update
-          sudo apt-get install -y poppler-utils
-          pip install --upgrade pip
-    - name: make build
-      run: |
-        make build
-        pip install -r test_requirements.txt
-        pip install codecov
-    - name: run tests
-      run: pytest -v tests/ --cov=transform --cov-report html
-    - name: get coverage
-      run: codecov
-
+        python -m pip install --upgrade pip
+        pip install pipenv
+        pipenv install --dev --deploy --ignore-pipfile
+        pipenv run pytest --cache-clear --cov=app tests/ > pytest-coverage.txt
+    - name: Comment coverage
+      uses: coroo/pytest-coverage-commentator@v1.0.2
+    - name: pytest-coverage-commentator
+      uses: coroo/pytest-coverage-commentator@v1.0.2
+      with:
+        pytest-coverage: pytest-coverage.txt
 
