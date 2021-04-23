@@ -24,7 +24,7 @@ jobs:
         pipenv install --dev --system
         pipenv install --system
     - name: run tests
-      run: pipenv run pytest
+      run: pytest
     - name: run test for coverage
       run: pipenv run pytest --cache-clear --cov=app tests/ > pytest-coverage.txt
     - name: Comment coverage
