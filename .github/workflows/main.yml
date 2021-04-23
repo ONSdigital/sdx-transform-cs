@@ -1,9 +1,6 @@
 name: Build
 
-on:
-  pull_request:
-    branches:
-      - '*'
+on: [push]
 
 jobs:
   build:
@@ -15,10 +12,16 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: '3.8'
-    - name: install dependencies
+    - name: install packages
       run: |
-        python -m pip install --upgrade pip
-        pip install pipenv
-        pipenv install --dev --system --deploy --ignore-pipfile
-    - name: Run tests
-      run: pytest -v --cov-report term-missing --cov=transform tests
+          sudo apt-get update
+          sudo apt-get install -y poppler-utils
+          pip install --upgrade pip
+          pip install pipenv
+          pipenv install --system --deploy --ignore-pipfile
+          pipenv install --dev
+          pip install codecov
+    - name: run tests
+      run: pytest -v tests/ --cov=transform --cov-report html
+    - name: get coverage
+      run: codecov
