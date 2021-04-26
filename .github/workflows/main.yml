@@ -17,10 +17,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y poppler-utils
           pip install --upgrade pip
-    - name: make build
+    - name: install python dependencies
       run: |
-        make build
-        pip install -r test_requirements.txt
+        pipenv install --system --deploy --ignore-pipfile
+        pipenv install --dev --system --deploy --ignore-pipfile
         pip install codecov
     - name: run tests
       run: pytest -v tests/ --cov=transform --cov-report html
