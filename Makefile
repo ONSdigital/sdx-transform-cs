@@ -1,12 +1,12 @@
 PDFTOPPM := $(shell command -v pdftoppm 2> /dev/null)
 
 build:
-	pip3 install -r requirements.txt --require-hashes
+	pipenv install
 
 test:
-	pip3 install -r test_requirements.txt
+	pipenv install install --dev
 	flake8 --exclude ./lib/*
-	pytest -v --cov-report term-missing --cov=transform tests/
+	pipenv run pytest -v --cov-report term-missing --cov=transform tests/
 	coverage html
 
 check-dependencies:

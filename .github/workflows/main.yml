@@ -1,6 +1,9 @@
 name: Build
 
-on: [push]
+on:
+  pull_request:
+    branches:
+      - '*'
 
 jobs:
   build:
@@ -14,17 +17,16 @@ jobs:
         python-version: '3.8'
     - name: install packages
       run: |
-          sudo apt-get update
-          sudo apt-get install -y poppler-utils
-          pip install --upgrade pip
-    - name: make build
+        sudo apt-get update
+        sudo apt-get install -y poppler-utils
+        pip install --upgrade pip
+    - name: install python dependencies
       run: |
-        make build
-        pip install -r test_requirements.txt
+        pip install pipenv
+        pipenv install --system --deploy --ignore-pipfile
+        pipenv install --dev --system --deploy --ignore-pipfile
         pip install codecov
     - name: run tests
       run: pytest -v tests/ --cov=transform --cov-report html
     - name: get coverage
       run: codecov
-
-

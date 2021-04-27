@@ -1,6 +1,5 @@
 import os
 import sys
-
 import structlog
 import logging
 from structlog import configure
@@ -32,6 +31,7 @@ def logging_config():
 
     configure(
         logger_factory=LoggerFactory(),
+
         processors=[
             structlog.stdlib.add_log_level,
             structlog.stdlib.add_logger_name,
