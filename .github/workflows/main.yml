@@ -30,5 +30,3 @@ jobs:
       run: pytest -v tests/ --cov=transform --cov-report html
     - name: get coverage
       run: codecov
-
-

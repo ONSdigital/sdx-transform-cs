@@ -23,7 +23,7 @@ class Server(BaseApplication):
 
 
 if __name__ == '__main__':
-    logger.info('Starting SDX Deliver')
+    logger.info('Starting SDX Transform-cs')
     options = {
         'bind': '%s:%s' % ('0.0.0.0', '5000'),
         'workers': 2,
