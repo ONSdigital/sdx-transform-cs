@@ -42,7 +42,7 @@ class SurveyTransformer(ABC):
     def create_receipt(self):
         bound_logger = self.logger.bind(ru_ref=self.ids.ru_ref, tx_id=self.ids.tx_id)
         bound_logger.info("Creating IDBR receipt")
-        idbr_name = Formatter.idbr_name(self.ids.user_ts, self.ids.seq_nr)
+        idbr_name = Formatter.idbr_name(self.ids.user_ts, self.ids.tx_id)
         idbr = Formatter.get_idbr(
             self.ids.survey_id,
             self.ids.ru_ref,
@@ -71,7 +71,7 @@ class SurveyTransformer(ABC):
         self._create_images(img_seq)
 
         # add original json to zip
-        response_json_name = Formatter.response_json_name(self.ids.survey_id, self.ids.seq_nr)
+        response_json_name = Formatter.response_json_name(self.ids.survey_id, self.ids.tx_id)
         self.image_transformer.zip.append(os.path.join(SDX_RESPONSE_JSON_PATH, response_json_name),
                                           json.dumps(self.response))
 

@@ -4,78 +4,6 @@
   "form_type": "0001",
   "question_groups": [
     {
-      "title": "General Business Information",
-      "questions": [
-        {
-          "text": "In which geographic markets did the business offer goods and/or services",
-          "question_id": "0210",
-          "number": "0210",
-          "type": "checkbox",
-          "options": [
-              "UK regional within approximately 100 miles of this business"
-          ]
-        }, {
-          "text": "In which geographic markets did the business offer goods and/or services",
-          "question_id": "0220",
-          "number": "0220",
-          "type": "checkbox",
-          "options": [
-              "UK National"
-          ]
-        }, {
-          "text": "In which geographic markets did the business offer goods and/or services",
-          "question_id": "0230",
-          "number": "0230",
-          "type": "checkbox",
-          "options": [
-              "European countries"
-          ]
-        }, {
-          "text": "In which geographic markets did the business offer goods and/or services",
-          "question_id": "0240",
-          "number": "0240",
-          "type": "checkbox",
-          "options": [
-              "All other countries"
-          ]
-        }, {
-          "text": "Did any of the following significant events or changes occur to the business?",
-          "question_id": "0410",
-          "number": "0410",
-          "type": "checkbox",
-          "options": [
-              "The business was established"
-          ]
-        }, {
-          "text": "Did any of the following significant events or changes occur to the business?",
-          "question_id": "0420",
-          "number": "0420",
-          "type": "checkbox",
-          "options": [
-              "Turnover increased"
-          ]
-        }, {
-          "text": "Did any of the following significant events or changes occur to the business?",
-          "question_id": "0430",
-          "number": "0430",
-          "type": "checkbox",
-          "options": [
-              "Turnover decreased"
-          ]
-        }, {
-          "text": "Did any of the following significant events or changes occur to the business?",
-          "question_id": "0440",
-          "number": "0440",
-          "type": "checkbox",
-          "options": [
-              "No significant changes occurred"
-          ]
-        },{
-          "text": "Total employees",
-          "question_id": "50"
-      }]
-    },
-    {
       "title": "Business Strategy and Practices",
       "questions": [
         {
@@ -134,6 +62,14 @@
           "options": [
               "New business practices"
           ]
+        },{
+          "text": "Did the business make changes in any of the following areas?",
+          "question_id": "2380",
+          "number": "2380",
+          "type": "checkbox",
+          "options": [
+              "No significant changes"
+          ]
         }]
     },
     {
@@ -148,7 +84,7 @@
           "number": "2675",
           "type": "checkbox",
           "options": [
-              "2016"
+              "2018"
           ]
         },{
           "text": "In which of the following years did the business invest in internal research and development?",
@@ -156,7 +92,7 @@
           "number": "2676",
           "type": "checkbox",
           "options": [
-              "2017"
+              "2019"
           ]
         },{
           "text": "In which of the following years did the business invest in internal research and development?",
@@ -164,20 +100,20 @@
           "number": "2677",
           "type": "checkbox",
           "options": [
-              "2018"
+              "2020"
           ]
         },{
-          "text": "What was the estimated expenditure on internal Research and Development for the calendar year 2018 only?",
+          "text": "What was the estimated expenditure on internal Research and Development for the calendar year 2020 only?",
           "question_id": "1410"
         },{
           "text": "Did the business invest in acquisition of Research and Development for the purposes of current or future innovation?",
           "question_id": "1320"
         },{
-          "text": "What was the estimated expenditure on acquisitions of Research and Development for the calendar year 2018 only?",
+          "text": "What was the estimated expenditure on acquisitions of Research and Development for the calendar year 2020 only?",
           "question_id": "1420"
         },{
           "text": "Did the business invest in acquisition of advanced machinery, equipment or software for the purposes of current or future innovation?",
-          "question_id": "10000"
+          "question_id": "1330"
         },{
           "text": "Which of the following did the business invest in for the purposes of current or future innovation?",
           "question_id": "1331",
@@ -203,29 +139,29 @@
               "Computer software"
           ]
         },{
-          "text": "What was the estimated expenditure for the acquisition of advanced machinery, equipment and software for the calendar year 2018 only?",
+          "text": "What was the estimated expenditure for the acquisition of advanced machinery, equipment and software for the calendar year 2020 only?",
           "question_id": "1430"
         },{
           "text": "Did the business invest in the acquisition of existing knowledge for the purposes of current or future innovation?",
           "question_id": "1340"
         },{
-          "text": "What was the estimated expenditure for the acquisition of existing knowledge for the calendar year 2018 only?",
+          "text": "What was the estimated expenditure for the acquisition of existing knowledge for the calendar year 2020 only?",
           "question_id": "1440"
         },{
           "text": "Did the business invest in training for innovative activities for the purposes of current or future innovation?",
           "question_id": "1350"
         },{
-          "text": "What was the estimated expenditure on training for innovative activities for the calendar year 2018 only?",
+          "text": "What was the estimated expenditure on training for innovative activities for the calendar year 2020 only?",
           "question_id": "1450"
         },{
           "text": "Did the business invest in any form of design activity for the purposes of current or future innovation?",
           "question_id": "1360"
         },{
-          "text": "What was the estimated expenditure for all forms of design activity for the calendar year 2018 only?",
+          "text": "What was the estimated expenditure for all forms of design activity for the calendar year 2020 only?",
           "question_id": "1460"
         },{
           "text": "Did the business invest in market introduction of innovations for the purposes of current or future innovation?",
-          "question_id": "10001"
+          "question_id": "1370"
         },{
           "text": "Which of the following did the business invest in for the purposes of current or future innovation?",
           "question_id": "1371",
@@ -259,7 +195,7 @@
               "Launch advertising"
           ]
         },{
-          "text": "What was the estimated expenditure for the market introduction of innovations for the calendar year 2018 only?",
+          "text": "What was the estimated expenditure for the market introduction of innovations for the calendar year 2020 only?",
           "question_id": "1470"
         }]
     },
@@ -286,14 +222,6 @@
               "This business with other businesses or organisations"
           ]
         },{
-          "text": "Who was primarily responsible for developing these new or significantly improved goods?",
-          "question_id": "0630",
-          "number": "0630",
-          "type": "checkbox",
-          "options": [
-              "Other businesses or organisations"
-          ]
-        },{
           "text": "Did the business introduce new or significantly improved services?",
           "question_id": "0520"
         },{
@@ -311,14 +239,6 @@
           "type": "checkbox",
           "options": [
               "This business with other businesses or organisations"
-          ]
-        },{
-          "text": "Who was primarily responsible for developing these new or significantly improved services?",
-          "question_id": "0603",
-          "number": "0603",
-          "type": "checkbox",
-          "options": [
-              "Other businesses or organisations"
           ]
         },{
           "text": "Were any of your goods and services innovations new to the market?",
@@ -358,9 +278,6 @@
           "options": [
               "Other businesses or organisations"
           ]
-        },{
-          "text": "Did the business introduce any new or significantly improved processes for producing or supplying goods or services which were new to your industry?",
-          "question_id": "1100"
         }]
     },
     {
@@ -374,24 +291,33 @@
           "options": [
               "Innovation activities were abandoned"
           ]
-        }, {
-          "text": "Did the business have any innovation activities that were abandoned, scaled back or ongoing at the end of 2018?",
+        },
+        {
+          "text": "Did the business have any innovation activities that were abandoned, scaled back or ongoing at the end of 2020?",
           "question_id": "1520",
           "number": "1520",
+          "type": "checkbox",
+          "options": [
+              "Innovation activities still ongoing"
+          ]
+        },{
+          "text": "Did the business have any innovation activities that were abandoned, scaled back or ongoing at the end of 2020?",
+          "question_id": "1530",
+          "number": "1530",
           "type": "checkbox",
           "options": [
               "Innovation activities were scaled back"
           ]
         },{
-          "text": "Did the business have any innovation activities that were abandoned, scaled back or ongoing at the end of 2018?",
-          "question_id": "1530",
-          "number": "1530",
+          "text": "Did the business have any innovation activities that were abandoned, scaled back or ongoing at the end of 2020?",
+          "question_id": "1540",
+          "number": "1540",
           "type": "checkbox",
           "options": [
-              "Innovation activities were still ongoing at the end of 2018"
+              "No"
           ]
         },{
-          "text": "How important was any excessive preceived econimic risk in constraining innovation activities?",
+          "text": "How important was any excessive perceived economic risk in constraining innovation activities?",
           "question_id": "2657"
         },{
           "text": "How important were the high costs of direct innovation in constraining innovation activities?",
@@ -400,16 +326,16 @@
           "text": "How important was the cost of finance in constraining innovation activities?",
           "question_id": "2659"
         },{
-          "text": "How important was the availability of finance in constaining innovation activities?",
+          "text": "How important was the availability of finance in constraining innovation activities?",
           "question_id": "2660"
         },{
-          "text": "How important was the lack of available qualified personnel in constaining innovation activities?",
+          "text": "How important was the lack of available qualified personnel in constraining innovation activities?",
           "question_id": "2661"
         },{
           "text": "How important was the lack of information on technology in constraining innovation activities?",
           "question_id": "2662"
         },{
-          "text": "How important was the lack of infrormation on markets in constraining innovation activities?",
+          "text": "How important was the lack of information on markets in constraining innovation activities?",
           "question_id": "2663"
         },{
           "text": "How important was the effect of a market dominated by established businesses in constraining innovation activities?",
@@ -426,6 +352,9 @@
         },{
           "text": "How important was the outcome of the EU referendum in constraining innovation activities?",
           "question_id": "2678"
+        },{
+          "text": "How important were the issues related to the Coronavirus (Covid-19) pandemic in constraining innovation activities?",
+          "question_id": "2680"
         },{
           "text": "If the business had no innovation activity, why has it not been necessary or possible to innovate?",
           "question_id": "2011",
@@ -499,6 +428,9 @@
         },{
           "text": "How important was meeting regulatory requirements (including standards) in your decision to innovate in goods or services and/or processes?",
           "question_id": "1280"
+        },{
+          "text": "How important was the issues relating to the Coronavirus (Covid-19) pandemic in your decision to innovate in goods or services and/or processes?",
+          "question_id": "1281"
         }]
     },
     {
@@ -540,6 +472,9 @@
         },{
           "text": "How important to the business's innovation activities was information from scientific journals and trade or technical publications?",
           "question_id": "1690"
+        },{
+          "text": "How important to the business's innovation activities was information from social web based networks or crowd-sourcing?",
+          "question_id": "1691"
         }]
     },
     {
@@ -551,7 +486,7 @@
           "number": "1811",
           "type": "checkbox",
           "options": [
-              "UK regional within approximately 100 miles of this business"
+              "None"
           ]
         },{
           "text": "If the business co-operated on any innovation activities with other businesses within your enterprise group, what was their location?",
@@ -559,7 +494,7 @@
           "number": "1812",
           "type": "checkbox",
           "options": [
-              "UK National"
+              "UK"
           ]
         },{
           "text": "If the business co-operated on any innovation activities with other businesses within your enterprise group, what was their location?",
@@ -567,7 +502,7 @@
           "number": "1813",
           "type": "checkbox",
           "options": [
-              "European countries"
+              "EU or EFTA countries"
           ]
         },{
           "text": "If the business co-operated on any innovation activities with other businesses within your enterprise group, what was their location?",
@@ -583,7 +518,7 @@
           "number": "1821",
           "type": "checkbox",
           "options": [
-              "UK regional within approximately 100 miles of this business"
+              "None"
           ]
         },{
           "text": "If the business co-operated on any innovation activities with suppliers of equipment, materials, services or software, what was their location?",
@@ -591,7 +526,7 @@
           "number": "1822",
           "type": "checkbox",
           "options": [
-              "UK National"
+              "UK"
           ]
         },{
           "text": "If the business co-operated on any innovation activities with suppliers of equipment, materials, services or software, what was their location?",
@@ -599,7 +534,7 @@
           "number": "1823",
           "type": "checkbox",
           "options": [
-              "European countries"
+              "EU or EFTA countries"
           ]
         },{
           "text": "If the business co-operated on any innovation activities with suppliers of equipment, materials, services or software, what was their location?",
@@ -611,30 +546,30 @@
           ]
         },{
           "text": "If the business co-operated on any innovation activities with clients or customers from the private sector, what was their location?",
-          "question_id": "181",
+          "question_id": "1881",
           "number": "1881",
           "type": "checkbox",
           "options": [
-              "UK regional within approximately 100 miles of this business"
+              "No cooperation with clients or customers from the private sector"
           ]
         },{
-          "text": "If the business co-operated on any innovation activities with suppliers of equipment, materials, services or software, what was their location?",
+          "text": "If the business co-operated on any innovation activities with clients or customers from the private sector, what was their location?",
           "question_id": "1882",
           "number": "1882",
           "type": "checkbox",
           "options": [
-              "UK National"
+              "UK"
           ]
         },{
-          "text": "If the business co-operated on any innovation activities with suppliers of equipment, materials, services or software, what was their location?",
+          "text": "If the business co-operated on any innovation activities with clients or customers from the private sector, what was their location?",
           "question_id": "1883",
           "number": "1883",
           "type": "checkbox",
           "options": [
-              "European countries"
+              "EU or EFTA countries"
           ]
         },{
-          "text": "If the business co-operated on any innovation activities with suppliers of equipment, materials, services or software, what was their location?",
+          "text": "If the business co-operated on any innovation activities with clients or customers from the private sector, what was their location?",
           "question_id": "1884",
           "number": "1884",
           "type": "checkbox",
@@ -647,7 +582,7 @@
           "number": "1891",
           "type": "checkbox",
           "options": [
-              "UK regional within approximately 100 miles of this business"
+              "None"
           ]
         },{
           "text": "If the business co-operated on any innovation activities with clients or customers from the public sector, what was their location?",
@@ -655,7 +590,7 @@
           "number": "1892",
           "type": "checkbox",
           "options": [
-              "UK National"
+              "UK"
           ]
         },{
           "text": "If the business co-operated on any innovation activities with clients or customers from the public sector, what was their location?",
@@ -663,7 +598,7 @@
           "number": "1893",
           "type": "checkbox",
           "options": [
-              "European countries"
+              "EU or EFTA countries"
           ]
         },{
           "text": "If the business co-operated on any innovation activities with clients or customers from the public sector, what was their location?",
@@ -679,7 +614,7 @@
           "number": "1841",
           "type": "checkbox",
           "options": [
-              "UK regional within approximately 100 miles of this business"
+              "None"
           ]
         },{
           "text": "If the business co-operated on any innovation activities with competitors or other businesses in your industry, what was their location?",
@@ -687,7 +622,7 @@
           "number": "1842",
           "type": "checkbox",
           "options": [
-              "UK National"
+              "UK"
           ]
         },{
           "text": "If the business co-operated on any innovation activities with competitors or other businesses in your industry, what was their location?",
@@ -695,7 +630,7 @@
           "number": "1843",
           "type": "checkbox",
           "options": [
-              "European countries"
+              "EU or EFTA countries"
           ]
         },{
           "text": "If the business co-operated on any innovation activities with competitors or other businesses in your industry, what was their location?",
@@ -711,7 +646,7 @@
           "number": "1851",
           "type": "checkbox",
           "options": [
-              "UK regional within approximately 100 miles of this business"
+              "None"
           ]
         },{
           "text": "If the business co-operated on any innovation activities with consultants, commercial labs or private research and development institutes, what was their location?",
@@ -719,7 +654,7 @@
           "number": "1852",
           "type": "checkbox",
           "options": [
-              "UK National"
+              "UK"
           ]
         },{
           "text": "If the business co-operated on any innovation activities with consultants, commercial labs or private research and development institutes, what was their location?",
@@ -727,7 +662,7 @@
           "number": "1853",
           "type": "checkbox",
           "options": [
-              "European countries"
+              "EU or EFTA countries"
           ]
         },{
           "text": "If the business co-operated on any innovation activities with consultants, commercial labs or private research and development institutes, what was their location?",
@@ -738,31 +673,31 @@
               "All other countries"
           ]
         },{
-          "text": "If the business co-operated on any innovation activities with universities or other higher education insitutions, what was their location?",
+          "text": "If the business co-operated on any innovation activities with universities or other higher education institutions, what was their location?",
           "question_id": "1861",
           "number": "1861",
           "type": "checkbox",
           "options": [
-              "UK regional within approximately 100 miles of this business"
+              "None"
           ]
         },{
-          "text": "If the business co-operated on any innovation activities with universities or other higher education insitutions, what was their location?",
+          "text": "If the business co-operated on any innovation activities with universities or other higher education institutions, what was their location?",
           "question_id": "1862",
           "number": "1862",
           "type": "checkbox",
           "options": [
-              "UK National"
+              "UK"
           ]
         },{
-          "text": "If the business co-operated on any innovation activities with universities or other higher education insitutions, what was their location?",
+          "text": "If the business co-operated on any innovation activities with universities or other higher education institutions, what was their location?",
           "question_id": "1863",
           "number": "1863",
           "type": "checkbox",
           "options": [
-              "European countries"
+              "EU or EFTA countries"
           ]
         },{
-          "text": "If the business co-operated on any innovation activities with universities or other higher education insitutions, what was their location?",
+          "text": "If the business co-operated on any innovation activities with universities or other higher education institutions, what was their location?",
           "question_id": "1864",
           "number": "1864",
           "type": "checkbox",
@@ -770,31 +705,31 @@
               "All other countries"
           ]
         },{
-          "text": "If the business co-operated on any innovation activities with government or public research insitutes, what was their location?",
+          "text": "If the business co-operated on any innovation activities with government or public research institutes, what was their location?",
           "question_id": "1871",
           "number": "1871",
           "type": "checkbox",
           "options": [
-              "UK regional within approximately 100 miles of this business"
+              "None"
           ]
         },{
-          "text": "If the business co-operated on any innovation activities with government or public research insitutes, what was their location?",
+          "text": "If the business co-operated on any innovation activities with government or public research institutes, what was their location?",
           "question_id": "1872",
           "number": "1872",
           "type": "checkbox",
           "options": [
-              "UK National"
+              "UK"
           ]
         },{
-          "text": "If the business co-operated on any innovation activities with government or public research insitutes, what was their location?",
+          "text": "If the business co-operated on any innovation activities with government or public research institutes, what was their location?",
           "question_id": "1873",
           "number": "1873",
           "type": "checkbox",
           "options": [
-              "European countries"
+              "EU or EFTA countries"
           ]
         },{
-          "text": "If the business co-operated on any innovation activities with government or public research insitutes, what was their location?",
+          "text": "If the business co-operated on any innovation activities with government or public research institutes, what was their location?",
           "question_id": "1874",
           "number": "1874",
           "type": "checkbox",
@@ -807,7 +742,7 @@
           "number": "1875",
           "type": "checkbox",
           "options": [
-              "UK regional within approximately 100 miles of this business"
+              "None"
           ]
         },{
           "text": "If the business co-operated on any innovation activities with other businesses outside your enterprise group, what was their location?",
@@ -815,7 +750,7 @@
           "number": "1876",
           "type": "checkbox",
           "options": [
-              "UK National"
+              "UK"
           ]
         },{
           "text": "If the business co-operated on any innovation activities with other businesses outside your enterprise group, what was their location?",
@@ -823,7 +758,7 @@
           "number": "1877",
           "type": "checkbox",
           "options": [
-              "European countries"
+              "EU or EFTA countries"
           ]
         },{
           "text": "If the business co-operated on any innovation activities with other businesses outside your enterprise group, what was their location?",
@@ -839,7 +774,7 @@
           "number": "1879",
           "type": "checkbox",
           "options": [
-              "UK regional within approximately 100 miles of this business"
+              "None"
           ]
         },{
           "text": "If the business co-operated on any innovation activities with non-profit organisations, what was their location?",
@@ -847,7 +782,7 @@
           "number": "1880",
           "type": "checkbox",
           "options": [
-              "UK National"
+              "UK"
           ]
         },{
           "text": "If the business co-operated on any innovation activities with non-profit organisations, what was their location?",
@@ -855,7 +790,7 @@
           "number": "1885",
           "type": "checkbox",
           "options": [
-              "European countries"
+              "EU or EFTA countries"
           ]
         },{
           "text": "If the business co-operated on any innovation activities with non-profit organisations, what was their location?",
@@ -947,31 +882,39 @@
           "options": [
               "Don't know"
           ]
+        },{
+          "text": "What kind of financial support was received by the business from UK central government",
+          "question_id": "2679",
+          "number": "2679",
+          "type": "checkbox",
+          "options": [
+              "Indirect financial support - patent box - covid 19 support"
+          ]
         }]
     },
     {
       "title": "Turnover and exports",
       "questions": [
         {
-          "text": "What was the business's estimated total turnover (in £thousands) for the calendar years 2016 and 2018, excluding VAT? (2016)",
+          "text": "What was the business's estimated total turnover (in £thousands) for the calendar years 2018 and 2020, excluding VAT? (2018)",
           "question_id": "2410"
         },{
-          "text": "What was the business's estimated total turnover (in £thousands) for the calendar years 2016 and 2018, excluding VAT? (2018)",
+          "text": "What was the business's estimated total turnover (in £thousands) for the calendar years 2018 and 2020, excluding VAT? (2020)",
           "question_id": "2420"
         },{
-          "text": "What was the estimated percentage of the business's total turnover in 2018 from goods and services for each of the following definitions? (New to the market)",
+          "text": "What was the estimated percentage of the business's total turnover in 2020 from goods and services for each of the following definitions? (New to the market)",
           "question_id": "0810"
         },{
-          "text": "What was the estimated percentage of the business's total turnover in 2018 from goods and services for each of the following definitions? (Only new to this business) ",
+          "text": "What was the estimated percentage of the business's total turnover in 2020 from goods and services for each of the following definitions? (Only new to this business) ",
           "question_id": "0820"
         },{
-          "text": "What was the estimated percentage of the business's total turnover in 2018 from goods and services for each of the following definitions? (Significantly Improved)",
+          "text": "What was the estimated percentage of the business's total turnover in 2020 from goods and services for each of the following definitions? (Significantly Improved)",
           "question_id": "0830"
         },{
-          "text": "What was the estimated percentage of the business's total turnover in 2018 from goods and services for each of the following definitions? (Unchanged/Marginally modified)",
+          "text": "What was the estimated percentage of the business's total turnover in 2020 from goods and services for each of the following definitions? (Unchanged/Marginally modified)",
           "question_id": "0840"
         },{
-          "text": "What was the business's total estimated value of exports (in £thousands) for the calendar year 2018 only, excluding VAT?",
+          "text": "What was the business's total estimated value of exports (in £thousands) for the calendar year 2020 only, excluding VAT?",
           "question_id": "2440"
         }]
     },
@@ -979,16 +922,16 @@
       "title": "Employees and skills",
       "questions": [
         {
-          "text": "What was the business's estimated total number of employees in 2016?",
+          "text": "What was the business's estimated total number of employees in 2018?",
           "question_id": "2510"
         }, {
-          "text": "What was the business's estimated total number of employees in 2018?",
+          "text": "What was the business's estimated total number of employees in 2020?",
           "question_id": "2520"
         },{
-          "text": "What is the proportion of employees who hold a degree or higher qualification in the following areas for the calendar year 2018 only? (Science or engineering subjects)",
+          "text": "What is the proportion of employees who hold a degree or higher qualification in the following areas for the calendar year 2020 only? (Science or engineering subjects)",
           "question_id": "2610"
         },{
-          "text": "What is the proportion of employees who hold a degree or higher qualification in the following areas for the calendar year 2018 only? (Other subjects)",
+          "text": "What is the proportion of employees who hold a degree or higher qualification in the following areas for the calendar year 2020 only? (Other subjects)",
           "question_id": "2620"
         },{
           "text": "Did the business employ individuals in-house with the following skills at any level, or obtain these skills form external sources?",
@@ -1037,6 +980,14 @@
           "type": "checkbox",
           "options": [
               "Mathematics, statistics"
+          ]
+        },{
+          "text": "Did the business employ individuals in-house with the following skills at any level, or obtain these skills form external sources?",
+          "question_id": "2637",
+          "number": "2637",
+          "type": "checkbox",
+          "options": [
+              "Data Scientists"
           ]
         }]
     },

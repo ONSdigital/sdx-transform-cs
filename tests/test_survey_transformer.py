@@ -6,11 +6,10 @@ import json
 import os
 import unittest
 import zipfile
-from unittest.mock import patch
-
 import dateutil
 
 from transform.transformers.transform_selector import get_transformer
+from transform.utilities.formatter import Formatter
 from transform.views.image_filters import format_date
 
 
@@ -140,8 +139,7 @@ class TestSurveyTransformer(unittest.TestCase):
 
             self.assertEqual(actual_response, expected_response)
 
-    @patch("transform.transformers.ImageTransformer._get_image_sequence_list", return_value=[1, 2])
-    def test_create_index(self, mock_sequence_no):
+    def test_create_index(self):
         test_scenarios = get_test_scenarios("csv")
 
         print("Found %d csv scenarios" % len(test_scenarios))
@@ -164,7 +162,8 @@ class TestSurveyTransformer(unittest.TestCase):
             sub_date = dateutil.parser.parse(payload_object["submitted_at"])
             sub_date_str = sub_date.strftime("%Y%m%d")
 
-            filename = "EDC_QImages/Index/EDC_{}_{}_1000.csv".format(payload_object["survey_id"], sub_date_str)
+            filename = "EDC_QImages/Index/EDC_{}_{}_{}.csv".format(payload_object["survey_id"], sub_date_str,
+                                                                   Formatter._get_tx_code(payload_object["tx_id"]))
             self.assertIn(filename, z.namelist())
 
             edc_file = z.open(filename)

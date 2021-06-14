@@ -8,6 +8,7 @@ from structlog import wrap_logger
 
 from transform.transformers.common_software.pck_transformer import PCKTransformer
 from transform.transformers.survey_transformer import SurveyTransformer
+from transform.utilities.formatter import Formatter
 
 logger = wrap_logger(logging.getLogger(__name__))
 
@@ -55,9 +56,9 @@ class CSTransformer(SurveyTransformer):
         # the pck file.
         vacancies_surveys = ["182", "183", "184", "185"]
         if self.survey['survey_id'] in vacancies_surveys:
-            pck_name = "%s_%04d" % ('181', self.sequence_no)
+            pck_name = Formatter.pck_name('181', self.response['tx_id'])
         else:
-            pck_name = "%s_%04d" % (self.survey['survey_id'], self.sequence_no)
+            pck_name = Formatter.pck_name(self.survey['survey_id'], self.response['tx_id'])
 
         return pck_name
 
@@ -65,17 +66,16 @@ class CSTransformer(SurveyTransformer):
         template = env.get_template('idbr.tmpl')
         template_output = template.render(response=self.response)
         submission_date = dateutil.parser.parse(self.response['submitted_at'])
-        submission_date_str = submission_date.strftime("%d%m")
 
         # Format is RECddMM_batchId.DAT
         # e.g. REC1001_30000.DAT for 10th January, batch 30000
-        idbr_name = "REC%s_%04d.DAT" % (submission_date_str, self.sequence_no)
+        idbr_name = Formatter.idbr_name(submission_date, self.response['tx_id'])
         self._idbr.write(template_output)
         self._idbr.seek(0)
         return idbr_name
 
     def _create_response_json(self):
-        original_json_name = "%s_%04d.json" % (self.survey['survey_id'], self.sequence_no)
+        original_json_name = Formatter.response_json_name(self.survey['survey_id'], self.response['tx_id'])
         self._response_json.write(json.dumps(self.response))
         self._response_json.seek(0)
         return original_json_name

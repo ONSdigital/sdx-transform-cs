@@ -1,6 +1,6 @@
-
 from transform.transformers.common_software import MBSTransformer, MWSSTransformer, CSTransformer
 from transform.transformers.common_software.epe_transformer import EPETransformer
+from transform.transformers.common_software.low_carbon_transformer import LCTransformer
 from transform.transformers.cora import UKISTransformer
 from transform.transformers.cora.mes_transformer import MESTransformer
 from transform.transformers.cord import Ecommerce2019Transformer, EcommerceTransformer
@@ -34,6 +34,8 @@ def get_transformer(response, sequence_no=1000):
             transformer = EcommerceTransformer(response, sequence_no)
 
     # COMMON SOFTWARE
+    elif survey_id == "007":
+        transformer = LCTransformer(response, sequence_no)
     elif survey_id == "009":
         transformer = MBSTransformer(response, sequence_no)
     elif survey_id == "134":
