@@ -55,7 +55,7 @@
                     "type": "currency"
                 },
                 {
-                    "text": "What was the value of repair and maintenance (R&M), improvements and major alterations carried out on existing housing for public sector projects?",
+                    "text": "What was the value of repair and maintenance, improvements and major alterations carried out on existing housing for public sector projects?",
                     "question_id": "202",
                     "number": "202",
                     "type": "currency"
@@ -67,7 +67,7 @@
                     "type": "currency"
                 },
                 {
-                    "text": "What was the value of R&M, improvements and major alterations carried out on existing housing for private sector projects?",
+                    "text": "What was the value of repair and maintenance, improvements and major alterations carried out on existing housing for private sector projects?",
                     "question_id": "212",
                     "number": "212",
                     "type": "currency"
@@ -92,7 +92,7 @@
                     "type": "currency"
                 },
                 {
-                    "text": "What was the value of R&M carried out on existing infrastructure?",
+                    "text": "What was the value of repair and maintenance carried out on existing infrastructure?",
                     "question_id": "222",
                     "number": "222",
                     "type": "currency"
@@ -103,19 +103,19 @@
             "title": "Other construction work",
             "questions": [
                 {
-                    "text": "During the period, did the business carry out any other construction work?",
+                    "text": "During the period, did the business carry out any non-housing work, excluding work on infrastructure?",
                     "question_id": "904",
                     "number": "904",
                     "type": "radio"
                 },
                 {
-                    "text": "What was the value of work carried out on other new structures for public sector projects?",
+                    "text": "What was the value of work carried out on new non-housing structures for public sector projects?",
                     "question_id": "231",
                     "number": "231",
                     "type": "currency"
                 },
                 {
-                    "text": "What was the value of R&M carried out on other existing structures for public sector projects?",
+                    "text": "What was the value of repair and maintenance carried out on existing non-housing structures for public sector projects?",
                     "question_id": "232",
                     "number": "232",
                     "type": "currency"
@@ -133,7 +133,7 @@
                     "type": "currency"
                 },
                 {
-                    "text": "what was the value of R&M carried out on existing structures for private industrial and/or private commercial sector projects?",
+                    "text": "what was the value of repair and maintenance carried out on existing structures for private industrial and/or private commercial sector projects?",
                     "question_id": "243",
                     "number": "243",
                     "type": "currency"
@@ -179,7 +179,7 @@
             "title": "Explanation",
             "questions": [
                 {
-                    "text": "Please explain any changes in your figures from the previous return, if applicable.",
+                    "text": "Please provide any further details that will help us understand your figures and tell an industry story.",
                     "question_id": "146",
                     "type": "contains"
                 }
