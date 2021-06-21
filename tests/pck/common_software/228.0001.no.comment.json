@@ -1,0 +1,31 @@
+{
+  "case_id": "2a3d9e88-bb47-427f-bb86-c61aef3d8010",
+  "collection": {
+    "exercise_sid": "28c405b2-54d8-4d98-af51-2b26b8a3c934",
+    "instrument_id": "0001",
+    "period": "201605"
+  },
+  "data": {
+    "221": "11000",
+    "222": "9000",
+    "290": "21000",
+    "901": "Yes, I can report for this period",
+    "902": "No, we did not carry out work on housing",
+    "903": "Yes, we carried out work on infrastructure",
+    "904": "No, we did not"
+  },
+  "flushed": false,
+  "metadata": {
+    "ref_period_end_date": "2016-05-31",
+    "ref_period_start_date": "2016-05-01",
+    "ru_ref": "36114571277k",
+    "user_id": "UNKNOWN"
+  },
+  "origin": "uk.gov.ons.edc.eq",
+  "started_at": "2021-06-21T13:38:18.850602",
+  "submitted_at": "2021-06-21T13:39:22.321261",
+  "survey_id": "228",
+  "tx_id": "bfe7b56f-51a7-4a0c-83ba-025b34e104e3",
+  "type": "uk.gov.ons.edc.eq:surveyresponse",
+  "version": "0.0.1"
+}
