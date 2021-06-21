@@ -403,12 +403,6 @@ class PCKTransformer:
         """147 or any 146x indicates a special comment type that should not be shown
         in pck, but in image. Additionally should set 146 if unset.
         """
-        if self.survey.get('survey_id') == self.construction_survey_id:
-            if '146' in self.data:
-                self.data['146'] = 1
-            else:
-                self.data['146'] = 2
-
         if set(self.comments_questions) <= set(self.data.keys()) and '146' not in self.data.keys():
             self.data['146'] = 1
 
